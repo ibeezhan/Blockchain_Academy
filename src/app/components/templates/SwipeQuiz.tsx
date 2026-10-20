@@ -8,6 +8,7 @@ import {
   type PanInfo,
 } from 'motion/react';
 import { Check, X, ArrowRight, RotateCcw } from 'lucide-react';
+import { trackEvent } from '../../analytics';
 
 /* ------------------------------------------------------------------ */
 /*  SwipeQuiz — a Tinder-style True/False quiz for use inside a slide. */
@@ -103,16 +104,24 @@ export function SwipeQuiz({ question, statements }: SwipeQuizProps) {
     (answeredTrue: boolean) => {
       if (revealed !== null) return;
       setRevealed(answeredTrue);
-      if (current && answeredTrue === current.isTrue) setScore((s) => s + 1);
+      const correct = !!current && answeredTrue === current.isTrue;
+      if (correct) setScore((s) => s + 1);
+      trackEvent('quiz_answer', {
+        quiz: question ?? current?.text,
+        quiz_type: 'swipe_true_false',
+        correct,
+      });
     },
-    [revealed, current],
+    [revealed, current, question],
   );
 
   const advance = () => {
     const next = index + 1;
     setRevealed(null);
-    if (next >= total) setFinished(true);
-    else setIndex(next);
+    if (next >= total) {
+      setFinished(true);
+      trackEvent('swipe_quiz_complete', { quiz: question, score, total });
+    } else setIndex(next);
   };
 
   const restart = () => {

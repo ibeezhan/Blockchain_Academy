@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { ChevronUp, ChevronDown, ArrowRight } from 'lucide-react';
+import { trackEvent } from '../../analytics';
 
 interface SlideNavButtonsProps {
   nextChapterPath?: string;
@@ -44,11 +45,18 @@ export function SlideNavButtons({ nextChapterPath }: SlideNavButtonsProps) {
   const scrollPrev = () => {
     const el = document.getElementById('section-scroll');
     if (el) el.scrollBy({ top: -el.clientHeight, behavior: 'smooth' });
+    trackEvent('slide_nav', { direction: 'prev', section: location.pathname });
   };
 
   const scrollNext = () => {
     const el = document.getElementById('section-scroll');
     if (el) el.scrollBy({ top: el.clientHeight, behavior: 'smooth' });
+    trackEvent('slide_nav', { direction: 'next', section: location.pathname });
+  };
+
+  const goNextChapter = () => {
+    trackEvent('slide_nav', { direction: 'next_chapter', section: location.pathname });
+    navigate(nextChapterPath!);
   };
 
   const showPrev = !isFirst;
@@ -70,7 +78,7 @@ export function SlideNavButtons({ nextChapterPath }: SlideNavButtonsProps) {
       )}
       {showNextChapter && (
         <button
-          onClick={() => navigate(nextChapterPath!)}
+          onClick={goNextChapter}
           className="flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-primary text-primary-foreground shadow-lg hover:opacity-90 transition-all text-sm font-semibold whitespace-nowrap"
           title="Go to next chapter"
         >
