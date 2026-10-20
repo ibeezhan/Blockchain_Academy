@@ -271,17 +271,17 @@ export function Section3() {
                     );
                   })}
                   <a
-                    href="https://metamask.io"
+                    href="https://rabby.io"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 px-3 py-2.5 bg-[#F6851B]/10 border border-[#F6851B]/40 rounded-lg hover:bg-[#F6851B]/20 hover:border-[#F6851B]/70 transition-all group mt-1"
+                    className="flex items-center gap-3 px-3 py-2.5 bg-[#7084ff]/10 border border-[#7084ff]/40 rounded-lg hover:bg-[#7084ff]/20 hover:border-[#7084ff]/70 transition-all group mt-1"
                   >
-                    <span className="text-xl shrink-0">🦊</span>
+                    <span className="text-xl shrink-0">🐰</span>
                     <div className="flex-1">
-                      <div className="text-sm font-bold text-[#F6851B]">{t('ethereum.metamaskCta')}</div>
-                      <div className="text-xs text-muted-foreground">metamask.io</div>
+                      <div className="text-sm font-bold text-[#7084ff]">{t('ethereum.walletCta')}</div>
+                      <div className="text-xs text-muted-foreground">rabby.io</div>
                     </div>
-                    <ExternalLink className="size-4 text-[#F6851B]/60 group-hover:text-[#F6851B] transition-colors shrink-0" />
+                    <ExternalLink className="size-4 text-[#7084ff]/60 group-hover:text-[#7084ff] transition-colors shrink-0" />
                   </a>
                 </div>
 

@@ -28,6 +28,8 @@ import { ConsensusVisualization } from '../components/blockchain/ConsensusVisual
 import { SectionNav } from '../components/navigation/SectionNav';
 import { SiteFooter } from '../components/shared/SiteFooter';
 import { Blocks, ExternalLink } from 'lucide-react';
+import rabbyIcon from '../../rabby-icon.png';
+import zerionIcon from '../../zerion-icon.png';
 
 /** Sidebar shape — labels resolved at render time via i18n */
 const section1ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
@@ -46,6 +48,7 @@ const section1ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
 
   { kind: 'group', id: 'g-s1-network' },
   { id: 's1-network' },
+  { id: 's1-control' },
   { id: 's1-network-sort' },
   { id: 's1-consensus' },
   { id: 's1-protocols' },
@@ -55,6 +58,7 @@ const section1ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
 
   { kind: 'group', id: 'g-s1-wallet' },
   { id: 's1-wallet' },
+  { id: 's1-wallet-basics' },
 
   { kind: 'group', id: 'g-s1-wrap' },
   { id: 's1-takeaways' },
@@ -2770,81 +2774,102 @@ function MiningRace() {
   );
 }
 
-/* ── MetaMask Tease ─────────────────────────────────── */
-function MetaMaskTease() {
+/* ── Wallet Intro (Rabby + Zerion) ─────────────────────────────────── */
+function WalletIntro() {
   const { t } = useTranslation('blockchain-fundamentals/section-1');
-  const foxRef = useRef<HTMLDivElement | null>(null);
+  const RABBY = '#7084ff';
+  const ZERION = '#2962ef';
+  const compareCols = t('wallet.compareCols', { returnObjects: true }) as { feature: string; rabby: string; zerion: string };
+  const compare = t('wallet.compare', { returnObjects: true }) as Array<{ feature: string; rabby: string; zerion: string }>;
 
-  useEffect(() => {
-    if (!foxRef.current) return;
-    anime.remove(foxRef.current);
-    const anim = anime({
-      targets: foxRef.current,
-      translateY: [-6, 6],
-      rotate: [-3, 3],
-      duration: 2600,
-      direction: 'alternate',
-      loop: true,
-      easing: 'easeInOutSine',
-    });
-    return () => { anim.pause(); };
-  }, []);
-
-  return (
-    <div className="w-full max-w-5xl mx-auto text-center">
-      <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-3">
-        {t('metamask.headPrefix')}<span className="text-[#f6851b]">{t('metamask.headBrand')}</span>
-      </h2>
-      <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-        {t('metamask.lead')}
-      </p>
-
-      {/* Fox card — clickable, goes to metamask.io */}
+  const WalletCard = ({ k, color, icon }: { k: 'rabby' | 'zerion'; color: string; icon: string }) => (
+    <div className="flex flex-col p-5 bg-card rounded-2xl border-2 text-left" style={{ borderColor: color + '55' }}>
+      <div className="flex items-center gap-3 mb-2">
+        <img src={icon} alt={t(`wallet.${k}.name`)} className="h-9 w-9 rounded-lg shrink-0" />
+        <div className="min-w-0">
+          <div className="text-lg font-bold text-foreground leading-tight">{t(`wallet.${k}.name`)}</div>
+          <div className="text-[11px] font-semibold uppercase tracking-wide" style={{ color }}>{t(`wallet.${k}.tag`)}</div>
+        </div>
+      </div>
+      <p className="text-sm text-foreground leading-snug mb-4 flex-1">{t(`wallet.${k}.body`)}</p>
       <a
-        href="https://metamask.io"
+        href={t(`wallet.${k}.url`)}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-block group mb-6"
-        aria-label={t('metamask.ariaLabel')}
+        className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-bold hover:scale-[1.03] transition-all"
+        style={{ backgroundColor: color }}
       >
-        <div className="relative">
-          {/* Glow */}
-          <div className="absolute inset-0 rounded-full bg-[#f6851b] blur-3xl opacity-30 group-hover:opacity-50 transition-opacity" />
-          {/* Fox itself */}
-          <div
-            ref={foxRef}
-            className="relative bg-gradient-to-br from-[#f6851b] via-[#e2761b] to-[#cd6116] rounded-3xl p-6 lg:p-8 border-[5px] border-card shadow-2xl shadow-[#f6851b]/40 inline-block"
-          >
-            <div className="text-8xl lg:text-9xl leading-none select-none drop-shadow-2xl">🦊</div>
-          </div>
-        </div>
+        {t(`wallet.${k}.cta`)}
+        <ExternalLink className="size-4" />
       </a>
+    </div>
+  );
 
-      <div className="mb-7">
-        <a
-          href="https://metamask.io"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-3 px-7 py-3.5 rounded-2xl bg-[#f6851b] hover:bg-[#e2761b] text-white text-base lg:text-lg font-bold shadow-lg shadow-[#f6851b]/40 hover:scale-[1.03] transition-all"
-        >
-          {t('metamask.cta')}
-          <ExternalLink className="size-5" />
-        </a>
-        <p className="text-xs text-muted-foreground italic mt-3 max-w-lg mx-auto">
-          {t('metamask.ctaCaptionA')}{' '}
-          <strong className="not-italic text-foreground">{t('metamask.ctaCaptionCourse')}</strong>{t('metamask.ctaCaptionB')}
-        </p>
+  return (
+    <div className="w-full max-w-5xl mx-auto my-auto text-center">
+      <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-2">
+        {t('wallet.headPrefix')}<span style={{ color: ZERION }}>{t('wallet.headBrand')}</span>
+      </h2>
+      <p className="text-sm lg:text-base text-muted-foreground max-w-2xl mx-auto mb-4">
+        {t('wallet.lead')}
+      </p>
+
+      {/* Two wallet cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto mb-4">
+        <WalletCard k="rabby" color={RABBY} icon={rabbyIcon} />
+        <WalletCard k="zerion" color={ZERION} icon={zerionIcon} />
       </div>
 
-      {/* 3 quick facts */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 max-w-3xl mx-auto">
-        {(t('metamask.facts', { returnObjects: true }) as Array<{ tag: string; body: string }>).map((f, i) => (
-          <div key={i} className="p-4 bg-card rounded-xl border border-[#f6851b]/30 text-left">
-            <div className="text-[10px] font-bold uppercase tracking-widest text-[#f6851b] mb-1.5">{f.tag}</div>
+      {/* Simple, non-techy comparison */}
+      <div className="max-w-2xl mx-auto mb-4 bg-card rounded-2xl border border-border overflow-hidden text-left">
+        <div className="px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-muted-foreground border-b border-border">
+          {t('wallet.compareHeader')}
+        </div>
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="text-muted-foreground">
+              <th className="text-left font-semibold px-4 py-2"></th>
+              <th className="text-left font-semibold px-4 py-2" style={{ color: RABBY }}>{compareCols.rabby}</th>
+              <th className="text-left font-semibold px-4 py-2" style={{ color: ZERION }}>{compareCols.zerion}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {compare.map((row, i) => (
+              <tr key={i} className="border-t border-border">
+                <td className="px-4 py-2.5 text-muted-foreground">{row.feature}</td>
+                <td className="px-4 py-2.5 text-foreground">{row.rabby}</td>
+                <td className="px-4 py-2.5 text-foreground">{row.zerion}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p className="text-sm text-foreground max-w-2xl mx-auto">{t('wallet.bothNote')}</p>
+    </div>
+  );
+}
+
+/* ── What a Wallet Actually Does (facts) ─────────────────────────────── */
+function WalletBasics() {
+  const { t } = useTranslation('blockchain-fundamentals/section-1');
+  const ZERION = '#2962ef';
+  return (
+    <div className="w-full max-w-4xl mx-auto my-auto text-center">
+      <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-3">{t('wallet.basicsHead')}</h2>
+      <p className="text-sm lg:text-base text-muted-foreground max-w-2xl mx-auto mb-7">{t('wallet.basicsLead')}</p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto mb-7">
+        {(t('wallet.facts', { returnObjects: true }) as Array<{ tag: string; body: string }>).map((f, i) => (
+          <div key={i} className="p-5 bg-card rounded-xl border border-border text-left">
+            <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: ZERION }}>{f.tag}</div>
             <p className="text-sm text-foreground leading-snug">{f.body}</p>
           </div>
         ))}
       </div>
+      <p className="text-xs text-muted-foreground italic max-w-lg mx-auto">
+        {t('wallet.ctaCaptionA')}{' '}
+        <strong className="not-italic text-foreground">{t('wallet.ctaCaptionCourse')}</strong>{t('wallet.ctaCaptionB')}
+      </p>
     </div>
   );
 }
@@ -3099,6 +3124,80 @@ export function Section1() {
             </div>
           </div>
 
+          {/* ═══════ 06a — WHO CONTROLS IT? (shape vs control bridge) ═══════ */}
+          <div id="s1-control" className="h-full">
+            <div className="slide-template w-full flex flex-col p-5 lg:p-8">
+              <div className="shrink-0 mb-3">
+                <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{t('control.heading')}</h2>
+                <p className="text-sm lg:text-base text-muted-foreground max-w-3xl">
+                  {t('control.lead')}
+                </p>
+              </div>
+
+              <div className="flex-1 min-h-0 flex flex-col justify-center gap-3 lg:gap-4 max-w-5xl">
+                <CalloutBox type="important" title={t('control.calloutTitle')}>
+                  {t('control.calloutBody')}
+                </CalloutBox>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                  {SORT_CATEGORIES.map(cat => (
+                    <div
+                      key={cat.id}
+                      className="p-3 lg:p-4 bg-card rounded-lg border-2"
+                      style={{ borderColor: cat.color + '60', backgroundColor: cat.color + '08' }}
+                    >
+                      <div className="text-sm font-bold leading-snug" style={{ color: cat.color }}>
+                        {t(`control.cards.${cat.id}.label`)}
+                      </div>
+                      <div className="text-xs lg:text-sm text-muted-foreground mt-1 leading-snug">
+                        {t(`control.cards.${cat.id}.desc`)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-3">
+                  <div className="p-3 lg:p-4 bg-muted/40 rounded-lg">
+                    <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold mb-1">
+                      {t('control.distributedTitle')}
+                    </p>
+                    <p className="text-xs lg:text-sm text-foreground leading-snug">
+                      {t('control.distributedBody')}
+                    </p>
+                  </div>
+
+                  <div className="p-3 lg:p-4 bg-card rounded-lg border border-border">
+                    <table className="w-full text-xs lg:text-sm">
+                      <thead>
+                        <tr className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                          <th className="text-left font-semibold pb-1 pr-3">{t('control.tableHeaders.system')}</th>
+                          <th className="text-left font-semibold pb-1 pr-3">{t('control.tableHeaders.control')}</th>
+                          <th className="text-left font-semibold pb-1">{t('control.tableHeaders.shape')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(t('control.examples', { returnObjects: true }) as Array<{ system: string; kind: NetworkCategory; control: string; shape: string }>).map((row, i) => {
+                          const color = SORT_CATEGORIES.find(c => c.id === row.kind)?.color ?? '#ED1C24';
+                          return (
+                            <tr key={i} className="border-t border-border/60">
+                              <td className="py-1.5 pr-3 font-bold text-foreground">{row.system}</td>
+                              <td className="py-1.5 pr-3 font-semibold" style={{ color }}>{row.control}</td>
+                              <td className="py-1.5 text-muted-foreground">{row.shape}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <p className="text-xs lg:text-sm text-muted-foreground italic px-1">
+                  {t('control.closing')}
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* ═══════ 06b — SORT THE SYSTEMS (NEW) ═══════ */}
           <div id="s1-network-sort" className="h-full flex items-center justify-center p-6 lg:p-10">
             <NetworkTypeSorter />
@@ -3155,9 +3254,14 @@ export function Section1() {
             <MiningRace />
           </div>
 
-          {/* ═══════ 10 — METAMASK TEASE ═══════ */}
-          <div id="s1-wallet" className="h-full flex items-center justify-center p-6 lg:p-10">
-            <MetaMaskTease />
+          {/* ═══════ 10 — WALLET INTRO ═══════ */}
+          <div id="s1-wallet" className="h-full flex items-start justify-center overflow-y-auto p-6 lg:py-8 lg:px-10">
+            <WalletIntro />
+          </div>
+
+          {/* ═══════ 10b — WHAT A WALLET DOES ═══════ */}
+          <div id="s1-wallet-basics" className="h-full flex items-center justify-center p-6 lg:p-10">
+            <WalletBasics />
           </div>
 
           {/* ═══════ 11 — TAKEAWAYS ═══════ */}
