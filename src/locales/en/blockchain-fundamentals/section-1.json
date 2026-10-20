@@ -17,7 +17,7 @@
     "s1-chain":        "Linking Blocks",
     "s1-cascade":      "The Cascade",
     "s1-network":      "The Network",
-    "s1-network-sort": "Sort the Systems",
+    "s1-network-sort": "Who's in Control?",
     "s1-consensus":    "Consensus",
     "s1-protocols":    "The Protocol Zoo",
     "s1-mining":       "Mining Race",
@@ -339,10 +339,11 @@
     "lead": "One machine holding a chain is fragile. But what if every machine on the network held its own copy? Switch between three network shapes below and click nodes to take them offline — watch what survives.",
     "rows": [
       { "title": "Centralized = single point of control",  "desc": "One operator owns the system. Kill the centre and everything goes dark." },
-      { "title": "Decentralized = clusters of authority",  "desc": "Several hubs. Killing one breaks its cluster but leaves the rest intact." },
+      { "title": "Federated = clusters of authority",      "desc": "Several hubs. Killing one breaks its cluster but leaves the rest intact." },
       { "title": "Distributed = every node is a peer",     "desc": "All nodes hold the data and route around failures. This is what blockchain inherits." },
       { "title": "Blockchain = distributed + agreed",      "desc": "A distributed network plus a way for the peers to agree on which chain is the truth." }
-    ]
+    ],
+    "note": "These are network shapes — where the machines sit. Who is actually in control is a separate question, which we sort next."
   },
   "networkTopo": {
     "ariaSuffix": "network topology",
@@ -353,8 +354,8 @@
         "lesson":  "Try clicking the centre node. Then try clicking one satellite. Same act, very different blast radius."
       },
       "decentralized": {
-        "label":   "Decentralized",
-        "tagline": "Several hubs share authority. No single hub controls everything, but each hub still rules its cluster.",
+        "label":   "Federated",
+        "tagline": "Several hubs share the load. No single hub carries everything, but each hub still holds its cluster together.",
         "lesson":  "Click a hub — its leaves are orphaned because they only reach the network through it. The other clusters keep working."
       },
       "distributed": {
@@ -372,8 +373,8 @@
     "reset": "↺ Reset"
   },
   "sortSystems": {
-    "heading": "Sort the Systems",
-    "lead":    "Each system below sits somewhere on the spectrum. Click a system, then click the category it belongs to.",
+    "heading": "Who's in Control?",
+    "lead":    "Forget the network shape for a moment — that was the last slide. Ask one question of each system: who can freeze, censor, or shut it down? Click a system, then click the answer.",
     "items": "Items",
     "pickN":  "Pick a system ({{n}} left)",
     "allPlacedHeader": "All placed — check your answers",
@@ -389,24 +390,23 @@
       "review":   "Review the slides"
     },
     "hintLabel":   "Hint:",
-    "hintBody":    "The line is fuzzy. DNS is technically",
-    "hintBodyEm":  "hierarchical",
-    "hintBodyTail":"but spreads load across many servers. BitTorrent has no center at all — every peer is equal. Bitcoin is the same idea applied to a ledger.",
+    "hintBody":    "Shape and control are different questions. DNS runs on thousands of servers worldwide, but its rules and root are set by",
+    "hintBodyEm":  "ICANN and a dozen root-server operators",
+    "hintBodyTail":"— so control leans centralized. Google is the clearest case: massively distributed servers, one company in charge. Bitcoin is the opposite: thousands of independent nodes and no one who can switch it off.",
     "items_": {
-      "bofa":       { "label": "Bank of America", "hint": "One company owns the ledger" },
-      "google":     { "label": "Google",          "hint": "One company runs the servers" },
-      "visa":       { "label": "Visa",            "hint": "Single processor in the middle" },
-      "email":      { "label": "Email (SMTP)",    "hint": "Many independent providers" },
-      "mastodon":   { "label": "Mastodon",        "hint": "Federated instances" },
-      "dns":        { "label": "DNS",             "hint": "Hierarchical root servers" },
-      "bitcoin":    { "label": "Bitcoin",         "hint": "Every node holds the full chain" },
-      "ipfs":       { "label": "IPFS",            "hint": "Peer-to-peer file storage" },
-      "bittorrent": { "label": "BitTorrent",      "hint": "Every peer is also a seeder" }
+      "bofa":       { "label": "Bank of America", "hint": "One bank can freeze your account." },
+      "google":     { "label": "Google",          "hint": "Distributed servers — but one company controls them all." },
+      "visa":       { "label": "Visa",            "hint": "One processor can decline any payment." },
+      "dns":        { "label": "DNS",             "hint": "Runs everywhere, but ICANN and the root servers set the rules. The fuzzy one." },
+      "email":      { "label": "Email (SMTP)",    "hint": "Thousands of independent providers; no one can switch email off." },
+      "mastodon":   { "label": "Mastodon",        "hint": "Federated servers, each run by its own community — no one can shut them all down." },
+      "bitcoin":    { "label": "Bitcoin",         "hint": "No company, no CEO — no one can switch it off." },
+      "ipfs":       { "label": "IPFS",            "hint": "Anyone can host a file; there is no central server to shut down." },
+      "bittorrent": { "label": "BitTorrent",      "hint": "Every downloader is also a host; no central party to stop." }
     },
     "categories": {
-      "centralized":   { "label": "Centralized",   "desc": "One operator owns the system. Single point of control." },
-      "decentralized": { "label": "Decentralized", "desc": "Many hubs share authority. Each rules its cluster." },
-      "distributed":   { "label": "Distributed",   "desc": "Every peer is equal. No central authority at all." }
+      "centralized":   { "label": "Centralized control",   "desc": "One company or authority can freeze, censor, or shut it down." },
+      "decentralized": { "label": "Decentralized control", "desc": "No single party can unilaterally stop it — control is spread across many independent participants." }
     }
   },
   "quiz51": {
