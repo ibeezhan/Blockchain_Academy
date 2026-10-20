@@ -267,9 +267,23 @@ const resources: Resource[] = [
   },
   // Wallets
   {
+    title: "Rabby",
+    url: "https://rabby.io/",
+    description: "Open-source multi-chain browser extension wallet with pre-transaction simulation and risk warnings. A security-focused choice for interacting with dApps and DeFi protocols.",
+    tag: "Wallet",
+    tagColor: "#f97316",
+  },
+  {
+    title: "Zerion",
+    url: "https://zerion.io/",
+    description: "Multi-chain wallet and portfolio tracker, available as a browser extension and mobile app. Shows all your tokens, NFTs, and DeFi positions across networks in one place.",
+    tag: "Wallet",
+    tagColor: "#f97316",
+  },
+  {
     title: "MetaMask",
     url: "https://metamask.io/",
-    description: "The most widely used Ethereum browser extension wallet. Install it to interact with dApps, DeFi protocols, and NFT marketplaces directly in your browser.",
+    description: "Widely used Ethereum browser extension wallet. One of several options for interacting with dApps, DeFi protocols, and NFT marketplaces directly in your browser.",
     tag: "Wallet",
     tagColor: "#f97316",
   },

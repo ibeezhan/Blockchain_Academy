@@ -117,7 +117,7 @@
       "app": {
         "label": "Application Layer",
         "sublabel": "Wallets · Exchanges · Block explorers",
-        "description": "The user-facing layer. Wallets (MetaMask, Ledger), exchanges, and explorers translate raw blockchain data into readable interfaces. They communicate with the network via RPC calls to nodes.",
+        "description": "The user-facing layer. Wallets (Rabby, Zerion, Ledger), exchanges, and explorers translate raw blockchain data into readable interfaces. They communicate with the network via RPC calls to nodes.",
         "examples": ["Bitcoin Core wallet", "Electrum", "Mempool.space"]
       },
       "p2p": {
