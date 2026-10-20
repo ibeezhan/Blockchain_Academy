@@ -8,6 +8,7 @@
     "p-pedigree":          "Academic Pedigree",
     "p-why":               "Why It Matters",
     "p-who-controls":      "Who Owns Your Money?",
+    "p-decentralization":  "Decentralization",
     "p-takeaways":         "Takeaways",
     "p-quiz":              "Quizzes"
   },
@@ -198,6 +199,32 @@
     "questionA":     "What does it mean to truly",
     "questionEm":    "own",
     "questionTail":  "something digital — if there is always someone who can take it back?"
+  },
+  "decentralization": {
+    "heading": "What Decentralization Really Means",
+    "lead":    "Decentralization is the word everyone uses and few define. Here is what it does — and does not — mean.",
+    "definitionTitle": "Decentralization, defined",
+    "definitionA":     "Decentralization means there is",
+    "definitionEm":    "no single point that can freeze your funds, censor your transactions, or unilaterally change the rules.",
+    "definitionTail":  "Control is spread across many independent participants instead of concentrated in one company, bank, or government.",
+    "notTitle": "It does NOT mean…",
+    "notItems": [
+      { "title": "No rules",              "body": "The rules are strict. They are just enforced by code and consensus, not by an authority." },
+      { "title": "No one is in charge",   "body": "Thousands of participants are — collectively. No single one of them can decide alone." },
+      { "title": "It's free or instant",  "body": "Decentralization has real costs. Every participant repeats the same work to keep the system honest." },
+      { "title": "It's automatically better", "body": "It is a trade-off, not a win. For many problems, a central database is the right answer." }
+    ],
+    "costTitle": "What it costs",
+    "costItems": [
+      { "title": "Slower and less efficient",  "body": "Thousands of computers must agree on every update. A central database just writes a row." },
+      { "title": "Harder user experience",     "body": "No password reset, no support line, no undo button." },
+      { "title": "You carry the responsibility", "body": "Lose your keys, lose your funds. There is nobody to call." },
+      { "title": "Governance is messy and slow", "body": "Changing the rules means convincing a global crowd, not scheduling a meeting." }
+    ],
+    "closingKicker": "Back to who controls your money",
+    "closingA":      "Cash, bank accounts, and payment platforms each hand a point of control to someone else. Decentralization asks whether you can",
+    "closingEm":     "keep that control yourself",
+    "closingTail":   "— and what you must give up to do so."
   },
   "takeaways": {
     "title": "Prologue Takeaways",
