@@ -7,7 +7,7 @@ import { TakeawaySlide } from '../components/templates/TakeawaySlide';
 import { QuizSlide } from '../components/templates/QuizSlide';
 import { SwipeQuiz, type SwipeStatement } from '../components/templates/SwipeQuiz';
 import { CalloutBox } from '../components/shared/CalloutBox';
-import { ScrollText, ExternalLink, User } from 'lucide-react';
+import { ScrollText, ExternalLink, User, X, AlertTriangle } from 'lucide-react';
 import { SectionNav } from '../components/navigation/SectionNav';
 import { SiteFooter } from '../components/shared/SiteFooter';
 import bitcoinPedigree from '../../assets/bf/bitcoin-academic-pedigree.png';
@@ -22,6 +22,7 @@ const prologueChaptersShape: ReadonlyArray<{ id: string }> = [
   { id: 'p-pedigree' },
   { id: 'p-why' },
   { id: 'p-who-controls' },
+  { id: 'p-decentralization' },
   { id: 'p-takeaways' },
   { id: 'p-quiz' },
 ];
@@ -653,6 +654,56 @@ export function Prologue() {
           <div className="shrink-0 mt-4 p-4 bg-gradient-to-br from-[#8b5cf6]/10 via-[#ED1C24]/10 to-[#22d3ee]/10 border-2 border-[#8b5cf6]/40 rounded-xl text-center">
             <div className="text-xs font-bold text-[#8b5cf6] uppercase tracking-widest mb-1">{t('whoControls.questionKicker')}</div>
             <div className="text-base font-semibold text-foreground">{t('whoControls.questionA')} <em>{t('whoControls.questionEm')}</em> {t('whoControls.questionTail')}</div>
+          </div>
+        </div>
+
+        {/* ═══════ WHAT DECENTRALIZATION REALLY MEANS ═══════ */}
+        <div id="p-decentralization" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('decentralization.heading')}</h2>
+            <p className="text-muted-foreground text-sm mt-1 max-w-3xl">{t('decentralization.lead')}</p>
+          </div>
+
+          <div className="shrink-0 mb-4">
+            <CalloutBox type="important" title={t('decentralization.definitionTitle')}>
+              {t('decentralization.definitionA')} <strong>{t('decentralization.definitionEm')}</strong> {t('decentralization.definitionTail')}
+            </CalloutBox>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {([
+              { key: 'not',  color: '#ED1C24', Icon: X },
+              { key: 'cost', color: '#f59e0b', Icon: AlertTriangle },
+            ] as const).map(({ key, color, Icon }) => {
+              const items = t(`decentralization.${key}Items`, { returnObjects: true }) as Array<{ title: string; body: string }>;
+              return (
+                <div
+                  key={key}
+                  className="flex flex-col rounded-xl border-2 p-4 lg:p-5 min-h-0"
+                  style={{ borderColor: color + '50', background: `linear-gradient(to bottom right, ${color}10, transparent)` }}
+                >
+                  <h3 className="font-black text-base lg:text-lg mb-3 shrink-0" style={{ color }}>{t(`decentralization.${key}Title`)}</h3>
+                  <ul className="flex-1 min-h-0 flex flex-col justify-between gap-2">
+                    {items.map((item, i) => (
+                      <li key={i} className="flex items-start gap-3 p-2.5 bg-card rounded-lg border border-border">
+                        <div className="size-6 rounded-full flex items-center justify-center shrink-0 mt-0.5" style={{ backgroundColor: color + '20' }}>
+                          <Icon className="size-3.5" style={{ color }} strokeWidth={3} />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="font-bold text-sm text-foreground leading-tight">{item.title}</div>
+                          <div className="text-xs text-muted-foreground mt-0.5 leading-snug">{item.body}</div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="shrink-0 mt-4 p-4 bg-gradient-to-br from-[#8b5cf6]/10 via-[#ED1C24]/10 to-[#22d3ee]/10 border-2 border-[#8b5cf6]/40 rounded-xl text-center">
+            <div className="text-xs font-bold text-[#8b5cf6] uppercase tracking-widest mb-1">{t('decentralization.closingKicker')}</div>
+            <div className="text-base font-semibold text-foreground">{t('decentralization.closingA')} <em>{t('decentralization.closingEm')}</em> {t('decentralization.closingTail')}</div>
           </div>
         </div>
 
