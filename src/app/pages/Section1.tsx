@@ -1469,8 +1469,8 @@ function NetworkTopologyDemo() {
   );
 }
 
-/* ── Network Type Sorter (NEW) ─────────────────────────────────── */
-type NetworkCategory = 'centralized' | 'decentralized' | 'distributed';
+/* ── Control Sorter: who is in charge? (governance axis, not network shape) ── */
+type NetworkCategory = 'centralized' | 'decentralized';
 
 interface SortItem {
   id: string;
@@ -1478,22 +1478,23 @@ interface SortItem {
   correct: NetworkCategory;
 }
 
+// Answer key is about CONTROL (who can freeze / censor / shut it down), not network shape.
+// Google's servers are distributed, yet control is centralized — one company. DNS is the fuzzy one.
 const SORT_ITEMS: SortItem[] = [
   { id: 'bofa',       icon: '🏦', correct: 'centralized'   },
   { id: 'google',     icon: '🔍', correct: 'centralized'   },
   { id: 'visa',       icon: '💳', correct: 'centralized'   },
+  { id: 'dns',        icon: '🌐', correct: 'centralized'   },
   { id: 'email',      icon: '📧', correct: 'decentralized' },
   { id: 'mastodon',   icon: '🐘', correct: 'decentralized' },
-  { id: 'dns',        icon: '🌐', correct: 'decentralized' },
-  { id: 'bitcoin',    icon: '₿',  correct: 'distributed'   },
-  { id: 'ipfs',       icon: '📦', correct: 'distributed'   },
-  { id: 'bittorrent', icon: '⬇️', correct: 'distributed'   },
+  { id: 'bitcoin',    icon: '₿',  correct: 'decentralized' },
+  { id: 'ipfs',       icon: '📦', correct: 'decentralized' },
+  { id: 'bittorrent', icon: '⬇️', correct: 'decentralized' },
 ];
 
 const SORT_CATEGORIES: { id: NetworkCategory; color: string }[] = [
   { id: 'centralized',   color: '#ED1C24' },
-  { id: 'decentralized', color: '#f59e0b' },
-  { id: 'distributed',   color: '#39B54A' },
+  { id: 'decentralized', color: '#39B54A' },
 ];
 
 function NetworkTypeSorter() {
@@ -1538,7 +1539,7 @@ function NetworkTypeSorter() {
   };
 
   const resultColor = correctCount === SORT_ITEMS.length ? '#10b981'
-    : correctCount >= 6 ? '#f59e0b'
+    : correctCount >= 7 ? '#f59e0b'
     : '#ef4444';
 
   return (
@@ -1583,8 +1584,8 @@ function NetworkTypeSorter() {
         </div>
       </div>
 
-      {/* 3 category zones */}
-      <div className="grid grid-cols-3 gap-3">
+      {/* 2 category zones: centralized vs decentralized control */}
+      <div className="grid grid-cols-2 gap-3">
         {SORT_CATEGORIES.map(cat => {
           const placed = itemsByCategory(cat.id);
           const isTarget = !!selectedId && !checked;
@@ -1635,7 +1636,7 @@ function NetworkTypeSorter() {
                       key={item.id}
                       onClick={e => { e.stopPropagation(); handlePlacedItemClick(item.id); }}
                       disabled={checked}
-                      className="flex items-center gap-1.5 px-2 py-1 rounded-lg border bg-card text-xs font-bold transition-colors"
+                      className="flex flex-wrap items-center gap-x-1.5 px-2 py-1 rounded-lg border bg-card text-xs font-bold transition-colors text-left"
                       style={{
                         borderColor: isRight ? '#10b981' : isWrong ? '#ef4444' : cat.color + '60',
                         backgroundColor: isRight ? '#10b98115' : isWrong ? '#ef444415' : 'var(--card)',
@@ -1647,6 +1648,11 @@ function NetworkTypeSorter() {
                       {checked && (
                         <span style={{ color: isRight ? '#10b981' : '#ef4444' }}>
                           {isRight ? '✓' : '✗'}
+                        </span>
+                      )}
+                      {checked && (
+                        <span className="basis-full text-[10px] font-normal text-muted-foreground leading-snug">
+                          {t(`sortSystems.items_.${item.id}.hint`)}
                         </span>
                       )}
                     </button>
@@ -1679,7 +1685,7 @@ function NetworkTypeSorter() {
                 {correctCount}/{SORT_ITEMS.length}
               </div>
               <div className="text-[10px] text-muted-foreground uppercase tracking-widest mt-0.5">
-                {correctCount === SORT_ITEMS.length ? t('sortSystems.results.perfect') : correctCount >= 6 ? t('sortSystems.results.almost') : t('sortSystems.results.review')}
+                {correctCount === SORT_ITEMS.length ? t('sortSystems.results.perfect') : correctCount >= 7 ? t('sortSystems.results.almost') : t('sortSystems.results.review')}
               </div>
             </div>
             <button
@@ -3085,6 +3091,9 @@ export function Section1() {
                       </div>
                     );
                   })}
+                  <p className="text-xs lg:text-sm text-muted-foreground italic px-1">
+                    {t('network.note')}
+                  </p>
                 </div>
               </div>
             </div>
