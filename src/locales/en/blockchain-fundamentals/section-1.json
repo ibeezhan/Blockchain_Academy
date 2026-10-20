@@ -17,11 +17,13 @@
     "s1-chain":        "Linking Blocks",
     "s1-cascade":      "The Cascade",
     "s1-network":      "The Network",
+    "s1-control":      "Who Controls It?",
     "s1-network-sort": "Who's in Control?",
     "s1-consensus":    "Consensus",
     "s1-protocols":    "The Protocol Zoo",
     "s1-mining":       "Mining Race",
-    "s1-wallet":       "Meet MetaMask",
+    "s1-wallet":       "Meet Your New Wallet",
+    "s1-wallet-basics": "What a Wallet Does",
     "s1-takeaways":    "Takeaways"
   },
   "title": {
@@ -345,6 +347,25 @@
     ],
     "note": "These are network shapes — where the machines sit. Who is actually in control is a separate question, which we sort next."
   },
+  "control": {
+    "heading": "Who Controls It?",
+    "lead": "You just saw where the machines sit — the network's shape. That's a different question from who's actually in charge. A system can run on thousands of machines and still be controlled by one company.",
+    "calloutTitle": "Shape is not control",
+    "calloutBody": "Decentralization is about power, not geography. The real question isn't how many computers a system runs on — it's whether any single party can change the rules, freeze your account, or switch it off.",
+    "cards": {
+      "centralized":   { "label": "Centralized control",   "desc": "One company or authority is in charge. They can change the rules, freeze funds, censor transactions, or shut the whole thing down. You're trusting them to behave." },
+      "decentralized": { "label": "Decentralized control", "desc": "No single party can do those things alone. Power is spread across many independent participants, and the rules only change by broad agreement. You trust the system, not a company." }
+    },
+    "distributedTitle": "Where does distributed fit?",
+    "distributedBody": "Distributed describes the shape — the work spread across many machines. It's usually the foundation decentralization is built on, but on its own it doesn't guarantee decentralization. Google is distributed across huge data centres, yet one company controls all of it. Bitcoin is distributed AND decentralized: many machines, no one in charge.",
+    "tableHeaders": { "system": "System", "control": "Control", "shape": "Shape" },
+    "examples": [
+      { "system": "Bank",    "kind": "centralized",   "control": "Centralized",   "shape": "Runs on its own servers" },
+      { "system": "Google",  "kind": "centralized",   "control": "Centralized",   "shape": "Distributed across many data centres" },
+      { "system": "Bitcoin", "kind": "decentralized", "control": "Decentralized", "shape": "Distributed across many independent nodes" }
+    ],
+    "closing": "Now you try — sort these systems by who's really in control."
+  },
   "networkTopo": {
     "ariaSuffix": "network topology",
     "modes": {
@@ -489,19 +510,42 @@
     "txSingular": "tx",
     "txPlural":   "txs"
   },
-  "metamask": {
+  "wallet": {
     "headPrefix": "Meet ",
-    "headBrand":  "MetaMask",
-    "lead":  "A wallet doesn't hold your coins. It holds the cryptographic keys that prove you control an address on the chain. The most popular one by far lives as a small browser extension — and it has a friendly fox.",
-    "ariaLabel": "Get MetaMask",
-    "cta": "Get MetaMask",
+    "headBrand":  "Your New Wallet",
+    "lead":  "A wallet doesn't hold your coins. It holds the cryptographic keys that prove you control an address on the chain. You don't need the biggest brand — you need one that's open, safe, and easy. Here are two we like.",
+    "rabby": {
+      "name": "Rabby",
+      "tag": "Browser-first · open source",
+      "body": "A browser extension that shows you exactly what every transaction will do before you sign — and warns you if something looks like a scam. The best way to build safe habits.",
+      "cta": "Get Rabby",
+      "url": "https://rabby.io"
+    },
+    "zerion": {
+      "name": "Zerion",
+      "tag": "Mobile-first · built in Lisbon 🇵🇹",
+      "body": "A clean phone app that's both a wallet and a portfolio view — the friendliest way to carry crypto in your pocket. Bonus: the team is based right here in Portugal.",
+      "cta": "Get Zerion",
+      "url": "https://zerion.io"
+    },
+    "compareHeader": "Which one?",
+    "compareCols": { "feature": "", "rabby": "Rabby", "zerion": "Zerion" },
+    "compare": [
+      { "feature": "Best on",     "rabby": "Laptop / browser",        "zerion": "Phone" },
+      { "feature": "Feels like",  "rabby": "A safety-first cockpit",  "zerion": "A clean banking app" },
+      { "feature": "Standout",    "rabby": "Shows what you're signing","zerion": "Wallet + portfolio in one" },
+      { "feature": "Open source", "rabby": "Yes",                     "zerion": "Yes" }
+    ],
+    "bothNote": "Both are self-custody — your keys, your coins — and both work on Ethereum and similar chains, including the testnets we'll use for the hands-on assignment. Pick whichever fits how you'll use it. You can even try both.",
+    "basicsHead": "What a Wallet Actually Does",
+    "basicsLead": "Whichever one you pick, every wallet does the same three things. This is the whole job.",
     "ctaCaptionA": "We go deep on wallets, keys and signatures in",
     "ctaCaptionCourse": "Course 2 — Smart Contracts",
-    "ctaCaptionB": ". For now: install it, click around, see what an address looks like.",
+    "ctaCaptionB": ". For now: install one, click around, see what an address looks like.",
     "facts": [
       { "tag": "Holds",    "body": "Your private keys — not your coins. Coins live on the chain; the wallet just proves who controls them." },
       { "tag": "Signs",    "body": "Transactions, using your private key — the cryptographic equivalent of a signature that says \"this is from me\"." },
-      { "tag": "Connects", "body": "Your browser to dApps — DeFi, NFTs, on-chain games, anything that lives on Ethereum and similar chains." }
+      { "tag": "Connects", "body": "You to dApps — DeFi, NFTs, on-chain games, anything that lives on Ethereum and similar chains." }
     ]
   },
   "takeaways": {

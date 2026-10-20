@@ -57,7 +57,7 @@
       { "year": "2026 →", "label": "Fusaka upgrade — full PeerDAS, EOF, and deeper L2 scaling" }
     ],
     "soonBadge":   "SOON",
-    "metamaskCta": "Create your first wallet",
+    "walletCta": "Create your first wallet",
     "rank":        "#2",
     "rankNote":    "Largest blockchain by market cap and developer activity",
     "dappCount":   "4,000+",
@@ -76,7 +76,7 @@
       { "leadA": "Controlled by a ", "strong": "private key", "tail": " — whoever holds the key owns the account" },
       { "leadA": "Can ",             "strong": "initiate transactions", "tail": " — send ETH, deploy contracts, call functions" },
       { "leadA": "Has a balance in ETH. No code stored.", "strong": "", "tail": "" },
-      { "leadA": "Examples: your MetaMask wallet, a hardware wallet, an exchange hot wallet", "strong": "", "tail": "" }
+      { "leadA": "Examples: your Rabby or Zerion wallet, a hardware wallet, an exchange hot wallet", "strong": "", "tail": "" }
     ],
     "contractTitle": "Contract Account",
     "contractPoints": [
@@ -210,7 +210,7 @@
     "blockchainLayer":"Blockchain Layer (L1 / L2)",
     "infrastructure": "Infrastructure",
     "userTags":   ["Developers", "Traders", "Creators", "Institutions", "Individuals"],
-    "interfaceTags":["Wallets (MetaMask, Phantom)", "dApps", "Exchanges (Uniswap, Binance)", "NFT Marketplaces", "Bridges"],
+    "interfaceTags":["Wallets (Rabby, Zerion)", "dApps", "Exchanges (Uniswap, Binance)", "NFT Marketplaces", "Bridges"],
     "appTags":    ["DeFi (Aave, Compound)", "NFTs (ERC-721)", "DAOs (Snapshot, Aragon)", "Gaming (Axie Infinity)", "Stablecoins (USDC, DAI)"],
     "chainTags":  ["Bitcoin", "Ethereum", "Solana", "Polygon", "Arbitrum", "Optimism", "Avalanche"],
     "infraTags":  ["Nodes", "Validators / Miners", "P2P Network", "Cryptography", "Consensus Mechanisms"]
@@ -513,7 +513,7 @@
           { "term": "Smart contract",   "defn": "Code stored on a blockchain that runs deterministically when called. The data IS the code IS the rules." },
           { "term": "Gas",              "defn": "The unit measuring computational work on the EVM. Every operation costs gas; you pay for what you use." },
           { "term": "Gwei",             "defn": "1 gwei = 0.000 000 001 ETH. The unit gas prices are quoted in." },
-          { "term": "EOA",              "defn": "Externally Owned Account. An account controlled by a private key — your MetaMask wallet is one." },
+          { "term": "EOA",              "defn": "Externally Owned Account. An account controlled by a private key — your Rabby or Zerion wallet is one." },
           { "term": "Contract Account", "defn": "An account controlled by code, not a key. Holds a smart contract's state. Can't initiate transactions on its own." },
           { "term": "EIP-1559",         "defn": "The 2021 fee market upgrade. Base fee is burned, optional priority tip goes to the validator." },
           { "term": "The Merge",        "defn": "Sept 2022 — Ethereum switched from PoW to PoS. Cut its energy use by 99.95%." }
