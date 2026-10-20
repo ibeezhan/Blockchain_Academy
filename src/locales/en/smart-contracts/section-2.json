@@ -69,7 +69,7 @@
       "offchain":   { "label": "Off-Chain Layer",   "desc": "External data, storage, and indexing" }
     },
     "items": {
-      "metamask":  { "label": "MetaMask",          "info": "A browser-extension wallet that stores your keys and signs transactions for the user. It runs entirely in the frontend and never custodies funds on a server." },
+      "metamask":  { "label": "Wallet",            "info": "A wallet (Rabby, Zerion, MetaMask, …) that stores your keys and signs transactions in the frontend. It never custodies funds on a server." },
       "react":     { "label": "React / Next.js",   "info": "The UI framework that renders the dApp interface in the browser. It holds no on-chain logic — it just calls contracts through a wallet or RPC." },
       "infura":    { "label": "Infura RPC",        "info": "A hosted RPC gateway that lets apps read state and broadcast transactions without running their own node. It exposes the blockchain over a normal HTTPS endpoint." },
       "solidity":  { "label": "Solidity Contract", "info": "The smart-contract source code that defines the dApp's on-chain rules and state. Once compiled and deployed, it lives on-chain and runs on every node." },
@@ -135,7 +135,7 @@
         "subtitle": "Web or mobile interface",
         "items": [
           "React / Next.js / Vue — standard web stack",
-          "Browser: connects wallet (MetaMask, Rabby)",
+          "Browser: connects your wallet (Rabby, Zerion, MetaMask, …)",
           "Wallets: sign transactions, hold keys",
           "RPC endpoints: query blockchain state (Infura, Alchemy)"
         ]
@@ -218,7 +218,7 @@
       "tagEditions": "Editions"
     },
     "footerLabel": "Why standards matter: ",
-    "footerA": "MetaMask can show any ERC-20 balance and OpenSea any ERC-721 — without knowing the project — because they all expose the ",
+    "footerA": "Any wallet can show any ERC-20 balance and OpenSea any ERC-721 — without knowing the project — because they all expose the ",
     "footerEm": "same functions",
     "footerB": "."
   },
@@ -456,7 +456,7 @@
     "cards": [
       { "title": "Smart Contract Workflow", "summary": "Write → Compile → Deploy → Interact — four irreversible steps on an immutable ledger" },
       { "title": "Gas & Tx Economics",      "summary": "Gas = execution units · Gas price (Gwei) = market rate · EIP-1559: base fee burned + priority tip" },
-      { "title": "dApp Stack",              "summary": "Smart contract (logic) + IPFS (storage) + Infura RPC (access) + MetaMask (wallet) + React (UI)" },
+      { "title": "dApp Stack",              "summary": "Smart contract (logic) + IPFS (storage) + Infura RPC (access) + Wallet (Rabby / Zerion / MetaMask) + React (UI)" },
       { "title": "Web3 vs Traditional",     "summary": "Stateless vs stateful · Trustless vs trusted server · Public ledger vs private database" },
       { "title": "New Capabilities",        "summary": "Flash loans, composability, atomic settlement, programmable money, DAO governance — impossible in TradFi" },
       { "title": "Why Build with SC?",      "summary": "Use when: multiple parties + conditional logic + no trusted intermediary + need for auditability" }

@@ -191,7 +191,7 @@ const LAYERS = [
 ];
 
 const STACK_ITEMS = [
-  { id: 'metamask',  emoji: '🦊', layer: 'frontend'   },
+  { id: 'metamask',  emoji: '👛', layer: 'frontend'   },
   { id: 'react',     emoji: '⚛️', layer: 'frontend'   },
   { id: 'infura',    emoji: '🔌', layer: 'blockchain' },
   { id: 'solidity',  emoji: '📜', layer: 'blockchain' },

@@ -109,7 +109,7 @@
     "eoa": {
       "title": "EOA",
       "tag": "= your Wallet 👛",
-      "subtitle": "Externally Owned Account — the MetaMask / hardware wallet you use day-to-day",
+      "subtitle": "Externally Owned Account — the everyday wallet you control (Rabby, Zerion, MetaMask, a hardware wallet, …)",
       "points": [
         "Controlled by a private key (a human or software)",
         "The ONLY type that can initiate a transaction",
@@ -117,7 +117,7 @@
         "Always pays the gas fee"
       ],
       "examplesLabel": "Examples",
-      "examples": "MetaMask wallet · Hardware wallet · Exchange hot wallet"
+      "examples": "Browser/mobile wallet · Hardware wallet · Exchange hot wallet"
     },
     "contract": {
       "title": "Contract Account",
@@ -335,7 +335,7 @@
     "whyHeading": "Why EVM won",
     "reasons": [
       { "label": "Network effects", "detail": "Largest developer community in the blockchain space — millions of Solidity developers, the most audited contracts, the richest ecosystem of protocols" },
-      { "label": "Tooling", "detail": "Hardhat, Foundry, Remix, MetaMask, Ethers.js, Viem, OpenZeppelin — a complete, mature developer stack" },
+      { "label": "Tooling", "detail": "Hardhat, Foundry, Remix, a wallet, Ethers.js, Viem, OpenZeppelin — a complete, mature developer stack" },
       { "label": "Composability", "detail": "All EVM chains share open standards: ERC-20 (tokens), ERC-721 (NFTs), ERC-4626 (vaults) — protocols can interoperate seamlessly" }
     ],
     "ecosystemHeading": "The EVM ecosystem",
