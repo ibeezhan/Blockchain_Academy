@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { trackEvent } from '../../analytics';
 import {
   motion,
   AnimatePresence,
@@ -403,6 +404,15 @@ export function BlockchainCheckGame({ open, onClose }: BlockchainCheckGameProps)
     },
     [index],
   );
+
+  // GA4: report completion once the final scores have been committed.
+  useEffect(() => {
+    if (phase !== 'result') return;
+    trackEvent('blockchain_check_complete', {
+      score: fitScore(scores.need),
+      result: resolveResult(scores),
+    });
+  }, [phase, scores]);
 
   // Lock background scroll + wire Escape / arrow keys while open.
   useEffect(() => {

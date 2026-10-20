@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Check, X } from 'lucide-react';
+import { trackEvent } from '../../analytics';
 
 interface QuizOption {
   text: string;
@@ -19,6 +20,11 @@ export function QuizSlide({ question, options, explanation }: QuizSlideProps) {
   const handleSelect = (index: number) => {
     setSelectedIndex(index);
     setShowAnswer(true);
+    trackEvent('quiz_answer', {
+      quiz: question,
+      quiz_type: 'multiple_choice',
+      correct: !!options[index]?.correct,
+    });
   };
 
   const isCorrect = selectedIndex !== null && options[selectedIndex]?.correct;
