@@ -7,6 +7,7 @@
     "g-s2-structure":  "🛡️ Segurança e Estrutura",
     "g-s2-mining":     "⛏️ Mineração",
     "g-s2-limits":     "🚧 Limites",
+    "g-s2-realworld": "💡 Bitcoin in the Real World",
     "g-s2-wrap":       "✅ Conclusão"
   },
   "chapters": {
@@ -14,7 +15,9 @@
     "s2-paper":           "O Artigo de 2008",
     "s2-what":            "O que é o Bitcoin?",
     "s2-byzantine":       "Problema Bizantino",
+    "s2-consensus": "Solving It — 1982 to Bitcoin",
     "s2-doublespend":     "Gasto Duplo",
+    "s2-utxo": "Bitcoin's Fix — UTXO",
     "s2-supply":          "🧩 Modelo de Oferta",
     "s2-stats":           "Estatísticas da Rede",
     "s2-nodes":           "Distribuição de Nós",
@@ -28,6 +31,9 @@
     "s2-mining-demo":     "🧩 Encontra um Nonce",
     "s2-programmability": "Programabilidade",
     "s2-limits":          "O que Não Consegue Fazer",
+    "s2-ethereum-bridge": "…so a New Chain Was Built",
+    "s2-realworld-cases": "Where It Actually Mattered",
+    "s2-realworld-tradeoffs": "Adoption & Tradeoffs",
     "s2-quiz":            "Quizzes",
     "s2-takeaways":       "Conclusões"
   },
@@ -74,6 +80,8 @@
     "calloutTail": ". A prova da afirmação.",
     "readWhitepaper": "📄 Ler o whitepaper original",
     "twoProblems": "Dois problemas que ninguém tinha resolvido",
+    "teaserDoubleSpend": "Double-spending — how do you stop a digital coin being spent twice, with no referee keeping score?",
+    "teaserByzantine": "Byzantine Generals — how do strangers agree on the truth when some of them are lying?",
     "doubleSpendName": "Gasto duplo",
     "doubleSpendQ": "Como impedir alguém de gastar o mesmo dólar digital duas vezes — quando os ficheiros digitais são infinitamente copiáveis?",
     "doubleSpendNoteStrong": "Ainda hoje isto exige um árbitro.",
@@ -146,6 +154,11 @@
       "traitors":   { "label": "Traidores",    "value": "= nós maliciosos / com falhas" },
       "battlePlan": { "label": "Plano de batalha", "value": "= estado partilhado do livro-razão" }
     },
+    "catchTitle": "The catch in the 1982 proof",
+    "catchBody": "Agreement is possible only if fewer than one third of the generals are traitors — and only if every general is known in advance. The open internet has no guest list. That gap stayed open for 26 years.",
+    "solvingKicker": "Problem #1 — three decades of partial solutions",
+    "solvingHeading": "Solving It — 1982 to Bitcoin",
+    "solvingLead": "Researchers kept making the generals agree — but every solution needed a guest list of known, pre-approved participants. Bitcoin dropped the guest list.",
     "answerTitle": "A resposta do Bitcoin (Nov 2008)",
     "answerLead": "Não tentes",
     "answerEm": "identificar",
@@ -196,6 +209,7 @@
     "leapTail": "onde ninguém verificou identificações à porta — e ainda assim todos concordam sobre o que foi servido."
   },
   "doubleSpend": {
+    "kicker": "Problem #2 the paper claimed to solve",
     "title": "Gasto Duplo — 20 Anos de Dinheiro Digital Falhado",
     "description": "Um ficheiro digital pode ser copiado infinitamente. Então como se faz 'dinheiro' que não pode? Os cypherpunks tentaram durante duas décadas — cada tentativa centralizou-se, colapsou ou nunca chegou a sair. O Bitcoin é a primeira que ainda funciona.",
     "timelineHeader": "📜 Duas décadas de tentativas antes do Bitcoin",
@@ -212,6 +226,8 @@
     "attackBody":  "A Alice tem 1 moeda. Faz broadcast de duas transações em simultâneo — uma a pagar ao Bob, outra a pagar a si própria. Sem árbitro, ambas parecem válidas. Quem fica com a moeda?",
     "oldFixTitle": "🏦 A correção pré-Bitcoin — confiar num árbitro",
     "oldFixBody":  "DigiCash, e-gold, bancos, PayPal — todos funcionavam mantendo um livro-razão central. Sem gasto duplo possível — mas tens de confiar o teu dinheiro ao operador. E os operadores podem ser apreendidos, hackeados ou simplesmente tornar-se maus.",
+    "closing": "Every prior attempt either centralised (DigiCash, e-gold) or stayed on paper (b-money, Bit Gold). Bitcoin's fix is on the next slide.",
+    "utxoKicker": "Problem #2 — Bitcoin's answer",
     "fixTitle":    "🔗 A correção do Bitcoin — o Modelo UTXO",
     "fixLeadA":    "O Bitcoin não armazena saldos. Armazena",
     "fixLeadStrong":"outputs não gastos discretos",
@@ -264,6 +280,7 @@
   },
   "nodes": {
     "title": "Distribuição e Papéis dos Nós",
+    "description": "Not every computer on the network does the same job. Four kinds of node, from the heaviest to the lightest — what each one does, what it stores, and how much it checks for itself.",
     "featureLabel": "Tipo de Nó",
     "option1Label": "Papel",
     "option2Label": "Necessidades de Armazenamento",
@@ -419,11 +436,30 @@
     "pivotBodyC":  "A comunidade central do Bitcoin rejeitou em grande parte adicionar mais programabilidade — queriam mantê-lo simples e focado. Essa rejeição tornou-se a motivação direta para a",
     "pivotEthereum": "Ethereum",
     "pivotBodyEnd": ".",
-    "pivotFooter": "→ A história continua na Secção 3"
+    "pivotFooter": "→ A história continua na Secção 3",
+    "bridgeHeading": "…so a new chain was built",
+    "bridgeLead": "Bitcoin wouldn't bend. So the people who wanted programmable money went and built something else.",
+    "bridgeNoTitle": "🚫 Bitcoin said no",
+    "bridgeNoBody": "More features means more attack surface. The community chose to keep Bitcoin a single-purpose tool: digital, scarce, hard-to-stop money — and nothing else.",
+    "bridgeYesTitle": "🦄 Ethereum said yes",
+    "bridgeYesBody": "Launched in 2015 as a general-purpose blockchain: a shared computer anyone can run programs on. Smart contracts, tokens, DAOs — everything Bitcoin Script couldn't express.",
+    "bridgeNextTitle": "Where this goes next",
+    "bridgeNext": [
+      {
+        "label": "Section 3 of this course",
+        "desc": "Ethereum, accounts and gas, DeFi · NFTs · DAOs"
+      },
+      {
+        "label": "Course 2 — Smart Contracts",
+        "desc": "How programmable money actually works, and what it can't do"
+      }
+    ],
+    "bridgeClosing": "Neither choice is 'right'. Bitcoin does one thing at a quality nothing else has matched; Ethereum does many things with a larger attack surface. The rest of this course is about that tradeoff."
   },
   "limits": {
     "title": "O que o Bitcoin Não Consegue Fazer",
     "description": "O Bitcoin é deliberadamente limitado. As escolhas que o tornam seguro e escasso também excluem muitas coisas. Saber o que não consegue fazer é mais honesto do que fingir que faz tudo.",
+    "otherLimitsKicker": "Beyond programmability",
     "noProgTitle": "Sem programabilidade real",
     "noProgBodyA": "A linguagem de scripting do Bitcoin é intencionalmente simples. Podes enviar moedas, bloqueá-las, multi-assinar — mas não podes construir apps, DAOs, mercados de NFTs, ou qualquer coisa com estado.",
     "noProgBodyStrong": "Esse é o trabalho da Ethereum.",
@@ -443,6 +479,100 @@
       "Queres dinheiro programável ou aplicações ricas? Esse é o próximo curso — Smart Contracts na Ethereum e cadeias semelhantes",
       "Queres pagamentos mais rápidos e baratos? Redes Layer-2 como a Lightning ficam por cima da camada de liquidação do Bitcoin",
       "Queres comparar o Bitcoin a outras plataformas? O Curso 3 — Plataformas Blockchain — faz isso de frente"
+    ]
+  },
+  "realWorld": {
+    "kicker": "💡 Bitcoin in the real world",
+    "casesHeading": "Where it actually mattered",
+    "casesLead": "Section 1 asked who controls your money. These are the moments when that stopped being an abstract question — and people reached for a system with no one in charge.",
+    "cases": [
+      {
+        "emoji": "🇨🇾",
+        "year": "2013",
+        "title": "Cyprus — the bank bail-in",
+        "body": "In March 2013 Cypriot banks closed for nearly two weeks. When they reopened, withdrawals were capped at €300 a day and deposits above €100,000 at the largest bank lost 47.5% — converted into bank shares. Bitcoin's price roughly tripled in the following weeks.",
+        "caveat": "How much Cyprus drove that rally is debated — Bitcoin was already climbing. But it became the textbook example: a bank balance is a claim on the bank, not money in your hand."
+      },
+      {
+        "emoji": "🔥",
+        "year": "2018 →",
+        "title": "Hyperinflation — Argentina, Venezuela, Lebanon, Turkey, Nigeria",
+        "body": "When a currency loses value every month, savers look for an exit. Argentina (inflation above 100% in 2023, strict dollar controls), Venezuela (hyperinflation), Lebanon (banks froze withdrawals in 2019), Turkey and Nigeria all saw peer-to-peer Bitcoin trading surge — people preserving savings, not speculating.",
+        "caveat": "Honest footnote: in these countries dollar stablecoins are often used more than Bitcoin day to day. The lesson is the exit, not the asset."
+      },
+      {
+        "emoji": "🧊",
+        "year": "2022",
+        "title": "Frozen accounts and cut payment rails",
+        "body": "In February 2022 Canada invoked emergency powers and banks froze more than 200 accounts tied to the Ottawa trucker protests, with no court order. The same year, sanctions cut whole countries off from the SWIFT network. Whatever you think of each cause, the mechanism was the lesson: an account can be switched off from above.",
+        "caveat": "This is 'censorship-resistant' made concrete. Back to Section 1 — Who Controls It?: a bank is centralized control, however distributed its servers are."
+      }
+    ],
+    "casesSourcesLabel": "Sources",
+    "casesSources": [
+      {
+        "label": "RTÉ — Bank of Cyprus depositors to lose 47.5% (2013)",
+        "url": "https://www.rte.ie/news/business/2013/0729/465281-cyprus-deposits"
+      },
+      {
+        "label": "BitMEX Research — was Cyprus really the cause? (2015)",
+        "url": "https://blog.bitmex.com/grexit-might-not-be-the-saviour-of-bitcoin"
+      },
+      {
+        "label": "Public Safety Canada — accounts frozen under the Emergencies Act (2022)",
+        "url": "https://www.publicsafety.gc.ca/cnt/trnsprnc/brfng-mtrls/prlmntry-bndrs/20220824/14-en.aspx"
+      }
+    ],
+    "tradeoffsHeading": "Adoption and tradeoffs, honestly",
+    "tradeoffsLead": "Four stories that show the upside and the cost in the same breath. None of them is a clean win.",
+    "tradeoffs": [
+      {
+        "emoji": "🇸🇻",
+        "year": "2021 → 2025",
+        "title": "El Salvador — Bitcoin as legal tender",
+        "body": "September 2021: the first country to make Bitcoin legal tender, with a state Lightning wallet (Chivo) and a $30 sign-up bonus. What worked: a cheaper remittance option, a tourism and investor story, and the state's own BTC holdings grew in value.",
+        "caveat": "What didn't: surveys by the Universidad Centroamericana found ~92% of Salvadorans did not use Bitcoin in 2024. In January 2025, as a condition of a $1.4B IMF loan, Congress made acceptance voluntary and began winding down Chivo."
+      },
+      {
+        "emoji": "🍕",
+        "year": "May 2010",
+        "title": "The 10,000-BTC pizza",
+        "body": "On 22 May 2010 Laszlo Hanyecz paid 10,000 BTC for two pizzas — about $41 at the time. It was the first documented purchase of real goods with Bitcoin.",
+        "caveat": "At later prices those coins have been worth hundreds of millions of dollars. The lesson isn't regret — it's that a scarce asset is worth whatever people will pay, and in 2010 that was two pizzas."
+      },
+      {
+        "emoji": "🗑️",
+        "year": "2013 → 2025",
+        "title": "The landfill hard drive",
+        "body": "In 2013 James Howells of Newport, Wales, accidentally threw out a hard drive holding the keys to roughly 8,000 BTC. The council refused to let him dig up the landfill; in January 2025 the High Court dismissed his claim.",
+        "caveat": "The coins still exist on the chain. Nobody can ever spend them. Lose the seed, lose the coins — exactly what the Keys & Seed Phrase slide warned."
+      },
+      {
+        "emoji": "🌱",
+        "year": "2018 →",
+        "title": "Mining heat reuse — Quebec, BC, Manitoba",
+        "body": "Mining rigs turn almost all their electricity into heat. Heatmine (Quebec, 2018) piped that heat into greenhouses and churches — a strawberry grower reported 75–100% of its heating bill offset. MintGreen (BC, 2021) signed up to feed mining heat into North Vancouver's district heating, and Canaan announced a 3 MW tomato-greenhouse pilot in Manitoba (2026).",
+        "caveat": "Honest caveat: heat reuse makes the electricity do double duty. It does not make mining energy-free, and the climate benefit depends on where that electricity comes from."
+      }
+    ],
+    "tradeoffsSourcesLabel": "Sources",
+    "tradeoffsSources": [
+      {
+        "label": "Cointelegraph — How Bitcoin mining heat is being tested to warm Canadian greenhouses (2026)",
+        "url": "https://cointelegraph.com/news/how-bitcoin-mining-heat-is-being-tested-to-warm-canadian-greenhouses"
+      },
+      {
+        "label": "BetaKit — Heatmine's greenhouse and church heating tests in Quebec (2019)",
+        "url": "https://betakit.com/heatmine-says-it-has-an-eco-friendly-solution-to-bitcoin-energy-waste/"
+      },
+      {
+        "label": "Cointelegraph — North Vancouver to heat buildings with Bitcoin mining (2021)",
+        "url": "https://cointelegraph.com/news/canadian-city-plans-to-supply-residents-heat-using-bitcoin-mining"
+      },
+      {
+        "label": "Reuters via The Block — El Salvador revises Bitcoin law under IMF deal (2025)",
+        "url": "https://www.theblock.co/post/337885/el-salvador-passes-bill-to-revise-bitcoin-adoption-strategy-per-imf-deal-reuters"
+      }
     ]
   },
   "quizSupply": {
@@ -484,6 +614,16 @@
       "Nó Podado"
     ],
     "explanation": "Um nó podado descarrega e valida cada bloco desde o génesis — impondo todas as regras de consenso — e depois apaga os dados em bruto de blocos mais antigos do que um limite configurável. Ao contrário de um nó SPV, não confia em outros para validação; ao contrário de um full node, não mantém todo o histórico em disco."
+  },
+  "quizCyprus": {
+    "question": "During the 2013 Cyprus banking crisis, why did demand for Bitcoin rise?",
+    "options": [
+      "The Cypriot government declared Bitcoin legal tender",
+      "Savers saw accounts frozen and large deposits partly confiscated, and wanted money no bank could freeze or seize",
+      "Mining became much cheaper in Cyprus because of low electricity prices",
+      "The European Union recommended Bitcoin as a safe-haven asset"
+    ],
+    "explanation": "Banks closed for nearly two weeks, withdrawals were capped, and uninsured deposits took a 47.5% haircut. That made the control question concrete: a bank balance can be frozen or clipped from above. Bitcoin's appeal was censorship resistance and self-custody — no operator to seize funds. (How much of the 2013 rally was Cyprus versus existing momentum is still debated.)"
   },
   "supply": {
     "interactiveBadge": "🧩 Interativo",

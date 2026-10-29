@@ -7,29 +7,34 @@
     "g-s2-structure":  "🛡️ Security & Structure",
     "g-s2-mining":     "⛏️ Mining",
     "g-s2-limits":     "🚧 Limits",
+    "g-s2-realworld":  "💡 Bitcoin in the Real World",
     "g-s2-wrap":       "✅ Wrap Up"
   },
   "chapters": {
-    "s2-breakthrough":    "Bitcoin Breakthrough",
-    "s2-paper":           "The 2008 Paper",
-    "s2-what":            "What is Bitcoin?",
-    "s2-byzantine":       "Byzantine Problem",
-    "s2-doublespend":     "Double-Spending",
-    "s2-supply":          "🧩 Supply Model",
-    "s2-stats":           "Network Statistics",
-    "s2-nodes":           "Node Distribution",
-    "s2-keys":            "Keys & Seed Phrase",
-    "s2-keys-demo":       "🧩 Wallet Analogies",
-    "s2-security":        "Security Model",
-    "s2-merkle-build":    "🧩 Build a Merkle Tree",
-    "s2-merkle":          "🧩 Merkle Tree",
-    "s2-immutability":    "🧩 Immutability",
-    "s2-mining":          "Mining",
-    "s2-mining-demo":     "🧩 Find a Nonce",
-    "s2-programmability": "Programmability",
-    "s2-limits":          "What it Can't Do",
-    "s2-quiz":            "Quizzes",
-    "s2-takeaways":       "Takeaways"
+    "s2-breakthrough":        "Bitcoin Breakthrough",
+    "s2-paper":               "The 2008 Paper",
+    "s2-what":                "What is Bitcoin?",
+    "s2-byzantine":           "Byzantine Generals",
+    "s2-consensus":           "Solving It — 1982 to Bitcoin",
+    "s2-doublespend":         "Double-Spending",
+    "s2-utxo":                "Bitcoin's Fix — UTXO",
+    "s2-supply":              "🧩 Supply Model",
+    "s2-stats":               "Network Statistics",
+    "s2-nodes":               "Node Types",
+    "s2-keys":                "Keys & Seed Phrase",
+    "s2-keys-demo":           "🧩 Wallet Analogies",
+    "s2-security":            "Security Model",
+    "s2-merkle-build":        "🧩 Build a Merkle Tree",
+    "s2-merkle":              "🧩 Merkle Tree",
+    "s2-immutability":        "🧩 Immutability",
+    "s2-mining":              "Mining",
+    "s2-mining-demo":         "🧩 Find a Nonce",
+    "s2-limits":              "What Bitcoin Can't Do",
+    "s2-ethereum-bridge":     "…so a New Chain Was Built",
+    "s2-realworld-cases":     "Where It Actually Mattered",
+    "s2-realworld-tradeoffs": "Adoption & Tradeoffs",
+    "s2-quiz":                "Quizzes",
+    "s2-takeaways":           "Takeaways"
   },
   "title": {
     "sectionNumber": "SECTION 02",
@@ -73,18 +78,12 @@
     "calloutHeadline": "\"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks\"",
     "calloutTail": ". The proof of the claim.",
     "readWhitepaper": "📄 Read the original whitepaper",
-    "twoProblems": "Two problems no one had cracked",
-    "doubleSpendName": "Double-spending",
-    "doubleSpendQ": "How do you stop someone from spending the same digital dollar twice — when digital files are infinitely copyable?",
-    "doubleSpendNoteStrong": "Today this still requires a referee.",
-    "doubleSpendNote": "Visa, PayPal, and your bank all exist because someone has to keep score. Take the referee away — and digital money breaks instantly.",
-    "byzantineName": "Byzantine Generals",
-    "byzantineQ": "How do strangers reach agreement on the truth when some of them might be lying — and there's no central authority to verify who?",
-    "byzantineNoteStrong": "Modern systems still struggle with this.",
-    "byzantineNote": "BGP routing can be hijacked (the 2008 YouTube outage), online voting is famously hard to secure, distributed databases need carefully picked leaders.",
+    "twoProblems": "Two 30-year puzzles",
+    "teaserDoubleSpend": "Double-spending — how do you stop a digital coin being spent twice, with no referee keeping score?",
+    "teaserByzantine": "Byzantine Generals — how do strangers agree on the truth when some of them are lying?",
     "claimedA": "Satoshi claimed to have solved",
     "claimedBoth": "both",
-    "claimedTail": "at once.",
+    "claimedTail": "at once. We unpack each one next.",
     "proof": "Bitcoin is the proof."
   },
   "whatIsBitcoin": {
@@ -119,14 +118,11 @@
     "scarceTitle":         "💎 Scarce by design",
     "scarceDesc":          "Hard-capped at 21 million coins forever. Enforced by code, not by anyone's promise.",
     "censorshipTitle":     "⚡ Censorship-resistant",
-    "censorshipDesc":      "No entity can freeze, reverse, or block a valid Bitcoin transaction. The math doesn't care who you are.",
-    "twoSpecificStrong":   "The paper claimed to solve two specific problems",
-    "twoSpecificBody":     "nobody had cracked: double-spending and the Byzantine generals problem.",
-    "twoSpecificEm":       "The next two slides walk through both — with the history of who else tried."
+    "censorshipDesc":      "No entity can freeze, reverse, or block a valid Bitcoin transaction. The math doesn't care who you are."
   },
   "byzantine": {
     "kicker": "Problem #1 the paper claimed to solve",
-    "heading": "Byzantine Generals — A 26-Year Puzzle",
+    "heading": "Byzantine Generals — the problem",
     "leadInPrefix": "In",
     "leadInYear":   "1982",
     "leadInMid":    ", three researchers at SRI International —",
@@ -146,6 +142,11 @@
       "traitors":   { "label": "Traitors",    "value": "= malicious / faulty nodes" },
       "battlePlan": { "label": "Battle plan", "value": "= shared ledger state" }
     },
+    "catchTitle": "The catch in the 1982 proof",
+    "catchBody":  "Agreement is possible only if fewer than one third of the generals are traitors — and only if every general is known in advance. The open internet has no guest list. That gap stayed open for 26 years.",
+    "solvingKicker":  "Problem #1 — three decades of partial solutions",
+    "solvingHeading": "Solving It — 1982 to Bitcoin",
+    "solvingLead":    "Researchers kept making the generals agree — but every solution needed a guest list of known, pre-approved participants. Bitcoin dropped the guest list.",
     "answerTitle": "Bitcoin's answer (Nov 2008)",
     "answerLead": "Don't try to",
     "answerEm": "identify",
@@ -196,6 +197,7 @@
     "leapTail": "where nobody checked IDs at the door — and still everyone agrees on what was served."
   },
   "doubleSpend": {
+    "kicker": "Problem #2 the paper claimed to solve",
     "title": "Double-Spending — 20 Years of Failed Digital Cash",
     "description": "A digital file can be copied infinitely. So how do you make 'money' that can't be? Cypherpunks tried for two decades — every attempt either centralised, collapsed, or never shipped. Bitcoin is the first one still running.",
     "timelineHeader": "📜 Two decades of attempts before Bitcoin",
@@ -212,6 +214,8 @@
     "attackBody":  "Alice has 1 coin. She broadcasts two transactions simultaneously — one paying Bob, one paying herself. Without a referee, both look valid. Who actually gets the coin?",
     "oldFixTitle": "🏦 The pre-Bitcoin fix — trust a referee",
     "oldFixBody":  "DigiCash, e-gold, banks, PayPal — all worked by keeping a central ledger. No double-spend possible — but you must trust the operator with your money. And operators can be seized, hacked, or simply turn evil.",
+    "closing": "Every prior attempt either centralised (DigiCash, e-gold) or stayed on paper (b-money, Bit Gold). Bitcoin's fix is on the next slide.",
+    "utxoKicker":  "Problem #2 — Bitcoin's answer",
     "fixTitle":    "🔗 Bitcoin's Fix — the UTXO Model",
     "fixLeadA":    "Bitcoin doesn't store balances. It stores",
     "fixLeadStrong":"discrete unspent outputs",
@@ -236,10 +240,9 @@
     "utxoNoteStrong":    "gone",
     "utxoNoteTail":      ". Try to reuse it and every node rejects the tx — no referee needed.",
     "keyPoints": [
-      "Every prior attempt either centralised (DigiCash, e-gold) or stayed on paper (b-money, Bit Gold)",
-      "Bitcoin's UTXO model: spending an output destroys it — the same coin cannot be referenced twice",
-      "No central operator to seize, sue, or shut down — validation is run by every node independently",
-      "After a few confirmations, reversing a transaction would cost more than the transaction is worth"
+      "Spending an output destroys it — the same coin cannot be referenced twice",
+      "No central operator to seize, sue, or shut down — every node validates independently",
+      "After a few confirmations, reversing a transaction would cost more than it is worth"
     ]
   },
   "stats": {
@@ -263,65 +266,36 @@
     ]
   },
   "nodes": {
-    "title": "Node Distribution & Roles",
-    "featureLabel": "Node Type",
+    "title": "Node Types & Roles",
+    "description": "Not every computer on the network does the same job. Four kinds of node, from the heaviest to the lightest — what each one does, what it stores, and how much it checks for itself.",
     "option1Label": "Role",
     "option2Label": "Storage Needs",
     "option3Label": "Validation Method",
     "items": [
       {
         "feature": "⚙️ Full Node",
-        "option1": "Enforces all consensus rules, relays transactions to peers. The backbone of the network.",
-        "option2": "Full blockchain — ~600 GB and growing. Requires a dedicated drive.",
-        "option3": "Independently verifies every transaction and every block from genesis."
+        "option1": "Enforces every consensus rule and relays transactions. The backbone of the network.",
+        "option2": "The whole chain — ~600 GB and growing.",
+        "option3": "Verifies every transaction and block itself, from genesis."
       },
       {
         "feature": "⛏️ Mining Node",
-        "option1": "Bundles transactions into blocks and competes via Proof of Work to earn block rewards + fees.",
-        "option2": "Full blockchain + specialized ASIC hardware. Very high resource cost.",
-        "option3": "Full validation like a full node, plus solves the PoW hash puzzle to propose new blocks."
+        "option1": "A full node that also bundles transactions into blocks and races to win the block reward.",
+        "option2": "Whole chain + specialised ASIC hardware. Very high cost.",
+        "option3": "Full validation, plus solving the Proof-of-Work puzzle."
       },
       {
         "feature": "📱 SPV / Light Node",
-        "option1": "Lightweight client used in mobile wallets. Sends and receives BTC without storing the chain.",
-        "option2": "Block headers only — ~50 MB. Suitable for phones and low-storage devices.",
-        "option3": "Relies on Merkle proofs provided by full nodes. Trusts the longest chain, not self-verified."
+        "option1": "Lightweight client inside most mobile wallets. Sends and receives without storing the chain.",
+        "option2": "Block headers only — ~50 MB. Fine for a phone.",
+        "option3": "Trusts Merkle proofs from full nodes. Does not verify everything itself."
       },
       {
         "feature": "✂️ Pruned Node",
-        "option1": "Validates the full chain during sync, then discards old block data to save disk space.",
-        "option2": "Recent blocks only — configurable, typically ~5–10 GB after pruning.",
-        "option3": "Full validation from genesis during initial sync. After pruning, can no longer serve old blocks."
+        "option1": "Validates the full chain during sync, then deletes old blocks to save disk space.",
+        "option2": "Recent blocks only — typically ~5–10 GB.",
+        "option3": "Full validation from genesis. Afterwards it cannot serve old blocks to others."
       }
-    ]
-  },
-  "cloudRisk": {
-    "heading": "Node Distribution & Roles",
-    "leadA":   "Blockchain is decentralized by design — but who actually",
-    "leadEm":  "runs",
-    "leadB":   "the nodes matters just as much as the protocol rules.",
-    "riskHeader": "The hidden centralisation risk",
-    "cloudTitle": "Cloud Hosting Concentration",
-    "cloudBody":  "Even though anyone can run a node, in practice a large share of nodes are rented virtual machines hosted on a handful of cloud providers — not personal servers at home.",
-    "cloudCaption": "Estimated share of Ethereum nodes by cloud provider (2023–2024 data).",
-    "whatWrongTitle": "⚠️ What could go wrong?",
-    "incidentTitle":  "🔴 Real incident — December 7, 2021",
-    "incidentBodyA":  "AWS us-east-1 suffered a major outage. Within hours,",
-    "incidentBodyStrong1": "Solana validators went offline",
-    "incidentBodyMid": ", Ethereum RPC providers like",
-    "incidentBodyStrong2": "Infura and Alchemy became unreachable",
-    "incidentBodyTail": ", and front-ends for Uniswap, OpenSea and dozens of DeFi apps stopped loading — even though the underlying protocols were perfectly fine. Users couldn't interact with \"decentralized\" apps because the access layer was centralized on a single AWS region.",
-    "risks": [
-      { "leadA": "A cloud provider can ", "strong": "suspend accounts",         "tail": ", removing nodes and RPC endpoints overnight with no recourse" },
-      { "leadA": "US sanctions could legally force AWS, Azure or GCP to ", "strong": "block entire protocols", "tail": " or geographic regions" },
-      { "leadA": "The blockchain protocol stays decentralized — but the ",  "strong": "infrastructure layer most users rely on", "tail": " is not" }
-    ],
-    "responseHeader": "How the ecosystem responds",
-    "responses": [
-      { "title": "Home Node Initiatives", "desc": "Projects like Ethereum's \"Run the Majority Client\" campaign and Raspberry Pi node guides actively push users to self-host nodes at home." },
-      { "title": "Geographic Diversity",  "desc": "Node diversity across countries reduces the risk that any single jurisdiction can shut down the network. Nodes in 80+ countries run Bitcoin today." },
-      { "title": "Decentralized RPC",     "desc": "Projects like Pocket Network and Ankr distribute RPC access across many independent operators instead of relying on a single provider like Infura." },
-      { "title": "Client Diversity",      "desc": "Running multiple independent software implementations (Geth, Nethermind, Besu for Ethereum) prevents a single bug from taking down the whole network." }
     ]
   },
   "keys": {
@@ -336,10 +310,9 @@
     "calloutTitle": "Lose the seed, lose the coins",
     "calloutBody":  "There is no password reset, no customer support, no recovery. The seed phrase IS the wallet. Treat it like the only key to a vault — because that's what it is.",
     "keyPoints": [
-      "Your wallet doesn't 'hold' bitcoin — it holds the keys that control addresses on the blockchain",
-      "Each layer derives from the one above via a one-way function: seed → private → public → address",
-      "Knowing the public key tells you nothing about the private key — that's what makes the system work",
-      "The seed phrase is the single point of failure in a self-custodied wallet — back it up, don't digitise it"
+      "Your wallet doesn't 'hold' bitcoin — it holds the keys that control addresses on the chain",
+      "One-way derivation: seed → private key → public key → address. You can never go backwards",
+      "The seed phrase is the single point of failure — back it up on paper, never digitise it"
     ]
   },
   "security": {
@@ -356,10 +329,8 @@
     "quantumTitle": "What About Quantum Computing?",
     "quantumBody":  "Current quantum computers cannot break Bitcoin's cryptography. If they advance far enough, Bitcoin can upgrade to quantum-resistant algorithms — research is already underway.",
     "keyPoints": [
-      "Attacking Bitcoin costs more than cooperating with it",
-      "The network has never been successfully hacked in 15+ years",
-      "6 confirmations (~60 min) is considered practically irreversible",
-      "Security increases as hash rate and node count grow"
+      "Attacking Bitcoin costs more than cooperating with it — that is the whole security argument",
+      "6 confirmations (~60 min) is considered practically irreversible; the network itself has never been hacked in 15+ years"
     ]
   },
   "mining": {
@@ -383,24 +354,22 @@
     ]
   },
   "programmability": {
-    "heading": "Bitcoin Wasn't Built to Be Programmable",
-    "lead":    "By design, Bitcoin prioritises security and simplicity over flexibility — but that left a gap others tried to fill.",
     "premiseKicker":  "The premise",
     "premiseTitle":   "Bitcoin Script — Simple by Design",
     "premiseBodyA":   "Bitcoin",
     "premiseBodyEm":  "does",
     "premiseBodyMid": "have a built-in scripting language called",
     "premiseScript":  "Bitcoin Script",
-    "premiseBodyB":   ". It handles conditions like \"spend only with two signatures\" or \"unlock after a time delay\". But it is intentionally",
+    "premiseBodyB":   ". It handles \"spend only with two signatures\" or \"unlock after a delay\" — but it is intentionally",
     "premiseStrong":  "not Turing-complete",
-    "premiseTail":    "— no loops, no persistent state, no complex logic.",
-    "premiseNote":    "Satoshi's reasoning: a simpler language has a smaller attack surface. The fewer things it can do, the fewer ways it can go wrong.",
+    "premiseTail":    ": no loops, no persistent state, no complex logic.",
+    "premiseNote":    "Satoshi's reasoning: the fewer things a language can do, the fewer ways it can go wrong.",
     "workaroundsKicker": "The workarounds",
     "workaroundsSub":    "— bolted on top of Bitcoin Script",
     "workarounds": [
-      { "year": "2012", "name": "Colored Coins",          "desc": "Encode metadata in Bitcoin transactions to represent real-world assets. Clever, but very limited." },
-      { "year": "2013", "name": "Mastercoin / Omni Layer","desc": "A protocol layer on top of Bitcoin. Enabled token creation. Still constrained by Bitcoin Script." },
-      { "year": "2014", "name": "Counterparty",           "desc": "Added smart-contract-like features by encoding data into Bitcoin transactions. Functional, but hacky and slow." }
+      { "year": "2012", "name": "Colored Coins",           "desc": "Metadata in transactions to represent real-world assets. Clever, very limited." },
+      { "year": "2013", "name": "Mastercoin / Omni Layer", "desc": "A protocol layer on top of Bitcoin for token creation. Still boxed in by Script." },
+      { "year": "2014", "name": "Counterparty",            "desc": "Smart-contract-like features encoded into transactions. Functional, but hacky and slow." }
     ],
     "hardLimitsKicker": "The hard limits",
     "hardLimitsTitle":  "What no workaround could fix",
@@ -419,30 +388,103 @@
     "pivotBodyC":  "Bitcoin's core community largely rejected adding more programmability — they wanted to keep it simple and focused. That rejection became the direct motivation for",
     "pivotEthereum": "Ethereum",
     "pivotBodyEnd": ".",
-    "pivotFooter": "→ The story continues in Section 3"
+    "pivotFooter": "→ The story continues in Section 3",
+    "bridgeHeading": "…so a new chain was built",
+    "bridgeLead":    "Bitcoin wouldn't bend. So the people who wanted programmable money went and built something else.",
+    "bridgeNoTitle": "🚫 Bitcoin said no",
+    "bridgeNoBody":  "More features means more attack surface. The community chose to keep Bitcoin a single-purpose tool: digital, scarce, hard-to-stop money — and nothing else.",
+    "bridgeYesTitle": "🦄 Ethereum said yes",
+    "bridgeYesBody":  "Launched in 2015 as a general-purpose blockchain: a shared computer anyone can run programs on. Smart contracts, tokens, DAOs — everything Bitcoin Script couldn't express.",
+    "bridgeNextTitle": "Where this goes next",
+    "bridgeNext": [
+      { "label": "Section 3 of this course", "desc": "Ethereum, accounts and gas, DeFi · NFTs · DAOs" },
+      { "label": "Course 2 — Smart Contracts", "desc": "How programmable money actually works, and what it can't do" }
+    ],
+    "bridgeClosing": "Neither choice is 'right'. Bitcoin does one thing at a quality nothing else has matched; Ethereum does many things with a larger attack surface. The rest of this course is about that tradeoff."
   },
   "limits": {
-    "title": "What Bitcoin Can't Do",
+    "title": "What Bitcoin Can't Do (by design)",
     "description": "Bitcoin is deliberately limited. The choices that make it secure and scarce also rule out a lot of things. Knowing what it can't do is more honest than pretending it does everything.",
-    "noProgTitle": "No real programmability",
-    "noProgBodyA": "Bitcoin's scripting language is intentionally simple. You can send coins, lock them, multi-sign — but you can't build apps, DAOs, NFT marketplaces, or anything stateful.",
-    "noProgBodyStrong": "That's Ethereum's job.",
+    "otherLimitsKicker": "Beyond programmability",
     "throughputTitle": "Low throughput",
     "throughputBodyA": "~7 transactions per second on the base layer. Visa does ~24,000. Bitcoin is built for settlement, not retail point-of-sale.",
     "throughputBodyStrong": "Lightning Network adds a layer on top for fast small payments.",
     "finalityTitle": "Slow finality",
     "finalityBody":  "~10 minutes per block, ~60 minutes for a transaction to be considered irreversible. Fine for moving wealth, painful for buying coffee.",
     "energyTitle":   "Energy-hungry",
-    "energyBody":    "Proof of Work uses real electricity by design — that's what makes attacks expensive. Whether the tradeoff is worth it is genuinely debated.",
-    "calloutTitle": "So why is it still the canonical example?",
-    "calloutBodyA": "Because the things Bitcoin",
-    "calloutBodyEm": "does",
-    "calloutBodyTail": "do, it does at a quality nothing else has matched yet: 15+ years of uninterrupted operation, an immovable supply cap, total resistance to censorship, and a security budget paid for in electricity rather than trust.",
-    "keyPoints": [
-      "Bitcoin is deliberately a single-purpose tool: be digital, scarce, hard-to-stop money",
-      "Want programmable money or rich applications? That's the next course — Smart Contracts on Ethereum and similar chains",
-      "Want faster, cheaper payments? Layer-2 networks like Lightning sit on top of Bitcoin's settlement layer",
-      "Want to compare Bitcoin to other platforms? Course 3 — Blockchain Platforms — does that head-on"
+    "energyBody":    "Proof of Work uses real electricity by design — that's what makes attacks expensive. Whether the tradeoff is worth it is genuinely debated."
+  },
+  "realWorld": {
+    "kicker": "💡 Bitcoin in the real world",
+    "casesHeading": "Where it actually mattered",
+    "casesLead": "Section 1 asked who controls your money. These are the moments when that stopped being an abstract question — and people reached for a system with no one in charge.",
+    "cases": [
+      {
+        "emoji": "🇨🇾",
+        "year": "2013",
+        "title": "Cyprus — the bank bail-in",
+        "body": "In March 2013 Cypriot banks closed for nearly two weeks. When they reopened, withdrawals were capped at €300 a day and deposits above €100,000 at the largest bank lost 47.5% — converted into bank shares. Bitcoin's price roughly tripled in the following weeks.",
+        "caveat": "How much Cyprus drove that rally is debated — Bitcoin was already climbing. But it became the textbook example: a bank balance is a claim on the bank, not money in your hand."
+      },
+      {
+        "emoji": "🔥",
+        "year": "2018 →",
+        "title": "Hyperinflation — Argentina, Venezuela, Lebanon, Turkey, Nigeria",
+        "body": "When a currency loses value every month, savers look for an exit. Argentina (inflation above 100% in 2023, strict dollar controls), Venezuela (hyperinflation), Lebanon (banks froze withdrawals in 2019), Turkey and Nigeria all saw peer-to-peer Bitcoin trading surge — people preserving savings, not speculating.",
+        "caveat": "Honest footnote: in these countries dollar stablecoins are often used more than Bitcoin day to day. The lesson is the exit, not the asset."
+      },
+      {
+        "emoji": "🧊",
+        "year": "2022",
+        "title": "Frozen accounts and cut payment rails",
+        "body": "In February 2022 Canada invoked emergency powers and banks froze more than 200 accounts tied to the Ottawa trucker protests, with no court order. The same year, sanctions cut whole countries off from the SWIFT network. Whatever you think of each cause, the mechanism was the lesson: an account can be switched off from above.",
+        "caveat": "This is 'censorship-resistant' made concrete. Back to Section 1 — Who Controls It?: a bank is centralized control, however distributed its servers are."
+      }
+    ],
+    "casesSourcesLabel": "Sources",
+    "casesSources": [
+      { "label": "RTÉ — Bank of Cyprus depositors to lose 47.5% (2013)", "url": "https://www.rte.ie/news/business/2013/0729/465281-cyprus-deposits" },
+      { "label": "BitMEX Research — was Cyprus really the cause? (2015)", "url": "https://blog.bitmex.com/grexit-might-not-be-the-saviour-of-bitcoin" },
+      { "label": "Public Safety Canada — accounts frozen under the Emergencies Act (2022)", "url": "https://www.publicsafety.gc.ca/cnt/trnsprnc/brfng-mtrls/prlmntry-bndrs/20220824/14-en.aspx" }
+    ],
+    "tradeoffsHeading": "Adoption and tradeoffs, honestly",
+    "tradeoffsLead": "Four stories that show the upside and the cost in the same breath. None of them is a clean win.",
+    "tradeoffs": [
+      {
+        "emoji": "🇸🇻",
+        "year": "2021 → 2025",
+        "title": "El Salvador — Bitcoin as legal tender",
+        "body": "September 2021: the first country to make Bitcoin legal tender, with a state Lightning wallet (Chivo) and a $30 sign-up bonus. What worked: a cheaper remittance option, a tourism and investor story, and the state's own BTC holdings grew in value.",
+        "caveat": "What didn't: surveys by the Universidad Centroamericana found ~92% of Salvadorans did not use Bitcoin in 2024. In January 2025, as a condition of a $1.4B IMF loan, Congress made acceptance voluntary and began winding down Chivo."
+      },
+      {
+        "emoji": "🍕",
+        "year": "May 2010",
+        "title": "The 10,000-BTC pizza",
+        "body": "On 22 May 2010 Laszlo Hanyecz paid 10,000 BTC for two pizzas — about $41 at the time. It was the first documented purchase of real goods with Bitcoin.",
+        "caveat": "At later prices those coins have been worth hundreds of millions of dollars. The lesson isn't regret — it's that a scarce asset is worth whatever people will pay, and in 2010 that was two pizzas."
+      },
+      {
+        "emoji": "🗑️",
+        "year": "2013 → 2025",
+        "title": "The landfill hard drive",
+        "body": "In 2013 James Howells of Newport, Wales, accidentally threw out a hard drive holding the keys to roughly 8,000 BTC. The council refused to let him dig up the landfill; in January 2025 the High Court dismissed his claim.",
+        "caveat": "The coins still exist on the chain. Nobody can ever spend them. Lose the seed, lose the coins — exactly what the Keys & Seed Phrase slide warned."
+      },
+      {
+        "emoji": "🌱",
+        "year": "2018 →",
+        "title": "Mining heat reuse — Quebec, BC, Manitoba",
+        "body": "Mining rigs turn almost all their electricity into heat. Heatmine (Quebec, 2018) piped that heat into greenhouses and churches — a strawberry grower reported 75–100% of its heating bill offset. MintGreen (BC, 2021) signed up to feed mining heat into North Vancouver's district heating, and Canaan announced a 3 MW tomato-greenhouse pilot in Manitoba (2026).",
+        "caveat": "Honest caveat: heat reuse makes the electricity do double duty. It does not make mining energy-free, and the climate benefit depends on where that electricity comes from."
+      }
+    ],
+    "tradeoffsSourcesLabel": "Sources",
+    "tradeoffsSources": [
+      { "label": "Cointelegraph — How Bitcoin mining heat is being tested to warm Canadian greenhouses (2026)", "url": "https://cointelegraph.com/news/how-bitcoin-mining-heat-is-being-tested-to-warm-canadian-greenhouses" },
+      { "label": "BetaKit — Heatmine's greenhouse and church heating tests in Quebec (2019)", "url": "https://betakit.com/heatmine-says-it-has-an-eco-friendly-solution-to-bitcoin-energy-waste/" },
+      { "label": "Cointelegraph — North Vancouver to heat buildings with Bitcoin mining (2021)", "url": "https://cointelegraph.com/news/canadian-city-plans-to-supply-residents-heat-using-bitcoin-mining" },
+      { "label": "Reuters via The Block — El Salvador revises Bitcoin law under IMF deal (2025)", "url": "https://www.theblock.co/post/337885/el-salvador-passes-bill-to-revise-bitcoin-adoption-strategy-per-imf-deal-reuters" }
     ]
   },
   "quizSupply": {
@@ -484,6 +526,16 @@
       "Pruned Node"
     ],
     "explanation": "A pruned node downloads and validates every block from genesis — enforcing all consensus rules — then deletes raw block data older than a configurable threshold. Unlike an SPV node, it doesn't trust others for validation; unlike a full node, it doesn't keep the entire history on disk."
+  },
+  "quizCyprus": {
+    "question": "During the 2013 Cyprus banking crisis, why did demand for Bitcoin rise?",
+    "options": [
+      "The Cypriot government declared Bitcoin legal tender",
+      "Savers saw accounts frozen and large deposits partly confiscated, and wanted money no bank could freeze or seize",
+      "Mining became much cheaper in Cyprus because of low electricity prices",
+      "The European Union recommended Bitcoin as a safe-haven asset"
+    ],
+    "explanation": "Banks closed for nearly two weeks, withdrawals were capped, and uninsured deposits took a 47.5% haircut. That made the control question concrete: a bank balance can be frozen or clipped from above. Bitcoin's appeal was censorship resistance and self-custody — no operator to seize funds. (How much of the 2013 rally was Cyprus versus existing momentum is still debated.)"
   },
   "supply": {
     "interactiveBadge": "🧩 Interactive",
