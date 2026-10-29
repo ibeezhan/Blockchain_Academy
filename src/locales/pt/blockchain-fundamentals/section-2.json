@@ -33,7 +33,11 @@
     "s2-limits": "O que Não Consegue Fazer",
     "s2-ethereum-bridge": "…so a New Chain Was Built",
     "s2-realworld-cases": "Where It Actually Mattered",
-    "s2-realworld-tradeoffs": "Adoption & Tradeoffs",
+    "s2-rw-legaltender": "El Salvador — Legal Tender",
+    "s2-rw-volcano": "Volcano-Powered Mining",
+    "s2-rw-pizza": "The 10,000-BTC Pizza",
+    "s2-rw-landfill": "The Landfill Hard Drive",
+    "s2-rw-heat": "Mining Heat Reuse",
     "s2-quiz": "Quizzes",
     "s2-takeaways": "Conclusões"
   },
@@ -670,72 +674,248 @@
         "url": "https://www.publicsafety.gc.ca/cnt/trnsprnc/brfng-mtrls/prlmntry-bndrs/20220824/14-en.aspx"
       }
     ],
-    "tradeoffsHeading": "Adoption and tradeoffs, honestly",
-    "tradeoffsLead": "Four stories that show the upside and the cost in the same breath. None of them is a clean win.",
-    "tradeoffs": [
-      {
+    "caveatLabel": "Honest caveat",
+    "sourcesLabel": "Sources",
+    "spotlights": {
+      "legaltender": {
         "emoji": "🇸🇻",
         "year": "2021 → 2025",
         "title": "El Salvador — Bitcoin as legal tender",
         "body": "September 2021: the first country to make Bitcoin legal tender, with a state Lightning wallet (Chivo) and a $30 sign-up bonus. What worked: a cheaper remittance option, a tourism and investor story, and the state's own BTC holdings grew in value.",
-        "caveat": "What didn't: surveys by the Universidad Centroamericana found ~92% of Salvadorans did not use Bitcoin in 2024. In January 2025, as a condition of a $1.4B IMF loan, Congress made acceptance voluntary and began winding down Chivo."
+        "caveat": "What didn't: the UCA's public-opinion institute (IUDOP) found ~92% of Salvadorans did not use Bitcoin at all in 2024. In January 2025, as a condition of a $1.4B IMF loan, Congress made acceptance voluntary and began winding down Chivo. The treasury kept its coins; the public experiment was quietly rolled back.",
+        "stat": "~92%",
+        "statCaption": "of Salvadorans did not use Bitcoin in 2024 (UCA/IUDOP survey, Dec 2024)",
+        "share": 92,
+        "shareLabels": [
+          "Did not use it",
+          "Used it"
+        ],
+        "steps": [
+          {
+            "when": "Sep 2021",
+            "label": "Bitcoin becomes legal tender; the state Chivo wallet launches with a $30 bonus"
+          },
+          {
+            "when": "2024",
+            "label": "~92% of Salvadorans report not using Bitcoin all year"
+          },
+          {
+            "when": "Jan 2025",
+            "label": "Acceptance made voluntary under a $1.4B IMF deal; Chivo wound down"
+          }
+        ],
+        "sources": [
+          {
+            "label": "Reuters via The Block — El Salvador revises Bitcoin law under IMF deal (2025)",
+            "url": "https://www.theblock.co/post/337885/el-salvador-passes-bill-to-revise-bitcoin-adoption-strategy-per-imf-deal-reuters"
+          },
+          {
+            "label": "Diario El Mundo — 92% of Salvadorans did not use Bitcoin in 2024, IUDOP survey (2025)",
+            "url": "https://diario.elmundo.sv/economia/un-92-de-salvadorenos-no-uso-el-bitcoin-en-2024-segun-encuesta"
+          },
+          {
+            "label": "UCA / IUDOP — Evaluación del año 2024, Informe 177 (PDF)",
+            "url": "https://uca.edu.sv/iudop/wp-content/uploads/2025/01/Informe-seriado-177.-Evaluacion-del-ano-2024.pdf"
+          }
+        ]
       },
-      {
+      "volcano": {
         "emoji": "🌋",
         "year": "2021 →",
         "title": "Volcano-powered mining — El Salvador",
-        "body": "El Salvador mines Bitcoin with geothermal electricity tapped from the Tecapa volcano. Official data showed ~474 BTC mined this way since 2021 (worth roughly $29M at the time), feeding the state's treasury of ~7,500+ BTC — mining powered by heat the country already has underground.",
-        "caveat": "Honest caveat: it is a small share of global hash rate and of the country's power, and the holdings swing with the Bitcoin price. The point is the idea — put stranded renewable energy to work — not the scale."
+        "body": "El Salvador mines Bitcoin with geothermal electricity tapped from the Tecapa volcano. Official data showed ~474 BTC mined this way between September 2021 and May 2024 (worth roughly $29M at the time), feeding a state treasury that has since grown past 6,000 BTC — mining powered by heat the country already has underground.",
+        "caveat": "It is a small share of global hash rate and of the country's power: 1.5 MW of a 102 MW plant, running about 300 rigs. The holdings also swing with the Bitcoin price. The point is the idea — put stranded renewable energy to work — not the scale.",
+        "stat": "~474 BTC",
+        "statCaption": "mined with Tecapa geothermal power, Sep 2021 → May 2024",
+        "facts": [
+          {
+            "label": "Plant output",
+            "value": "102 MW"
+          },
+          {
+            "label": "Sent to miners",
+            "value": "1.5 MW (~1.5%)"
+          },
+          {
+            "label": "Mining rigs",
+            "value": "~300"
+          }
+        ],
+        "steps": [
+          {
+            "when": "🌋 Heat",
+            "label": "Underground heat drives the turbines of the state-owned Tecapa geothermal plant"
+          },
+          {
+            "when": "⚡ Power",
+            "label": "1.5 MW of the plant's 102 MW is routed to ~300 mining rigs"
+          },
+          {
+            "when": "₿ Coins",
+            "label": "~474 BTC added to the state treasury (≈ $29M in May 2024)"
+          }
+        ],
+        "sources": [
+          {
+            "label": "Reuters — El Salvador mined nearly 474 bitcoins via volcano geothermal plant (2024)",
+            "url": "https://www.reuters.com/world/americas/el-salvador-mined-nearly-474-bitcoins-adding-state-crypto-holding-last-three-2024-05-14/"
+          },
+          {
+            "label": "The Block — 1.5 MW of the 102 MW Tecapa plant goes to mining (2024)",
+            "url": "https://www.theblock.co/news/ecosystems/2024-05-15-el-salvador-mined-474-bitcoin-since-2021-using-volcanic-geothermal-power-bringing-total-btc-to-5750-report-294741"
+          },
+          {
+            "label": "Forbes — governments mining Bitcoin; El Salvador's Tecapa geothermal facility (2026)",
+            "url": "https://www.forbes.com/sites/digital-assets/2026/03/14/vaneck-says-up-to-13-governments-are-mining-bitcoin-heres-who-we-know/"
+          }
+        ]
       },
-      {
+      "pizza": {
         "emoji": "🍕",
         "year": "May 2010",
         "title": "The 10,000-BTC pizza",
-        "body": "On 22 May 2010 Laszlo Hanyecz paid 10,000 BTC for two pizzas — about $41 at the time. It was the first documented purchase of real goods with Bitcoin.",
-        "caveat": "At later prices those coins have been worth hundreds of millions of dollars. The lesson isn't regret — it's that a scarce asset is worth whatever people will pay, and in 2010 that was two pizzas."
+        "body": "On 18 May 2010 Laszlo Hanyecz posted on the Bitcoin forum: \"I'll pay 10,000 bitcoins for a couple of pizzas.\" Four days later another user took the offer and had two large Papa John's pizzas delivered. The coins were worth about $41 at the time. It was the first documented purchase of real goods with Bitcoin.",
+        "caveat": "At later prices those coins have been worth hundreds of millions of dollars. The lesson isn't regret — it's that a scarce asset is worth whatever people will pay, and in 2010 that was two pizzas. Without someone willing to spend it, Bitcoin would never have become money at all.",
+        "stat": "10,000 BTC",
+        "statCaption": "= two large pizzas ≈ $41 on 22 May 2010",
+        "facts": [
+          {
+            "label": "Bought",
+            "value": "🍕🍕"
+          },
+          {
+            "label": "Worth then",
+            "value": "≈ $41"
+          },
+          {
+            "label": "Worth later",
+            "value": "Hundreds of $M"
+          }
+        ],
+        "steps": [
+          {
+            "when": "18 May 2010",
+            "label": "Forum post: \"I'll pay 10,000 bitcoins for a couple of pizzas\""
+          },
+          {
+            "when": "22 May 2010",
+            "label": "Deal done — two pizzas delivered for 10,000 BTC, ≈ $41 at the time"
+          },
+          {
+            "when": "Every 22 May",
+            "label": "Celebrated as Bitcoin Pizza Day: the first real-world purchase"
+          }
+        ],
+        "sources": [
+          {
+            "label": "Bitcointalk — the original \"Pizza for bitcoins?\" thread (2010)",
+            "url": "https://bitcointalk.org/index.php?topic=137.0"
+          },
+          {
+            "label": "Guinness World Records — first commercial Bitcoin transaction",
+            "url": "https://guinnessworldrecords.com/world-records/696240-first-commercial-bitcoin-transaction"
+          }
+        ]
       },
-      {
+      "landfill": {
         "emoji": "🗑️",
         "year": "2013 → 2025",
         "title": "The landfill hard drive",
-        "body": "In 2013 James Howells of Newport, Wales, accidentally threw out a hard drive holding the keys to roughly 8,000 BTC. The council refused to let him dig up the landfill; in January 2025 the High Court dismissed his claim.",
-        "caveat": "The coins still exist on the chain. Nobody can ever spend them. Lose the seed, lose the coins — exactly what the Keys & Seed Phrase slide warned."
+        "body": "In 2013 James Howells of Newport, Wales, accidentally threw out a hard drive holding the private keys to roughly 8,000 BTC. For over a decade he asked the council for permission to excavate the landfill — and was refused every time. In January 2025 the High Court dismissed his claim: the drive became the council's property the moment it entered the tip.",
+        "caveat": "The coins still exist on the chain. Nobody can ever spend them. Lose the seed, lose the coins — exactly what the Keys & Seed Phrase slide warned. There is no \"forgot my password\" link on a system with no one in charge.",
+        "stat": "~8,000 BTC",
+        "statCaption": "still visible on the chain — and permanently unspendable",
+        "facts": [
+          {
+            "label": "On the ledger",
+            "value": "✅ Yes"
+          },
+          {
+            "label": "Spendable",
+            "value": "❌ Never"
+          },
+          {
+            "label": "Key backup",
+            "value": "None"
+          }
+        ],
+        "steps": [
+          {
+            "when": "2013",
+            "label": "A drive holding the private keys is thrown out by mistake"
+          },
+          {
+            "when": "2013 → 2024",
+            "label": "Newport council refuses every request to dig up the landfill"
+          },
+          {
+            "when": "Jan 2025",
+            "label": "High Court dismisses the claim — the drive legally belongs to the council"
+          }
+        ],
+        "sources": [
+          {
+            "label": "The Block (via BBC) — judge throws out bitcoin landfill recovery attempt (2025)",
+            "url": "https://www.theblock.co/post/333812/judge-throws-out-bitcoin-landfill-recovery-attempt"
+          },
+          {
+            "label": "Wikipedia — Bitcoin buried in Newport landfill",
+            "url": "https://en.wikipedia.org/wiki/Bitcoin_buried_in_Newport_landfill"
+          }
+        ]
       },
-      {
+      "heat": {
         "emoji": "🌱",
         "year": "2018 →",
         "title": "Mining heat reuse — Quebec, BC, Manitoba",
         "body": "Mining rigs turn almost all their electricity into heat. Heatmine (Quebec, 2018) piped that heat into greenhouses and churches — a strawberry grower reported 75–100% of its heating bill offset. MintGreen (BC, 2021) signed up to feed mining heat into North Vancouver's district heating, and Canaan announced a 3 MW tomato-greenhouse pilot in Manitoba (2026).",
-        "caveat": "Honest caveat: heat reuse makes the electricity do double duty. It does not make mining energy-free, and the climate benefit depends on where that electricity comes from."
+        "caveat": "Heat reuse makes the electricity do double duty. It does not make mining energy-free, and the climate benefit depends on where that electricity comes from. A rig heating a greenhouse on coal power is still a rig on coal power.",
+        "stat": "75–100%",
+        "statCaption": "of a Quebec strawberry grower's heating bill offset by mining heat (Heatmine)",
+        "facts": [
+          {
+            "label": "Quebec, 2018",
+            "value": "Greenhouses + churches"
+          },
+          {
+            "label": "BC, 2021",
+            "value": "District heating"
+          },
+          {
+            "label": "Manitoba, 2026",
+            "value": "3 MW tomato pilot"
+          }
+        ],
+        "steps": [
+          {
+            "when": "⚡ In",
+            "label": "Electricity goes into the mining rig"
+          },
+          {
+            "when": "⛏️ Hash",
+            "label": "The rig hashes — nearly all of that energy leaves as heat"
+          },
+          {
+            "when": "🔥 Out",
+            "label": "That heat warms greenhouses, churches or a district network"
+          }
+        ],
+        "sources": [
+          {
+            "label": "Cointelegraph — How Bitcoin mining heat is being tested to warm Canadian greenhouses (2026)",
+            "url": "https://cointelegraph.com/news/how-bitcoin-mining-heat-is-being-tested-to-warm-canadian-greenhouses"
+          },
+          {
+            "label": "BetaKit — Heatmine's greenhouse and church heating tests in Quebec (2019)",
+            "url": "https://betakit.com/heatmine-says-it-has-an-eco-friendly-solution-to-bitcoin-energy-waste/"
+          },
+          {
+            "label": "Cointelegraph — North Vancouver to heat buildings with Bitcoin mining (2021)",
+            "url": "https://cointelegraph.com/news/canadian-city-plans-to-supply-residents-heat-using-bitcoin-mining"
+          }
+        ]
       }
-    ],
-    "tradeoffsSourcesLabel": "Sources",
-    "tradeoffsSources": [
-      {
-        "label": "Cointelegraph — How Bitcoin mining heat is being tested to warm Canadian greenhouses (2026)",
-        "url": "https://cointelegraph.com/news/how-bitcoin-mining-heat-is-being-tested-to-warm-canadian-greenhouses"
-      },
-      {
-        "label": "BetaKit — Heatmine's greenhouse and church heating tests in Quebec (2019)",
-        "url": "https://betakit.com/heatmine-says-it-has-an-eco-friendly-solution-to-bitcoin-energy-waste/"
-      },
-      {
-        "label": "Cointelegraph — North Vancouver to heat buildings with Bitcoin mining (2021)",
-        "url": "https://cointelegraph.com/news/canadian-city-plans-to-supply-residents-heat-using-bitcoin-mining"
-      },
-      {
-        "label": "Reuters via The Block — El Salvador revises Bitcoin law under IMF deal (2025)",
-        "url": "https://www.theblock.co/post/337885/el-salvador-passes-bill-to-revise-bitcoin-adoption-strategy-per-imf-deal-reuters"
-      },
-      {
-        "label": "Reuters — El Salvador mined nearly 474 bitcoins via volcano geothermal plant (2024)",
-        "url": "https://www.reuters.com/world/americas/el-salvador-mined-nearly-474-bitcoins-adding-state-crypto-holding-last-three-2024-05-14/"
-      },
-      {
-        "label": "Forbes — governments mining Bitcoin; El Salvador's Tecapa geothermal facility (2026)",
-        "url": "https://www.forbes.com/sites/digital-assets/2026/03/14/vaneck-says-up-to-13-governments-are-mining-bitcoin-heres-who-we-know/"
-      }
-    ]
+    }
   },
   "quizSupply": {
     "question": "Porque é que nunca pode haver mais do que 21 milhões de Bitcoin?",

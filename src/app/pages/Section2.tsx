@@ -44,13 +44,17 @@ const section2ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
   { id: 's2-mining' },
   { id: 's2-mining-demo' },
 
+  { kind: 'group', id: 'g-s2-realworld' },
+  { id: 's2-realworld-cases' },
+  { id: 's2-rw-legaltender' },
+  { id: 's2-rw-volcano' },
+  { id: 's2-rw-pizza' },
+  { id: 's2-rw-landfill' },
+  { id: 's2-rw-heat' },
+
   { kind: 'group', id: 'g-s2-limits' },
   { id: 's2-limits' },
   { id: 's2-ethereum-bridge' },
-
-  { kind: 'group', id: 'g-s2-realworld' },
-  { id: 's2-realworld-cases' },
-  { id: 's2-realworld-tradeoffs' },
 
   { kind: 'group', id: 'g-s2-wrap' },
   { id: 's2-quiz' },
@@ -1843,20 +1847,20 @@ interface RealWorldCase { emoji: string; year: string; title: string; body: stri
 interface SourceLink { label: string; url: string }
 
 /** One real-world case: headline, what happened, and the honest caveat underneath. */
-function RealWorldCard({ item, color, compact }: { item: RealWorldCase; color: string; compact?: boolean }) {
+function RealWorldCard({ item, color }: { item: RealWorldCase; color: string }) {
   return (
     <div className="rounded-xl border-2 bg-card flex flex-col overflow-hidden min-h-0"
          style={{ borderColor: color + '66' }}>
-      <div className={`px-4 ${compact ? 'py-2' : 'py-3'} flex items-center gap-3`} style={{ backgroundColor: color + '18' }}>
+      <div className="px-4 py-3 flex items-center gap-3" style={{ backgroundColor: color + '18' }}>
         <span className="text-2xl shrink-0">{item.emoji}</span>
         <div className="min-w-0">
           <div className="text-[10px] font-mono font-bold uppercase tracking-widest" style={{ color }}>{item.year}</div>
           <h4 className="font-bold text-foreground text-sm leading-tight">{item.title}</h4>
         </div>
       </div>
-      <div className={`${compact ? 'p-3' : 'p-4'} flex flex-col gap-2 flex-1 min-h-0 overflow-y-auto`}>
-        <p className={`${compact ? 'text-xs' : 'text-sm'} text-foreground/90 leading-snug`}>{item.body}</p>
-        <p className={`${compact ? 'text-[11px]' : 'text-xs'} text-muted-foreground leading-snug mt-auto pt-2 border-t border-border italic`}>{item.caveat}</p>
+      <div className="p-4 flex flex-col gap-2 flex-1 min-h-0 overflow-y-auto">
+        <p className="text-sm text-foreground/90 leading-snug">{item.body}</p>
+        <p className="text-xs text-muted-foreground leading-snug mt-auto pt-2 border-t border-border italic">{item.caveat}</p>
       </div>
     </div>
   );
@@ -1873,6 +1877,82 @@ function SourceFooter({ label, sources }: { label: string; sources: SourceLink[]
           {s.label}<ExternalLink className="size-2.5" />
         </a>
       ))}
+    </div>
+  );
+}
+
+interface Spotlight extends RealWorldCase {
+  stat: string; statCaption: string;
+  share?: number; shareLabels?: [string, string];
+  facts?: Array<{ label: string; value: string }>;
+  steps: Array<{ when: string; label: string }>;
+  sources: SourceLink[];
+}
+
+/** One full-slide real-world story: big stat + mini-diagram on the left, story + honest caveat on the right. */
+function RealWorldSpotlight({ id, color }: { id: string; color: string }) {
+  const { t } = useTranslation('blockchain-fundamentals/section-2');
+  const item = t(`realWorld.spotlights.${id}`, { returnObjects: true }) as Spotlight;
+  return (
+    <div className="w-full h-full flex flex-col p-5 lg:p-8">
+      <SlideHeader kicker={`${t('realWorld.kicker')} · ${item.year}`} heading={item.title} />
+
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-4 lg:gap-6">
+        {/* LEFT — visual: emoji, headline stat, and a small fact grid or share bar */}
+        <div className="rounded-2xl border-2 flex flex-col items-center justify-center text-center p-5 gap-3 min-h-0"
+             style={{ borderColor: color + '66', background: `linear-gradient(to bottom right, ${color}26, transparent)` }}>
+          <span className="text-6xl lg:text-7xl leading-none drop-shadow-sm">{item.emoji}</span>
+          <div className="text-4xl lg:text-5xl font-black tracking-tight" style={{ color }}>{item.stat}</div>
+          <p className="text-xs lg:text-sm text-muted-foreground max-w-[28ch] leading-snug">{item.statCaption}</p>
+
+          {item.share !== undefined && item.shareLabels && (
+            <div className="w-full max-w-xs mt-2">
+              <div className="h-4 w-full rounded-full overflow-hidden flex bg-muted border border-border">
+                <div className="h-full" style={{ width: `${item.share}%`, backgroundColor: color }} />
+                <div className="h-full flex-1" style={{ backgroundColor: '#39B54A' }} />
+              </div>
+              <div className="flex justify-between text-[10px] font-mono font-bold uppercase tracking-wider mt-1">
+                <span style={{ color }}>{item.share}% {item.shareLabels[0]}</span>
+                <span className="text-[#39B54A]">{100 - item.share}% {item.shareLabels[1]}</span>
+              </div>
+            </div>
+          )}
+
+          {item.facts && (
+            <div className="w-full grid grid-cols-3 gap-2 mt-2">
+              {item.facts.map((f, i) => (
+                <div key={i} className="rounded-lg bg-card/80 border border-border px-2 py-2">
+                  <div className="text-[9px] font-mono uppercase tracking-wider text-muted-foreground leading-tight">{f.label}</div>
+                  <div className="text-xs lg:text-sm font-bold text-foreground leading-tight mt-0.5">{f.value}</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* RIGHT — the story, a 3-step strip, and the honest caveat */}
+        <div className="flex flex-col justify-center gap-4 min-h-0 overflow-y-auto">
+          <p className="text-sm lg:text-base text-foreground/90 leading-relaxed">{item.body}</p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            {item.steps.map((st, i) => (
+              <div key={i} className="relative rounded-lg border bg-card px-3 py-2" style={{ borderColor: color + '55' }}>
+                <div className="text-[10px] font-mono font-bold uppercase tracking-widest mb-0.5" style={{ color }}>{st.when}</div>
+                <div className="text-xs text-muted-foreground leading-snug">{st.label}</div>
+                {i < item.steps.length - 1 && (
+                  <span className="hidden sm:flex absolute -right-2.5 top-1/2 -translate-y-1/2 size-4 rounded-full items-center justify-center text-[10px] font-black text-white z-10" style={{ backgroundColor: color }}>›</span>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <CalloutBox type="warning" title={t('realWorld.caveatLabel')}>
+            <p className="text-xs lg:text-sm leading-snug">{item.caveat}</p>
+          </CalloutBox>
+        </div>
+      </div>
+
+      <SourceFooter label={t('realWorld.sourcesLabel')} sources={item.sources} />
     </div>
   );
 }
@@ -2382,7 +2462,34 @@ export function Section2() {
           <MiningDemo />
         </div>
 
-        {/* ═══════ 9a. WHAT BITCOIN CAN'T DO (BY DESIGN) ═══════ */}
+        {/* ═══════ 9a. REAL WORLD — WHERE IT ACTUALLY MATTERED ═══════ */}
+        <div id="s2-realworld-cases" className="h-full">
+          <div className="w-full h-full flex flex-col p-5 lg:p-8">
+            <SlideHeader kicker={t('realWorld.kicker')} heading={t('realWorld.casesHeading')} lead={t('realWorld.casesLead')} />
+            <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
+              {(['#f59e0b','#ED1C24','#6366f1']).map((color, i) => {
+                const cases = t('realWorld.cases', { returnObjects: true }) as RealWorldCase[];
+                return <RealWorldCard key={i} color={color} item={cases[i]} />;
+              })}
+            </div>
+            <SourceFooter label={t('realWorld.casesSourcesLabel')} sources={t('realWorld.casesSources', { returnObjects: true }) as SourceLink[]} />
+          </div>
+        </div>
+
+        {/* ═══════ 9b–9f. REAL WORLD — ONE STORY PER SLIDE ═══════ */}
+        {([
+          ['legaltender', '#6366f1'],
+          ['volcano', '#f97316'],
+          ['pizza', '#f59e0b'],
+          ['landfill', '#ED1C24'],
+          ['heat', '#39B54A'],
+        ] as const).map(([id, color]) => (
+          <div key={id} id={`s2-rw-${id}`} className="h-full">
+            <RealWorldSpotlight id={id} color={color} />
+          </div>
+        ))}
+
+        {/* ═══════ 10a. WHAT BITCOIN CAN'T DO (BY DESIGN) ═══════ */}
         <div id="s2-limits" className="h-full">
           <div className="w-full h-full flex flex-col p-5 lg:p-8">
             <SlideHeader heading={t('limits.title')} lead={t('limits.description')} />
@@ -2467,7 +2574,7 @@ export function Section2() {
           </div>
         </div>
 
-        {/* ═══════ 9b. BRIDGE — …SO A NEW CHAIN WAS BUILT ═══════ */}
+        {/* ═══════ 10b. BRIDGE — …SO A NEW CHAIN WAS BUILT ═══════ */}
         <div id="s2-ethereum-bridge" className="h-full">
           <div className="w-full h-full flex flex-col p-5 lg:p-8">
             <SlideHeader
@@ -2513,34 +2620,6 @@ export function Section2() {
 
               <p className="text-sm text-muted-foreground text-center italic">{t('programmability.bridgeClosing')}</p>
             </div>
-          </div>
-        </div>
-
-        {/* ═══════ 10a. REAL WORLD — WHERE IT ACTUALLY MATTERED ═══════ */}
-        <div id="s2-realworld-cases" className="h-full">
-          <div className="w-full h-full flex flex-col p-5 lg:p-8">
-            <SlideHeader kicker={t('realWorld.kicker')} heading={t('realWorld.casesHeading')} lead={t('realWorld.casesLead')} />
-            <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
-              {(['#f59e0b','#ED1C24','#6366f1']).map((color, i) => {
-                const cases = t('realWorld.cases', { returnObjects: true }) as RealWorldCase[];
-                return <RealWorldCard key={i} color={color} item={cases[i]} />;
-              })}
-            </div>
-            <SourceFooter label={t('realWorld.casesSourcesLabel')} sources={t('realWorld.casesSources', { returnObjects: true }) as SourceLink[]} />
-          </div>
-        </div>
-
-        {/* ═══════ 10b. REAL WORLD — ADOPTION AND TRADEOFFS ═══════ */}
-        <div id="s2-realworld-tradeoffs" className="h-full">
-          <div className="w-full h-full flex flex-col p-5 lg:p-8">
-            <SlideHeader kicker={t('realWorld.kicker')} heading={t('realWorld.tradeoffsHeading')} lead={t('realWorld.tradeoffsLead')} />
-            <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 lg:gap-4">
-              {(['#6366f1','#f97316','#f59e0b','#ED1C24','#39B54A']).map((color, i) => {
-                const items = t('realWorld.tradeoffs', { returnObjects: true }) as RealWorldCase[];
-                return <RealWorldCard key={i} color={color} item={items[i]} compact />;
-              })}
-            </div>
-            <SourceFooter label={t('realWorld.tradeoffsSourcesLabel')} sources={t('realWorld.tradeoffsSources', { returnObjects: true }) as SourceLink[]} />
           </div>
         </div>
 
