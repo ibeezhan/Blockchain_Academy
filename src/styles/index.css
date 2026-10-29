@@ -1,3 +1,29 @@
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
+
+/* Mobile (<lg): disable slide snapping so sections read as one naturally scrolling page.
+   Everything here is gated to <1024px — desktop output is untouched. */
+@media (max-width: 1023px) {
+  #section-scroll {
+    scroll-snap-type: none !important;
+  }
+
+  /* Slide wrappers: natural height, no clipping, no snap, breathing room between slides */
+  .slide-flow > div,
+  #section-scroll > .h-screen,
+  #section-scroll > .min-h-screen,
+  #section-scroll .snap-start {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    scroll-snap-align: none !important;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  /* Undo the short-screen zoom-to-fit; content flows instead of scaling down */
+  .slide-flow > div > * {
+    zoom: 1 !important;
+  }
+}
