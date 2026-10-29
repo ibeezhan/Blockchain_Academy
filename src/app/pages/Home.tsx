@@ -20,7 +20,7 @@ export function Home() {
   const lang = useLang();
   const { t } = useTranslation('blockchain-fundamentals/home');
   const BASE = `/${lang}/blockchain-fundamentals`;
-  const instructors = [useInstructor('helder'), useInstructor('shayan')];
+  const instructors = [useInstructor('shayan')];
 
   return (
     <div id="section-scroll" className="size-full overflow-y-auto snap-y snap-mandatory">
