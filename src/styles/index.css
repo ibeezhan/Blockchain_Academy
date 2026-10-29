@@ -1,3 +1,42 @@
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
+
+/* Mobile (<lg): disable slide snapping so sections read as one naturally scrolling page.
+   Everything here is gated to <1024px — desktop output is untouched. */
+@media (max-width: 1023px) {
+  #section-scroll {
+    scroll-snap-type: none !important;
+  }
+
+  /* Slide wrappers: natural height, no clipping, no snap, breathing room between slides */
+  .slide-flow > div,
+  #section-scroll > .h-screen,
+  #section-scroll > .min-h-screen,
+  #section-scroll .snap-start {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    scroll-snap-align: none !important;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    max-width: 100% !important;
+  }
+
+  /* No sideways scroll: the page clips horizontally; wide inner blocks shrink and wrap instead */
+  html, body, #root { overflow-x: hidden; max-width: 100vw; }
+  #section-scroll { overflow-x: hidden; }
+  .slide-flow { overflow-wrap: anywhere; }
+  .slide-flow > div > *, .slide-flow img, .slide-flow svg, .slide-flow pre { max-width: 100%; }
+  .slide-flow .grid > * { min-width: 0; }
+  .slide-flow pre { overflow-x: auto; }
+  /* Genuinely wide tables scroll inside their own box rather than the page */
+  .slide-flow table { display: block; max-width: 100%; overflow-x: auto; }
+
+  /* Undo the short-screen zoom-to-fit; content flows instead of scaling down */
+  .slide-flow > div > * {
+    zoom: 1 !important;
+  }
+}

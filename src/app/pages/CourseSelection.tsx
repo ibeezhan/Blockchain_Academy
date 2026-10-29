@@ -70,8 +70,8 @@ export function CourseSelection() {
 
   return (
     <div className="size-full overflow-y-auto">
-      {/* Hero — pinned to exactly one viewport height */}
-      <div className="h-[100dvh] flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+      {/* Hero — pinned to one viewport height on lg+; flows naturally below lg */}
+      <div className="h-[100dvh] max-lg:h-auto max-lg:min-h-[100dvh] flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden">
         {/* Background grid */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(237,28,36,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(237,28,36,0.04)_1px,transparent_1px)] bg-[size:50px_50px]" />
         <div className="absolute top-1/4 right-1/4 size-96 bg-gradient-to-br from-[#ED1C24] to-[#6366f1] opacity-10 blur-3xl rounded-full" />
