@@ -372,7 +372,7 @@
         "label": "Full Nodes Acessíveis"
       },
       {
-        "value": "~580 GB",
+        "value": "~780 GB",
         "label": "Tamanho da Blockchain Completa"
       },
       {
@@ -380,7 +380,7 @@
         "label": "Tempo Médio de Bloco"
       },
       {
-        "value": "~400K",
+        "value": "~450K",
         "label": "Transações Diárias"
       },
       {
@@ -1113,7 +1113,7 @@
     "hashRate": "Taxa de hash",
     "realScaleTitle": "Escala real do Bitcoin",
     "realScaleA": "A rede atual faz",
-    "realScaleRate": "~800 EH/s",
+    "realScaleRate": "~950 EH/s",
     "realScaleB": "— isso são 8 × 10²⁰ hashes por segundo. A dificuldade real exige hashes começados por cerca de",
     "realScaleZeros": "19 zeros em hex",
     "realScaleTail": ", reajustada automaticamente a cada 2 016 blocos para manter os tempos de bloco perto dos 10 minutos.",

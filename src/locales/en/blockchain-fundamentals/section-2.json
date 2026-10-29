@@ -351,15 +351,15 @@
     "description": "The Bitcoin network is the most powerful and longest-running decentralized computing network in history.",
     "items": [
       {
-        "value": "~800 EH/s",
-        "label": "Total Hash Rate (2025)"
+        "value": "~950 EH/s",
+        "label": "Total Hash Rate (Oct 2026)"
       },
       {
-        "value": "~19,000+",
+        "value": "~20,000+",
         "label": "Reachable Full Nodes"
       },
       {
-        "value": "~580 GB",
+        "value": "~780 GB",
         "label": "Full Blockchain Size"
       },
       {
@@ -367,7 +367,7 @@
         "label": "Average Block Time"
       },
       {
-        "value": "~400K",
+        "value": "~450K",
         "label": "Daily Transactions"
       },
       {
@@ -394,7 +394,7 @@
       {
         "feature": "⚙️ Full Node",
         "option1": "Enforces every consensus rule and relays transactions. The backbone of the network.",
-        "option2": "The whole chain — ~600 GB and growing.",
+        "option2": "The whole chain — ~780 GB and growing.",
         "option3": "Verifies every transaction and block itself, from genesis."
       },
       {
@@ -510,7 +510,7 @@
       }
     ],
     "calloutTitle": "Why all the effort?",
-    "calloutBody": "Proof-of-work makes rewriting history physically expensive. To overwrite a single old block you'd have to redo all the work for that block AND every block after it — faster than the rest of the world combined. With ~800 EH/s on the network, that's currently uneconomical to attempt.",
+    "calloutBody": "Proof-of-work makes rewriting history physically expensive. To overwrite a single old block you'd have to redo all the work for that block AND every block after it — faster than the rest of the world combined. With ~950 EH/s on the network, that's currently uneconomical to attempt.",
     "keyPoints": [
       "Mining is a race to find a nonce that produces a small-enough hash — the only way to win is to keep guessing",
       "Difficulty automatically retargets every 2,016 blocks to keep block times around 10 minutes",
@@ -1023,8 +1023,8 @@
     "hashRate": "Hash rate",
     "realScaleTitle": "Real Bitcoin scale",
     "realScaleA": "The current network does",
-    "realScaleRate": "~800 EH/s",
-    "realScaleB": "— that's 8 × 10²⁰ hashes per second. Real difficulty requires hashes starting with about",
+    "realScaleRate": "~950 EH/s",
+    "realScaleB": "— that's ~9.5 × 10²⁰ hashes per second. Real difficulty requires hashes starting with about",
     "realScaleZeros": "19 zeros in hex",
     "realScaleTail": ", automatically retargeted every 2,016 blocks to keep block times around 10 minutes.",
     "noteLabel": "Note:",
