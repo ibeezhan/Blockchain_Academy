@@ -11,6 +11,7 @@ import { DefinitionBox } from '../components/shared/DefinitionBox';
 import { Bitcoin, ExternalLink, AlertTriangle } from 'lucide-react';
 import { SectionNav } from '../components/navigation/SectionNav';
 import { SiteFooter } from '../components/shared/SiteFooter';
+import secpCurve from '../../assets/bf/secp256k1-curve.svg';
 
 /** Sidebar shape — labels resolved at render time via i18n */
 const section2ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
@@ -32,6 +33,7 @@ const section2ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
 
   { kind: 'group', id: 'g-s2-keys' },
   { id: 's2-keys' },
+  { id: 's2-seed' },
   { id: 's2-keys-demo' },
 
   { kind: 'group', id: 'g-s2-structure' },
@@ -1650,6 +1652,119 @@ function HomeKeysAnalogy() {
 
 /* ─────────────────────────── COMPOSED SLIDE ─────────────────────────────── */
 
+// ─── Keys: private → public → address (one-way flow + curve intuition) ──────
+
+const ADDRESS_COLOR = '#f59e0b'; // amber — public handle people receive on
+
+function KeysPublicPrivateSlide() {
+  const { t } = useTranslation('blockchain-fundamentals/section-2');
+  // Illustrative key triple from Mastering Bitcoin (ch. 4), truncated.
+  const nodes = [
+    { k: 'private', color: PRIVATE_COLOR, term: t('keys.privateTerm'), def: t('keys.privateDef'), tag: t('keys.privateTag'), ex: '1E99…AEDD' },
+    { k: 'public',  color: PUBLIC_COLOR,  term: t('keys.publicTerm'),  def: t('keys.publicDef'),  tag: t('keys.publicTag'),  ex: '03F0…341A' },
+    { k: 'address', color: ADDRESS_COLOR, term: t('keys.addressTerm'), def: t('keys.addressDef'), tag: t('keys.addressTag'), ex: '1J7m…oXZy' },
+  ];
+  const arrows = [t('keys.arrowOneWay'), t('keys.arrowHash')];
+
+  return (
+    <div className="h-full flex flex-col p-5 lg:p-8">
+      <div className="shrink-0 mb-3">
+        <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('keys.title')}</h2>
+        <p className="text-sm lg:text-base text-muted-foreground mt-1 max-w-3xl">{t('keys.description')}</p>
+      </div>
+
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,19rem)] gap-5 overflow-y-auto">
+        {/* Left: left-to-right derivation flow */}
+        <div className="flex flex-col justify-center gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto_1fr] items-stretch gap-2">
+            {nodes.map((n, i) => (
+              <div key={n.k} className="contents">
+                <div className="rounded-xl border-2 bg-card p-4 flex flex-col gap-2"
+                     style={{ borderColor: n.color + '80', background: `linear-gradient(to bottom right, ${n.color}1f, transparent)` }}>
+                  <div className="text-[10px] font-bold uppercase tracking-widest" style={{ color: n.color }}>{n.tag}</div>
+                  <div className="font-bold text-base text-foreground">{n.term}</div>
+                  <code className="text-xs font-mono px-2 py-1 rounded bg-background/60 border border-border text-muted-foreground w-fit">{n.ex}</code>
+                  <p className="text-xs lg:text-sm text-muted-foreground leading-snug">{n.def}</p>
+                </div>
+                {i < arrows.length && (
+                  <div className="flex md:flex-col items-center justify-center gap-1 px-1 py-1 md:py-0">
+                    <span className="hidden md:block text-2xl font-black text-muted-foreground/70">→</span>
+                    <span className="md:hidden text-2xl font-black text-muted-foreground/70">↓</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-center text-muted-foreground max-w-[5.5rem]">{arrows[i]}</span>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <CalloutBox type="important" title={t('keys.noReverseTitle')}>
+              {t('keys.noReverseBody')}
+            </CalloutBox>
+            <CalloutBox type="tip" title={t('keys.walletNoteTitle')}>
+              {t('keys.walletNoteBody')}
+            </CalloutBox>
+          </div>
+        </div>
+
+        {/* Right: elliptic-curve intuition (bundled SVG, no math) */}
+        <aside className="flex flex-col justify-center">
+          <div className="rounded-2xl border border-border bg-card/50 p-4 flex flex-col gap-3">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t('keys.curveLabel')}</div>
+            <img src={secpCurve} alt={t('keys.curveAlt')} className="w-full h-auto rounded-lg" />
+            <p className="text-xs lg:text-sm text-muted-foreground leading-snug">{t('keys.curveCaption')}</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  );
+}
+
+// ─── Seed phrase: human-friendly master backup ──────────────────────────────
+
+// Published example phrase (bitcoinjs/bip39 README) — shown as a visual only.
+const EXAMPLE_SEED = ['army', 'van', 'defense', 'carry', 'jealous', 'true', 'garbage', 'claim', 'echo', 'media', 'make', 'crunch'];
+
+function SeedPhraseVisual() {
+  const { t } = useTranslation('blockchain-fundamentals/section-2');
+  const chain = [
+    { label: t('keys.chainSeed'),    color: '#6366f1' },
+    { label: t('keys.chainPrivate'), color: PRIVATE_COLOR },
+    { label: t('keys.chainPublic'),  color: PUBLIC_COLOR },
+    { label: t('keys.chainAddress'), color: ADDRESS_COLOR },
+  ];
+  return (
+    <div className="space-y-3 w-full">
+      <DefinitionBox term={t('keys.seedTerm')} definition={t('keys.seedDef')} />
+      <div className="rounded-xl border border-border bg-card p-3">
+        <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5">
+          {EXAMPLE_SEED.map((w, i) => (
+            <div key={w} className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-background/60 border border-border">
+              <span className="text-[10px] font-mono text-muted-foreground w-4 text-right">{i + 1}</span>
+              <span className="text-xs font-mono font-bold text-foreground">{w}</span>
+            </div>
+          ))}
+        </div>
+        <div className="text-[10px] text-muted-foreground mt-2 italic">{t('keys.seedExampleNote')}</div>
+      </div>
+
+      <div className="flex items-center justify-between gap-1">
+        {chain.map((c, i) => (
+          <div key={c.label} className="contents">
+            <span className="px-2 py-1 rounded-full text-[11px] font-bold border-2 text-center"
+                  style={{ color: c.color, borderColor: c.color + '80', backgroundColor: c.color + '18' }}>{c.label}</span>
+            {i < chain.length - 1 && <span className="text-muted-foreground font-black">→</span>}
+          </div>
+        ))}
+      </div>
+
+      <CalloutBox type="warning" title={t('keys.calloutTitle')}>
+        {t('keys.calloutBody')}
+      </CalloutBox>
+    </div>
+  );
+}
+
 function WalletAnalogiesDemo() {
   return (
     <div className="h-full flex flex-col p-5 lg:p-8">
@@ -2355,22 +2470,18 @@ export function Section2() {
           </div>
         </div>
 
-        {/* ═══════ KEYS & SEED PHRASE — CONCEPT ═══════ */}
+        {/* ═══════ KEYS — PUBLIC VS PRIVATE ═══════ */}
         <div id="s2-keys" className="h-full">
+          <KeysPublicPrivateSlide />
+        </div>
+
+        {/* ═══════ SEED PHRASE & SELF-CUSTODY ═══════ */}
+        <div id="s2-seed" className="h-full">
           <ConceptSlide
-            title={t('keys.title')}
-            description={t('keys.description')}
-            visual={
-              <div className="space-y-3 w-full">
-                <DefinitionBox term={t('keys.privateTerm')} definition={t('keys.privateDef')} />
-                <DefinitionBox term={t('keys.publicTerm')}  definition={t('keys.publicDef')} />
-                <DefinitionBox term={t('keys.seedTerm')}    definition={t('keys.seedDef')} />
-                <CalloutBox type="warning" title={t('keys.calloutTitle')}>
-                  {t('keys.calloutBody')}
-                </CalloutBox>
-              </div>
-            }
-            keyPoints={t('keys.keyPoints', { returnObjects: true }) as string[]}
+            title={t('keys.seedTitle')}
+            description={t('keys.seedDescription')}
+            visual={<SeedPhraseVisual />}
+            keyPoints={t('keys.seedKeyPoints', { returnObjects: true }) as string[]}
           />
         </div>
 
