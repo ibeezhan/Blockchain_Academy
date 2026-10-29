@@ -7,20 +7,29 @@
     "g-s3-wrap":    "✅ Conclusão"
   },
   "chapters": {
-    "s3-ethereum":         "Ethereum",
-    "s3-eth-accounts":     "Contas e Gas",
-    "s3-eth-apps":         "DeFi · NFTs · DAOs",
-    "s3-usecases":         "Casos de Uso",
-    "s3-ecosystem":        "Ecossistema Web3",
-    "s3-web3":             "Web1 → Web3",
-    "s3-dapp":             "App vs dApp",
-    "s3-ethics":           "Ética",
-    "s3-future":           "Tendências Futuras",
-    "s3-discussion":       "Discussão",
-    "s3-quiz":             "Quizzes",
-    "s3-takeaways":        "Conclusões",
-    "s3-recap":            "🧱 Muro de Conhecimento",
-    "s3-team-checkpoint":  "🤝 Checkpoint de Equipa"
+    "s3-ethereum": "Ethereum",
+    "s3-accounts": "Accounts",
+    "s3-gas": "Gas",
+    "s3-defi": "DeFi",
+    "s3-nfts": "NFTs",
+    "s3-daos": "DAOs",
+    "s3-usecases-trust": "Trust w/o Middlemen",
+    "s3-usecases-provenance": "Provenance",
+    "s3-usecases-coord": "Coordination",
+    "s3-ecosystem": "Ecossistema Web3",
+    "s3-web3": "Web1 → Web3",
+    "s3-dapp": "App vs dApp",
+    "s3-ethics": "Ética",
+    "s3-ethics-control": "Good vs Control",
+    "s3-future": "Tendências Futuras",
+    "s3-discussion": "Discussão",
+    "s3-quiz": "Quizzes",
+    "s3-takeaways": "Conclusões",
+    "s3-recap": "🧱 Muro de Conhecimento",
+    "s3-brainstorm": "💡 Brainstorm"
+  },
+  "peek": {
+    "label": "Later session →"
   },
   "title": {
     "sectionNumber": "SECÇÃO 03",
@@ -65,139 +74,302 @@
   },
   "ethAccounts": {
     "recapBadge": "↩ §2",
-    "recapA":     "Lembra-te — uma carteira guarda chaves, não moedas. A Ethereum corre a mesma ideia, mas com",
-    "recapStrong":"dois tipos",
-    "recapTail":  "de conta: uma controlada por humano, outra controlada por código.",
-    "heading":    "Ethereum: Contas e Gas",
-    "lead":       "Dois conceitos que tens de compreender antes de tocares em qualquer aplicação Ethereum. Tudo o resto é construído por cima destes.",
-    "accountsHeader": "Dois Tipos de Conta",
-    "eoaTitle":   "Conta de Propriedade Externa (EOA)",
-    "eoaPoints": [
-      { "leadA": "Controlada por uma ", "strong": "chave privada", "tail": " — quem tem a chave é dono da conta" },
-      { "leadA": "Pode ",                "strong": "iniciar transações", "tail": " — enviar ETH, fazer deploy de contratos, chamar funções" },
-      { "leadA": "Tem saldo em ETH. Não armazena código.", "strong": "", "tail": "" },
-      { "leadA": "Exemplos: a tua carteira MetaMask, uma hardware wallet, uma hot wallet de uma exchange", "strong": "", "tail": "" }
-    ],
-    "contractTitle": "Conta de Contrato",
-    "contractPoints": [
-      { "leadA": "Controlada por ", "strong": "código", "tail": " — sem chave privada, sem dono humano" },
-      { "strong": "Não consegue iniciar", "leadA": "", "tail": " transações — só executa quando chamada por uma EOA ou outro contrato" },
-      { "leadA": "Tem saldo em ETH + guarda código e estado permanentemente on-chain", "strong": "", "tail": "" },
-      { "leadA": "Exemplos: Uniswap DEX, token USDC, uma coleção de NFTs", "strong": "", "tail": "" }
-    ],
+    "recapA": "Lembra-te — uma carteira guarda chaves, não moedas. A Ethereum corre a mesma ideia, mas com",
+    "recapStrong": "dois tipos",
+    "recapTail": "de conta: uma controlada por humano, outra controlada por código.",
+    "title": "Ethereum: Two Types of Account",
+    "intro": "A balance you control with a key — or a program that holds its own balance. Ethereum has both, and they talk to each other.",
+    "examplesLabel": "Examples:",
+    "eoa": {
+      "abbr": "EOA",
+      "title": "Externally Owned Account",
+      "tagline": "key-controlled",
+      "traits": [{"emoji": "🔑", "label": "private key"}, {"emoji": "🚀", "label": "starts transactions"}, {"emoji": "📭", "label": "no code"}],
+      "points": [
+        "Controlled by a private key — whoever holds the key owns the account",
+        "Can initiate transactions: send ETH, call a contract, deploy one",
+        "Holds an ETH balance. Stores no code."
+      ],
+      "examples": "your Rabby or Zerion wallet, a hardware wallet, an exchange hot wallet"
+    },
+    "contract": {
+      "abbr": "Contract",
+      "title": "Contract Account",
+      "tagline": "code-controlled",
+      "traits": [{"emoji": "⚙️", "label": "runs code"}, {"emoji": "⛔", "label": "cannot start a tx"}, {"emoji": "💾", "label": "code + state on-chain"}],
+      "points": [
+        "Controlled by its code — no private key, no human owner",
+        "Cannot initiate anything: it only runs when an EOA (or another contract) calls it",
+        "Holds an ETH balance plus code and state, stored on-chain forever"
+      ],
+      "examples": "Uniswap, the USDC token, an NFT collection"
+    },
+    "arrowLabel": "transaction",
+    "arrowSub": "Every transaction originates from an EOA — a contract only reacts when called.",
     "keyRuleStrong": "Regra-chave:",
-    "keyRuleBody":   "Cada transação na Ethereum origina-se de uma EOA. Os smart contracts não conseguem atuar espontaneamente — precisam de um humano (ou de um keeper bot) para os despoletar.",
-    "gasHeader":  "Gas — O Combustível da EVM",
-    "gasIntroA":  "Cada operação na Ethereum custa",
-    "gasIntroStrong": "gas",
-    "gasIntroTail":   "— uma unidade que mede trabalho computacional. O gas evita ciclos infinitos e spam: tens de pagar por cada instrução executada pela EVM.",
-    "gasExamplesTitle": "Exemplos de custo de gas",
-    "gasRows": [
-      { "op": "Ler uma variável pública",        "gas": "GRÁTIS",     "note": "View call — nunca toca na cadeia" },
-      { "op": "Emitir um evento",                "gas": "~375 gas",   "note": "Barato — armazenado em logs, não no estado" },
-      { "op": "Transferir ETH",                  "gas": "21 000 gas", "note": "Custo base para cada transferência de ETH" },
-      { "op": "Escrever no armazenamento",       "gas": "~22 100 gas","note": "A operação comum mais cara" },
-      { "op": "Fazer deploy de um contrato",     "gas": "500k+ gas",  "note": "Paga por cada byte de bytecode" }
+    "keyRuleBody": "Cada transação na Ethereum origina-se de uma EOA. Os smart contracts não conseguem atuar espontaneamente — precisam de um humano (ou de um keeper bot) para os despoletar.",
+    "peek": "You'll deploy a contract account of your own and call it from your wallet."
+  },
+  "ethGas": {
+    "recapBadge": "↩ just covered",
+    "recapBody": "A contract's code runs on every node in the network. Someone has to pay for that computation — that's gas.",
+    "heading": "Gas — The Fuel of the EVM",
+    "lead": "Every instruction the EVM executes costs a little gas. You pay for what you use, and nothing can loop forever.",
+    "demo": {
+      "badge": "🎛️ Interactive",
+      "hint": "Drag the sliders, or load a typical operation below.",
+      "gasUsed": "Gas used",
+      "gasPrice": "Gas price",
+      "unitGas": "gas",
+      "unitGwei": "gwei",
+      "feeLabel": "Transaction fee",
+      "priceNote": "at an assumed {{price}} per ETH",
+      "presetsLabel": "Typical gas costs — click to load",
+      "gasAria": "Gas used",
+      "gweiAria": "Gas price in gwei"
+    },
+    "rows": [
+      {
+        "op": "Read a public variable",
+        "gas": "FREE",
+        "note": "View call — never hits the chain"
+      },
+      {
+        "op": "Emit an event",
+        "gas": "~375 gas",
+        "note": "Cheap — stored in logs, not state"
+      },
+      {
+        "op": "Transfer ETH",
+        "gas": "21,000 gas",
+        "note": "Base cost for every ETH transfer"
+      },
+      {
+        "op": "Write to storage",
+        "gas": "~22,100 gas",
+        "note": "Most expensive common operation"
+      },
+      {
+        "op": "Deploy a contract",
+        "gas": "500k+ gas",
+        "note": "Pays for every byte of bytecode"
+      }
     ],
-    "gasFormulaTitle": "Gas = Unidades de Gas × Preço de Gas",
-    "gasFormulaPoints": [
-      { "strong": "Base fee:", "tail": " Definida pelo protocolo, queimada (EIP-1559, desde 2021)" },
-      { "strong": "Priority fee (tip):", "tail": " Pagas ao validador para incluir a tua transação mais depressa" },
-      { "strong": "", "tail": "O preço de gas é denominado em <strong>gwei</strong> (1 gwei = 0,000000001 ETH)" },
-      { "strong": "", "tail": "Se uma transação ficar sem gas a meio da execução — reverte, mas <em>continuas a pagar pelo trabalho feito</em>" }
-    ]
+    "analogy": {
+      "title": "Same maths as filling up a car",
+      "carTitle": "Car trip",
+      "carUnits": "40 L",
+      "carPrice": "€1.70 / L",
+      "carTotal": "€68",
+      "ethTitle": "ETH transfer",
+      "mapRows": [
+        {
+          "car": "litres",
+          "eth": "gas units"
+        },
+        {
+          "car": "price per litre",
+          "eth": "gas price (gwei)"
+        },
+        {
+          "car": "trip cost",
+          "eth": "transaction fee"
+        }
+      ],
+      "caption": "A bigger job burns more units. A busier network raises the price per unit."
+    },
+    "eipNote": "Since EIP-1559 (2021) the gas price = a base fee the protocol burns + a priority tip for the validator. Run out of gas mid-way? The transaction reverts — but you still pay for the work done.",
+    "peek": "You'll write a contract and watch the gas meter tick as it runs."
   },
   "ethApps": {
-    "recapBadge": "↩ acabámos de ver",
-    "recapBody":  "Já viste o gas a pagar a computação. Hora de olhar para o que as pessoas constroem mesmo com isso — cada exemplo abaixo é um smart contract a guardar ETH e a seguir regras.",
-    "heading":    "O que a Ethereum Permite: DeFi, NFTs, DAOs",
-    "lead":       "Três categorias de aplicações que não existiam antes das blockchains programáveis — cada uma a substituir ou disruptar uma instituição tradicional.",
-    "replacesLabel":"Substitui:",
-    "riskLabel":  "Risco:",
+    "peekBadge": "👀 Sneak peek",
+    "replacesLabel": "Substitui:",
+    "riskLabel": "Risco:",
+    "examplesLabel": "Concrete examples",
     "apps": [
       {
-        "title": "DeFi", "subtitle": "Finanças Descentralizadas",
+        "title": "DeFi",
+        "subtitle": "Finanças Descentralizadas",
         "replaces": "Bancos, corretores, exchanges",
+        "tease": "Programmable money, first use: rebuild finance out of smart contracts. Light tour now — a later session goes deep.",
         "description": "Serviços financeiros — empréstimo, crédito, trading, ganhar yield — a correrem inteiramente em smart contracts. Sem KYC, sem horários de abertura, sem intermediário a levar uma fatia.",
-        "examples": [
-          { "name": "Uniswap", "desc": "Exchange descentralizada — troca qualquer token ERC-20 via market maker automatizado (AMM)" },
-          { "name": "Aave",    "desc": "Empresta e pede emprestado cripto — taxas de juro definidas algoritmicamente por oferta/procura" },
-          { "name": "MakerDAO / DAI", "desc": "Stablecoin algorítmica — cunha DAI ao bloquear ETH como garantia num smart contract" }
-        ],
         "risk": "Bugs em smart contracts, manipulação de oráculos, cascatas de liquidação",
-        "stat": "40 mil milhões+ de USD em Total Value Locked em protocolos DeFi"
+        "stat": "40 mil milhões+ de USD em Total Value Locked em protocolos DeFi",
+        "later": "You'll trace a real token swap through a smart contract, step by step.",
+        "visual": {
+          "orderBookTitle": "Order book — traditional exchange",
+          "orderBookSub": "a middleman matches buyers with sellers",
+          "buyers": "buyers",
+          "sellers": "sellers",
+          "exchange": "Exchange",
+          "matching": "matches orders, takes a fee",
+          "orderBookNote": "Every trade needs a counterparty and a matchmaker.",
+          "ammTitle": "AMM — DeFi",
+          "ammSub": "you trade against a pool, priced by a formula",
+          "you": "You",
+          "tokenIn": "ETH in",
+          "tokenOut": "USDC out",
+          "pool": "Liquidity pool",
+          "poolFunded": "a contract, funded by users",
+          "formula": "x · y = k",
+          "ammNote": "No counterparty needed — the formula sets the price.",
+          "bottomLine": "DeFi replaces the exchange with a pool + a formula."
+        }
       },
       {
-        "title": "NFTs", "subtitle": "Tokens Não-Fungíveis",
+        "title": "NFTs",
+        "subtitle": "Tokens Não-Fungíveis",
         "replaces": "Marchands, autoridades de certificação, notários",
+        "tease": "Programmable money, second use: tokens that are unique. Light tour now — a later session goes deep.",
         "description": "Propriedade digital provável e transferível on-chain. Cada NFT é um token único (ERC-721) cujo histórico de propriedade fica permanentemente registado. Ninguém pode negar a propriedade — a blockchain é a escritura.",
         "examples": [
-          { "name": "ENS (domínios .eth)",         "desc": "Usernames nativos de blockchain — pagas uma vez, são teus para sempre. Sem extorsão de renovação." },
-          { "name": "Proof of attendance (POAPs)", "desc": "Crachás on-chain que provam que estiveste em eventos — credenciais criptográficas" },
-          { "name": "Escrituras de imóveis",       "desc": "A Propy vendeu a primeira propriedade NFT — transferência de propriedade imutável on-chain" }
+          {
+            "name": "ENS (domínios .eth)",
+            "desc": "Usernames nativos de blockchain — pagas uma vez, são teus para sempre. Sem extorsão de renovação."
+          },
+          {
+            "name": "Proof of attendance (POAPs)",
+            "desc": "Crachás on-chain que provam que estiveste em eventos — credenciais criptográficas"
+          },
+          {
+            "name": "Escrituras de imóveis",
+            "desc": "A Propy vendeu a primeira propriedade NFT — transferência de propriedade imutável on-chain"
+          }
         ],
         "risk": "Metadata armazenada off-chain (IPFS) pode desaparecer — \"não és dono da imagem, és dono do recibo\"",
-        "stat": "41 mil milhões de USD transacionados em NFTs em 2021 — pico. Agora focado em utilidade."
+        "stat": "41 mil milhões de USD transacionados em NFTs em 2021 — pico. Agora focado em utilidade.",
+        "later": "You'll mint a token of your own and see exactly what is — and isn't — stored on-chain.",
+        "visual": {
+          "fungible": "Fungible",
+          "fungibleSub": "every unit identical — 1 ETH = 1 ETH",
+          "nonFungible": "Non-fungible",
+          "nonFungibleSub": "each token unique — #001 ≠ #002",
+          "provenance": "On-chain history of #001 — provenance",
+          "minted": "minted by artist",
+          "sold": "sold to",
+          "currentOwner": "current owner",
+          "forever": "recorded forever",
+          "bottomLine": "One token, one owner, a history nobody can edit."
+        }
       },
       {
-        "title": "DAOs", "subtitle": "Organizações Autónomas Descentralizadas",
+        "title": "DAOs",
+        "subtitle": "Organizações Autónomas Descentralizadas",
         "replaces": "Empresas, ONGs, cooperativas, fundos",
+        "tease": "Programmable money, third use: let a contract run the organisation. Light tour now — a later session goes deep.",
         "description": "Uma organização governada por smart contracts e votos de tokens em vez de uma direção. Qualquer um com tokens de governação pode propor e votar em decisões — o resultado executa automaticamente on-chain.",
         "examples": [
-          { "name": "MakerDAO",     "desc": "Detentores de MKR votam nos parâmetros de estabilidade do DAI — milhares de milhões em política de protocolo decididos on-chain" },
-          { "name": "Uniswap DAO",  "desc": "Detentores de UNI controlam a tesouraria de 6 mil milhões+ USD da Uniswap — votaram para fazer deploy em novas cadeias" },
-          { "name": "Gitcoin DAO",  "desc": "Financia desenvolvimento open-source via voto quadrático — a comunidade decide quem recebe grants" }
+          {
+            "name": "MakerDAO",
+            "desc": "Detentores de MKR votam nos parâmetros de estabilidade do DAI — milhares de milhões em política de protocolo decididos on-chain"
+          },
+          {
+            "name": "Uniswap DAO",
+            "desc": "Detentores de UNI controlam a tesouraria de 6 mil milhões+ USD da Uniswap — votaram para fazer deploy em novas cadeias"
+          },
+          {
+            "name": "Gitcoin DAO",
+            "desc": "Financia desenvolvimento open-source via voto quadrático — a comunidade decide quem recebe grants"
+          }
         ],
         "risk": "Apatia dos eleitores, captura por baleias, governação lenta para emergências",
-        "stat": "DAOs detêm coletivamente mais de 20 mil milhões de USD em tesourarias"
+        "stat": "DAOs detêm coletivamente mais de 20 mil milhões de USD em tesourarias",
+        "later": "You'll look at a real governance vote and ask who really held the power.",
+        "visual": {
+          "holders": "token holders",
+          "holdersSub": "anyone holding the token",
+          "proposal": "proposal",
+          "proposalSub": "\"Fund project X: 50k DAI\"",
+          "vote": "vote",
+          "voteSub": "weighted by tokens held",
+          "yes": "yes",
+          "no": "no",
+          "autoExec": "Auto-executes",
+          "autoExecSub": "treasury pays — no signature needed",
+          "bottomLine": "No board, no CEO. Code counts the votes and acts."
+        }
       }
     ]
   },
   "useCases": {
     "recapBadge": "↩ §1",
-    "recapBody":  "Lembras-te do livro-razão da aldeia — cada problema de confiança que viste aí reaparece, à escala da indústria.",
-    "heading":    "Casos de Uso de Blockchain — Três Padrões, Doze Indústrias",
-    "leadA":      "Faz zoom-out de DeFi · NFTs · DAOs. Os mesmos",
-    "leadStrong": "três padrões",
-    "leadTail":   "aparecem em cada setor — sempre que há intermediários, trilhas de papel ou dores de cabeça de coordenação.",
+    "recapBody": "Lembras-te do livro-razão da aldeia — cada problema de confiança que viste aí reaparece, à escala da indústria.",
+    "heading": "Casos de Uso de Blockchain — Três Padrões, Doze Indústrias",
     "patternLabel": "Padrão",
-    "showsUpIn":    "Aparece em",
+    "patternCount": "Pattern {{n}} of 3",
+    "showsUpIn": "Aparece em",
     "groups": [
       {
-        "pattern":  "Confiança sem intermediários",
-        "tagline":  "Dinheiro, reclamações e contratos liquidam diretamente entre partes — bancos, corretores e câmaras de compensação tornam-se opcionais.",
+        "pattern": "Confiança sem intermediários",
+        "tagline": "Dinheiro, reclamações e contratos liquidam diretamente entre partes — bancos, corretores e câmaras de compensação tornam-se opcionais.",
         "industries": [
-          { "name": "Finanças e DeFi",   "hook": "Empréstimo, trading, pagamentos — sem banco, aberto 24/7" },
-          { "name": "Mercados de Capitais","hook": "Títulos tokenizados liquidam em segundos, não em T+2 dias" },
-          { "name": "Seguros",            "hook": "Apólices paramétricas pagam automaticamente em eventos verificados" },
-          { "name": "CBDCs",              "hook": "Dinheiro estatal programável — poder e perigo (ver Ética)" }
+          {
+            "name": "Finanças e DeFi",
+            "hook": "Empréstimo, trading, pagamentos — sem banco, aberto 24/7"
+          },
+          {
+            "name": "Mercados de Capitais",
+            "hook": "Títulos tokenizados liquidam em segundos, não em T+2 dias"
+          },
+          {
+            "name": "Seguros",
+            "hook": "Apólices paramétricas pagam automaticamente em eventos verificados"
+          },
+          {
+            "name": "CBDCs",
+            "hook": "Dinheiro estatal programável — poder e perigo (ver Ética)"
+          }
         ]
       },
       {
-        "pattern":  "Proveniência verificável",
-        "tagline":  "Tudo o que precisa de uma cadeia de custódia ininterrupta passa a tê-la — incorporada, não aparafusada.",
+        "pattern": "Proveniência verificável",
+        "tagline": "Tudo o que precisa de uma cadeia de custódia ininterrupta passa a tê-la — incorporada, não aparafusada.",
         "industries": [
-          { "name": "Cadeia de Abastecimento","hook": "Rastreio da matéria-prima ao consumidor" },
-          { "name": "Comércio Global",        "hook": "Cartas de crédito digitais substituem trilhas de papel de 5 dias" },
-          { "name": "Saúde",                  "hook": "Autenticação de embalagens de medicamentos, integridade de ensaios clínicos" },
-          { "name": "Media e Entretenimento", "hook": "Royalties para colaboradores em cada reprodução, automaticamente" }
+          {
+            "name": "Cadeia de Abastecimento",
+            "hook": "Rastreio da matéria-prima ao consumidor"
+          },
+          {
+            "name": "Comércio Global",
+            "hook": "Cartas de crédito digitais substituem trilhas de papel de 5 dias"
+          },
+          {
+            "name": "Saúde",
+            "hook": "Autenticação de embalagens de medicamentos, integridade de ensaios clínicos"
+          },
+          {
+            "name": "Media e Entretenimento",
+            "hook": "Royalties para colaboradores em cada reprodução, automaticamente"
+          }
         ]
       },
       {
-        "pattern":  "Coordenação soberana",
-        "tagline":  "Pessoas e organizações coordenam-se sem uma única plataforma ou registrador no meio.",
+        "pattern": "Coordenação soberana",
+        "tagline": "Pessoas e organizações coordenam-se sem uma única plataforma ou registrador no meio.",
         "industries": [
-          { "name": "Identidade Digital",         "hook": "Possuis as tuas credenciais, provas a idade sem revelar a data de nascimento" },
-          { "name": "Governo",                    "hook": "Voto verificável, registo predial imutável, contratação pública transparente" },
-          { "name": "Energia e Sustentabilidade", "hook": "Créditos de carbono sem dupla contagem, comércio de energia P2P" },
-          { "name": "Direito e Imobiliário",      "hook": "Escrow + transferências de título auto-executadas, propriedade fracionada" }
+          {
+            "name": "Identidade Digital",
+            "hook": "Possuis as tuas credenciais, provas a idade sem revelar a data de nascimento"
+          },
+          {
+            "name": "Governo",
+            "hook": "Voto verificável, registo predial imutável, contratação pública transparente"
+          },
+          {
+            "name": "Energia e Sustentabilidade",
+            "hook": "Créditos de carbono sem dupla contagem, comércio de energia P2P"
+          },
+          {
+            "name": "Direito e Imobiliário",
+            "hook": "Escrow + transferências de título auto-executadas, propriedade fracionada"
+          }
         ]
       }
     ],
     "noticeStrong": "Repara:",
-    "noticeBodyA":  "o mesmo padrão (p.ex.",
+    "noticeBodyA": "o mesmo padrão (p.ex.",
     "noticeBodyEm": "proveniência verificável",
-    "noticeBodyTail":") aparece na cadeia de abastecimento, saúde e media. As indústrias são superfícies diferentes; a primitiva subjacente é a mesma — é por isso que uma escolha de plataforma no Curso 2 pode servir múltiplos casos de negócio do Curso 3."
+    "noticeBodyTail": ") aparece na cadeia de abastecimento, saúde e media. As indústrias são superfícies diferentes; a primitiva subjacente é a mesma — é por isso que uma escolha de plataforma no Curso 2 pode servir múltiplos casos de negócio do Curso 3."
   },
   "ecosystem": {
     "recapBadge": "↩ §1 + §2",
@@ -264,6 +436,7 @@
   },
   "dappComparison": {
     "title": "App Tradicional vs dApp Hoje",
+    "subtitle": "Same job for the user — very different plumbing underneath.",
     "option1Label": "App Tradicional",
     "option2Label": "App Descentralizada (dApp)",
     "items": [
@@ -297,85 +470,127 @@
         "option1": "Spotify — a empresa controla o catálogo, paga tostões aos artistas",
         "option2": "Audius — os artistas fazem upload diretamente, os fãs pagam via tokens $AUDIO"
       }
-    ]
+    ],
+    "peek": "You'll build a small dApp front-end that talks to your own contract."
   },
   "ethics": {
     "recapBadge": "↩ §2",
-    "recapA":     "A mesma",
-    "recapStrong":"imutabilidade",
-    "recapTail":  "que protege a cadeia de adulteração também protege regras más de serem desfeitas. Mesma propriedade, duas faces.",
-    "heading":    "Considerações Éticas",
-    "lead":       "A blockchain não é inerentemente boa ou má — o seu impacto depende de como é desenhada, governada e usada.",
+    "recapA": "A mesma",
+    "recapStrong": "imutabilidade",
+    "recapTail": "que protege a cadeia de adulteração também protege regras más de serem desfeitas. Mesma propriedade, duas faces.",
+    "heading": "Considerações Éticas",
+    "lead": "A blockchain não é inerentemente boa ou má — o seu impacto depende de como é desenhada, governada e usada.",
+    "tensionsLabel": "Four tensions to keep in your pocket",
+    "askLabel": "Ask yourself:",
     "themes": [
-      { "title": "⚡ Energia",                    "desc": "O PoW do Bitcoin usa tanta energia como alguns países. O PoS da Ethereum reduziu a sua pegada em 99,95%." },
-      { "title": "👁️ Vigilância vs Privacidade",  "desc": "As cadeias públicas são transparentes para sempre — a responsabilização e a privacidade estão em tensão direta." },
-      { "title": "🔒 Irreversibilidade",          "desc": "\"O código é a lei\" tem limites. As transações não podem ser revertidas, mesmo quando pessoas reais são prejudicadas." },
-      { "title": "🌍 Acesso e Inclusão",          "desc": "1,4 mil milhões de adultos sem banco podiam aceder a serviços financeiros apenas com um smartphone e uma carteira." }
+      {
+        "title": "⚡ Energia",
+        "desc": "O PoW do Bitcoin usa tanta energia como alguns países. O PoS da Ethereum reduziu a sua pegada em 99,95%.",
+        "ask": "Is \"secure because it's expensive\" worth the power bill?"
+      },
+      {
+        "title": "👁️ Vigilância vs Privacidade",
+        "desc": "As cadeias públicas são transparentes para sempre — a responsabilização e a privacidade estão em tensão direta.",
+        "ask": "Would you want your bank statement public — forever?"
+      },
+      {
+        "title": "🔒 Irreversibilidade",
+        "desc": "\"O código é a lei\" tem limites. As transações não podem ser revertidas, mesmo quando pessoas reais são prejudicadas.",
+        "ask": "Who do you call when the code is wrong?"
+      },
+      {
+        "title": "🌍 Acesso e Inclusão",
+        "desc": "1,4 mil milhões de adultos sem banco podiam aceder a serviços financeiros apenas com um smartphone e uma carteira.",
+        "ask": "A wallet needs a phone, a signal, and a safe seed phrase — who provides those?"
+      }
     ],
-    "goodHeader": "BLOCKCHAIN PARA O BEM",
+    "footer": "Keep these in mind — the next slide shows the same technology pulled in two opposite directions."
+  },
+  "ethicsControl": {
+    "recapBadge": "↩ §1",
+    "recapA": "Remember the Section 1 question —",
+    "recapStrong": "who controls it?",
+    "recapTail": "Same technology, two very different answers.",
+    "heading": "Blockchain for Good vs Blockchain as Control",
+    "lead": "A ledger nobody can quietly alter can protect people from powerful institutions — or hand those institutions a perfect control panel. Design decides which.",
+    "goodHeader": "Blockchain for good",
+    "goodTag": "Nobody can stop the transfer",
+    "controlHeader": "Blockchain as control",
+    "controlTag": "Somebody can stop every transfer",
     "good": [
       {
-        "title": "GiveDirectly — Ajuda Humanitária Transparente",
+        "title": "GiveDirectly",
+        "subtitle": "Transparent humanitarian aid",
         "points": [
-          "ONG a operar no Quénia e Uganda — envia dinheiro diretamente a pessoas em pobreza extrema via carteiras blockchain",
-          "Zero intermediários — cada transferência é rastreável on-chain; os doadores conseguem verificar que o seu dinheiro chegou",
-          "Na ajuda tradicional, até 30% perde-se em administração, salários da ONG e corrupção — a blockchain reduz isto para perto de zero",
-          "Os destinatários gastam livremente — nenhum governo ou ONG pode ditar para que é usado o dinheiro",
-          "Os smart contracts automatizam desembolsos — sem necessidade de conta bancária, apenas uma carteira móvel"
+          "Cash sent straight to people in extreme poverty — a mobile wallet, no bank account needed",
+          "Every transfer is traceable on-chain: donors can verify the money arrived",
+          "Cuts the up-to-30% that traditional aid loses to administration and corruption"
         ]
       },
       {
-        "title": "Proof of Humanity — Identidade Sem Instituições",
+        "title": "Proof of Humanity",
+        "subtitle": "Identity without institutions",
         "points": [
-          "Registo baseado em Ethereum: prova que és um humano real através de um vídeo curto + apadrinhamento por membros existentes",
-          "Nenhum governo, banco ou empresa controla a lista — ninguém te pode apagar",
-          "Base para experiências de RBI: humanos verificados recebem um airdrop mensal de tokens UBI automaticamente",
-          "Permite redes sociais sem bots e governação on-chain de uma-pessoa-um-voto",
-          "Usado pela Kleros (tribunal descentralizado) e outras dApps como camada de resistência a sybil attacks"
+          "Prove you are a real human with a short video + vouching from existing members",
+          "No government or company owns the list — nobody can delete you",
+          "Enables one-person-one-vote governance and UBI experiments on-chain"
         ]
       }
     ],
-    "controlHeader": "BLOCKCHAIN COMO CONTROLO",
     "control": [
       {
-        "title": "Yuan Digital (e-CNY) — Dinheiro Programável, Controlo Programável",
+        "title": "Digital Yuan (e-CNY)",
+        "subtitle": "Programmable money, programmable control",
         "points": [
-          "Datas de validade — yuans de estímulo do governo têm de ser gastos dentro de um prazo ou desaparecem",
-          "Restrições geográficas — fundos podem ser bloqueados a regiões ou distritos específicos",
-          "Banimento de categorias — compras como álcool, jogo ou donativos políticos podem ser bloqueadas automaticamente",
-          "Congelamento instantâneo — qualquer carteira desativada em segundos, sem ordem judicial",
-          "Vigilância total em tempo real — cada transação visível ao Estado por design"
+          "Expiry dates and geographic locks — stimulus money that vanishes if unspent",
+          "Category bans: alcohol, gambling or donations can be auto-blocked",
+          "Any wallet frozen in seconds; every transaction visible to the state by design"
         ]
       },
       {
-        "title": "Euro Digital — Em Breve, Questões Permanecem",
+        "title": "Digital Euro",
+        "subtitle": "Coming soon — questions remain",
         "points": [
-          "O BCE planeia lançar uma CBDC — comercializada como uma forma conveniente e moderna de dinheiro",
-          "O limite proposto de 3 000 € de detenção impede usá-lo como poupança — moldando comportamento por design",
-          "Ao contrário do dinheiro físico — anónimo e incondicional — cada transação CBDC fica permanentemente registada",
-          "Infraestrutura construída para \"funcionalidades\" hoje pode silenciosamente adicionar restrições amanhã",
-          "Grupos da sociedade civil e MEPs levantaram preocupações formais sobre soberania financeira"
+          "An ECB-issued CBDC, marketed as a modern form of cash",
+          "A proposed €3,000 holding cap steers behaviour by design",
+          "Unlike cash, every payment is logged — restrictions can be added later, silently"
         ]
       }
-    ]
+    ],
+    "footerStrong": "The deciding question:",
+    "footerBody": "who holds the keys, and who can change the rules? Every system you meet in later sessions gets the same test."
   },
   "future": {
     "title": "Tendências Futuras",
     "description": "A próxima década da blockchain será moldada pela convergência com outras tecnologias e por soluções para as limitações atuais.",
     "trends": [
-      { "title": "🤖 IA + Blockchain",             "desc": "Outputs de IA verificáveis, dados de treino descentralizados, rastreio de proveniência para conteúdo gerado por IA. A blockchain pode provar o que é real." },
-      { "title": "🔮 Provas de Conhecimento Zero", "desc": "Provar que algo é verdadeiro sem revelar os dados subjacentes. Permite identidade, voto e transações a preservar a privacidade à escala." },
-      { "title": "🔗 Layer 0 e Interoperabilidade","desc": "Protocolos como Polkadot e Cosmos ligam blockchains diferentes. O futuro é uma rede de redes, não uma cadeia para mandar em todas." },
-      { "title": "🪪 Identidade Descentralizada (DID)","desc": "A identidade soberana permite-te provar credenciais sem partilhar dados pessoais. Uma identidade em todos os serviços, possuída por ti." },
-      { "title": "🧾 Abstração de Conta",          "desc": "Faz com que as carteiras cripto funcionem como contas normais: recuperação social, patrocínio de gas, chaves de sessão. A revolução de UX que a blockchain precisa." },
-      { "title": "🏗️ Ativos do Mundo Real (RWAs)", "desc": "Tokenizar imobiliário, obrigações, commodities on-chain. A BlackRock, Franklin Templeton e outros já o fazem à escala." }
+      {
+        "title": "🤖 IA + Blockchain",
+        "blurb": "Prove what is real — provenance for data and AI outputs."
+      },
+      {
+        "title": "🔮 Provas de Conhecimento Zero",
+        "blurb": "Prove a fact without revealing the data behind it."
+      },
+      {
+        "title": "🔗 Layer 0 e Interoperabilidade",
+        "blurb": "A network of networks — chains that talk to each other."
+      },
+      {
+        "title": "🪪 Identidade Descentralizada (DID)",
+        "blurb": "Credentials you own. Prove your age without sharing your birthdate."
+      },
+      {
+        "title": "🧾 Abstração de Conta",
+        "blurb": "Wallets that feel like normal apps: recovery, sponsored gas."
+      },
+      {
+        "title": "🏗️ Ativos do Mundo Real (RWAs)",
+        "blurb": "Bonds, property and funds tokenised on-chain — already happening."
+      }
     ],
-    "keyPoints": [
-      "IA + blockchain resolve o problema de proveniência e confiança para conteúdo digital",
-      "As ZK proofs desbloqueiam privacidade sem sacrificar a verificabilidade",
-      "Os protocolos de interoperabilidade vão ligar ecossistemas blockchain isolados",
-      "A abstração de conta vai tornar a cripto acessível aos utilizadores mainstream"
-    ]
+    "footerStrong": "Beyond this course →",
+    "footerBody": "Each of these is a rabbit hole of its own. You now have the vocabulary to follow any of them."
   },
   "discussion": {
     "prompt": "Que indústria achas que poderia beneficiar mais da tecnologia blockchain nos próximos 10 anos?",
@@ -548,30 +763,33 @@
       }
     }
   },
-  "teamCheckpoint": {
-    "contextLabel": "Fim do Dia 1 · Curso 01 → Curso 02 / 03",
-    "title": "Forma a tua equipa",
-    "subtitle": "O projeto de equipa atravessa todos os cinco cursos. Encontra os teus colegas agora — vão começar a usar a equipa no Dia 2 e Dia 3.",
-    "duration": "10–15 min",
-    "doNowLabel": "Fazer agora",
-    "discussLabel": "Discutir em conjunto",
-    "bringLabel":   "Trazer para o Dia 2",
-    "doNow": [
-      { "leadA": "Forma uma equipa de ", "strong": "3–4 membros", "tail": ". Mistura experiências sempre que puderes." },
-      { "leadA": "Troquem contactos — WhatsApp / Telegram / email — para se coordenarem entre sessões.", "strong": "", "tail": "" },
-      { "leadA": "Escolham um nome de trabalho para a equipa e um ponto de contacto principal.", "strong": "", "tail": "" }
+  "brainstorm": {
+    "ribbon":       "💡 Brainstorm",
+    "contextLabel": "Closing activity · small groups",
+    "title":        "Brainstorm: the next crazy thing",
+    "subtitle":     "Bitcoin is one of the simplest blockchains — and people already run it on volcanoes. In groups of 3–4, dream up what we could do with Bitcoin or blockchain decades from now. The wilder, the better.",
+    "duration":     "15 min",
+    "seedsLabel":   "Seeds to get you going",
+    "seeds": [
+      { "emoji": "🌋", "title": "Volcano-powered mining",      "desc": "El Salvador mines bitcoin with geothermal energy from a volcano. What else could soak up stranded energy?" },
+      { "emoji": "♨️", "title": "Mining heat reuse",            "desc": "Miners already heat greenhouses and swimming pools with their exhaust. A whole town heated by hashes?" },
+      { "emoji": "🛰️", "title": "Bitcoin for ___",             "desc": "A satellite paying for bandwidth, a robot buying its own electricity — machine-to-machine money?" },
+      { "emoji": "🧬", "title": "Programmable money for ___",  "desc": "Aid that unlocks when the rain fails. Wages streamed by the second. Fill in the blank." }
     ],
-    "discuss": [
-      { "leadA": "Cada membro partilha ", "strong": "uma indústria", "tail": " que ache interessante ou na qual trabalhe." },
-      { "leadA": "Apontem quaisquer pontos de dor de negócio que tenham vivido pessoalmente — processos pesados em papel, liquidações lentas, lacunas de confiança, etc.", "strong": "", "tail": "" },
-      { "leadA": "Esbocem alguns problemas candidatos livremente. Podem refinar — ou mudar completamente de direção — à medida que aprendem mais durante o Dia 2 e 3.", "strong": "", "tail": "" }
+    "questionsLabel": "Stress-test every idea",
+    "questions": [
+      "Is it actually possible — today, or in 2050?",
+      "What would have to be true for it to work?",
+      "Who controls it? Who could switch it off?",
+      "Would it even need a blockchain — or would a spreadsheet do?"
     ],
-    "bring": [
-      { "leadA": "A lista de contactos da equipa — todos num grupo de chat.", "strong": "", "tail": "" },
-      { "leadA": "Uma lista curta (~3) de pontos de dor que valha a pena explorar.", "strong": "", "tail": "" },
-      { "leadA": "Curiosidade sobre que plataformas blockchain os poderiam servir.", "strong": "", "tail": "" }
+    "stepsLabel": "How it runs",
+    "steps": [
+      { "time": "5 min", "label": "Form a group and pick your wildest idea" },
+      { "time": "5 min", "label": "Run it through the four questions" },
+      { "time": "5 min", "label": "Pitch it to the room in 60 seconds" }
     ],
-    "footnoteStrong": "O que se segue →",
-    "footnoteBody":   "O Dia 2 (Plataformas Blockchain) vai introduzir compromissos de plataforma entre os quais terás de escolher. O Dia 3 (Smart Contracts) é onde a ideia da tua equipa se torna num design concreto."
+    "footerStrong": "No wrong answers.",
+    "footerBody":   "The point is to notice where a blockchain genuinely helps — and where it's just a buzzword. Both are worth spotting."
   }
 }
