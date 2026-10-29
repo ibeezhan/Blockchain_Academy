@@ -8,9 +8,10 @@ import { QuizSlide } from '../components/templates/QuizSlide';
 import { TakeawaySlide } from '../components/templates/TakeawaySlide';
 import { CalloutBox } from '../components/shared/CalloutBox';
 import { DefinitionBox } from '../components/shared/DefinitionBox';
-import { Bitcoin, ExternalLink, AlertTriangle, ShieldX } from 'lucide-react';
+import { Bitcoin, ExternalLink, AlertTriangle } from 'lucide-react';
 import { SectionNav } from '../components/navigation/SectionNav';
 import { SiteFooter } from '../components/shared/SiteFooter';
+import secpCurve from '../../assets/bf/secp256k1-curve.svg';
 
 /** Sidebar shape — labels resolved at render time via i18n */
 const section2ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
@@ -21,7 +22,10 @@ const section2ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
 
   { kind: 'group', id: 'g-s2-problems' },
   { id: 's2-byzantine' },
+  { id: 's2-consensus' },
   { id: 's2-doublespend' },
+  { id: 's2-utxo' },
+  { id: 's2-utxo-how' },
 
   { kind: 'group', id: 'g-s2-tokenomics' },
   { id: 's2-supply' },
@@ -30,6 +34,7 @@ const section2ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
 
   { kind: 'group', id: 'g-s2-keys' },
   { id: 's2-keys' },
+  { id: 's2-seed' },
   { id: 's2-keys-demo' },
 
   { kind: 'group', id: 'g-s2-structure' },
@@ -42,9 +47,17 @@ const section2ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
   { id: 's2-mining' },
   { id: 's2-mining-demo' },
 
+  { kind: 'group', id: 'g-s2-realworld' },
+  { id: 's2-realworld-cases' },
+  { id: 's2-rw-legaltender' },
+  { id: 's2-rw-volcano' },
+  { id: 's2-rw-pizza' },
+  { id: 's2-rw-landfill' },
+  { id: 's2-rw-heat' },
+
   { kind: 'group', id: 'g-s2-limits' },
-  { id: 's2-programmability' },
   { id: 's2-limits' },
+  { id: 's2-ethereum-bridge' },
 
   { kind: 'group', id: 'g-s2-wrap' },
   { id: 's2-quiz' },
@@ -1640,6 +1653,119 @@ function HomeKeysAnalogy() {
 
 /* ─────────────────────────── COMPOSED SLIDE ─────────────────────────────── */
 
+// ─── Keys: private → public → address (one-way flow + curve intuition) ──────
+
+const ADDRESS_COLOR = '#f59e0b'; // amber — public handle people receive on
+
+function KeysPublicPrivateSlide() {
+  const { t } = useTranslation('blockchain-fundamentals/section-2');
+  // Illustrative key triple from Mastering Bitcoin (ch. 4), truncated.
+  const nodes = [
+    { k: 'private', color: PRIVATE_COLOR, term: t('keys.privateTerm'), def: t('keys.privateDef'), tag: t('keys.privateTag'), ex: '1E99…AEDD' },
+    { k: 'public',  color: PUBLIC_COLOR,  term: t('keys.publicTerm'),  def: t('keys.publicDef'),  tag: t('keys.publicTag'),  ex: '03F0…341A' },
+    { k: 'address', color: ADDRESS_COLOR, term: t('keys.addressTerm'), def: t('keys.addressDef'), tag: t('keys.addressTag'), ex: '1J7m…oXZy' },
+  ];
+  const arrows = [t('keys.arrowOneWay'), t('keys.arrowHash')];
+
+  return (
+    <div className="h-full flex flex-col p-5 lg:p-8">
+      <div className="shrink-0 mb-3">
+        <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('keys.title')}</h2>
+        <p className="text-sm lg:text-base text-muted-foreground mt-1 max-w-3xl">{t('keys.description')}</p>
+      </div>
+
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,19rem)] gap-5 overflow-y-auto">
+        {/* Left: left-to-right derivation flow */}
+        <div className="flex flex-col justify-center gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto_1fr] items-stretch gap-2">
+            {nodes.map((n, i) => (
+              <div key={n.k} className="contents">
+                <div className="rounded-xl border-2 bg-card p-4 flex flex-col gap-2"
+                     style={{ borderColor: n.color + '80', background: `linear-gradient(to bottom right, ${n.color}1f, transparent)` }}>
+                  <div className="text-[10px] font-bold uppercase tracking-widest" style={{ color: n.color }}>{n.tag}</div>
+                  <div className="font-bold text-base text-foreground">{n.term}</div>
+                  <code className="text-xs font-mono px-2 py-1 rounded bg-background/60 border border-border text-muted-foreground w-fit">{n.ex}</code>
+                  <p className="text-xs lg:text-sm text-muted-foreground leading-snug">{n.def}</p>
+                </div>
+                {i < arrows.length && (
+                  <div className="flex md:flex-col items-center justify-center gap-1 px-1 py-1 md:py-0">
+                    <span className="hidden md:block text-2xl font-black text-muted-foreground/70">→</span>
+                    <span className="md:hidden text-2xl font-black text-muted-foreground/70">↓</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-center text-muted-foreground max-w-[5.5rem]">{arrows[i]}</span>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <CalloutBox type="important" title={t('keys.noReverseTitle')}>
+              {t('keys.noReverseBody')}
+            </CalloutBox>
+            <CalloutBox type="tip" title={t('keys.walletNoteTitle')}>
+              {t('keys.walletNoteBody')}
+            </CalloutBox>
+          </div>
+        </div>
+
+        {/* Right: elliptic-curve intuition (bundled SVG, no math) */}
+        <aside className="flex flex-col justify-center">
+          <div className="rounded-2xl border border-border bg-card/50 p-4 flex flex-col gap-3">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t('keys.curveLabel')}</div>
+            <img src={secpCurve} alt={t('keys.curveAlt')} className="w-full h-auto rounded-lg" />
+            <p className="text-xs lg:text-sm text-muted-foreground leading-snug">{t('keys.curveCaption')}</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  );
+}
+
+// ─── Seed phrase: human-friendly master backup ──────────────────────────────
+
+// Published example phrase (bitcoinjs/bip39 README) — shown as a visual only.
+const EXAMPLE_SEED = ['army', 'van', 'defense', 'carry', 'jealous', 'true', 'garbage', 'claim', 'echo', 'media', 'make', 'crunch'];
+
+function SeedPhraseVisual() {
+  const { t } = useTranslation('blockchain-fundamentals/section-2');
+  const chain = [
+    { label: t('keys.chainSeed'),    color: '#6366f1' },
+    { label: t('keys.chainPrivate'), color: PRIVATE_COLOR },
+    { label: t('keys.chainPublic'),  color: PUBLIC_COLOR },
+    { label: t('keys.chainAddress'), color: ADDRESS_COLOR },
+  ];
+  return (
+    <div className="space-y-3 w-full">
+      <DefinitionBox term={t('keys.seedTerm')} definition={t('keys.seedDef')} />
+      <div className="rounded-xl border border-border bg-card p-3">
+        <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5">
+          {EXAMPLE_SEED.map((w, i) => (
+            <div key={w} className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-background/60 border border-border">
+              <span className="text-[10px] font-mono text-muted-foreground w-4 text-right">{i + 1}</span>
+              <span className="text-xs font-mono font-bold text-foreground">{w}</span>
+            </div>
+          ))}
+        </div>
+        <div className="text-[10px] text-muted-foreground mt-2 italic">{t('keys.seedExampleNote')}</div>
+      </div>
+
+      <div className="flex items-center justify-between gap-1">
+        {chain.map((c, i) => (
+          <div key={c.label} className="contents">
+            <span className="px-2 py-1 rounded-full text-[11px] font-bold border-2 text-center"
+                  style={{ color: c.color, borderColor: c.color + '80', backgroundColor: c.color + '18' }}>{c.label}</span>
+            {i < chain.length - 1 && <span className="text-muted-foreground font-black">→</span>}
+          </div>
+        ))}
+      </div>
+
+      <CalloutBox type="warning" title={t('keys.calloutTitle')}>
+        {t('keys.calloutBody')}
+      </CalloutBox>
+    </div>
+  );
+}
+
 function WalletAnalogiesDemo() {
   return (
     <div className="h-full flex flex-col p-5 lg:p-8">
@@ -1677,6 +1803,352 @@ function WalletAnalogiesDemo() {
       <div className="shrink-0 mt-3 p-2.5 bg-amber-500/10 border border-amber-500/30 rounded-lg text-[11px] text-muted-foreground">
         <strong className="text-foreground">Where the analogies break:</strong> a bank can reverse a fraud, a locksmith can change your lock. Bitcoin has neither. The math is the only enforcement — that's both the appeal and the responsibility of self-custody.
       </div>
+    </div>
+  );
+}
+
+// ─── Shared building blocks for the custom (non-template) slides ────────────
+
+/** Kicker + heading + lead, matching the header block every custom slide uses. */
+function SlideHeader({ kicker, heading, lead }: { kicker?: string; heading: string; lead?: React.ReactNode }) {
+  return (
+    <div className="shrink-0 mb-4">
+      {kicker && (
+        <p className="text-[10px] font-mono uppercase tracking-widest text-[#f59e0b] mb-1 font-bold">{kicker}</p>
+      )}
+      <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-2">{heading}</h2>
+      {lead && <p className="text-sm lg:text-base text-muted-foreground max-w-4xl">{lead}</p>}
+    </div>
+  );
+}
+
+/** Vertical 1982 → 2008 consensus timeline (Lamport / Paxos / PBFT / Nakamoto). */
+function ConsensusTimeline() {
+  const { t } = useTranslation('blockchain-fundamentals/section-2');
+  const events = t('byzantine.events', { returnObjects: true }) as Array<{ year: string; title: string; who: string; body: string; verdict: string }>;
+  const colors = ['#ED1C24', '#ED1C24', '#f59e0b', '#39B54A'];
+  return (
+    <div className="flex-1 min-h-0 relative overflow-y-auto pr-1">
+      <div className="absolute left-[60px] top-1 bottom-1 w-0.5 bg-gradient-to-b from-[#ED1C24] via-[#f59e0b] to-[#39B54A]" />
+      <div className="space-y-2.5">
+        {events.map((e, i) => {
+          const color = colors[i] ?? '#39B54A';
+          return (
+            <div key={i} className="relative pl-[80px] pr-1">
+              <div className="absolute left-[54px] top-1.5 size-3.5 rounded-full border-2 border-background shadow" style={{ backgroundColor: color }} />
+              <div className="absolute left-0 top-0 w-12 text-right font-mono font-black text-sm" style={{ color }}>{e.year}</div>
+              <div className="bg-card border border-border rounded-lg p-3 hover:border-foreground/30 transition-colors">
+                <div className="flex items-start justify-between gap-2 mb-0.5">
+                  <h4 className="font-bold text-foreground text-sm">{e.title}</h4>
+                  <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded shrink-0" style={{ color, backgroundColor: color + '18' }}>
+                    {e.verdict}
+                  </span>
+                </div>
+                <div className="text-[10px] text-muted-foreground italic mb-1">{e.who}</div>
+                <p className="text-xs text-muted-foreground leading-snug">{e.body}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/** Horizontal 1983 → 2008 timeline of pre-Bitcoin digital cash attempts. */
+function DigitalCashTimeline() {
+  const { t } = useTranslation('blockchain-fundamentals/section-2');
+  const attempts = t('doubleSpend.attempts', { returnObjects: true }) as Array<{ year: string; name: string; who: string; why: string; fate: string }>;
+  const colors = ['#ED1C24', '#ED1C24', '#f59e0b', '#f59e0b', '#f59e0b', '#39B54A'];
+  return (
+    <div className="relative flex-1">
+      <div className="absolute left-2 right-2 top-[18px] h-0.5 bg-gradient-to-r from-[#ED1C24] via-[#f59e0b] to-[#39B54A]" />
+      <div className="grid grid-cols-3 lg:grid-cols-6 gap-3 relative">
+        {attempts.map((item, i) => {
+          const color = colors[i] ?? '#39B54A';
+          return (
+            <div key={i} className="flex flex-col items-center">
+              <div className="size-4 rounded-full border-2 border-background shadow shrink-0 mb-2 z-10" style={{ backgroundColor: color }} />
+              <div className="text-center w-full">
+                <div className="font-mono font-black text-sm" style={{ color }}>{item.year}</div>
+                <div className="font-bold text-foreground text-sm leading-tight">{item.name}</div>
+                <div className="text-[10px] text-muted-foreground italic mt-0.5">{item.who}</div>
+                <p className="text-[11px] text-muted-foreground leading-snug mt-1.5">{item.why}</p>
+                <div className="mt-1.5 inline-block text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded" style={{ color, backgroundColor: color + '18' }}>
+                  {item.fate}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/** Side-by-side Account model vs UTXO model, Alice pays Bob 0.4 BTC. */
+function UtxoVsAccount() {
+  const { t } = useTranslation('blockchain-fundamentals/section-2');
+  const utxoCell = (label: string, value: string, color: string, struck = false) => (
+    <div className={`flex-1 rounded-lg border px-2 py-2 text-center relative ${struck ? 'line-through' : ''}`}
+         style={{ borderColor: color + '80', backgroundColor: color + '1a' }}>
+      <div className="text-[10px] text-muted-foreground">{label}</div>
+      <div className="font-mono font-bold text-base" style={{ color }}>{value}</div>
+      {struck && <div className="absolute -top-1.5 -right-1.5 text-[10px] bg-[#ED1C24] text-white rounded-full px-1.5">✕</div>}
+    </div>
+  );
+  return (
+    <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
+      {/* Account model side */}
+      <div className="bg-card rounded-xl border border-border p-4 flex flex-col">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-xl">💳</span>
+          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide">{t('doubleSpend.accountModelTitle')}</span>
+        </div>
+        <div className="text-xs text-muted-foreground mb-1">{t('doubleSpend.aliceWallet')}</div>
+        <div className="rounded-lg border border-[#f59e0b]/40 bg-[#f59e0b]/10 px-3 py-2.5 flex items-center justify-between mb-3">
+          <span className="text-xs text-muted-foreground">{t('doubleSpend.balance')}</span>
+          <span className="font-mono font-bold text-lg text-[#f59e0b]">1.00 BTC</span>
+        </div>
+        <div className="text-center text-xs text-muted-foreground mb-3">{t('doubleSpend.payBobAccount')}</div>
+        <div className="rounded-lg border border-[#f59e0b]/40 bg-[#f59e0b]/10 px-3 py-2.5 flex items-center justify-between">
+          <span className="text-xs text-muted-foreground">{t('doubleSpend.newBalance')}</span>
+          <span className="font-mono font-bold text-lg text-[#f59e0b]">0.60 BTC</span>
+        </div>
+        <div className="mt-auto pt-3 text-sm text-muted-foreground italic">
+          {t('doubleSpend.accountNoteA')} <span className="font-bold text-foreground not-italic">{t('doubleSpend.accountNoteStrong')}</span> {t('doubleSpend.accountNoteTail')}
+        </div>
+      </div>
+
+      {/* UTXO model side */}
+      <div className="bg-card rounded-xl border-2 border-[#39B54A]/40 p-4 flex flex-col">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-xl">🪙</span>
+          <span className="text-xs font-bold text-[#39B54A] uppercase tracking-wide">{t('doubleSpend.utxoModelTitle')}</span>
+        </div>
+        <div className="text-xs text-muted-foreground mb-1">{t('doubleSpend.utxoWallet')}</div>
+        <div className="flex gap-2 mb-3">
+          {['0.5', '0.3', '0.2'].map(v => <span key={v} className="flex-1 flex">{utxoCell(t('doubleSpend.utxoLabel'), v, '#39B54A')}</span>)}
+        </div>
+        <div className="text-center text-xs text-muted-foreground mb-3">
+          {t('doubleSpend.utxoPayBobA')} <span className="font-mono">{t('doubleSpend.utxoPayBobValue')}</span>
+        </div>
+        <div className="flex gap-2">
+          {utxoCell(t('doubleSpend.utxoLabel'), '0.5', '#ED1C24', true)}
+          {utxoCell(t('doubleSpend.utxoToBob'), '0.4', '#6366f1')}
+          {utxoCell(t('doubleSpend.utxoChange'), '0.1', '#39B54A')}
+        </div>
+        <div className="mt-auto pt-3 text-sm text-muted-foreground italic">
+          {t('doubleSpend.utxoNoteA')} <span className="font-bold text-foreground not-italic">{t('doubleSpend.utxoNoteStrong')}</span>{t('doubleSpend.utxoNoteTail')}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Left-to-right walk-through of ONE spend: Alice (0.5 / 0.2 / 0.1) pays Bob 0.4 BTC.
+ *  Before → Transaction (input consumed, two outputs created) → After. */
+function UtxoSpendFlow() {
+  const { t } = useTranslation('blockchain-fundamentals/section-2');
+
+  const Coin = ({ value, color, tag, struck = false, ghost = false, ring = false }:
+    { value: string; color: string; tag?: string; struck?: boolean; ghost?: boolean; ring?: boolean }) => (
+    <div className={`relative flex items-center gap-2 rounded-lg border px-2.5 py-1.5 ${ghost ? 'border-dashed opacity-50' : ''} ${ring ? 'ring-2 ring-[#f59e0b] ring-offset-1 ring-offset-background' : ''}`}
+         style={{ borderColor: color + '80', backgroundColor: ghost ? 'transparent' : color + '1a' }}>
+      <span className="size-6 rounded-full flex items-center justify-center text-[11px] font-bold text-white shrink-0"
+            style={{ backgroundColor: ghost ? color + '66' : color }}>₿</span>
+      <span className={`font-mono font-bold text-sm ${struck ? 'line-through' : ''}`} style={{ color }}>{value} BTC</span>
+      {tag && <span className="ml-auto text-[10px] text-muted-foreground whitespace-nowrap">{tag}</span>}
+      {struck && <span className="absolute -top-1.5 -right-1.5 text-[10px] bg-[#ED1C24] text-white rounded-full px-1.5 leading-4">✕</span>}
+    </div>
+  );
+
+  const Arrow = () => (
+    <svg viewBox="0 0 40 24" className="w-8 h-6 shrink-0 self-center text-[#f59e0b] rotate-90 lg:rotate-0" aria-hidden="true">
+      <path d="M3 12h28M24 5l8 7-8 7" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+
+  const Panel = ({ title, color, children }: { title: string; color: string; children: React.ReactNode }) => (
+    <div className="flex-1 min-w-0 rounded-xl border-2 p-3 flex flex-col gap-2 bg-card"
+         style={{ borderColor: color + '66', background: `linear-gradient(to bottom right, ${color}1f, transparent)` }}>
+      <div className="text-[10px] font-bold uppercase tracking-wide" style={{ color }}>{title}</div>
+      {children}
+    </div>
+  );
+
+  const Label = ({ children }: { children: React.ReactNode }) => (
+    <div className="text-[10px] text-muted-foreground uppercase tracking-wide">{children}</div>
+  );
+
+  return (
+    <div className="flex-1 min-h-0 flex flex-col lg:flex-row items-stretch gap-1.5 lg:gap-2">
+      {/* 1 — Alice's wallet before: three separate coins */}
+      <Panel title={t('utxoHow.before')} color="#39B54A">
+        <Label>{t('utxoHow.aliceWallet')}</Label>
+        <Coin value="0.5" color="#39B54A" tag={t('utxoHow.selected')} ring />
+        <Coin value="0.2" color="#39B54A" tag={t('utxoHow.utxo')} />
+        <Coin value="0.1" color="#39B54A" tag={t('utxoHow.utxo')} />
+      </Panel>
+
+      <Arrow />
+
+      {/* 2 — The transaction: one input destroyed, two outputs created */}
+      <Panel title={t('utxoHow.tx')} color="#f59e0b">
+        <Label>{t('utxoHow.input')}</Label>
+        <Coin value="0.5" color="#ED1C24" struck />
+        <svg viewBox="0 0 120 28" className="w-full h-6 text-[#f59e0b]" aria-hidden="true">
+          <path d="M60 2v8M60 10 L30 10 L30 24M60 10 L90 10 L90 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M25 19l5 6 5-6M85 19l5 6 5-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <Label>{t('utxoHow.outputs')}</Label>
+        <div className="flex flex-wrap gap-2 [&>*]:flex-auto">
+          <Coin value="0.4" color="#6366f1" tag={t('utxoHow.toBob')} />
+          <Coin value="0.1" color="#39B54A" tag={t('utxoHow.change')} />
+        </div>
+      </Panel>
+
+      <Arrow />
+
+      {/* 3 — After: Bob owns a new coin, Alice's 0.5 is gone forever */}
+      <Panel title={t('utxoHow.after')} color="#6366f1">
+        <Label>{t('utxoHow.bobWallet')}</Label>
+        <Coin value="0.4" color="#6366f1" tag={t('utxoHow.newLabel')} />
+        <Label>{t('utxoHow.aliceWallet')}</Label>
+        <Coin value="0.5" color="#ED1C24" tag={t('utxoHow.gone')} struck ghost />
+        <div className="flex flex-wrap gap-1.5 [&>*]:flex-auto">
+          <Coin value="0.2" color="#39B54A" />
+          <Coin value="0.1" color="#39B54A" />
+          <Coin value="0.1" color="#39B54A" tag={t('utxoHow.newLabel')} />
+        </div>
+      </Panel>
+    </div>
+  );
+}
+
+/** Compact tinted card used for the non-programmability limits (throughput, finality, energy). */
+function LimitCard({ color, icon, title, children }: { color: string; icon: React.ReactNode; title: string; children: React.ReactNode }) {
+  return (
+    <div className="p-3 rounded-xl border-2" style={{ borderColor: color + '66', background: `linear-gradient(to bottom right, ${color}26, transparent)` }}>
+      <div className="flex items-center gap-2 mb-1">
+        {icon}
+        <h4 className="font-bold text-sm" style={{ color }}>{title}</h4>
+      </div>
+      <p className="text-xs text-muted-foreground leading-snug">{children}</p>
+    </div>
+  );
+}
+
+interface RealWorldCase { emoji: string; year: string; title: string; body: string; caveat: string }
+interface SourceLink { label: string; url: string }
+
+/** One real-world case: headline, what happened, and the honest caveat underneath. */
+function RealWorldCard({ item, color }: { item: RealWorldCase; color: string }) {
+  return (
+    <div className="rounded-xl border-2 bg-card flex flex-col overflow-hidden min-h-0"
+         style={{ borderColor: color + '66' }}>
+      <div className="px-4 py-3 flex items-center gap-3" style={{ backgroundColor: color + '18' }}>
+        <span className="text-2xl shrink-0">{item.emoji}</span>
+        <div className="min-w-0">
+          <div className="text-[10px] font-mono font-bold uppercase tracking-widest" style={{ color }}>{item.year}</div>
+          <h4 className="font-bold text-foreground text-sm leading-tight">{item.title}</h4>
+        </div>
+      </div>
+      <div className="p-4 flex flex-col gap-2 flex-1 min-h-0 overflow-y-auto">
+        <p className="text-sm text-foreground/90 leading-snug">{item.body}</p>
+        <p className="text-xs text-muted-foreground leading-snug mt-auto pt-2 border-t border-border italic">{item.caveat}</p>
+      </div>
+    </div>
+  );
+}
+
+/** Small source links strip at the bottom of a slide. */
+function SourceFooter({ label, sources }: { label: string; sources: SourceLink[] }) {
+  return (
+    <div className="shrink-0 mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[10px] text-muted-foreground">
+      <span className="font-bold uppercase tracking-widest">{label}</span>
+      {sources.map((s, i) => (
+        <a key={i} href={s.url} target="_blank" rel="noopener noreferrer"
+           className="inline-flex items-center gap-1 hover:text-foreground underline-offset-2 hover:underline">
+          {s.label}<ExternalLink className="size-2.5" />
+        </a>
+      ))}
+    </div>
+  );
+}
+
+interface Spotlight extends RealWorldCase {
+  stat: string; statCaption: string;
+  share?: number; shareLabels?: [string, string];
+  facts?: Array<{ label: string; value: string }>;
+  steps: Array<{ when: string; label: string }>;
+  sources: SourceLink[];
+}
+
+/** One full-slide real-world story: big stat + mini-diagram on the left, story + honest caveat on the right. */
+function RealWorldSpotlight({ id, color }: { id: string; color: string }) {
+  const { t } = useTranslation('blockchain-fundamentals/section-2');
+  const item = t(`realWorld.spotlights.${id}`, { returnObjects: true }) as Spotlight;
+  return (
+    <div className="w-full h-full flex flex-col p-5 lg:p-8">
+      <SlideHeader kicker={`${t('realWorld.kicker')} · ${item.year}`} heading={item.title} />
+
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-4 lg:gap-6">
+        {/* LEFT — visual: emoji, headline stat, and a small fact grid or share bar */}
+        <div className="rounded-2xl border-2 flex flex-col items-center justify-center text-center p-5 gap-3 min-h-0"
+             style={{ borderColor: color + '66', background: `linear-gradient(to bottom right, ${color}26, transparent)` }}>
+          <span className="text-6xl lg:text-7xl leading-none drop-shadow-sm">{item.emoji}</span>
+          <div className="text-4xl lg:text-5xl font-black tracking-tight" style={{ color }}>{item.stat}</div>
+          <p className="text-xs lg:text-sm text-muted-foreground max-w-[28ch] leading-snug">{item.statCaption}</p>
+
+          {item.share !== undefined && item.shareLabels && (
+            <div className="w-full max-w-xs mt-2">
+              <div className="h-4 w-full rounded-full overflow-hidden flex bg-muted border border-border">
+                <div className="h-full" style={{ width: `${item.share}%`, backgroundColor: color }} />
+                <div className="h-full flex-1" style={{ backgroundColor: '#39B54A' }} />
+              </div>
+              <div className="flex justify-between text-[10px] font-mono font-bold uppercase tracking-wider mt-1">
+                <span style={{ color }}>{item.share}% {item.shareLabels[0]}</span>
+                <span className="text-[#39B54A]">{100 - item.share}% {item.shareLabels[1]}</span>
+              </div>
+            </div>
+          )}
+
+          {item.facts && (
+            <div className="w-full grid grid-cols-3 gap-2 mt-2">
+              {item.facts.map((f, i) => (
+                <div key={i} className="rounded-lg bg-card/80 border border-border px-2 py-2">
+                  <div className="text-[9px] font-mono uppercase tracking-wider text-muted-foreground leading-tight">{f.label}</div>
+                  <div className="text-xs lg:text-sm font-bold text-foreground leading-tight mt-0.5">{f.value}</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* RIGHT — the story, a 3-step strip, and the honest caveat */}
+        <div className="flex flex-col justify-center gap-4 min-h-0 overflow-y-auto">
+          <p className="text-sm lg:text-base text-foreground/90 leading-relaxed">{item.body}</p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            {item.steps.map((st, i) => (
+              <div key={i} className="relative rounded-lg border bg-card px-3 py-2" style={{ borderColor: color + '55' }}>
+                <div className="text-[10px] font-mono font-bold uppercase tracking-widest mb-0.5" style={{ color }}>{st.when}</div>
+                <div className="text-xs text-muted-foreground leading-snug">{st.label}</div>
+                {i < item.steps.length - 1 && (
+                  <span className="hidden sm:flex absolute -right-2.5 top-1/2 -translate-y-1/2 size-4 rounded-full items-center justify-center text-[10px] font-black text-white z-10" style={{ backgroundColor: color }}>›</span>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <CalloutBox type="warning" title={t('realWorld.caveatLabel')}>
+            <p className="text-xs lg:text-sm leading-snug">{item.caveat}</p>
+          </CalloutBox>
+        </div>
+      </div>
+
+      <SourceFooter label={t('realWorld.sourcesLabel')} sources={item.sources} />
     </div>
   );
 }
@@ -1737,17 +2209,11 @@ export function Section2() {
         {/* ═══════ 1b. THE 2008 PAPER — Satoshi's announcement ═══════ */}
         <div id="s2-paper" className="h-full">
           <div className="w-full h-full flex flex-col p-5 lg:p-8">
-            <div className="shrink-0 mb-4">
-              <p className="text-[10px] font-mono uppercase tracking-widest text-[#f59e0b] mb-1 font-bold">
-                {t('paper.kicker')}
-              </p>
-              <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-2">
-                {t('paper.heading')}
-              </h2>
-              <p className="text-sm lg:text-base text-muted-foreground max-w-3xl">
-                {t('paper.leadA')} <span className="font-mono text-foreground">{t('paper.leadName')}</span> {t('paper.leadB')}
-              </p>
-            </div>
+            <SlideHeader
+              kicker={t('paper.kicker')}
+              heading={t('paper.heading')}
+              lead={<>{t('paper.leadA')} <span className="font-mono text-foreground">{t('paper.leadName')}</span> {t('paper.leadB')}</>}
+            />
 
             <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-4 lg:gap-6">
               {/* LEFT — the post */}
@@ -1767,11 +2233,6 @@ export function Section2() {
                     <div className="text-foreground text-xs pt-1"><span className="text-muted-foreground">{t('paper.paperLabel')}</span> <span className="text-[#f59e0b]">bitcoin.org/bitcoin.pdf</span></div>
                   </div>
                 </div>
-                <CalloutBox type="tip" title={t('paper.calloutTitle')}>
-                  {t('paper.calloutA')}{' '}
-                  <strong className="text-foreground">{t('paper.calloutDate')}</strong>{t('paper.calloutB')}{' '}
-                  <em>{t('paper.calloutHeadline')}</em>{t('paper.calloutTail')}
-                </CalloutBox>
                 <a
                   href="https://bitcoin.org/bitcoin.pdf"
                   target="_blank"
@@ -1783,33 +2244,23 @@ export function Section2() {
                 </a>
               </div>
 
-              {/* RIGHT — the two problems he claimed to solve */}
+              {/* RIGHT — what happened next + one-line teasers */}
               <div className="flex flex-col gap-3 min-h-0">
-                <p className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">
-                  {t('paper.twoProblems')}
-                </p>
+                <CalloutBox type="tip" title={t('paper.calloutTitle')}>
+                  {t('paper.calloutA')}{' '}
+                  <strong className="text-foreground">{t('paper.calloutDate')}</strong>{t('paper.calloutB')}{' '}
+                  <em>{t('paper.calloutHeadline')}</em>{t('paper.calloutTail')}
+                </CalloutBox>
 
-                <div className="p-4 rounded-xl border-2 border-[#ED1C24]/40 bg-gradient-to-br from-[#ED1C24]/10 to-transparent">
-                  <h3 className="font-bold text-[#ED1C24] mb-1.5 flex items-center gap-2">
-                    <span className="text-lg">💸</span> {t('paper.doubleSpendName')}
-                  </h3>
-                  <p className="text-xs text-foreground/90 leading-relaxed mb-2">
-                    {t('paper.doubleSpendQ')}
-                  </p>
-                  <div className="text-[11px] text-muted-foreground bg-muted/30 p-2 rounded">
-                    <strong className="text-foreground/80">{t('paper.doubleSpendNoteStrong')}</strong> {t('paper.doubleSpendNote')}
+                <div className="p-4 rounded-xl border border-border bg-card flex flex-col gap-2.5">
+                  <p className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">{t('paper.twoProblems')}</p>
+                  <div className="flex items-start gap-2.5 text-sm">
+                    <span className="text-lg shrink-0">💸</span>
+                    <span className="text-foreground/90 leading-snug">{t('paper.teaserDoubleSpend')}</span>
                   </div>
-                </div>
-
-                <div className="p-4 rounded-xl border-2 border-[#6366f1]/40 bg-gradient-to-br from-[#6366f1]/10 to-transparent">
-                  <h3 className="font-bold text-[#6366f1] mb-1.5 flex items-center gap-2">
-                    <span className="text-lg">⚔️</span> {t('paper.byzantineName')}
-                  </h3>
-                  <p className="text-xs text-foreground/90 leading-relaxed mb-2">
-                    {t('paper.byzantineQ')}
-                  </p>
-                  <div className="text-[11px] text-muted-foreground bg-muted/30 p-2 rounded">
-                    <strong className="text-foreground/80">{t('paper.byzantineNoteStrong')}</strong> {t('paper.byzantineNote')}
+                  <div className="flex items-start gap-2.5 text-sm">
+                    <span className="text-lg shrink-0">⚔️</span>
+                    <span className="text-foreground/90 leading-snug">{t('paper.teaserByzantine')}</span>
                   </div>
                 </div>
 
@@ -1827,15 +2278,11 @@ export function Section2() {
         {/* ═══════ 3. WHAT IS BITCOIN ═══════ */}
         <div id="s2-what" className="h-full">
           <div className="w-full h-full flex flex-col p-5 lg:p-8">
-            <div className="shrink-0 mb-4">
-              <p className="text-[10px] font-mono uppercase tracking-widest text-[#f59e0b] mb-1 font-bold">
-                {t('whatIsBitcoin.kicker')}
-              </p>
-              <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-2">{t('whatIsBitcoin.heading')}</h2>
-              <p className="text-sm lg:text-base text-muted-foreground max-w-3xl">
-                {t('whatIsBitcoin.leadA')} <strong className="text-foreground">{t('whatIsBitcoin.leadSystem')}</strong> {t('whatIsBitcoin.leadB')}
-              </p>
-            </div>
+            <SlideHeader
+              kicker={t('whatIsBitcoin.kicker')}
+              heading={t('whatIsBitcoin.heading')}
+              lead={<>{t('whatIsBitcoin.leadA')} <strong className="text-foreground">{t('whatIsBitcoin.leadSystem')}</strong> {t('whatIsBitcoin.leadB')}</>}
+            />
 
             <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-4 lg:gap-6">
               {/* LEFT — actual paper structure */}
@@ -1865,139 +2312,111 @@ export function Section2() {
                   {t('whatIsBitcoin.fourChoicesTitle')}
                 </p>
                 <div className="grid grid-cols-2 gap-3 flex-1">
-                  <div className="p-3.5 bg-gradient-to-br from-[#f59e0b]/15 to-transparent rounded-xl border-2 border-[#f59e0b]/40 flex flex-col">
-                    <h4 className="font-bold text-[#f59e0b] mb-1.5 text-sm">{t('whatIsBitcoin.permissionlessTitle')}</h4>
-                    <p className="text-xs text-muted-foreground leading-snug">{t('whatIsBitcoin.permissionlessDesc')}</p>
-                  </div>
-                  <div className="p-3.5 bg-gradient-to-br from-[#ED1C24]/15 to-transparent rounded-xl border-2 border-[#ED1C24]/40 flex flex-col">
-                    <h4 className="font-bold text-[#ED1C24] mb-1.5 text-sm">{t('whatIsBitcoin.openSourceTitle')}</h4>
-                    <p className="text-xs text-muted-foreground leading-snug">{t('whatIsBitcoin.openSourceDesc')}</p>
-                  </div>
-                  <div className="p-3.5 bg-gradient-to-br from-[#39B54A]/15 to-transparent rounded-xl border-2 border-[#39B54A]/40 flex flex-col">
-                    <h4 className="font-bold text-[#39B54A] mb-1.5 text-sm">{t('whatIsBitcoin.scarceTitle')}</h4>
-                    <p className="text-xs text-muted-foreground leading-snug">{t('whatIsBitcoin.scarceDesc')}</p>
-                  </div>
-                  <div className="p-3.5 bg-gradient-to-br from-[#6366f1]/15 to-transparent rounded-xl border-2 border-[#6366f1]/40 flex flex-col">
-                    <h4 className="font-bold text-[#6366f1] mb-1.5 text-sm">{t('whatIsBitcoin.censorshipTitle')}</h4>
-                    <p className="text-xs text-muted-foreground leading-snug">{t('whatIsBitcoin.censorshipDesc')}</p>
-                  </div>
-                </div>
-                <div className="p-3 rounded-xl bg-muted/40 border border-border text-xs text-muted-foreground">
-                  <span className="font-bold text-foreground">{t('whatIsBitcoin.twoSpecificStrong')}</span> {t('whatIsBitcoin.twoSpecificBody')} <span className="italic">{t('whatIsBitcoin.twoSpecificEm')}</span>
+                  {([
+                    ['permissionless', '#f59e0b'],
+                    ['openSource',     '#ED1C24'],
+                    ['scarce',         '#39B54A'],
+                    ['censorship',     '#6366f1'],
+                  ] as const).map(([k, color]) => (
+                    <div key={k} className="p-3.5 rounded-xl border-2 flex flex-col"
+                         style={{ borderColor: color + '66', background: `linear-gradient(to bottom right, ${color}26, transparent)` }}>
+                      <h4 className="font-bold mb-1.5 text-sm" style={{ color }}>{t(`whatIsBitcoin.${k}Title`)}</h4>
+                      <p className="text-xs text-muted-foreground leading-snug">{t(`whatIsBitcoin.${k}Desc`)}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* ═══════ 4. BYZANTINE GENERALS PROBLEM — HISTORICAL NARRATIVE ═══════ */}
+        {/* ═══════ 4a. BYZANTINE GENERALS — THE PROBLEM ═══════ */}
         <div id="s2-byzantine" className="h-full">
           <div className="w-full h-full flex flex-col p-5 lg:p-8">
-            <div className="shrink-0 mb-3">
-              <p className="text-[10px] font-mono uppercase tracking-widest text-[#f59e0b] mb-1 font-bold">
-                {t('byzantine.kicker')}
-              </p>
-              <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{t('byzantine.heading')}</h2>
-              <p className="text-sm lg:text-base text-muted-foreground max-w-4xl">
+            <SlideHeader
+              kicker={t('byzantine.kicker')}
+              heading={t('byzantine.heading')}
+              lead={<>
                 {t('byzantine.leadInPrefix')} <strong className="text-foreground">{t('byzantine.leadInYear')}</strong>{t('byzantine.leadInMid')} <strong className="text-foreground">{t('byzantine.leadInNames')}</strong> {t('byzantine.leadInTail')}
                 <em className="text-foreground"> {t('byzantine.leadInQuestion')}</em>
-              </p>
-            </div>
+              </>}
+            />
 
-            <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-4">
-              {/* LEFT — the metaphor + computing translation */}
-              <div className="flex flex-col gap-3 min-h-0">
-                <div className="p-3 bg-gradient-to-br from-[#ED1C24]/15 to-transparent rounded-xl border-2 border-[#ED1C24]/40">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span className="text-xl">🏰</span>
-                    <h4 className="font-bold text-[#ED1C24] text-sm">{t('byzantine.metaphorTitle')}</h4>
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-snug">
-                    {t('byzantine.metaphorBodyA')} <strong className="text-foreground">{t('byzantine.metaphorBodyStrong1')}</strong> {t('byzantine.metaphorBodyB')} <strong className="text-foreground">{t('byzantine.metaphorBodyStrong2')}</strong> {t('byzantine.metaphorBodyTail')}
-                  </p>
+            <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {/* LEFT — the metaphor */}
+              <div className="p-5 bg-gradient-to-br from-[#ED1C24]/15 to-transparent rounded-xl border-2 border-[#ED1C24]/40 flex flex-col justify-center">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-3xl">🏰</span>
+                  <h4 className="font-bold text-[#ED1C24] text-base">{t('byzantine.metaphorTitle')}</h4>
                 </div>
+                <p className="text-sm lg:text-base text-muted-foreground leading-relaxed">
+                  {t('byzantine.metaphorBodyA')} <strong className="text-foreground">{t('byzantine.metaphorBodyStrong1')}</strong> {t('byzantine.metaphorBodyB')} <strong className="text-foreground">{t('byzantine.metaphorBodyStrong2')}</strong> {t('byzantine.metaphorBodyTail')}
+                </p>
+              </div>
 
-                <div className="p-3 bg-gradient-to-br from-[#f59e0b]/15 to-transparent rounded-xl border-2 border-[#f59e0b]/40">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span className="text-xl">💻</span>
-                    <h4 className="font-bold text-[#f59e0b] text-sm">{t('byzantine.computingTitle')}</h4>
+              {/* RIGHT — computing translation + the catch */}
+              <div className="flex flex-col gap-3 min-h-0">
+                <div className="p-4 bg-gradient-to-br from-[#f59e0b]/15 to-transparent rounded-xl border-2 border-[#f59e0b]/40 flex-1">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-2xl">💻</span>
+                    <h4 className="font-bold text-[#f59e0b] text-base">{t('byzantine.computingTitle')}</h4>
                   </div>
-                  <div className="grid grid-cols-2 gap-2 text-[11px]">
+                  <div className="grid grid-cols-2 gap-2 text-sm">
                     {(['generals','messengers','traitors','battlePlan'] as const).map(k => (
-                      <div key={k} className="bg-card/60 rounded-md p-1.5">
-                        <span className="text-muted-foreground">{t(`byzantine.computingMap.${k}.label`)}</span>
-                        <span className="text-foreground font-bold"> {t(`byzantine.computingMap.${k}.value`)}</span>
+                      <div key={k} className="bg-card/60 rounded-md p-2.5">
+                        <div className="text-muted-foreground text-xs">{t(`byzantine.computingMap.${k}.label`)}</div>
+                        <div className="text-foreground font-bold">{t(`byzantine.computingMap.${k}.value`)}</div>
                       </div>
                     ))}
                   </div>
                 </div>
+                <CalloutBox type="warning" title={t('byzantine.catchTitle')}>
+                  {t('byzantine.catchBody')}
+                </CalloutBox>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                <div className="p-3 bg-gradient-to-br from-[#39B54A]/15 to-transparent rounded-xl border-2 border-[#39B54A]/40 flex-1">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span className="text-xl">⛏️</span>
-                    <h4 className="font-bold text-[#39B54A] text-sm">{t('byzantine.answerTitle')}</h4>
+        {/* ═══════ 4b. SOLVING IT — 1982 TO BITCOIN ═══════ */}
+        <div id="s2-consensus" className="h-full">
+          <div className="w-full h-full flex flex-col p-5 lg:p-8">
+            <SlideHeader
+              kicker={t('byzantine.solvingKicker')}
+              heading={t('byzantine.solvingHeading')}
+              lead={t('byzantine.solvingLead')}
+            />
+
+            <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4">
+              {/* LEFT — historical timeline of consensus attempts */}
+              <div className="flex flex-col gap-2 min-h-0">
+                <p className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">
+                  {t('byzantine.timelineHeader')}
+                </p>
+                <ConsensusTimeline />
+              </div>
+
+              {/* RIGHT — Bitcoin's answer + the leap */}
+              <div className="flex flex-col gap-3 min-h-0">
+                <div className="p-4 bg-gradient-to-br from-[#39B54A]/15 to-transparent rounded-xl border-2 border-[#39B54A]/40 flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-2xl">⛏️</span>
+                    <h4 className="font-bold text-[#39B54A] text-base">{t('byzantine.answerTitle')}</h4>
                   </div>
-                  <p className="text-xs text-muted-foreground leading-snug mb-2">
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-3">
                     {t('byzantine.answerLead')} <em>{t('byzantine.answerEm')}</em> {t('byzantine.answerMid')} <strong className="text-foreground">{t('byzantine.answerStrong')}</strong>{t('byzantine.answerTail')}
                   </p>
-                  <div className="grid grid-cols-3 gap-2 text-[10px]">
+                  <div className="grid grid-cols-3 gap-2 text-xs">
                     {(['tolerates','trustedSetup','membership'] as const).map(k => (
-                      <div key={k} className="bg-card/60 rounded-md p-1.5 text-center">
-                        <div className="text-muted-foreground">{t(`byzantine.answerMap.${k}.label`)}</div>
+                      <div key={k} className="bg-card/60 rounded-md p-2 text-center">
+                        <div className="text-muted-foreground text-[10px]">{t(`byzantine.answerMap.${k}.label`)}</div>
                         <div className="font-bold text-[#39B54A]">{t(`byzantine.answerMap.${k}.value`)}</div>
                       </div>
                     ))}
                   </div>
                 </div>
-              </div>
 
-              {/* RIGHT — historical timeline of consensus attempts */}
-              <div className="flex flex-col gap-2 min-h-0">
-                <p className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">
-                  {t('byzantine.timelineHeader')}
-                </p>
-
-                <div className="flex-1 min-h-0 relative overflow-y-auto pr-1">
-                  {/* vertical timeline rail */}
-                  <div className="absolute left-[60px] top-1 bottom-1 w-0.5 bg-gradient-to-b from-[#ED1C24] via-[#f59e0b] to-[#39B54A]" />
-
-                  <div className="space-y-2.5">
-                    {(['#ED1C24','#ED1C24','#f59e0b','#39B54A']).map((color, i) => {
-                      const events = t('byzantine.events', { returnObjects: true }) as Array<{ year: string; title: string; who: string; body: string; verdict: string }>;
-                      const e = events[i];
-                      return (
-                        <div key={i} className="relative pl-[80px] pr-1">
-                          <div
-                            className="absolute left-[54px] top-1.5 size-3.5 rounded-full border-2 border-background shadow"
-                            style={{ backgroundColor: color }}
-                          />
-                          <div
-                            className="absolute left-0 top-0 w-12 text-right font-mono font-black text-sm"
-                            style={{ color }}
-                          >
-                            {e.year}
-                          </div>
-
-                          <div className="bg-card border border-border rounded-lg p-2.5 hover:border-foreground/30 transition-colors">
-                            <div className="flex items-start justify-between gap-2 mb-0.5">
-                              <h4 className="font-bold text-foreground text-xs">{e.title}</h4>
-                              <span
-                                className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded shrink-0"
-                                style={{ color, backgroundColor: color + '18' }}
-                              >
-                                {e.verdict}
-                              </span>
-                            </div>
-                            <div className="text-[10px] text-muted-foreground italic mb-1">{e.who}</div>
-                            <p className="text-[11px] text-muted-foreground leading-snug">{e.body}</p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div className="shrink-0 p-2.5 rounded-lg bg-[#39B54A]/10 border border-[#39B54A]/40 text-[11px] text-muted-foreground">
+                <div className="shrink-0 p-3 rounded-lg bg-[#39B54A]/10 border border-[#39B54A]/40 text-sm text-muted-foreground">
                   <span className="font-bold text-[#39B54A]">{t('byzantine.leapStrong')}</span> {t('byzantine.leapA')} <strong className="text-foreground">{t('byzantine.leapStrong2')}</strong>{t('byzantine.leapB')} <strong className="text-foreground">{t('byzantine.leapStrong3')}</strong> {t('byzantine.leapTail')}
                 </div>
               </div>
@@ -2005,140 +2424,101 @@ export function Section2() {
           </div>
         </div>
 
-        {/* ═══════ 5. DOUBLE-SPENDING — HISTORICAL NARRATIVE ═══════ */}
+        {/* ═══════ 5a. DOUBLE-SPENDING — 20 YEARS OF FAILED DIGITAL CASH ═══════ */}
         <div id="s2-doublespend" className="h-full">
-          <ConceptSlide
-            title={t('doubleSpend.title')}
-            description={t('doubleSpend.description')}
-            visual={
-              <div className="space-y-3 w-full">
-                {/* ─── Historical timeline of attempts ─── */}
-                <div className="p-3 bg-gradient-to-br from-[#8b5cf6]/15 via-[#6366f1]/5 to-transparent rounded-xl border-2 border-[#8b5cf6]/40">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-bold text-[#8b5cf6] text-sm">{t('doubleSpend.timelineHeader')}</h4>
-                    <span className="text-[10px] font-mono text-muted-foreground">{t('doubleSpend.timelineRange')}</span>
-                  </div>
-                  <div className="relative">
-                    <div className="absolute left-2 right-2 top-[18px] h-0.5 bg-gradient-to-r from-[#ED1C24] via-[#f59e0b] to-[#39B54A]" />
-                    <div className="grid grid-cols-6 gap-2 relative">
-                      {(['#ED1C24','#ED1C24','#f59e0b','#f59e0b','#f59e0b','#39B54A']).map((color, i) => {
-                        const attempts = t('doubleSpend.attempts', { returnObjects: true }) as Array<{ year: string; name: string; who: string; why: string; fate: string }>;
-                        const item = attempts[i];
-                        return (
-                          <div key={i} className="flex flex-col items-center">
-                            <div
-                              className="size-4 rounded-full border-2 border-background shadow shrink-0 mb-1.5 z-10"
-                              style={{ backgroundColor: color }}
-                            />
-                            <div className="text-center w-full">
-                              <div className="font-mono font-black text-[11px]" style={{ color }}>{item.year}</div>
-                              <div className="font-bold text-foreground text-[11px] leading-tight">{item.name}</div>
-                              <div className="text-[9px] text-muted-foreground italic mt-0.5">{item.who}</div>
-                              <p className="text-[9px] text-muted-foreground leading-tight mt-1">{item.why}</p>
-                              <div
-                                className="mt-1 inline-block text-[8px] font-bold uppercase tracking-widest px-1 py-0.5 rounded"
-                                style={{ color, backgroundColor: color + '18' }}
-                              >
-                                {item.fate}
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
+          <div className="w-full h-full flex flex-col p-5 lg:p-8">
+            <SlideHeader
+              kicker={t('doubleSpend.kicker')}
+              heading={t('doubleSpend.title')}
+              lead={t('doubleSpend.description')}
+            />
+
+            <div className="flex-1 min-h-0 flex flex-col gap-3">
+              {/* The attack + old fix */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 shrink-0">
+                <div className="p-4 bg-gradient-to-br from-[#ED1C24]/20 to-transparent rounded-xl border border-[#ED1C24]/30">
+                  <h4 className="font-bold text-[#ED1C24] mb-1 text-sm">{t('doubleSpend.attackTitle')}</h4>
+                  <p className="text-sm text-muted-foreground">{t('doubleSpend.attackBody')}</p>
                 </div>
-
-                {/* The attack + old fix — compressed into one strip */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3 bg-gradient-to-br from-[#ED1C24]/20 to-transparent rounded-xl border border-[#ED1C24]/30">
-                    <h4 className="font-bold text-[#ED1C24] mb-1 text-sm">{t('doubleSpend.attackTitle')}</h4>
-                    <p className="text-xs text-muted-foreground">{t('doubleSpend.attackBody')}</p>
-                  </div>
-                  <div className="p-3 bg-gradient-to-br from-[#f59e0b]/20 to-transparent rounded-xl border border-[#f59e0b]/30">
-                    <h4 className="font-bold text-[#f59e0b] mb-1 text-sm">{t('doubleSpend.oldFixTitle')}</h4>
-                    <p className="text-xs text-muted-foreground">{t('doubleSpend.oldFixBody')}</p>
-                  </div>
-                </div>
-
-                {/* UTXO vs Account — side-by-side split */}
-                <div className="p-3 bg-gradient-to-br from-[#39B54A]/15 via-[#39B54A]/5 to-transparent rounded-xl border border-[#39B54A]/30">
-                  <h4 className="font-bold text-[#39B54A] mb-2 text-sm">{t('doubleSpend.fixTitle')}</h4>
-                  <p className="text-xs text-muted-foreground mb-3">
-                    {t('doubleSpend.fixLeadA')} <span className="font-bold text-foreground">{t('doubleSpend.fixLeadStrong')}</span> {t('doubleSpend.fixLeadB')} <span className="italic">{t('doubleSpend.fixLeadEm')}</span>
-                  </p>
-
-                  <div className="grid grid-cols-2 gap-3">
-                    {/* Account model side */}
-                    <div className="bg-card/60 rounded-lg border border-border p-2.5">
-                      <div className="flex items-center gap-1.5 mb-2">
-                        <span className="text-base">💳</span>
-                        <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wide">{t('doubleSpend.accountModelTitle')}</span>
-                      </div>
-
-                      <div className="text-[10px] text-muted-foreground mb-1">{t('doubleSpend.aliceWallet')}</div>
-                      <div className="rounded-md border border-[#f59e0b]/40 bg-[#f59e0b]/10 px-2 py-1.5 flex items-center justify-between mb-2">
-                        <span className="text-[10px] text-muted-foreground">{t('doubleSpend.balance')}</span>
-                        <span className="font-mono font-bold text-sm text-[#f59e0b]">1.00 BTC</span>
-                      </div>
-
-                      <div className="text-center text-[10px] text-muted-foreground mb-1">{t('doubleSpend.payBobAccount')}</div>
-
-                      <div className="rounded-md border border-[#f59e0b]/40 bg-[#f59e0b]/10 px-2 py-1.5 flex items-center justify-between">
-                        <span className="text-[10px] text-muted-foreground">{t('doubleSpend.newBalance')}</span>
-                        <span className="font-mono font-bold text-sm text-[#f59e0b]">0.60 BTC</span>
-                      </div>
-
-                      <div className="mt-2 text-[10px] text-muted-foreground italic">
-                        {t('doubleSpend.accountNoteA')} <span className="font-bold text-foreground not-italic">{t('doubleSpend.accountNoteStrong')}</span> {t('doubleSpend.accountNoteTail')}
-                      </div>
-                    </div>
-
-                    {/* UTXO model side */}
-                    <div className="bg-card/60 rounded-lg border border-[#39B54A]/40 p-2.5">
-                      <div className="flex items-center gap-1.5 mb-2">
-                        <span className="text-base">🪙</span>
-                        <span className="text-[11px] font-bold text-[#39B54A] uppercase tracking-wide">{t('doubleSpend.utxoModelTitle')}</span>
-                      </div>
-
-                      <div className="text-[10px] text-muted-foreground mb-1">{t('doubleSpend.utxoWallet')}</div>
-                      <div className="flex gap-1 mb-2">
-                        {['0.5','0.3','0.2'].map(v => (
-                          <div key={v} className="flex-1 rounded-md border border-[#39B54A]/50 bg-[#39B54A]/10 px-1.5 py-1 text-center">
-                            <div className="text-[9px] text-muted-foreground">{t('doubleSpend.utxoLabel')}</div>
-                            <div className="font-mono font-bold text-xs text-[#39B54A]">{v}</div>
-                          </div>
-                        ))}
-                      </div>
-
-                      <div className="text-center text-[10px] text-muted-foreground mb-1">{t('doubleSpend.utxoPayBobA')} <span className="font-mono">{t('doubleSpend.utxoPayBobValue')}</span></div>
-
-                      <div className="flex gap-1">
-                        <div className="flex-1 rounded-md border border-[#ED1C24]/50 bg-[#ED1C24]/10 px-1.5 py-1 text-center relative">
-                          <div className="text-[9px] text-muted-foreground line-through">{t('doubleSpend.utxoLabel')}</div>
-                          <div className="font-mono font-bold text-xs text-[#ED1C24] line-through">0.5</div>
-                          <div className="absolute -top-1 -right-1 text-[9px] bg-[#ED1C24] text-white rounded-full px-1">✕</div>
-                        </div>
-                        <div className="flex-1 rounded-md border border-[#6366f1]/50 bg-[#6366f1]/10 px-1.5 py-1 text-center">
-                          <div className="text-[9px] text-muted-foreground">{t('doubleSpend.utxoToBob')}</div>
-                          <div className="font-mono font-bold text-xs text-[#6366f1]">0.4</div>
-                        </div>
-                        <div className="flex-1 rounded-md border border-[#39B54A]/50 bg-[#39B54A]/10 px-1.5 py-1 text-center">
-                          <div className="text-[9px] text-muted-foreground">{t('doubleSpend.utxoChange')}</div>
-                          <div className="font-mono font-bold text-xs text-[#39B54A]">0.1</div>
-                        </div>
-                      </div>
-
-                      <div className="mt-2 text-[10px] text-muted-foreground italic">
-                        {t('doubleSpend.utxoNoteA')} <span className="font-bold text-foreground not-italic">{t('doubleSpend.utxoNoteStrong')}</span>{t('doubleSpend.utxoNoteTail')}
-                      </div>
-                    </div>
-                  </div>
+                <div className="p-4 bg-gradient-to-br from-[#f59e0b]/20 to-transparent rounded-xl border border-[#f59e0b]/30">
+                  <h4 className="font-bold text-[#f59e0b] mb-1 text-sm">{t('doubleSpend.oldFixTitle')}</h4>
+                  <p className="text-sm text-muted-foreground">{t('doubleSpend.oldFixBody')}</p>
                 </div>
               </div>
-            }
-            keyPoints={t('doubleSpend.keyPoints', { returnObjects: true }) as string[]}
-          />
+
+              {/* Historical timeline of attempts — full width */}
+              <div className="flex-1 p-4 bg-gradient-to-br from-[#8b5cf6]/15 via-[#6366f1]/5 to-transparent rounded-xl border-2 border-[#8b5cf6]/40 flex flex-col">
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="font-bold text-[#8b5cf6] text-sm">{t('doubleSpend.timelineHeader')}</h4>
+                  <span className="text-[10px] font-mono text-muted-foreground">{t('doubleSpend.timelineRange')}</span>
+                </div>
+                <DigitalCashTimeline />
+              </div>
+
+              <div className="shrink-0 p-3 rounded-lg bg-muted/40 border border-border text-sm text-muted-foreground text-center">
+                {t('doubleSpend.closing')}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══════ 5b. BITCOIN'S FIX — THE UTXO MODEL ═══════ */}
+        <div id="s2-utxo" className="h-full">
+          <div className="w-full h-full flex flex-col p-5 lg:p-8">
+            <SlideHeader
+              kicker={t('doubleSpend.utxoKicker')}
+              heading={t('doubleSpend.fixTitle')}
+              lead={<>{t('doubleSpend.fixLeadA')} <span className="font-bold text-foreground">{t('doubleSpend.fixLeadStrong')}</span> {t('doubleSpend.fixLeadB')} <span className="italic">{t('doubleSpend.fixLeadEm')}</span></>}
+            />
+
+            <div className="flex-1 min-h-0 flex flex-col gap-3">
+              <UtxoVsAccount />
+              <div className="shrink-0 grid grid-cols-1 lg:grid-cols-3 gap-3">
+                {(t('doubleSpend.keyPoints', { returnObjects: true }) as string[]).map((point, i) => (
+                  <div key={i} className="flex items-start gap-3 p-3 bg-card rounded-lg border border-[#6366f1]/30">
+                    <div className="size-7 rounded-full bg-[#6366f1] flex items-center justify-center shrink-0 text-white font-bold text-sm">{i + 1}</div>
+                    <p className="text-sm text-foreground">{point}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══════ 5c. UTXO — HOW ONE SPEND WORKS (mechanics) ═══════ */}
+        <div id="s2-utxo-how" className="h-full">
+          <div className="w-full h-full flex flex-col p-5 lg:p-8">
+            <SlideHeader
+              kicker={t('utxoHow.kicker')}
+              heading={t('utxoHow.title')}
+              lead={t('utxoHow.lead')}
+            />
+
+            <div className="flex-1 min-h-0 flex flex-col gap-3">
+              <UtxoSpendFlow />
+
+              <div className="shrink-0 grid grid-cols-1 lg:grid-cols-3 gap-3">
+                {(t('utxoHow.steps', { returnObjects: true }) as Array<{ title: string; body: string }>).map((s, i) => (
+                  <div key={i} className="flex items-start gap-3 p-3 bg-card rounded-lg border border-[#f59e0b]/30">
+                    <div className="size-7 rounded-full bg-[#f59e0b] flex items-center justify-center shrink-0 text-white font-bold text-sm">{i + 1}</div>
+                    <div>
+                      <div className="text-sm font-bold text-foreground">{s.title}</div>
+                      <p className="text-xs text-muted-foreground leading-snug">{s.body}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="shrink-0 flex flex-wrap items-center gap-2">
+                {(t('utxoHow.takeaways', { returnObjects: true }) as string[]).map((tk, i) => (
+                  <span key={i} className="px-3 py-1.5 rounded-full border border-[#39B54A]/40 bg-[#39B54A]/10 text-xs font-medium text-foreground">
+                    ✓ {tk}
+                  </span>
+                ))}
+                <span className="ml-auto text-[10px] text-muted-foreground italic">{t('utxoHow.feeNote')}</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* ═══════ 4. SUPPLY MODEL — INTERACTIVE ═══════ */}
@@ -2173,111 +2553,52 @@ export function Section2() {
           />
         </div>
 
-        {/* ═══════ 6. NODE DISTRIBUTION ═══════ */}
+        {/* ═══════ 6. NODE TYPES — FOUR CARDS ═══════ */}
         <div id="s2-nodes" className="h-full">
-          <ComparisonSlide
-            title={t('nodes.title')}
-            featureLabel={t('nodes.featureLabel')}
-            option1Label={t('nodes.option1Label')}
-            option2Label={t('nodes.option2Label')}
-            option3Label={t('nodes.option3Label')}
-            items={t('nodes.items', { returnObjects: true }) as Array<{ feature: string; option1: string; option2: string; option3: string }>}
-          />
-        </div>
-
-        {/* ═══════ NODE DISTRIBUTION — CLOUD CENTRALISATION RISK ═══════ */}
-        <div className="h-full flex flex-col p-6 lg:p-10">
-          <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-1 shrink-0">{t('cloudRisk.heading')}</h2>
-          <p className="text-muted-foreground text-sm mb-5 shrink-0">{t('cloudRisk.leadA')} <span className="text-foreground font-semibold">{t('cloudRisk.leadEm')}</span> {t('cloudRisk.leadB')}</p>
-
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5">
-
-            {/* Left: cloud concentration */}
-            <div className="flex flex-col gap-3">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('cloudRisk.riskHeader')}</p>
-
-              <div className="p-4 bg-gradient-to-br from-[#f59e0b]/15 to-[#ED1C24]/10 border border-[#f59e0b]/40 rounded-xl">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-2xl">☁️</span>
-                  <h4 className="font-black text-foreground text-base">{t('cloudRisk.cloudTitle')}</h4>
-                </div>
-                <p className="text-sm text-muted-foreground mb-3">
-                  {t('cloudRisk.cloudBody')}
-                </p>
-                <div className="grid grid-cols-3 gap-2 mb-3">
-                  {[
-                    { provider: 'AWS', share: '~48 %', color: '#f59e0b' },
-                    { provider: 'Azure', share: '~15 %', color: '#6366f1' },
-                    { provider: 'GCP', share: '~10 %', color: '#39B54A' },
-                  ].map(p => (
-                    <div key={p.provider} className="bg-muted rounded-lg p-2 text-center">
-                      <div className="font-black text-sm" style={{ color: p.color }}>{p.share}</div>
-                      <div className="text-xs text-muted-foreground">{p.provider}</div>
-                    </div>
-                  ))}
-                </div>
-                <p className="text-xs text-muted-foreground italic">
-                  {t('cloudRisk.cloudCaption')}
-                </p>
-              </div>
-
-              <div className="p-5 bg-gradient-to-br from-[#ED1C24]/15 to-transparent border border-[#ED1C24]/30 rounded-xl flex-1 flex flex-col">
-                <h4 className="font-bold text-[#ED1C24] text-base mb-4">{t('cloudRisk.whatWrongTitle')}</h4>
-
-                {/* Real-life incident */}
-                <div className="mb-4 p-4 bg-[#ED1C24]/10 border border-[#ED1C24]/40 rounded-lg">
-                  <p className="text-sm font-bold text-foreground mb-2">{t('cloudRisk.incidentTitle')}</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {t('cloudRisk.incidentBodyA')} <span className="text-foreground font-semibold">{t('cloudRisk.incidentBodyStrong1')}</span>{t('cloudRisk.incidentBodyMid')} <span className="text-foreground font-semibold">{t('cloudRisk.incidentBodyStrong2')}</span>{t('cloudRisk.incidentBodyTail')}
-                  </p>
-                </div>
-
-                <ul className="space-y-3 text-sm text-muted-foreground flex-1">
-                  {(t('cloudRisk.risks', { returnObjects: true }) as Array<{ leadA: string; strong: string; tail: string }>).map((r, i) => (
-                    <li key={i}>• {r.leadA}<span className="text-foreground font-semibold">{r.strong}</span>{r.tail}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Right: solutions & mitigations */}
-            <div className="flex flex-col gap-3">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('cloudRisk.responseHeader')}</p>
-              {(['#39B54A','#6366f1','#f59e0b','#ED1C24']).map((color, i) => {
-                const emojis = ['🏠','🌍','🔗','📊'];
-                const responses = t('cloudRisk.responses', { returnObjects: true }) as Array<{ title: string; desc: string }>;
-                const n = responses[i];
+          <div className="w-full h-full flex flex-col p-5 lg:p-8">
+            <SlideHeader heading={t('nodes.title')} lead={t('nodes.description')} />
+            <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 lg:gap-4">
+              {(['#f59e0b','#ED1C24','#6366f1','#39B54A']).map((color, i) => {
+                const items = t('nodes.items', { returnObjects: true }) as Array<{ feature: string; option1: string; option2: string; option3: string }>;
+                const n = items[i];
+                const rows = [
+                  [t('nodes.option1Label'), n.option1],
+                  [t('nodes.option2Label'), n.option2],
+                  [t('nodes.option3Label'), n.option3],
+                ];
                 return (
-                  <div key={i} className="flex items-start gap-3 p-3 bg-card border border-border rounded-xl flex-1" style={{ borderColor: color + '30' }}>
-                    <div className="text-xl shrink-0">{emojis[i]}</div>
-                    <div>
-                      <div className="font-bold text-sm mb-0.5" style={{ color }}>{n.title}</div>
-                      <div className="text-xs text-muted-foreground">{n.desc}</div>
+                  <div key={i} className="rounded-xl border-2 bg-card flex flex-col overflow-hidden"
+                       style={{ borderColor: color + '66' }}>
+                    <div className="px-4 py-3 font-bold text-base" style={{ color, backgroundColor: color + '18' }}>
+                      {n.feature}
+                    </div>
+                    <div className="p-4 flex flex-col gap-3 flex-1">
+                      {rows.map(([label, value]) => (
+                        <div key={label}>
+                          <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">{label}</div>
+                          <div className="text-sm text-foreground leading-snug">{value}</div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 );
               })}
             </div>
-
           </div>
         </div>
 
-        {/* ═══════ KEYS & SEED PHRASE — CONCEPT ═══════ */}
+        {/* ═══════ KEYS — PUBLIC VS PRIVATE ═══════ */}
         <div id="s2-keys" className="h-full">
+          <KeysPublicPrivateSlide />
+        </div>
+
+        {/* ═══════ SEED PHRASE & SELF-CUSTODY ═══════ */}
+        <div id="s2-seed" className="h-full">
           <ConceptSlide
-            title={t('keys.title')}
-            description={t('keys.description')}
-            visual={
-              <div className="space-y-3 w-full">
-                <DefinitionBox term={t('keys.privateTerm')} definition={t('keys.privateDef')} />
-                <DefinitionBox term={t('keys.publicTerm')}  definition={t('keys.publicDef')} />
-                <DefinitionBox term={t('keys.seedTerm')}    definition={t('keys.seedDef')} />
-                <CalloutBox type="warning" title={t('keys.calloutTitle')}>
-                  {t('keys.calloutBody')}
-                </CalloutBox>
-              </div>
-            }
-            keyPoints={t('keys.keyPoints', { returnObjects: true }) as string[]}
+            title={t('keys.seedTitle')}
+            description={t('keys.seedDescription')}
+            visual={<SeedPhraseVisual />}
+            keyPoints={t('keys.seedKeyPoints', { returnObjects: true }) as string[]}
           />
         </div>
 
@@ -2294,22 +2615,18 @@ export function Section2() {
             visual={
               <div className="space-y-4 w-full">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 bg-gradient-to-br from-[#ED1C24]/20 to-transparent rounded-xl border border-[#ED1C24]/30">
-                    <h4 className="font-bold text-[#ED1C24] mb-2">{t('security.attackTitle')}</h4>
-                    <p className="text-sm text-muted-foreground">{t('security.attackBody')}</p>
-                  </div>
-                  <div className="p-4 bg-gradient-to-br from-[#39B54A]/20 to-transparent rounded-xl border border-[#39B54A]/30">
-                    <h4 className="font-bold text-[#39B54A] mb-2">{t('security.cryptoTitle')}</h4>
-                    <p className="text-sm text-muted-foreground">{t('security.cryptoBody')}</p>
-                  </div>
-                  <div className="p-4 bg-gradient-to-br from-[#6366f1]/20 to-transparent rounded-xl border border-[#6366f1]/30">
-                    <h4 className="font-bold text-[#6366f1] mb-2">{t('security.econTitle')}</h4>
-                    <p className="text-sm text-muted-foreground">{t('security.econBody')}</p>
-                  </div>
-                  <div className="p-4 bg-gradient-to-br from-[#f59e0b]/20 to-transparent rounded-xl border border-[#f59e0b]/30">
-                    <h4 className="font-bold text-[#f59e0b] mb-2">{t('security.decentralTitle')}</h4>
-                    <p className="text-sm text-muted-foreground">{t('security.decentralBody')}</p>
-                  </div>
+                  {([
+                    ['attack',    '#ED1C24'],
+                    ['crypto',    '#39B54A'],
+                    ['econ',      '#6366f1'],
+                    ['decentral', '#f59e0b'],
+                  ] as const).map(([k, color]) => (
+                    <div key={k} className="p-4 rounded-xl border"
+                         style={{ borderColor: color + '4d', background: `linear-gradient(to bottom right, ${color}33, transparent)` }}>
+                      <h4 className="font-bold mb-2" style={{ color }}>{t(`security.${k}Title`)}</h4>
+                      <p className="text-sm text-muted-foreground">{t(`security.${k}Body`)}</p>
+                    </div>
+                  ))}
                 </div>
                 <CalloutBox type="warning" title={t('security.quantumTitle')}>
                   {t('security.quantumBody')}
@@ -2373,162 +2690,165 @@ export function Section2() {
           <MiningDemo />
         </div>
 
-        {/* ═══════ 9. BITCOIN'S PROGRAMMABILITY LIMITS ═══════ */}
-        <div id="s2-programmability" className="h-full flex flex-col p-5 lg:p-8 overflow-y-auto">
-
-          <div className="shrink-0 mb-4">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{t('programmability.heading')}</h2>
-            <p className="text-sm text-muted-foreground max-w-3xl">
-              {t('programmability.lead')}
-            </p>
-          </div>
-
-          {/* 1 — PREMISE: what Bitcoin Script IS */}
-          <div className="shrink-0 bg-card border border-[#f59e0b]/40 rounded-xl p-4 mb-4">
-            <div className="flex items-start gap-3">
-              <span className="size-10 rounded-lg bg-[#f59e0b]/20 flex items-center justify-center text-xl shrink-0">📜</span>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-baseline gap-2 mb-1">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-[#f59e0b]">{t('programmability.premiseKicker')}</span>
-                </div>
-                <h3 className="font-bold text-foreground mb-1.5">{t('programmability.premiseTitle')}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {t('programmability.premiseBodyA')} <em>{t('programmability.premiseBodyEm')}</em> {t('programmability.premiseBodyMid')} <span className="text-foreground font-medium">{t('programmability.premiseScript')}</span>{t('programmability.premiseBodyB')} <span className="text-foreground font-medium">{t('programmability.premiseStrong')}</span> {t('programmability.premiseTail')}
-                </p>
-                <div className="mt-2 px-3 py-1.5 bg-[#f59e0b]/10 border border-[#f59e0b]/30 rounded-md text-xs text-muted-foreground italic">
-                  {t('programmability.premiseNote')}
-                </div>
-              </div>
+        {/* ═══════ 9a. REAL WORLD — WHERE IT ACTUALLY MATTERED ═══════ */}
+        <div id="s2-realworld-cases" className="h-full">
+          <div className="w-full h-full flex flex-col p-5 lg:p-8">
+            <SlideHeader kicker={t('realWorld.kicker')} heading={t('realWorld.casesHeading')} lead={t('realWorld.casesLead')} />
+            <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
+              {(['#f59e0b','#ED1C24','#6366f1']).map((color, i) => {
+                const cases = t('realWorld.cases', { returnObjects: true }) as RealWorldCase[];
+                return <RealWorldCard key={i} color={color} item={cases[i]} />;
+              })}
             </div>
-          </div>
-
-          {/* 2 — TIMELINE: workarounds the community tried */}
-          <div className="shrink-0 mb-4">
-            <div className="flex items-baseline gap-2 mb-2">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#6366f1]">{t('programmability.workaroundsKicker')}</span>
-              <span className="text-xs text-muted-foreground">{t('programmability.workaroundsSub')}</span>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              {(t('programmability.workarounds', { returnObjects: true }) as Array<{ year: string; name: string; desc: string }>).map((item, idx) => (
-                <div key={idx} className="relative bg-card border border-border rounded-xl p-3 flex flex-col">
-                  <div className="absolute -top-2 left-3 px-1.5 py-0.5 rounded bg-background border border-border text-[10px] font-mono font-bold text-[#f59e0b]">
-                    {item.year}
-                  </div>
-                  <div className="flex items-start justify-between mb-1 pt-1">
-                    <span className="font-bold text-foreground text-sm leading-tight">{item.name}</span>
-                    <span className="size-5 rounded bg-[#6366f1]/20 flex items-center justify-center text-[10px] shrink-0 ml-2">🧪</span>
-                  </div>
-                  <div className="text-xs text-muted-foreground leading-snug">{item.desc}</div>
-                  {idx < 2 && (
-                    <div className="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 z-10 text-muted-foreground text-sm">→</div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* 3 — VERDICT: hard limits vs the pivot */}
-          <div className="flex-1 min-h-[260px] grid grid-cols-1 md:grid-cols-2 gap-4">
-
-            {/* Hard limits — what no workaround could fix */}
-            <div className="bg-card border-2 border-[#ED1C24]/40 rounded-xl p-4 flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <span className="size-7 rounded-lg bg-[#ED1C24]/20 flex items-center justify-center text-sm">🚧</span>
-                <div>
-                  <div className="text-[10px] font-black uppercase tracking-widest text-[#ED1C24]">{t('programmability.hardLimitsKicker')}</div>
-                  <h3 className="font-bold text-foreground leading-tight">{t('programmability.hardLimitsTitle')}</h3>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 gap-1.5 mt-1">
-                {(t('programmability.hardLimits', { returnObjects: true }) as Array<{ label: string; why: string }>).map((item, i) => (
-                  <div key={i} className="flex items-center justify-between gap-3 bg-muted/40 rounded-lg px-2.5 py-1.5">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className="text-[#ED1C24] font-bold text-sm shrink-0">✗</span>
-                      <span className="text-sm font-medium text-foreground truncate">{item.label}</span>
-                    </div>
-                    <span className="text-[11px] text-muted-foreground shrink-0 text-right">{item.why}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* The pivot — Vitalik & Ethereum */}
-            <div className="bg-gradient-to-br from-[#627EEA]/15 to-[#39B54A]/10 border border-[#627EEA]/40 rounded-xl p-4 flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <span className="size-7 rounded-lg bg-[#627EEA]/20 flex items-center justify-center text-sm">💡</span>
-                <div>
-                  <div className="text-[10px] font-black uppercase tracking-widest text-[#627EEA]">{t('programmability.pivotKicker')}</div>
-                  <h3 className="font-bold text-foreground leading-tight">{t('programmability.pivotTitle')}</h3>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                {t('programmability.pivotBodyA')} <span className="text-foreground font-medium">{t('programmability.pivotName')}</span> {t('programmability.pivotBodyB')} <em>{t('programmability.pivotQuote')}</em>
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {t('programmability.pivotBodyC')} <span className="text-foreground font-medium">{t('programmability.pivotEthereum')}</span>{t('programmability.pivotBodyEnd')}
-              </p>
-              <div className="mt-auto px-3 py-2 bg-[#627EEA]/10 border border-[#627EEA]/30 rounded-lg text-xs text-[#627EEA] font-medium text-center">
-                {t('programmability.pivotFooter')}
-              </div>
-            </div>
-
+            <SourceFooter label={t('realWorld.casesSourcesLabel')} sources={t('realWorld.casesSources', { returnObjects: true }) as SourceLink[]} />
           </div>
         </div>
 
-        {/* ═══════ 9b. WHAT BITCOIN CAN'T DO ═══════ */}
+        {/* ═══════ 9b–9f. REAL WORLD — ONE STORY PER SLIDE ═══════ */}
+        {([
+          ['legaltender', '#6366f1'],
+          ['volcano', '#f97316'],
+          ['pizza', '#f59e0b'],
+          ['landfill', '#ED1C24'],
+          ['heat', '#39B54A'],
+        ] as const).map(([id, color]) => (
+          <div key={id} id={`s2-rw-${id}`} className="h-full">
+            <RealWorldSpotlight id={id} color={color} />
+          </div>
+        ))}
+
+        {/* ═══════ 10a. WHAT BITCOIN CAN'T DO (BY DESIGN) ═══════ */}
         <div id="s2-limits" className="h-full">
-          <ConceptSlide
-            title={t('limits.title')}
-            description={t('limits.description')}
-            visual={
-              <div className="space-y-3 w-full">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3.5 bg-gradient-to-br from-[#ED1C24]/15 to-transparent rounded-xl border-2 border-[#ED1C24]/40">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <ShieldX className="size-4 text-[#ED1C24]" />
-                      <h4 className="font-bold text-[#ED1C24]">{t('limits.noProgTitle')}</h4>
+          <div className="w-full h-full flex flex-col p-5 lg:p-8">
+            <SlideHeader heading={t('limits.title')} lead={t('limits.description')} />
+
+            <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {/* LEFT — Script premise + workarounds */}
+              <div className="flex flex-col gap-3 min-h-0">
+                <div className="bg-card border border-[#f59e0b]/40 rounded-xl p-4">
+                  <div className="flex items-start gap-3">
+                    <span className="size-9 rounded-lg bg-[#f59e0b]/20 flex items-center justify-center text-lg shrink-0">📜</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[10px] font-black uppercase tracking-widest text-[#f59e0b]">{t('programmability.premiseKicker')}</div>
+                      <h3 className="font-bold text-foreground mb-1">{t('programmability.premiseTitle')}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {t('programmability.premiseBodyA')} <em>{t('programmability.premiseBodyEm')}</em> {t('programmability.premiseBodyMid')} <span className="text-foreground font-medium">{t('programmability.premiseScript')}</span>{t('programmability.premiseBodyB')} <span className="text-foreground font-medium">{t('programmability.premiseStrong')}</span>{t('programmability.premiseTail')}
+                      </p>
+                      <div className="mt-2 px-3 py-1.5 bg-[#f59e0b]/10 border border-[#f59e0b]/30 rounded-md text-xs text-muted-foreground italic">
+                        {t('programmability.premiseNote')}
+                      </div>
                     </div>
-                    <p className="text-xs text-muted-foreground leading-snug">
-                      {t('limits.noProgBodyA')}{' '}
-                      <strong className="text-foreground/80">{t('limits.noProgBodyStrong')}</strong>
-                    </p>
-                  </div>
-                  <div className="p-3.5 bg-gradient-to-br from-[#f59e0b]/15 to-transparent rounded-xl border-2 border-[#f59e0b]/40">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <AlertTriangle className="size-4 text-[#f59e0b]" />
-                      <h4 className="font-bold text-[#f59e0b]">{t('limits.throughputTitle')}</h4>
-                    </div>
-                    <p className="text-xs text-muted-foreground leading-snug">
-                      {t('limits.throughputBodyA')}{' '}
-                      <strong className="text-foreground/80">{t('limits.throughputBodyStrong')}</strong>
-                    </p>
-                  </div>
-                  <div className="p-3.5 bg-gradient-to-br from-[#6366f1]/15 to-transparent rounded-xl border-2 border-[#6366f1]/40">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-base">⚡</span>
-                      <h4 className="font-bold text-[#6366f1]">{t('limits.finalityTitle')}</h4>
-                    </div>
-                    <p className="text-xs text-muted-foreground leading-snug">
-                      {t('limits.finalityBody')}
-                    </p>
-                  </div>
-                  <div className="p-3.5 bg-gradient-to-br from-[#8b5cf6]/15 to-transparent rounded-xl border-2 border-[#8b5cf6]/40">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-base">🔋</span>
-                      <h4 className="font-bold text-[#8b5cf6]">{t('limits.energyTitle')}</h4>
-                    </div>
-                    <p className="text-xs text-muted-foreground leading-snug">
-                      {t('limits.energyBody')}
-                    </p>
                   </div>
                 </div>
-                <CalloutBox type="tip" title={t('limits.calloutTitle')}>
-                  {t('limits.calloutBodyA')} <em>{t('limits.calloutBodyEm')}</em> {t('limits.calloutBodyTail')}
-                </CalloutBox>
+
+                <div className="flex-1 flex flex-col">
+                  <div className="flex items-baseline gap-2 mb-2">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-[#6366f1]">{t('programmability.workaroundsKicker')}</span>
+                    <span className="text-xs text-muted-foreground">{t('programmability.workaroundsSub')}</span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    {(t('programmability.workarounds', { returnObjects: true }) as Array<{ year: string; name: string; desc: string }>).map((item, idx) => (
+                      <div key={idx} className="flex items-start gap-3 bg-card border border-border rounded-xl p-3">
+                        <span className="px-1.5 py-0.5 rounded bg-background border border-border text-[10px] font-mono font-bold text-[#f59e0b] shrink-0">{item.year}</span>
+                        <div className="min-w-0">
+                          <div className="font-bold text-foreground text-sm leading-tight">🧪 {item.name}</div>
+                          <div className="text-xs text-muted-foreground leading-snug mt-0.5">{item.desc}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-            }
-            keyPoints={t('limits.keyPoints', { returnObjects: true }) as string[]}
-          />
+
+              {/* RIGHT — hard limits + other limits */}
+              <div className="flex flex-col gap-3 min-h-0">
+                <div className="bg-card border-2 border-[#ED1C24]/40 rounded-xl p-4 flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="size-7 rounded-lg bg-[#ED1C24]/20 flex items-center justify-center text-sm">🚧</span>
+                    <div>
+                      <div className="text-[10px] font-black uppercase tracking-widest text-[#ED1C24]">{t('programmability.hardLimitsKicker')}</div>
+                      <h3 className="font-bold text-foreground leading-tight">{t('programmability.hardLimitsTitle')}</h3>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 gap-1.5 mt-1">
+                    {(t('programmability.hardLimits', { returnObjects: true }) as Array<{ label: string; why: string }>).map((item, i) => (
+                      <div key={i} className="flex items-center justify-between gap-3 bg-muted/40 rounded-lg px-2.5 py-1.5">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="text-[#ED1C24] font-bold text-sm shrink-0">✗</span>
+                          <span className="text-sm font-medium text-foreground truncate">{item.label}</span>
+                        </div>
+                        <span className="text-[11px] text-muted-foreground shrink-0 text-right">{item.why}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex-1 flex flex-col">
+                  <div className="text-[10px] font-black uppercase tracking-widest text-[#8b5cf6] mb-2">{t('limits.otherLimitsKicker')}</div>
+                  <div className="flex flex-col gap-2">
+                    <LimitCard color="#f59e0b" icon={<AlertTriangle className="size-4 text-[#f59e0b]" />} title={t('limits.throughputTitle')}>
+                      {t('limits.throughputBodyA')} <strong className="text-foreground/80">{t('limits.throughputBodyStrong')}</strong>
+                    </LimitCard>
+                    <LimitCard color="#6366f1" icon={<span className="text-base">⚡</span>} title={t('limits.finalityTitle')}>
+                      {t('limits.finalityBody')}
+                    </LimitCard>
+                    <LimitCard color="#8b5cf6" icon={<span className="text-base">🔋</span>} title={t('limits.energyTitle')}>
+                      {t('limits.energyBody')}
+                    </LimitCard>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══════ 10b. BRIDGE — …SO A NEW CHAIN WAS BUILT ═══════ */}
+        <div id="s2-ethereum-bridge" className="h-full">
+          <div className="w-full h-full flex flex-col p-5 lg:p-8">
+            <SlideHeader
+              kicker={t('programmability.pivotKicker')}
+              heading={t('programmability.bridgeHeading')}
+              lead={t('programmability.bridgeLead')}
+            />
+
+            <div className="flex-1 min-h-0 flex flex-col gap-4 justify-center max-w-5xl w-full mx-auto">
+              {/* The quote */}
+              <div className="p-5 bg-gradient-to-br from-[#627EEA]/15 to-[#39B54A]/10 border border-[#627EEA]/40 rounded-xl">
+                <p className="text-sm text-muted-foreground mb-2">
+                  {t('programmability.pivotBodyA')} <span className="text-foreground font-medium">{t('programmability.pivotName')}</span> {t('programmability.pivotBodyB')}
+                </p>
+                <p className="text-lg lg:text-xl font-semibold text-foreground italic leading-snug">{t('programmability.pivotQuote')}</p>
+                <p className="text-sm text-muted-foreground mt-3">
+                  {t('programmability.pivotBodyC')} <span className="text-foreground font-medium">{t('programmability.pivotEthereum')}</span>{t('programmability.pivotBodyEnd')}
+                </p>
+              </div>
+
+              {/* Bitcoin said no / Ethereum said yes */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 bg-gradient-to-br from-[#f59e0b]/15 to-transparent rounded-xl border-2 border-[#f59e0b]/40">
+                  <h4 className="font-bold text-[#f59e0b] mb-1.5">{t('programmability.bridgeNoTitle')}</h4>
+                  <p className="text-sm text-muted-foreground leading-snug">{t('programmability.bridgeNoBody')}</p>
+                </div>
+                <div className="p-4 bg-gradient-to-br from-[#627EEA]/15 to-transparent rounded-xl border-2 border-[#627EEA]/40">
+                  <h4 className="font-bold text-[#627EEA] mb-1.5">{t('programmability.bridgeYesTitle')}</h4>
+                  <p className="text-sm text-muted-foreground leading-snug">{t('programmability.bridgeYesBody')}</p>
+                </div>
+              </div>
+
+              {/* Where this goes next */}
+              <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_1fr] gap-3 items-stretch">
+                <div className="px-3 py-2 flex items-center text-[10px] font-black uppercase tracking-widest text-muted-foreground">{t('programmability.bridgeNextTitle')}</div>
+                {(t('programmability.bridgeNext', { returnObjects: true }) as Array<{ label: string; desc: string }>).map((n, i) => (
+                  <div key={i} className="px-4 py-2.5 bg-[#627EEA]/10 border border-[#627EEA]/30 rounded-lg">
+                    <div className="text-sm font-bold text-[#627EEA]">→ {n.label}</div>
+                    <div className="text-xs text-muted-foreground">{n.desc}</div>
+                  </div>
+                ))}
+              </div>
+
+              <p className="text-sm text-muted-foreground text-center italic">{t('programmability.bridgeClosing')}</p>
+            </div>
+          </div>
         </div>
 
         {/* ═══════ QUIZ ═══════ */}
@@ -2564,6 +2884,15 @@ export function Section2() {
             question={t('quizNodes.question')}
             options={(t('quizNodes.options', { returnObjects: true }) as string[]).map((text, i) => ({ text, correct: i === 3 }))}
             explanation={t('quizNodes.explanation')}
+          />
+        </div>
+
+        {/* Quiz: real-world case — Cyprus 2013 */}
+        <div className="h-full">
+          <QuizSlide
+            question={t('quizCyprus.question')}
+            options={(t('quizCyprus.options', { returnObjects: true }) as string[]).map((text, i) => ({ text, correct: i === 1 }))}
+            explanation={t('quizCyprus.explanation')}
           />
         </div>
 
