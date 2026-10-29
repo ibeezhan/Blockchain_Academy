@@ -20,6 +20,8 @@ export function useFitToViewport(verticalMargin = 32) {
   const recompute = useCallback(() => {
     const el = ref.current;
     if (!el) return;
+    // Below lg (<1024px) the page flows and scrolls naturally; no scale-to-fit.
+    if (window.innerWidth < 1024) { setScale(1); return; }
     const natural = el.scrollHeight;
     if (!natural) return;
     const available = window.innerHeight - verticalMargin;
