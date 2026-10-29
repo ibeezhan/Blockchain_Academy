@@ -2535,7 +2535,7 @@ export function Section2() {
           <div className="w-full h-full flex flex-col p-5 lg:p-8">
             <SlideHeader kicker={t('realWorld.kicker')} heading={t('realWorld.tradeoffsHeading')} lead={t('realWorld.tradeoffsLead')} />
             <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 lg:gap-4">
-              {(['#6366f1','#f59e0b','#ED1C24','#39B54A']).map((color, i) => {
+              {(['#6366f1','#f97316','#f59e0b','#ED1C24','#39B54A']).map((color, i) => {
                 const items = t('realWorld.tradeoffs', { returnObjects: true }) as RealWorldCase[];
                 return <RealWorldCard key={i} color={color} item={items[i]} compact />;
               })}

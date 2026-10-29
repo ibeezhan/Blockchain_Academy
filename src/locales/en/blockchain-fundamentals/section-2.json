@@ -1,40 +1,40 @@
 {
   "groups": {
-    "g-s2-origins":    "🚀 Origins",
-    "g-s2-problems":   "🤔 Problems Bitcoin Solves",
+    "g-s2-origins": "🚀 Origins",
+    "g-s2-problems": "🤔 Problems Bitcoin Solves",
     "g-s2-tokenomics": "💰 Tokenomics & Network",
-    "g-s2-keys":       "🔑 Keys & Wallets",
-    "g-s2-structure":  "🛡️ Security & Structure",
-    "g-s2-mining":     "⛏️ Mining",
-    "g-s2-limits":     "🚧 Limits",
-    "g-s2-realworld":  "💡 Bitcoin in the Real World",
-    "g-s2-wrap":       "✅ Wrap Up"
+    "g-s2-keys": "🔑 Keys & Wallets",
+    "g-s2-structure": "🛡️ Security & Structure",
+    "g-s2-mining": "⛏️ Mining",
+    "g-s2-limits": "🚧 Limits",
+    "g-s2-realworld": "💡 Bitcoin in the Real World",
+    "g-s2-wrap": "✅ Wrap Up"
   },
   "chapters": {
-    "s2-breakthrough":        "Bitcoin Breakthrough",
-    "s2-paper":               "The 2008 Paper",
-    "s2-what":                "What is Bitcoin?",
-    "s2-byzantine":           "Byzantine Generals",
-    "s2-consensus":           "Solving It — 1982 to Bitcoin",
-    "s2-doublespend":         "Double-Spending",
-    "s2-utxo":                "Bitcoin's Fix — UTXO",
-    "s2-supply":              "🧩 Supply Model",
-    "s2-stats":               "Network Statistics",
-    "s2-nodes":               "Node Types",
-    "s2-keys":                "Keys & Seed Phrase",
-    "s2-keys-demo":           "🧩 Wallet Analogies",
-    "s2-security":            "Security Model",
-    "s2-merkle-build":        "🧩 Build a Merkle Tree",
-    "s2-merkle":              "🧩 Merkle Tree",
-    "s2-immutability":        "🧩 Immutability",
-    "s2-mining":              "Mining",
-    "s2-mining-demo":         "🧩 Find a Nonce",
-    "s2-limits":              "What Bitcoin Can't Do",
-    "s2-ethereum-bridge":     "…so a New Chain Was Built",
-    "s2-realworld-cases":     "Where It Actually Mattered",
+    "s2-breakthrough": "Bitcoin Breakthrough",
+    "s2-paper": "The 2008 Paper",
+    "s2-what": "What is Bitcoin?",
+    "s2-byzantine": "Byzantine Generals",
+    "s2-consensus": "Solving It — 1982 to Bitcoin",
+    "s2-doublespend": "Double-Spending",
+    "s2-utxo": "Bitcoin's Fix — UTXO",
+    "s2-supply": "🧩 Supply Model",
+    "s2-stats": "Network Statistics",
+    "s2-nodes": "Node Types",
+    "s2-keys": "Keys & Seed Phrase",
+    "s2-keys-demo": "🧩 Wallet Analogies",
+    "s2-security": "Security Model",
+    "s2-merkle-build": "🧩 Build a Merkle Tree",
+    "s2-merkle": "🧩 Merkle Tree",
+    "s2-immutability": "🧩 Immutability",
+    "s2-mining": "Mining",
+    "s2-mining-demo": "🧩 Find a Nonce",
+    "s2-limits": "What Bitcoin Can't Do",
+    "s2-ethereum-bridge": "…so a New Chain Was Built",
+    "s2-realworld-cases": "Where It Actually Mattered",
     "s2-realworld-tradeoffs": "Adoption & Tradeoffs",
-    "s2-quiz":                "Quizzes",
-    "s2-takeaways":           "Takeaways"
+    "s2-quiz": "Quizzes",
+    "s2-takeaways": "Takeaways"
   },
   "title": {
     "sectionNumber": "SECTION 02",
@@ -45,11 +45,11 @@
     "title": "Why Bitcoin Was a Breakthrough",
     "description": "The mysterious Satoshi Nakamoto solved the double-spending problem without a trusted authority — combining decades of cryptographic research into one working protocol.",
     "doubleSpendTitle": "The Double-Spending Problem",
-    "doubleSpendBody":  "How do you prevent someone from spending the same digital currency twice without a central authority to verify transactions?",
-    "solutionTitle":    "Satoshi's Solution",
-    "solutionBody":     "Combine cryptographic proof, distributed consensus, and economic incentives to create a trustless system where the network itself prevents fraud.",
-    "genesisLabel":     "Genesis Block Message:",
-    "genesisMessage":   "\"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks\"",
+    "doubleSpendBody": "How do you prevent someone from spending the same digital currency twice without a central authority to verify transactions?",
+    "solutionTitle": "Satoshi's Solution",
+    "solutionBody": "Combine cryptographic proof, distributed consensus, and economic incentives to create a trustless system where the network itself prevents fraud.",
+    "genesisLabel": "Genesis Block Message:",
+    "genesisMessage": "\"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks\"",
     "keyPoints": [
       "Created a decentralized consensus mechanism (Proof of Work)",
       "Designed a transparent public ledger system",
@@ -58,23 +58,23 @@
     ]
   },
   "paper": {
-    "kicker":   "October 31, 2008",
-    "heading":  "An anonymous post. Two unsolvable problems. One paper.",
-    "leadA":    "Someone — or some group — calling themselves",
+    "kicker": "October 31, 2008",
+    "heading": "An anonymous post. Two unsolvable problems. One paper.",
+    "leadA": "Someone — or some group — calling themselves",
     "leadName": "Satoshi Nakamoto",
-    "leadB":    "sent a 9-page PDF to a small cryptography mailing list. The claim inside was outrageous: that two problems no one had cracked in 30 years could both be solved at the same time, on the open internet, by ordinary computers.",
+    "leadB": "sent a 9-page PDF to a small cryptography mailing list. The claim inside was outrageous: that two problems no one had cracked in 30 years could both be solved at the same time, on the open internet, by ordinary computers.",
     "mailingList": "📧 mailing list · cryptography@metzdowd.com",
-    "from":     "From:",
-    "subject":  "Subject:",
+    "from": "From:",
+    "subject": "Subject:",
     "subjectLine": "Bitcoin P2P e-cash paper",
-    "date":     "Date:",
+    "date": "Date:",
     "dateLine": "Fri, 31 Oct 2008 14:10:00 -0700",
     "emailQuote": "\"I've been working on a new electronic cash system that's fully peer-to-peer, with no trusted third party. The main properties: Double-spending is prevented with a peer-to-peer network. No mint or other trusted parties. Participants can be anonymous. New coins are made from Hashcash style proof-of-work…\"",
     "paperLabel": "Paper:",
     "calloutTitle": "What happened next",
-    "calloutA":   "Almost nobody took it seriously. A few cypherpunks responded. Then on",
-    "calloutDate":"January 3, 2009",
-    "calloutB":   ", Satoshi mined Block #0 — embedded with the headline",
+    "calloutA": "Almost nobody took it seriously. A few cypherpunks responded. Then on",
+    "calloutDate": "January 3, 2009",
+    "calloutB": ", Satoshi mined Block #0 — embedded with the headline",
     "calloutHeadline": "\"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks\"",
     "calloutTail": ". The proof of the claim.",
     "readWhitepaper": "📄 Read the original whitepaper",
@@ -93,7 +93,7 @@
     "leadSystem": "system",
     "leadB": "— a set of rules a network of computers could run together, with no one in charge. Here's what was inside.",
     "pdfHeader": "📄 Bitcoin.pdf · 9 pages",
-    "pdfDate":   "Nov 2008",
+    "pdfDate": "Nov 2008",
     "pdfSections": [
       "Introduction",
       "Transactions",
@@ -109,25 +109,25 @@
       "Conclusion"
     ],
     "oneSentenceTitle": "The system, in one sentence",
-    "oneSentenceBody":  "Bitcoin is what happens when those 12 sections actually run on a network of independent computers — for years, without anyone in charge, and without breaking.",
+    "oneSentenceBody": "Bitcoin is what happens when those 12 sections actually run on a network of independent computers — for years, without anyone in charge, and without breaking.",
     "fourChoicesTitle": "Four design choices that came out of those pages",
     "permissionlessTitle": "🌐 Permissionless",
-    "permissionlessDesc":  "Anyone can send, receive, or validate transactions. No application, no KYC, no gatekeeper.",
-    "openSourceTitle":     "🔓 Open Source",
-    "openSourceDesc":      "The code is public — anyone can read it, audit it, fork it, or contribute to Bitcoin Core.",
-    "scarceTitle":         "💎 Scarce by design",
-    "scarceDesc":          "Hard-capped at 21 million coins forever. Enforced by code, not by anyone's promise.",
-    "censorshipTitle":     "⚡ Censorship-resistant",
-    "censorshipDesc":      "No entity can freeze, reverse, or block a valid Bitcoin transaction. The math doesn't care who you are."
+    "permissionlessDesc": "Anyone can send, receive, or validate transactions. No application, no KYC, no gatekeeper.",
+    "openSourceTitle": "🔓 Open Source",
+    "openSourceDesc": "The code is public — anyone can read it, audit it, fork it, or contribute to Bitcoin Core.",
+    "scarceTitle": "💎 Scarce by design",
+    "scarceDesc": "Hard-capped at 21 million coins forever. Enforced by code, not by anyone's promise.",
+    "censorshipTitle": "⚡ Censorship-resistant",
+    "censorshipDesc": "No entity can freeze, reverse, or block a valid Bitcoin transaction. The math doesn't care who you are."
   },
   "byzantine": {
     "kicker": "Problem #1 the paper claimed to solve",
     "heading": "Byzantine Generals — the problem",
     "leadInPrefix": "In",
-    "leadInYear":   "1982",
-    "leadInMid":    ", three researchers at SRI International —",
-    "leadInNames":  "Leslie Lamport, Robert Shostak & Marshall Pease",
-    "leadInTail":   "— formalised a question that would haunt distributed systems for decades:",
+    "leadInYear": "1982",
+    "leadInMid": ", three researchers at SRI International —",
+    "leadInNames": "Leslie Lamport, Robert Shostak & Marshall Pease",
+    "leadInTail": "— formalised a question that would haunt distributed systems for decades:",
     "leadInQuestion": "how do strangers who cannot trust each other agree on the same version of reality, when some of them are actively lying?",
     "metaphorTitle": "The metaphor",
     "metaphorBodyA": "Several Byzantine generals surround a city. They must",
@@ -137,16 +137,28 @@
     "metaphorBodyTail": "sending conflicting orders. With no trusted referee, can the loyal generals still reach the same plan?",
     "computingTitle": "In computing terms",
     "computingMap": {
-      "generals":   { "label": "Generals",    "value": "= nodes" },
-      "messengers": { "label": "Messengers",  "value": "= network packets" },
-      "traitors":   { "label": "Traitors",    "value": "= malicious / faulty nodes" },
-      "battlePlan": { "label": "Battle plan", "value": "= shared ledger state" }
+      "generals": {
+        "label": "Generals",
+        "value": "= nodes"
+      },
+      "messengers": {
+        "label": "Messengers",
+        "value": "= network packets"
+      },
+      "traitors": {
+        "label": "Traitors",
+        "value": "= malicious / faulty nodes"
+      },
+      "battlePlan": {
+        "label": "Battle plan",
+        "value": "= shared ledger state"
+      }
     },
     "catchTitle": "The catch in the 1982 proof",
-    "catchBody":  "Agreement is possible only if fewer than one third of the generals are traitors — and only if every general is known in advance. The open internet has no guest list. That gap stayed open for 26 years.",
-    "solvingKicker":  "Problem #1 — three decades of partial solutions",
+    "catchBody": "Agreement is possible only if fewer than one third of the generals are traitors — and only if every general is known in advance. The open internet has no guest list. That gap stayed open for 26 years.",
+    "solvingKicker": "Problem #1 — three decades of partial solutions",
     "solvingHeading": "Solving It — 1982 to Bitcoin",
-    "solvingLead":    "Researchers kept making the generals agree — but every solution needed a guest list of known, pre-approved participants. Bitcoin dropped the guest list.",
+    "solvingLead": "Researchers kept making the generals agree — but every solution needed a guest list of known, pre-approved participants. Bitcoin dropped the guest list.",
     "answerTitle": "Bitcoin's answer (Nov 2008)",
     "answerLead": "Don't try to",
     "answerEm": "identify",
@@ -154,38 +166,47 @@
     "answerStrong": "economically irrational",
     "answerTail": ". Every block costs real energy to produce. To rewrite history, an attacker would need to out-spend the entire honest majority, forever.",
     "answerMap": {
-      "tolerates":    { "label": "Tolerates",    "value": "< 50% bad hash" },
-      "trustedSetup": { "label": "Trusted setup", "value": "None" },
-      "membership":   { "label": "Membership",   "value": "Open / unknown" }
+      "tolerates": {
+        "label": "Tolerates",
+        "value": "< 50% bad hash"
+      },
+      "trustedSetup": {
+        "label": "Trusted setup",
+        "value": "None"
+      },
+      "membership": {
+        "label": "Membership",
+        "value": "Open / unknown"
+      }
     },
     "timelineHeader": "Three decades of partial solutions",
     "events": [
       {
         "year": "1982",
         "title": "The problem is named",
-        "who":   "Lamport, Shostak & Pease — SRI International",
-        "body":  "The paper \"The Byzantine Generals Problem\" proves consensus is mathematically possible only if fewer than ⅓ of participants are traitors — and requires every participant to be known in advance.",
+        "who": "Lamport, Shostak & Pease — SRI International",
+        "body": "The paper \"The Byzantine Generals Problem\" proves consensus is mathematically possible only if fewer than ⅓ of participants are traitors — and requires every participant to be known in advance.",
         "verdict": "Closed networks only"
       },
       {
         "year": "1989",
         "title": "Paxos",
-        "who":   "Leslie Lamport (again)",
-        "body":  "A practical consensus algorithm for distributed databases. Powers Google Chubby, Microsoft Azure, much of modern cloud — but every participant must be pre-authenticated.",
+        "who": "Leslie Lamport (again)",
+        "body": "A practical consensus algorithm for distributed databases. Powers Google Chubby, Microsoft Azure, much of modern cloud — but every participant must be pre-authenticated.",
         "verdict": "Permissioned only"
       },
       {
         "year": "1999",
         "title": "PBFT — Practical Byzantine Fault Tolerance",
-        "who":   "Castro & Liskov, MIT",
-        "body":  "First algorithm fast enough for real-world use that tolerates actively malicious nodes. Still requires a fixed, known set of validators and O(n²) messages — does not scale to thousands.",
+        "who": "Castro & Liskov, MIT",
+        "body": "First algorithm fast enough for real-world use that tolerates actively malicious nodes. Still requires a fixed, known set of validators and O(n²) messages — does not scale to thousands.",
         "verdict": "Small known sets"
       },
       {
         "year": "2008",
         "title": "Nakamoto Consensus",
-        "who":   "Satoshi — Bitcoin whitepaper",
-        "body":  "Replaces voting with mining. No fixed validator set, no identity, no pre-authentication. Anyone can join or leave at any time. The longest valid chain is the truth. First and only working solution for OPEN networks.",
+        "who": "Satoshi — Bitcoin whitepaper",
+        "body": "Replaces voting with mining. No fixed validator set, no identity, no pre-authentication. Anyone can join or leave at any time. The longest valid chain is the truth. First and only working solution for OPEN networks.",
         "verdict": "Open / permissionless ✓"
       }
     ],
@@ -201,44 +222,80 @@
     "title": "Double-Spending — 20 Years of Failed Digital Cash",
     "description": "A digital file can be copied infinitely. So how do you make 'money' that can't be? Cypherpunks tried for two decades — every attempt either centralised, collapsed, or never shipped. Bitcoin is the first one still running.",
     "timelineHeader": "📜 Two decades of attempts before Bitcoin",
-    "timelineRange":  "1983 → 2008",
+    "timelineRange": "1983 → 2008",
     "attempts": [
-      { "year": "1983", "name": "DigiCash",         "who": "David Chaum",      "why": "Blind-signature ecash. Required a central bank to mint coins. Filed for bankruptcy in 1998.",                                          "fate": "Centralised" },
-      { "year": "1996", "name": "e-gold",           "who": "Douglas Jackson",  "why": "Gold-backed online currency. Hit 5M accounts — then seized by US authorities in 2007.",                                                 "fate": "Shut down" },
-      { "year": "1997", "name": "Hashcash",         "who": "Adam Back",        "why": "Proof-of-work for email anti-spam. Not money — but the cryptographic primitive Satoshi would later reuse.",                              "fate": "Primitive only" },
-      { "year": "1998", "name": "b-money",          "who": "Wei Dai",          "why": "First proposal for a decentralised digital currency using PoW. Never implemented.",                                                     "fate": "Proposal only" },
-      { "year": "1998", "name": "Bit Gold",         "who": "Nick Szabo",       "why": "PoW-based scarce digital tokens, chained together. Solved most problems — but no working code shipped.",                                "fate": "Proposal only" },
-      { "year": "2008", "name": "Bitcoin",          "who": "Satoshi Nakamoto", "why": "Combines PoW + chained timestamps + P2P broadcast + incentives. Mainnet launched Jan 3 2009. Still running.",                            "fate": "Live ✓" }
+      {
+        "year": "1983",
+        "name": "DigiCash",
+        "who": "David Chaum",
+        "why": "Blind-signature ecash. Required a central bank to mint coins. Filed for bankruptcy in 1998.",
+        "fate": "Centralised"
+      },
+      {
+        "year": "1996",
+        "name": "e-gold",
+        "who": "Douglas Jackson",
+        "why": "Gold-backed online currency. Hit 5M accounts — then seized by US authorities in 2007.",
+        "fate": "Shut down"
+      },
+      {
+        "year": "1997",
+        "name": "Hashcash",
+        "who": "Adam Back",
+        "why": "Proof-of-work for email anti-spam. Not money — but the cryptographic primitive Satoshi would later reuse.",
+        "fate": "Primitive only"
+      },
+      {
+        "year": "1998",
+        "name": "b-money",
+        "who": "Wei Dai",
+        "why": "First proposal for a decentralised digital currency using PoW. Never implemented.",
+        "fate": "Proposal only"
+      },
+      {
+        "year": "1998",
+        "name": "Bit Gold",
+        "who": "Nick Szabo",
+        "why": "PoW-based scarce digital tokens, chained together. Solved most problems — but no working code shipped.",
+        "fate": "Proposal only"
+      },
+      {
+        "year": "2008",
+        "name": "Bitcoin",
+        "who": "Satoshi Nakamoto",
+        "why": "Combines PoW + chained timestamps + P2P broadcast + incentives. Mainnet launched Jan 3 2009. Still running.",
+        "fate": "Live ✓"
+      }
     ],
     "attackTitle": "📋 The attack (same since 1983)",
-    "attackBody":  "Alice has 1 coin. She broadcasts two transactions simultaneously — one paying Bob, one paying herself. Without a referee, both look valid. Who actually gets the coin?",
+    "attackBody": "Alice has 1 coin. She broadcasts two transactions simultaneously — one paying Bob, one paying herself. Without a referee, both look valid. Who actually gets the coin?",
     "oldFixTitle": "🏦 The pre-Bitcoin fix — trust a referee",
-    "oldFixBody":  "DigiCash, e-gold, banks, PayPal — all worked by keeping a central ledger. No double-spend possible — but you must trust the operator with your money. And operators can be seized, hacked, or simply turn evil.",
+    "oldFixBody": "DigiCash, e-gold, banks, PayPal — all worked by keeping a central ledger. No double-spend possible — but you must trust the operator with your money. And operators can be seized, hacked, or simply turn evil.",
     "closing": "Every prior attempt either centralised (DigiCash, e-gold) or stayed on paper (b-money, Bit Gold). Bitcoin's fix is on the next slide.",
-    "utxoKicker":  "Problem #2 — Bitcoin's answer",
-    "fixTitle":    "🔗 Bitcoin's Fix — the UTXO Model",
-    "fixLeadA":    "Bitcoin doesn't store balances. It stores",
-    "fixLeadStrong":"discrete unspent outputs",
-    "fixLeadB":    "— like physical coins. Spending one destroys it and mints new ones.",
-    "fixLeadEm":   "A coin can only be consumed once.",
+    "utxoKicker": "Problem #2 — Bitcoin's answer",
+    "fixTitle": "🔗 Bitcoin's Fix — the UTXO Model",
+    "fixLeadA": "Bitcoin doesn't store balances. It stores",
+    "fixLeadStrong": "discrete unspent outputs",
+    "fixLeadB": "— like physical coins. Spending one destroys it and mints new ones.",
+    "fixLeadEm": "A coin can only be consumed once.",
     "accountModelTitle": "Account Model · banks, Ethereum",
-    "aliceWallet":       "Alice's wallet",
-    "balance":           "balance",
-    "payBobAccount":     "↓ pay Bob 0.4 BTC",
-    "newBalance":        "new balance",
-    "accountNoteA":      "One number is mutated. To prevent double-spend,",
+    "aliceWallet": "Alice's wallet",
+    "balance": "balance",
+    "payBobAccount": "↓ pay Bob 0.4 BTC",
+    "newBalance": "new balance",
+    "accountNoteA": "One number is mutated. To prevent double-spend,",
     "accountNoteStrong": "someone",
-    "accountNoteTail":   "must serialise every write.",
-    "utxoModelTitle":    "UTXO Model · Bitcoin",
-    "utxoWallet":        "Alice's wallet — 3 unspent outputs",
-    "utxoLabel":         "UTXO",
-    "utxoPayBobA":       "↓ pay Bob 0.4 BTC · consume",
-    "utxoPayBobValue":   "0.5",
-    "utxoToBob":         "→ Bob",
-    "utxoChange":        "change",
-    "utxoNoteA":         "The spent UTXO is",
-    "utxoNoteStrong":    "gone",
-    "utxoNoteTail":      ". Try to reuse it and every node rejects the tx — no referee needed.",
+    "accountNoteTail": "must serialise every write.",
+    "utxoModelTitle": "UTXO Model · Bitcoin",
+    "utxoWallet": "Alice's wallet — 3 unspent outputs",
+    "utxoLabel": "UTXO",
+    "utxoPayBobA": "↓ pay Bob 0.4 BTC · consume",
+    "utxoPayBobValue": "0.5",
+    "utxoToBob": "→ Bob",
+    "utxoChange": "change",
+    "utxoNoteA": "The spent UTXO is",
+    "utxoNoteStrong": "gone",
+    "utxoNoteTail": ". Try to reuse it and every node rejects the tx — no referee needed.",
     "keyPoints": [
       "Spending an output destroys it — the same coin cannot be referenced twice",
       "No central operator to seize, sue, or shut down — every node validates independently",
@@ -249,15 +306,33 @@
     "title": "Bitcoin Network Statistics",
     "description": "The Bitcoin network is the most powerful and longest-running decentralized computing network in history.",
     "items": [
-      { "value": "~800 EH/s",  "label": "Total Hash Rate (2025)" },
-      { "value": "~19,000+",   "label": "Reachable Full Nodes" },
-      { "value": "~580 GB",    "label": "Full Blockchain Size" },
-      { "value": "~10 min",    "label": "Average Block Time" },
-      { "value": "~400K",      "label": "Daily Transactions" },
-      { "value": "99.99%",     "label": "Uptime Since 2009" }
+      {
+        "value": "~800 EH/s",
+        "label": "Total Hash Rate (2025)"
+      },
+      {
+        "value": "~19,000+",
+        "label": "Reachable Full Nodes"
+      },
+      {
+        "value": "~580 GB",
+        "label": "Full Blockchain Size"
+      },
+      {
+        "value": "~10 min",
+        "label": "Average Block Time"
+      },
+      {
+        "value": "~400K",
+        "label": "Daily Transactions"
+      },
+      {
+        "value": "99.99%",
+        "label": "Uptime Since 2009"
+      }
     ],
     "difficultyTitle": "Difficulty Adjustment",
-    "difficultyBody":  "Every 2,016 blocks (~2 weeks), the network automatically adjusts mining difficulty to maintain the ~10-minute block target — regardless of how much hash power joins or leaves.",
+    "difficultyBody": "Every 2,016 blocks (~2 weeks), the network automatically adjusts mining difficulty to maintain the ~10-minute block target — regardless of how much hash power joins or leaves.",
     "keyPoints": [
       "Hash rate has increased exponentially, now measured in exahashes",
       "Bitcoin has had only 2 brief notable downtime events in 15+ years",
@@ -302,13 +377,13 @@
     "title": "Keys & Seed Phrase",
     "description": "Owning bitcoin doesn't mean holding a coin — it means holding the cryptographic key that controls an address on the network. Three things matter.",
     "privateTerm": "🔑 Private Key",
-    "privateDef":  "A massive random number, usually shown as 64 hex characters. Whoever knows it can sign transactions from the address — i.e. spend the coins. Never share, never type online.",
-    "publicTerm":  "🔓 Public Key",
-    "publicDef":   "Mathematically derived from the private key (one-way — you can't go back). Used by everyone to verify signatures. Safe to share.",
-    "seedTerm":    "📝 Seed Phrase (BIP-39)",
-    "seedDef":     "12 or 24 ordinary English words encoding the seed for your private keys. Human-friendly backup — write it on paper, store it offline. Regenerates the entire wallet on any device.",
+    "privateDef": "A massive random number, usually shown as 64 hex characters. Whoever knows it can sign transactions from the address — i.e. spend the coins. Never share, never type online.",
+    "publicTerm": "🔓 Public Key",
+    "publicDef": "Mathematically derived from the private key (one-way — you can't go back). Used by everyone to verify signatures. Safe to share.",
+    "seedTerm": "📝 Seed Phrase (BIP-39)",
+    "seedDef": "12 or 24 ordinary English words encoding the seed for your private keys. Human-friendly backup — write it on paper, store it offline. Regenerates the entire wallet on any device.",
     "calloutTitle": "Lose the seed, lose the coins",
-    "calloutBody":  "There is no password reset, no customer support, no recovery. The seed phrase IS the wallet. Treat it like the only key to a vault — because that's what it is.",
+    "calloutBody": "There is no password reset, no customer support, no recovery. The seed phrase IS the wallet. Treat it like the only key to a vault — because that's what it is.",
     "keyPoints": [
       "Your wallet doesn't 'hold' bitcoin — it holds the keys that control addresses on the chain",
       "One-way derivation: seed → private key → public key → address. You can never go backwards",
@@ -319,15 +394,15 @@
     "title": "Bitcoin Security Model",
     "description": "Bitcoin's security relies on economic incentives, cryptographic proofs, and decentralized verification — not trust.",
     "attackTitle": "⛏️ 51% Attack",
-    "attackBody":  "An attacker would need more hash power than the rest of the network combined — currently requiring billions of dollars in hardware and electricity",
+    "attackBody": "An attacker would need more hash power than the rest of the network combined — currently requiring billions of dollars in hardware and electricity",
     "cryptoTitle": "🔐 Cryptographic Security",
-    "cryptoBody":  "SHA-256 hashing and ECDSA signatures have no known practical attacks. Breaking them requires breakthroughs that don't yet exist",
-    "econTitle":   "💰 Economic Incentives",
-    "econBody":    "Miners profit more from honest behavior than attacks. Attacking would destroy the value of their own holdings and hardware",
+    "cryptoBody": "SHA-256 hashing and ECDSA signatures have no known practical attacks. Breaking them requires breakthroughs that don't yet exist",
+    "econTitle": "💰 Economic Incentives",
+    "econBody": "Miners profit more from honest behavior than attacks. Attacking would destroy the value of their own holdings and hardware",
     "decentralTitle": "🌍 Decentralization",
-    "decentralBody":  "No single government, company, or individual can shut down Bitcoin — nodes exist in 100+ countries",
+    "decentralBody": "No single government, company, or individual can shut down Bitcoin — nodes exist in 100+ countries",
     "quantumTitle": "What About Quantum Computing?",
-    "quantumBody":  "Current quantum computers cannot break Bitcoin's cryptography. If they advance far enough, Bitcoin can upgrade to quantum-resistant algorithms — research is already underway.",
+    "quantumBody": "Current quantum computers cannot break Bitcoin's cryptography. If they advance far enough, Bitcoin can upgrade to quantum-resistant algorithms — research is already underway.",
     "keyPoints": [
       "Attacking Bitcoin costs more than cooperating with it — that is the whole security argument",
       "6 confirmations (~60 min) is considered practically irreversible; the network itself has never been hacked in 15+ years"
@@ -337,15 +412,39 @@
     "title": "Mining — A Global Guessing Game",
     "description": "Miners don't 'create' bitcoin out of thin air. They compete to add the next page to the ledger, and the network rewards whoever wins the race.",
     "steps": [
-      { "emoji": "📥", "title": "Collect transactions",            "desc": "Miners watch the mempool and pick pending transactions, prioritising the highest fees." },
-      { "emoji": "🧱", "title": "Build a candidate block",         "desc": "They pack the transactions into a block, point its header at the previous block, and add a counter called the nonce." },
-      { "emoji": "🎲", "title": "Guess the nonce",                 "desc": "They hash the block header, change the nonce, hash again, change again — billions of times per second." },
-      { "emoji": "🎯", "title": "Until the hash is small enough",  "desc": "A valid block hash must start with a specific number of zeros — set by the current difficulty." },
-      { "emoji": "📡", "title": "Broadcast the block",             "desc": "First miner to find a valid hash sends the block to the network. Every node verifies it in a single hash check." },
-      { "emoji": "💰", "title": "Collect the reward",              "desc": "The winning miner gets the block subsidy (3.125 BTC today) plus all the transaction fees in that block." }
+      {
+        "emoji": "📥",
+        "title": "Collect transactions",
+        "desc": "Miners watch the mempool and pick pending transactions, prioritising the highest fees."
+      },
+      {
+        "emoji": "🧱",
+        "title": "Build a candidate block",
+        "desc": "They pack the transactions into a block, point its header at the previous block, and add a counter called the nonce."
+      },
+      {
+        "emoji": "🎲",
+        "title": "Guess the nonce",
+        "desc": "They hash the block header, change the nonce, hash again, change again — billions of times per second."
+      },
+      {
+        "emoji": "🎯",
+        "title": "Until the hash is small enough",
+        "desc": "A valid block hash must start with a specific number of zeros — set by the current difficulty."
+      },
+      {
+        "emoji": "📡",
+        "title": "Broadcast the block",
+        "desc": "First miner to find a valid hash sends the block to the network. Every node verifies it in a single hash check."
+      },
+      {
+        "emoji": "💰",
+        "title": "Collect the reward",
+        "desc": "The winning miner gets the block subsidy (3.125 BTC today) plus all the transaction fees in that block."
+      }
     ],
     "calloutTitle": "Why all the effort?",
-    "calloutBody":  "Proof-of-work makes rewriting history physically expensive. To overwrite a single old block you'd have to redo all the work for that block AND every block after it — faster than the rest of the world combined. With ~800 EH/s on the network, that's currently uneconomical to attempt.",
+    "calloutBody": "Proof-of-work makes rewriting history physically expensive. To overwrite a single old block you'd have to redo all the work for that block AND every block after it — faster than the rest of the world combined. With ~800 EH/s on the network, that's currently uneconomical to attempt.",
     "keyPoints": [
       "Mining is a race to find a nonce that produces a small-enough hash — the only way to win is to keep guessing",
       "Difficulty automatically retargets every 2,016 blocks to keep block times around 10 minutes",
@@ -354,51 +453,81 @@
     ]
   },
   "programmability": {
-    "premiseKicker":  "The premise",
-    "premiseTitle":   "Bitcoin Script — Simple by Design",
-    "premiseBodyA":   "Bitcoin",
-    "premiseBodyEm":  "does",
+    "premiseKicker": "The premise",
+    "premiseTitle": "Bitcoin Script — Simple by Design",
+    "premiseBodyA": "Bitcoin",
+    "premiseBodyEm": "does",
     "premiseBodyMid": "have a built-in scripting language called",
-    "premiseScript":  "Bitcoin Script",
-    "premiseBodyB":   ". It handles \"spend only with two signatures\" or \"unlock after a delay\" — but it is intentionally",
-    "premiseStrong":  "not Turing-complete",
-    "premiseTail":    ": no loops, no persistent state, no complex logic.",
-    "premiseNote":    "Satoshi's reasoning: the fewer things a language can do, the fewer ways it can go wrong.",
+    "premiseScript": "Bitcoin Script",
+    "premiseBodyB": ". It handles \"spend only with two signatures\" or \"unlock after a delay\" — but it is intentionally",
+    "premiseStrong": "not Turing-complete",
+    "premiseTail": ": no loops, no persistent state, no complex logic.",
+    "premiseNote": "Satoshi's reasoning: the fewer things a language can do, the fewer ways it can go wrong.",
     "workaroundsKicker": "The workarounds",
-    "workaroundsSub":    "— bolted on top of Bitcoin Script",
+    "workaroundsSub": "— bolted on top of Bitcoin Script",
     "workarounds": [
-      { "year": "2012", "name": "Colored Coins",           "desc": "Metadata in transactions to represent real-world assets. Clever, very limited." },
-      { "year": "2013", "name": "Mastercoin / Omni Layer", "desc": "A protocol layer on top of Bitcoin for token creation. Still boxed in by Script." },
-      { "year": "2014", "name": "Counterparty",            "desc": "Smart-contract-like features encoded into transactions. Functional, but hacky and slow." }
+      {
+        "year": "2012",
+        "name": "Colored Coins",
+        "desc": "Metadata in transactions to represent real-world assets. Clever, very limited."
+      },
+      {
+        "year": "2013",
+        "name": "Mastercoin / Omni Layer",
+        "desc": "A protocol layer on top of Bitcoin for token creation. Still boxed in by Script."
+      },
+      {
+        "year": "2014",
+        "name": "Counterparty",
+        "desc": "Smart-contract-like features encoded into transactions. Functional, but hacky and slow."
+      }
     ],
     "hardLimitsKicker": "The hard limits",
-    "hardLimitsTitle":  "What no workaround could fix",
+    "hardLimitsTitle": "What no workaround could fix",
     "hardLimits": [
-      { "label": "Complex smart contracts",     "why": "No loops, no state" },
-      { "label": "Decentralised apps (dApps)",  "why": "No persistent logic" },
-      { "label": "On-chain tokens & NFTs",      "why": "No native token standard" },
-      { "label": "Autonomous on-chain rules",   "why": "Script too restrictive" }
+      {
+        "label": "Complex smart contracts",
+        "why": "No loops, no state"
+      },
+      {
+        "label": "Decentralised apps (dApps)",
+        "why": "No persistent logic"
+      },
+      {
+        "label": "On-chain tokens & NFTs",
+        "why": "No native token standard"
+      },
+      {
+        "label": "Autonomous on-chain rules",
+        "why": "Script too restrictive"
+      }
     ],
     "pivotKicker": "The pivot",
-    "pivotTitle":  "A new blockchain instead of patching this one",
-    "pivotBodyA":  "In 2013, a 19-year-old named",
-    "pivotName":   "Vitalik Buterin",
-    "pivotBodyB":  "asked:",
-    "pivotQuote":  "\"What if, instead of adding features on top of Bitcoin, we built a new blockchain designed from the ground up to run any program?\"",
-    "pivotBodyC":  "Bitcoin's core community largely rejected adding more programmability — they wanted to keep it simple and focused. That rejection became the direct motivation for",
+    "pivotTitle": "A new blockchain instead of patching this one",
+    "pivotBodyA": "In 2013, a 19-year-old named",
+    "pivotName": "Vitalik Buterin",
+    "pivotBodyB": "asked:",
+    "pivotQuote": "\"What if, instead of adding features on top of Bitcoin, we built a new blockchain designed from the ground up to run any program?\"",
+    "pivotBodyC": "Bitcoin's core community largely rejected adding more programmability — they wanted to keep it simple and focused. That rejection became the direct motivation for",
     "pivotEthereum": "Ethereum",
     "pivotBodyEnd": ".",
     "pivotFooter": "→ The story continues in Section 3",
     "bridgeHeading": "…so a new chain was built",
-    "bridgeLead":    "Bitcoin wouldn't bend. So the people who wanted programmable money went and built something else.",
+    "bridgeLead": "Bitcoin wouldn't bend. So the people who wanted programmable money went and built something else.",
     "bridgeNoTitle": "🚫 Bitcoin said no",
-    "bridgeNoBody":  "More features means more attack surface. The community chose to keep Bitcoin a single-purpose tool: digital, scarce, hard-to-stop money — and nothing else.",
+    "bridgeNoBody": "More features means more attack surface. The community chose to keep Bitcoin a single-purpose tool: digital, scarce, hard-to-stop money — and nothing else.",
     "bridgeYesTitle": "🦄 Ethereum said yes",
-    "bridgeYesBody":  "Launched in 2015 as a general-purpose blockchain: a shared computer anyone can run programs on. Smart contracts, tokens, DAOs — everything Bitcoin Script couldn't express.",
+    "bridgeYesBody": "Launched in 2015 as a general-purpose blockchain: a shared computer anyone can run programs on. Smart contracts, tokens, DAOs — everything Bitcoin Script couldn't express.",
     "bridgeNextTitle": "Where this goes next",
     "bridgeNext": [
-      { "label": "Section 3 of this course", "desc": "Ethereum, accounts and gas, DeFi · NFTs · DAOs" },
-      { "label": "Course 2 — Smart Contracts", "desc": "How programmable money actually works, and what it can't do" }
+      {
+        "label": "Section 3 of this course",
+        "desc": "Ethereum, accounts and gas, DeFi · NFTs · DAOs"
+      },
+      {
+        "label": "Course 2 — Smart Contracts",
+        "desc": "How programmable money actually works, and what it can't do"
+      }
     ],
     "bridgeClosing": "Neither choice is 'right'. Bitcoin does one thing at a quality nothing else has matched; Ethereum does many things with a larger attack surface. The rest of this course is about that tradeoff."
   },
@@ -410,9 +539,9 @@
     "throughputBodyA": "~7 transactions per second on the base layer. Visa does ~24,000. Bitcoin is built for settlement, not retail point-of-sale.",
     "throughputBodyStrong": "Lightning Network adds a layer on top for fast small payments.",
     "finalityTitle": "Slow finality",
-    "finalityBody":  "~10 minutes per block, ~60 minutes for a transaction to be considered irreversible. Fine for moving wealth, painful for buying coffee.",
-    "energyTitle":   "Energy-hungry",
-    "energyBody":    "Proof of Work uses real electricity by design — that's what makes attacks expensive. Whether the tradeoff is worth it is genuinely debated."
+    "finalityBody": "~10 minutes per block, ~60 minutes for a transaction to be considered irreversible. Fine for moving wealth, painful for buying coffee.",
+    "energyTitle": "Energy-hungry",
+    "energyBody": "Proof of Work uses real electricity by design — that's what makes attacks expensive. Whether the tradeoff is worth it is genuinely debated."
   },
   "realWorld": {
     "kicker": "💡 Bitcoin in the real world",
@@ -443,9 +572,18 @@
     ],
     "casesSourcesLabel": "Sources",
     "casesSources": [
-      { "label": "RTÉ — Bank of Cyprus depositors to lose 47.5% (2013)", "url": "https://www.rte.ie/news/business/2013/0729/465281-cyprus-deposits" },
-      { "label": "BitMEX Research — was Cyprus really the cause? (2015)", "url": "https://blog.bitmex.com/grexit-might-not-be-the-saviour-of-bitcoin" },
-      { "label": "Public Safety Canada — accounts frozen under the Emergencies Act (2022)", "url": "https://www.publicsafety.gc.ca/cnt/trnsprnc/brfng-mtrls/prlmntry-bndrs/20220824/14-en.aspx" }
+      {
+        "label": "RTÉ — Bank of Cyprus depositors to lose 47.5% (2013)",
+        "url": "https://www.rte.ie/news/business/2013/0729/465281-cyprus-deposits"
+      },
+      {
+        "label": "BitMEX Research — was Cyprus really the cause? (2015)",
+        "url": "https://blog.bitmex.com/grexit-might-not-be-the-saviour-of-bitcoin"
+      },
+      {
+        "label": "Public Safety Canada — accounts frozen under the Emergencies Act (2022)",
+        "url": "https://www.publicsafety.gc.ca/cnt/trnsprnc/brfng-mtrls/prlmntry-bndrs/20220824/14-en.aspx"
+      }
     ],
     "tradeoffsHeading": "Adoption and tradeoffs, honestly",
     "tradeoffsLead": "Four stories that show the upside and the cost in the same breath. None of them is a clean win.",
@@ -456,6 +594,13 @@
         "title": "El Salvador — Bitcoin as legal tender",
         "body": "September 2021: the first country to make Bitcoin legal tender, with a state Lightning wallet (Chivo) and a $30 sign-up bonus. What worked: a cheaper remittance option, a tourism and investor story, and the state's own BTC holdings grew in value.",
         "caveat": "What didn't: surveys by the Universidad Centroamericana found ~92% of Salvadorans did not use Bitcoin in 2024. In January 2025, as a condition of a $1.4B IMF loan, Congress made acceptance voluntary and began winding down Chivo."
+      },
+      {
+        "emoji": "🌋",
+        "year": "2021 →",
+        "title": "Volcano-powered mining — El Salvador",
+        "body": "El Salvador mines Bitcoin with geothermal electricity tapped from the Tecapa volcano. Official data showed ~474 BTC mined this way since 2021 (worth roughly $29M at the time), feeding the state's treasury of ~7,500+ BTC — mining powered by heat the country already has underground.",
+        "caveat": "Honest caveat: it is a small share of global hash rate and of the country's power, and the holdings swing with the Bitcoin price. The point is the idea — put stranded renewable energy to work — not the scale."
       },
       {
         "emoji": "🍕",
@@ -481,10 +626,30 @@
     ],
     "tradeoffsSourcesLabel": "Sources",
     "tradeoffsSources": [
-      { "label": "Cointelegraph — How Bitcoin mining heat is being tested to warm Canadian greenhouses (2026)", "url": "https://cointelegraph.com/news/how-bitcoin-mining-heat-is-being-tested-to-warm-canadian-greenhouses" },
-      { "label": "BetaKit — Heatmine's greenhouse and church heating tests in Quebec (2019)", "url": "https://betakit.com/heatmine-says-it-has-an-eco-friendly-solution-to-bitcoin-energy-waste/" },
-      { "label": "Cointelegraph — North Vancouver to heat buildings with Bitcoin mining (2021)", "url": "https://cointelegraph.com/news/canadian-city-plans-to-supply-residents-heat-using-bitcoin-mining" },
-      { "label": "Reuters via The Block — El Salvador revises Bitcoin law under IMF deal (2025)", "url": "https://www.theblock.co/post/337885/el-salvador-passes-bill-to-revise-bitcoin-adoption-strategy-per-imf-deal-reuters" }
+      {
+        "label": "Cointelegraph — How Bitcoin mining heat is being tested to warm Canadian greenhouses (2026)",
+        "url": "https://cointelegraph.com/news/how-bitcoin-mining-heat-is-being-tested-to-warm-canadian-greenhouses"
+      },
+      {
+        "label": "BetaKit — Heatmine's greenhouse and church heating tests in Quebec (2019)",
+        "url": "https://betakit.com/heatmine-says-it-has-an-eco-friendly-solution-to-bitcoin-energy-waste/"
+      },
+      {
+        "label": "Cointelegraph — North Vancouver to heat buildings with Bitcoin mining (2021)",
+        "url": "https://cointelegraph.com/news/canadian-city-plans-to-supply-residents-heat-using-bitcoin-mining"
+      },
+      {
+        "label": "Reuters via The Block — El Salvador revises Bitcoin law under IMF deal (2025)",
+        "url": "https://www.theblock.co/post/337885/el-salvador-passes-bill-to-revise-bitcoin-adoption-strategy-per-imf-deal-reuters"
+      },
+      {
+        "label": "Reuters — El Salvador mined nearly 474 bitcoins via volcano geothermal plant (2024)",
+        "url": "https://www.reuters.com/world/americas/el-salvador-mined-nearly-474-bitcoins-adding-state-crypto-holding-last-three-2024-05-14/"
+      },
+      {
+        "label": "Forbes — governments mining Bitcoin; El Salvador's Tecapa geothermal facility (2026)",
+        "url": "https://www.forbes.com/sites/digital-assets/2026/03/14/vaneck-says-up-to-13-governments-are-mining-bitcoin-heres-who-we-know/"
+      }
     ]
   },
   "quizSupply": {
@@ -540,81 +705,90 @@
   "supply": {
     "interactiveBadge": "🧩 Interactive",
     "heading": "Bitcoin Supply Model",
-    "lead":    "Fixed cap, predictable issuance, halving every ~4 years. Scrub the slider or jump to any halving — every metric below recalculates from the actual issuance curve.",
+    "lead": "Fixed cap, predictable issuance, halving every ~4 years. Scrub the slider or jump to any halving — every metric below recalculates from the actual issuance curve.",
     "panel": {
-      "totalMined":   "Total mined",
-      "percentOf":    "% of 21,000,000 cap",
-      "epoch":        "Epoch",
-      "blockReward":  "Block reward",
+      "totalMined": "Total mined",
+      "percentOf": "% of 21,000,000 cap",
+      "epoch": "Epoch",
+      "blockReward": "Block reward",
       "yearlyIssuance": "Yearly issuance",
       "perYearSuffix": "BTC / year",
-      "nextHalving":   "Next halving",
-      "inYears":       "· in {{years}} years · reward →",
-      "rewardSuffix":  "BTC",
-      "allHalvings":   "All halvings shown — issuance trends to zero by ~2140",
-      "footnoteA":     "Every",
-      "footnoteBlocks":"210,000 blocks",
-      "footnoteB":     "(about 4 years), the block reward halves. Started at",
+      "nextHalving": "Next halving",
+      "inYears": "· in {{years}} years · reward →",
+      "rewardSuffix": "BTC",
+      "allHalvings": "All halvings shown — issuance trends to zero by ~2140",
+      "footnoteA": "Every",
+      "footnoteBlocks": "210,000 blocks",
+      "footnoteB": "(about 4 years), the block reward halves. Started at",
       "footnoteStart": "50 BTC",
-      "footnoteC":     "in 2009. The last sat is mined around",
-      "footnoteEnd":   "2140",
-      "footnoteTail":  "— after that, miners are paid only by transaction fees."
+      "footnoteC": "in 2009. The last sat is mined around",
+      "footnoteEnd": "2140",
+      "footnoteTail": "— after that, miners are paid only by transaction fees."
     },
     "facts": [
-      { "strong": "Deflationary by design.",  "tail": "Supply growth slows by half every cycle — there is no monetary committee." },
-      { "strong": "Halvings precede cycles.", "tail": "Each prior halving has been followed by a major price expansion within 12–18 months." },
-      { "strong": "~3–4 M BTC lost.",          "tail": "Forgotten keys, dead wallets — effective supply is meaningfully smaller than the cap." }
+      {
+        "strong": "Deflationary by design.",
+        "tail": "Supply growth slows by half every cycle — there is no monetary committee."
+      },
+      {
+        "strong": "Halvings precede cycles.",
+        "tail": "Each prior halving has been followed by a major price expansion within 12–18 months."
+      },
+      {
+        "strong": "~3–4 M BTC lost.",
+        "tail": "Forgotten keys, dead wallets — effective supply is meaningfully smaller than the cap."
+      }
     ],
     "chart": {
-      "dragSlider":   "Drag the slider to a year",
-      "yearAria":     "Year",
-      "imageAria":    "Bitcoin supply over time",
-      "capLabel":     "21,000,000 BTC cap",
+      "dragSlider": "Drag the slider to a year",
+      "yearAria": "Year",
+      "imageAria": "Bitcoin supply over time",
+      "capLabel": "21,000,000 BTC cap",
       "genesisLabel": "Genesis"
     }
   },
   "miningDemo": {
     "interactiveBadge": "🧩 Interactive",
     "heading": "Find a Valid Nonce",
-    "lead":    "Mining is a guessing game: try a nonce, hash the block, check if the hash starts with enough zeros. Pick a difficulty and press Start.",
+    "lead": "Mining is a guessing game: try a nonce, hash the block, check if the hash starts with enough zeros. Pick a difficulty and press Start.",
     "blockHeader": "Block header (simplified)",
     "blockNumLabel": "Block #",
     "prevHashLabel": "Prev hash",
-    "txLabel":       "Transactions",
-    "rewardLabel":   "Reward",
-    "nonceLabel":    "Nonce (what you adjust)",
-    "currentHash":   "Current hash",
-    "targetLabel":   "target:",
-    "startMining":   "⛏️ Start mining",
-    "pause":         "⏸ Pause",
-    "reset":         "↺ Reset",
-    "searching":     "searching…",
-    "blockFound":    "✓ block found",
-    "validBlock":    "✓ Valid block",
-    "foundA":        "Took",
+    "txLabel": "Transactions",
+    "rewardLabel": "Reward",
+    "nonceLabel": "Nonce (what you adjust)",
+    "currentHash": "Current hash",
+    "targetLabel": "target:",
+    "startMining": "⛏️ Start mining",
+    "pause": "⏸ Pause",
+    "reset": "↺ Reset",
+    "searching": "searching…",
+    "blockFound": "✓ block found",
+    "validBlock": "✓ Valid block",
+    "foundA": "Took",
     "foundAttempts": "attempts",
-    "foundIn":       "in",
-    "foundSeconds":  "s",
-    "foundB":        ". The miner broadcasts this block to the network, every node verifies the hash in microseconds, and the miner gets",
-    "foundReward":   "3.125 BTC + tx fees",
-    "foundEnd":      ".",
-    "difficulty":    "Difficulty (leading hex zeros)",
-    "diffAria":      "Difficulty",
-    "easyLabel":     "1 (easy)",
-    "hardLabel":     "8 (very hard)",
-    "diffNoteA":     "Each extra zero makes finding a valid hash ~16× harder. Expected tries:",
-    "tries":         "Tries",
-    "hashRate":      "Hash rate",
-    "realScaleTitle":"Real Bitcoin scale",
-    "realScaleA":    "The current network does",
+    "foundIn": "in",
+    "foundSeconds": "s",
+    "foundB": ". The miner broadcasts this block to the network, every node verifies the hash in microseconds, and the miner gets",
+    "foundReward": "3.125 BTC + tx fees",
+    "foundEnd": ".",
+    "difficulty": "Difficulty (leading hex zeros)",
+    "diffAria": "Difficulty",
+    "easyLabel": "1 (easy)",
+    "hardLabel": "8 (very hard)",
+    "diffNoteA": "Each extra zero makes finding a valid hash ~16× harder. Expected tries:",
+    "tries": "Tries",
+    "hashRate": "Hash rate",
+    "realScaleTitle": "Real Bitcoin scale",
+    "realScaleA": "The current network does",
     "realScaleRate": "~800 EH/s",
-    "realScaleB":    "— that's 8 × 10²⁰ hashes per second. Real difficulty requires hashes starting with about",
-    "realScaleZeros":"19 zeros in hex",
+    "realScaleB": "— that's 8 × 10²⁰ hashes per second. Real difficulty requires hashes starting with about",
+    "realScaleZeros": "19 zeros in hex",
     "realScaleTail": ", automatically retargeted every 2,016 blocks to keep block times around 10 minutes.",
-    "noteLabel":     "Note:",
-    "noteA":         "this demo uses a fast non-cryptographic hash for animation. Real Bitcoin uses",
-    "noteSHA":       "double SHA-256",
-    "noteTail":      "of the 80-byte block header. The search loop is identical."
+    "noteLabel": "Note:",
+    "noteA": "this demo uses a fast non-cryptographic hash for animation. Real Bitcoin uses",
+    "noteSHA": "double SHA-256",
+    "noteTail": "of the 80-byte block header. The search loop is identical."
   },
   "takeaways": {
     "title": "Section 2 — Key Takeaways",
