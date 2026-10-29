@@ -7,25 +7,32 @@
     "g-s3-wrap":    "✅ Wrap Up"
   },
   "chapters": {
-    "s3-ethereum":         "Ethereum",
-    "s3-eth-accounts":     "Accounts & Gas",
-    "s3-eth-apps":         "DeFi · NFTs · DAOs",
-    "s3-usecases":         "Use Cases",
-    "s3-ecosystem":        "Web3 Ecosystem",
-    "s3-web3":             "Web1 → Web3",
-    "s3-dapp":             "App vs dApp",
-    "s3-ethics":           "Ethics",
-    "s3-future":           "Future Trends",
-    "s3-discussion":       "Discussion",
-    "s3-quiz":             "Quizzes",
-    "s3-takeaways":        "Takeaways",
-    "s3-recap":            "🧱 Knowledge Wall",
-    "s3-team-checkpoint":  "🤝 Team Checkpoint"
+    "s3-ethereum":       "Ethereum",
+    "s3-accounts":       "Accounts",
+    "s3-gas":            "Gas",
+    "s3-defi":           "DeFi",
+    "s3-nfts":           "NFTs",
+    "s3-daos":           "DAOs",
+    "s3-usecases":       "Use Cases",
+    "s3-ecosystem":      "Web3 Ecosystem",
+    "s3-web3":           "Web1 → Web3",
+    "s3-dapp":           "App vs dApp",
+    "s3-ethics":         "Ethics",
+    "s3-ethics-control": "Good vs Control",
+    "s3-future":         "Future Trends",
+    "s3-discussion":     "Discussion",
+    "s3-quiz":           "Quizzes",
+    "s3-takeaways":      "Takeaways",
+    "s3-recap":          "🧱 Knowledge Wall",
+    "s3-brainstorm":     "💡 Brainstorm"
   },
   "title": {
     "sectionNumber": "SECTION 03",
     "title": "What's Next for Blockchain?",
-    "subtitle": "Applications, ecosystem, evolution of the web, and the future of decentralized technology"
+    "subtitle": "Bitcoin is one of the simplest blockchains. Sneak peeks of Ethereum, smart contracts, NFTs, DAOs — and where all of this is heading."
+  },
+  "peek": {
+    "label": "Later session →"
   },
   "ethereum": {
     "recapBadge": "↩ §2",
@@ -68,8 +75,8 @@
     "recapA":     "Remember — a wallet holds keys, not coins. Ethereum runs the same idea, but with",
     "recapStrong":"two flavours",
     "recapTail":  "of account: one human-controlled, one code-controlled.",
-    "heading":    "Ethereum: Accounts & Gas",
-    "lead":       "Two concepts you must understand before touching any Ethereum application. Everything else is built on top of these.",
+    "title":      "Ethereum: Two Types of Account",
+    "intro":      "A balance you control with a key — or a program that holds its own balance. Ethereum has both, and they talk to each other.",
     "accountsHeader": "Two Types of Account",
     "eoaTitle":   "Externally Owned Account (EOA)",
     "eoaPoints": [
@@ -87,37 +94,61 @@
     ],
     "keyRuleStrong": "Key rule:",
     "keyRuleBody":   "Every transaction on Ethereum originates from an EOA. Smart contracts cannot act spontaneously — they need a human (or a keeper bot) to trigger them.",
-    "gasHeader":  "Gas — The Fuel of the EVM",
-    "gasIntroA":  "Every operation on Ethereum costs",
-    "gasIntroStrong": "gas",
-    "gasIntroTail":   "— a unit that measures computational work. Gas prevents infinite loops and spam: you must pay for every instruction executed by the EVM.",
-    "gasExamplesTitle": "Gas cost examples",
-    "gasRows": [
+    "illus": {
+      "human":       "You",
+      "key":         "private key",
+      "eoa":         "EOA",
+      "contract":    "Contract",
+      "contractSub": "{ code + balance }",
+      "contractB":   "Another contract",
+      "calls":       "calls",
+      "cannotStart": "can't start on its own",
+      "caption":     "Every chain of actions starts with a key-holder."
+    },
+    "peek": "You'll deploy a contract account of your own and call it from your wallet."
+  },
+  "ethGas": {
+    "recapBadge": "↩ just covered",
+    "recapBody":  "A contract's code runs on every node in the network. Someone has to pay for that computation — that's gas.",
+    "heading":    "Gas — The Fuel of the EVM",
+    "lead":       "Every instruction the EVM executes costs a little gas. You pay for what you use, and nothing can loop forever.",
+    "meterTitle": "Think of it as a taxi meter",
+    "meterPoints": [
+      "The meter ticks per instruction, not per transaction",
+      "A bigger job burns more gas — like a longer trip",
+      "You set a gas limit: the most you're willing to spend"
+    ],
+    "meterLabelLow":  "0",
+    "meterLabelHigh": "gas limit",
+    "meterValue":     "21,000",
+    "meterUnit":      "gas used",
+    "examplesTitle":  "Gas cost examples",
+    "rows": [
       { "op": "Read a public variable",     "gas": "FREE",       "note": "View call — never hits the chain" },
       { "op": "Emit an event",              "gas": "~375 gas",   "note": "Cheap — stored in logs, not state" },
       { "op": "Transfer ETH",               "gas": "21,000 gas", "note": "Base cost for every ETH transfer" },
       { "op": "Write to storage",           "gas": "~22,100 gas","note": "Most expensive common operation" },
       { "op": "Deploy a contract",          "gas": "500k+ gas",  "note": "Pays for every byte of bytecode" }
     ],
-    "gasFormulaTitle": "Gas = Gas Units × Gas Price",
-    "gasFormulaPoints": [
+    "formulaTitle": "Fee = Gas Used × Gas Price",
+    "formulaPoints": [
       { "strong": "Base fee:", "tail": " Set by the protocol, burned (EIP-1559, since 2021)" },
       { "strong": "Priority fee (tip):", "tail": " You pay the validator to include your transaction faster" },
       { "strong": "",                "tail": "Gas price is denominated in <strong>gwei</strong> (1 gwei = 0.000000001 ETH)" },
       { "strong": "",                "tail": "If a transaction runs out of gas mid-execution — it reverts, but <em>you still pay for the work done</em>" }
-    ]
+    ],
+    "peek": "You'll write a contract and watch the gas meter tick as it runs."
   },
   "ethApps": {
-    "recapBadge": "↩ just covered",
-    "recapBody":  "You've seen gas pay for computation. Time to look at what people actually build with it — every example below is a smart contract holding ETH and following rules.",
-    "heading":    "What Ethereum Enables: DeFi, NFTs, DAOs",
-    "lead":       "Three categories of applications that did not exist before programmable blockchains — each replacing or disrupting a traditional institution.",
+    "peekBadge":    "👀 Sneak peek",
     "replacesLabel":"Replaces:",
-    "riskLabel":  "Risk:",
+    "riskLabel":    "Risk:",
+    "examplesLabel":"Concrete examples",
     "apps": [
       {
         "title": "DeFi", "subtitle": "Decentralised Finance",
         "replaces": "Banks, brokers, exchanges",
+        "tease": "Programmable money, first use: rebuild finance out of smart contracts. Light tour now — a later session goes deep.",
         "description": "Financial services — lending, borrowing, trading, earning yield — running entirely in smart contracts. No KYC, no opening hours, no intermediary taking a cut.",
         "examples": [
           { "name": "Uniswap", "desc": "Decentralised exchange — swap any ERC-20 token via automated market maker (AMM)" },
@@ -125,11 +156,22 @@
           { "name": "MakerDAO / DAI", "desc": "Algorithmic stablecoin — mint DAI by locking ETH as collateral in a smart contract" }
         ],
         "risk": "Smart contract bugs, oracle manipulation, liquidation cascades",
-        "stat": "$40B+ Total Value Locked in DeFi protocols"
+        "stat": "$40B+ Total Value Locked in DeFi protocols",
+        "later": "You'll trace a real token swap through a smart contract, step by step.",
+        "visual": {
+          "you":       "You",
+          "tokenIn":   "ETH in",
+          "tokenOut":  "USDC out",
+          "pool":      "Liquidity pool",
+          "poolSub":   "a smart contract",
+          "providers": "liquidity providers",
+          "caption":   "Swap with code, not a counter clerk."
+        }
       },
       {
         "title": "NFTs", "subtitle": "Non-Fungible Tokens",
         "replaces": "Art dealers, certificate authorities, notaries",
+        "tease": "Programmable money, second use: tokens that are unique. Light tour now — a later session goes deep.",
         "description": "Provable, transferable digital ownership on-chain. Each NFT is a unique token (ERC-721) whose ownership history is permanently recorded. No one can deny ownership — the blockchain is the title deed.",
         "examples": [
           { "name": "ENS (.eth domains)",       "desc": "Blockchain-native usernames — pay once, own forever. No renewal extortion." },
@@ -137,11 +179,21 @@
           { "name": "Real estate deeds",         "desc": "Propy sold the first NFT property — immutable ownership transfer on-chain" }
         ],
         "risk": "Metadata stored off-chain (IPFS) can disappear — \"you don't own the image, you own the receipt\"",
-        "stat": "$41B traded in NFTs in 2021 — peak. Now utility-focused."
+        "stat": "$41B traded in NFTs in 2021 — peak. Now utility-focused.",
+        "later": "You'll mint a token of your own and see exactly what is — and isn't — stored on-chain.",
+        "visual": {
+          "fungible":       "Fungible",
+          "fungibleSub":    "every unit identical — 1 ETH = 1 ETH",
+          "nonFungible":    "Non-fungible",
+          "nonFungibleSub": "each token unique — #001 ≠ #002",
+          "owner":          "owner: 0x3f…a9",
+          "caption":        "The owner is recorded on-chain, forever."
+        }
       },
       {
         "title": "DAOs", "subtitle": "Decentralised Autonomous Organisations",
         "replaces": "Companies, NGOs, cooperatives, funds",
+        "tease": "Programmable money, third use: let a contract run the organisation. Light tour now — a later session goes deep.",
         "description": "An organisation governed by smart contracts and token votes instead of a board of directors. Anyone holding governance tokens can propose and vote on decisions — the outcome executes automatically on-chain.",
         "examples": [
           { "name": "MakerDAO",     "desc": "MKR holders vote on DAI stability parameters — billions in protocol policy decided on-chain" },
@@ -149,7 +201,17 @@
           { "name": "Gitcoin DAO",  "desc": "Funds open-source development via quadratic voting — community decides who gets grants" }
         ],
         "risk": "Voter apathy, whale capture, slow governance for emergencies",
-        "stat": "DAOs collectively hold $20B+ in treasuries"
+        "stat": "DAOs collectively hold $20B+ in treasuries",
+        "later": "You'll look at a real governance vote and ask who really held the power.",
+        "visual": {
+          "treasury":    "Treasury + rules",
+          "treasurySub": "a smart contract",
+          "holders":     "token holders",
+          "proposal":    "proposal",
+          "vote":        "vote",
+          "executes":    "executes automatically",
+          "caption":     "No board, no CEO. Code counts the votes."
+        }
       }
     ]
   },
@@ -197,7 +259,7 @@
     "noticeStrong": "Notice:",
     "noticeBodyA":  "the same pattern (e.g.",
     "noticeBodyEm": "verifiable provenance",
-    "noticeBodyTail":") shows up across supply chain, healthcare, and media. Industries are different surfaces; the underlying primitive is the same — which is why a Course-2 platform choice can serve multiple Course-3 business cases."
+    "noticeBodyTail":") shows up across supply chain, healthcare, and media. Industries are different surfaces; the underlying primitive is the same — which is why one platform choice can serve many business cases. A later session picks the platforms apart."
   },
   "ecosystem": {
     "recapBadge": "↩ §1 + §2",
@@ -306,12 +368,15 @@
     "recapTail":  "that protects the chain from tampering also protects bad rules from being undone. Same property, two faces.",
     "heading":    "Ethical Considerations",
     "lead":       "Blockchain is not inherently good or bad — its impact depends on how it is designed, governed, and used.",
+    "tensionsLabel": "Four tensions to keep in your pocket",
+    "askLabel":      "Ask yourself:",
     "themes": [
-      { "title": "⚡ Energy",                  "desc": "Bitcoin PoW uses as much power as some countries. Ethereum's PoS cut its footprint by 99.95%." },
-      { "title": "👁️ Surveillance vs Privacy", "desc": "Public chains are transparent forever — accountability and privacy are in direct tension." },
-      { "title": "🔒 Irreversibility",         "desc": "\"Code is law\" has limits. Transactions can't be reversed, even when real people are harmed." },
-      { "title": "🌍 Access & Inclusion",      "desc": "1.4 billion unbanked adults could access financial services with just a smartphone and a wallet." }
+      { "title": "⚡ Energy",                  "desc": "Bitcoin PoW uses as much power as some countries. Ethereum's PoS cut its footprint by 99.95%.", "ask": "Is \"secure because it's expensive\" worth the power bill?" },
+      { "title": "👁️ Surveillance vs Privacy", "desc": "Public chains are transparent forever — accountability and privacy are in direct tension.", "ask": "Would you want your bank statement public — forever?" },
+      { "title": "🔒 Irreversibility",         "desc": "\"Code is law\" has limits. Transactions can't be reversed, even when real people are harmed.", "ask": "Who do you call when the code is wrong?" },
+      { "title": "🌍 Access & Inclusion",      "desc": "1.4 billion unbanked adults could access financial services with just a smartphone and a wallet.", "ask": "A wallet needs a phone, a signal, and a safe seed phrase — who provides those?" }
     ],
+    "footer": "Keep these in mind — the next slide shows the same technology pulled in two opposite directions.",
     "goodHeader": "BLOCKCHAIN FOR GOOD",
     "good": [
       {
@@ -359,6 +424,18 @@
       }
     ]
   },
+  "ethicsControl": {
+    "recapBadge": "↩ §1",
+    "recapA":     "Remember the Section 1 question —",
+    "recapStrong":"who controls it?",
+    "recapTail":  "Same technology, two very different answers.",
+    "heading":    "Blockchain for Good vs Blockchain as Control",
+    "lead":       "A ledger nobody can quietly alter can protect people from powerful institutions — or hand those institutions a perfect control panel. Design decides which.",
+    "goodTag":    "Nobody can stop the transfer",
+    "controlTag": "Somebody can stop every transfer",
+    "footerStrong": "The deciding question:",
+    "footerBody":   "who holds the keys, and who can change the rules? Every system you meet in later sessions gets the same test."
+  },
   "future": {
     "title": "Future Trends",
     "description": "The next decade of blockchain will be shaped by convergence with other technologies and solutions to current limitations.",
@@ -370,12 +447,8 @@
       { "title": "🧾 Account Abstraction",        "desc": "Makes crypto wallets work like normal accounts: social recovery, gas sponsoring, session keys. The UX revolution blockchain needs." },
       { "title": "🏗️ Real-World Assets (RWAs)",  "desc": "Tokenizing real estate, bonds, commodities on-chain. BlackRock, Franklin Templeton, and others are already doing this at scale." }
     ],
-    "keyPoints": [
-      "AI + blockchain solves the provenance and trust problem for digital content",
-      "ZK proofs unlock privacy without sacrificing verifiability",
-      "Interoperability protocols will connect isolated blockchain ecosystems",
-      "Account abstraction will make crypto accessible to mainstream users"
-    ]
+    "footerStrong": "Beyond this course →",
+    "footerBody":   "Each of these is a rabbit hole of its own. You now have the vocabulary to follow any of them."
   },
   "discussion": {
     "prompt": "What industry do you think could benefit most from blockchain technology in the next 10 years?",
@@ -419,12 +492,12 @@
   "takeaways": {
     "title": "Section 3 — Key Takeaways",
     "items": [
-      "Blockchain use cases span 8+ industries: finance, healthcare, supply chain, voting, identity, real estate, sustainability, and digital art",
-      "The Web3 ecosystem is a layered stack — from nodes and validators at the bottom to wallets, dApps, and users at the top",
+      "Ethereum turned the blockchain into a programmable computer — accounts, contracts, and gas are the three ideas everything else builds on",
+      "DeFi, NFTs, and DAOs are what programmable money unlocks: finance, ownership, and organisations without a central operator",
+      "The same three patterns — trust without intermediaries, verifiable provenance, self-sovereign coordination — show up across every industry",
       "Web3 = Read + Write + Own: the key shift is that users own their data and digital assets instead of platforms",
-      "dApps replace centralized servers with smart contracts — removing single points of failure and platform control",
-      "Ethical trade-offs are real: energy consumption, privacy vs transparency, irreversibility, and dual-use potential",
-      "Future trends — ZK proofs, AI integration, DID, account abstraction — will define blockchain's next decade"
+      "The technology is neutral: it can deliver aid transparently or build programmable control — design and governance decide which",
+      "Bitcoin is one of the simplest blockchains. Everything in this section was a preview — later sessions go deep"
     ]
   },
   "knowledgeWall": {
@@ -548,30 +621,33 @@
       }
     }
   },
-  "teamCheckpoint": {
-    "contextLabel": "Day 1 wrap · Course 01 → Course 02 / 03",
-    "title": "Form your team",
-    "subtitle": "The team project runs across all five courses. Find your teammates now — you'll start using the team in Day 2 and Day 3.",
-    "duration": "10–15 min",
-    "doNowLabel": "Do now",
-    "discussLabel": "Discuss together",
-    "bringLabel":   "Bring to Day 2",
-    "doNow": [
-      { "leadA": "Form a team of ", "strong": "3–4 members", "tail": ". Mix backgrounds where you can." },
-      { "leadA": "Exchange contact details — WhatsApp / Telegram / email — so you can coordinate between sessions.", "strong": "", "tail": "" },
-      { "leadA": "Pick a working name for your team and a primary point of contact.", "strong": "", "tail": "" }
+  "brainstorm": {
+    "ribbon":       "💡 Brainstorm",
+    "contextLabel": "Closing activity · small groups",
+    "title":        "Brainstorm: the next crazy thing",
+    "subtitle":     "Bitcoin is one of the simplest blockchains — and people already run it on volcanoes. In groups of 3–4, dream up what we could do with Bitcoin or blockchain decades from now. The wilder, the better.",
+    "duration":     "15 min",
+    "seedsLabel":   "Seeds to get you going",
+    "seeds": [
+      { "emoji": "🌋", "title": "Volcano-powered mining",      "desc": "El Salvador mines bitcoin with geothermal energy from a volcano. What else could soak up stranded energy?" },
+      { "emoji": "♨️", "title": "Mining heat reuse",            "desc": "Miners already heat greenhouses and swimming pools with their exhaust. A whole town heated by hashes?" },
+      { "emoji": "🛰️", "title": "Bitcoin for ___",             "desc": "A satellite paying for bandwidth, a robot buying its own electricity — machine-to-machine money?" },
+      { "emoji": "🧬", "title": "Programmable money for ___",  "desc": "Aid that unlocks when the rain fails. Wages streamed by the second. Fill in the blank." }
     ],
-    "discuss": [
-      { "leadA": "Each member shares ", "strong": "one industry", "tail": " you find interesting or work in." },
-      { "leadA": "Note any business pain points you've personally experienced — paper-heavy processes, slow settlements, trust gaps, etc.", "strong": "", "tail": "" },
-      { "leadA": "Sketch a few candidate problems freely. You can refine — or completely change direction — as you learn more across Days 2 and 3.", "strong": "", "tail": "" }
+    "questionsLabel": "Stress-test every idea",
+    "questions": [
+      "Is it actually possible — today, or in 2050?",
+      "What would have to be true for it to work?",
+      "Who controls it? Who could switch it off?",
+      "Would it even need a blockchain — or would a spreadsheet do?"
     ],
-    "bring": [
-      { "leadA": "Your team's contact list — everyone in one chat group.", "strong": "", "tail": "" },
-      { "leadA": "A short list (~3) of pain points worth exploring.", "strong": "", "tail": "" },
-      { "leadA": "Curiosity about which blockchain platforms could fit them.", "strong": "", "tail": "" }
+    "stepsLabel": "How it runs",
+    "steps": [
+      { "time": "5 min", "label": "Form a group and pick your wildest idea" },
+      { "time": "5 min", "label": "Run it through the four questions" },
+      { "time": "5 min", "label": "Pitch it to the room in 60 seconds" }
     ],
-    "footnoteStrong": "What's next →",
-    "footnoteBody":   "Day 2 (Blockchain Platforms) will introduce platform trade-offs you'll need to choose between. Day 3 (Smart Contracts) is where your team's idea becomes a concrete design."
+    "footerStrong": "No wrong answers.",
+    "footerBody":   "The point is to notice where a blockchain genuinely helps — and where it's just a buzzword. Both are worth spotting."
   }
 }

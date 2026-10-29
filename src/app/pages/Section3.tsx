@@ -1,16 +1,13 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TitleSlide } from '../components/templates/TitleSlide';
-import { ConceptSlide } from '../components/templates/ConceptSlide';
 import { ComparisonSlide } from '../components/templates/ComparisonSlide';
 import { DiscussionSlide } from '../components/templates/DiscussionSlide';
 import { TakeawaySlide } from '../components/templates/TakeawaySlide';
 import { QuizSlide } from '../components/templates/QuizSlide';
-import { CalloutBox } from '../components/shared/CalloutBox';
-import { Rocket, ExternalLink } from 'lucide-react';
+import { Rocket, ExternalLink, Telescope, Landmark, Image as ImageIcon, Vote, Lightbulb } from 'lucide-react';
 import { SectionNav } from '../components/navigation/SectionNav';
 import { SiteFooter } from '../components/shared/SiteFooter';
-import { TeamCheckpoint } from '../components/TeamCheckpoint';
 import ethereumLogo from '../../ethereum-eth-logo.svg';
 import vitalikPhoto from '../../vitalik-buterin.jpg';
 import amazonLogo from '../../amazon.png';
@@ -23,12 +20,17 @@ import bitcoinLogo from '../../bitcoin-btc-logo.svg';
 import uniswapLogo from '../../uniswap-uni-logo.svg';
 import usdcLogo from '../../usd-coin-usdc-logo.svg';
 
+const NS = 'blockchain-fundamentals/section-3';
+
 /** Sidebar shape — labels resolved at render time via i18n */
 const section3ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
   { kind: 'group', id: 'g-s3-eth' },
   { id: 's3-ethereum' },
-  { id: 's3-eth-accounts' },
-  { id: 's3-eth-apps' },
+  { id: 's3-accounts' },
+  { id: 's3-gas' },
+  { id: 's3-defi' },
+  { id: 's3-nfts' },
+  { id: 's3-daos' },
 
   { kind: 'group', id: 'g-s3-world' },
   { id: 's3-usecases' },
@@ -40,6 +42,7 @@ const section3ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
 
   { kind: 'group', id: 'g-s3-reflect' },
   { id: 's3-ethics' },
+  { id: 's3-ethics-control' },
   { id: 's3-future' },
   { id: 's3-discussion' },
 
@@ -47,8 +50,281 @@ const section3ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
   { id: 's3-quiz' },
   { id: 's3-takeaways' },
   { id: 's3-recap' },
-  { id: 's3-team-checkpoint' },
+  { id: 's3-brainstorm' },
 ];
+
+const PEEK = '#22d3ee';
+
+/** Forward-pointing footer used on every "sneak peek" slide. */
+function PeekFooter({ body }: { body: string }) {
+  const { t } = useTranslation(NS);
+  return (
+    <div className="shrink-0 mt-3 px-3 py-2 rounded-lg border border-dashed flex items-center gap-2 text-[11px] text-muted-foreground"
+      style={{ borderColor: PEEK + '80', backgroundColor: PEEK + '10' }}>
+      <Telescope className="size-3.5 shrink-0" style={{ color: PEEK }} />
+      <strong style={{ color: PEEK }}>{t('peek.label')}</strong> {body}
+    </div>
+  );
+}
+
+/** Shared arrowhead marker for the inline SVG illustrations. */
+function ArrowDefs({ id, color }: { id: string; color: string }) {
+  return (
+    <defs>
+      <marker id={id} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill={color} />
+      </marker>
+    </defs>
+  );
+}
+
+// ─── Illustrations ──────────────────────────────────────────────────────────
+
+/** EOA (key-holder) → contract → contract; a contract can't start on its own. */
+function AccountsIllustration() {
+  const { t } = useTranslation(NS);
+  const EOA = '#627EEA', CONTRACT = '#39B54A';
+  return (
+    <svg viewBox="0 0 360 210" className="w-full h-auto max-w-[460px]" role="img" aria-label={t('ethAccounts.illus.caption')}>
+      <ArrowDefs id="acc-arrow" color="var(--muted-foreground)" />
+      {/* EOA: human + key */}
+      <circle cx="62" cy="78" r="34" fill={EOA + '22'} stroke={EOA} strokeWidth="2" />
+      <text x="62" y="86" fontSize="26" textAnchor="middle">🧑</text>
+      <g transform="translate(40,118)">
+        <circle cx="8" cy="8" r="6" fill="none" stroke="#f59e0b" strokeWidth="2.5" />
+        <line x1="13" y1="11" x2="40" y2="34" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" />
+        <line x1="31" y1="25" x2="37" y2="19" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" />
+        <line x1="36" y1="30" x2="42" y2="24" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" />
+      </g>
+      <text x="62" y="172" fontSize="11" fontWeight="800" textAnchor="middle" fill={EOA}>{t('ethAccounts.illus.eoa')}</text>
+      <text x="62" y="186" fontSize="9" textAnchor="middle" fill="var(--muted-foreground)">{t('ethAccounts.illus.human')} + {t('ethAccounts.illus.key')}</text>
+
+      {/* Contract A */}
+      <rect x="150" y="46" width="110" height="64" rx="10" fill={CONTRACT + '1f'} stroke={CONTRACT} strokeWidth="2" />
+      <text x="205" y="72" fontSize="12" fontWeight="800" textAnchor="middle" fill={CONTRACT}>{t('ethAccounts.illus.contract')}</text>
+      <text x="205" y="92" fontSize="10" fontFamily="monospace" textAnchor="middle" fill="var(--muted-foreground)">{t('ethAccounts.illus.contractSub')}</text>
+
+      {/* Contract B */}
+      <rect x="150" y="140" width="110" height="52" rx="10" fill={CONTRACT + '12'} stroke={CONTRACT} strokeWidth="1.5" strokeDasharray="4 3" />
+      <text x="205" y="165" fontSize="11" fontWeight="700" textAnchor="middle" fill={CONTRACT}>{t('ethAccounts.illus.contractB')}</text>
+      <text x="205" y="181" fontSize="9" fontFamily="monospace" textAnchor="middle" fill="var(--muted-foreground)">{t('ethAccounts.illus.contractSub')}</text>
+
+      {/* EOA → Contract A */}
+      <line x1="100" y1="78" x2="146" y2="78" stroke="var(--muted-foreground)" strokeWidth="2" markerEnd="url(#acc-arrow)" />
+      <text x="123" y="70" fontSize="9" fontWeight="700" textAnchor="middle" fill="var(--foreground)">{t('ethAccounts.illus.calls')}</text>
+      {/* Contract A → Contract B */}
+      <line x1="205" y1="112" x2="205" y2="136" stroke="var(--muted-foreground)" strokeWidth="2" markerEnd="url(#acc-arrow)" />
+      <text x="214" y="128" fontSize="9" fontWeight="700" fill="var(--foreground)">{t('ethAccounts.illus.calls')}</text>
+
+      {/* Contract trying to act on its own — blocked */}
+      <line x1="264" y1="78" x2="330" y2="78" stroke="#ED1C24" strokeWidth="2" strokeDasharray="5 4" />
+      <circle cx="300" cy="78" r="11" fill="var(--card)" stroke="#ED1C24" strokeWidth="2" />
+      <text x="300" y="83" fontSize="13" fontWeight="900" textAnchor="middle" fill="#ED1C24">✕</text>
+      <text x="300" y="104" fontSize="8.5" textAnchor="middle" fill="#ED1C24">{t('ethAccounts.illus.cannotStart')}</text>
+
+      <text x="180" y="206" fontSize="10" fontStyle="italic" textAnchor="middle" fill="var(--muted-foreground)">{t('ethAccounts.illus.caption')}</text>
+    </svg>
+  );
+}
+
+/** Fuel-gauge style gas meter: green → amber → red, needle at "gas used". */
+function GasMeter() {
+  const { t } = useTranslation(NS);
+  return (
+    <svg viewBox="0 0 240 150" className="w-full h-auto max-w-[280px]" role="img" aria-label={t('ethGas.meterTitle')}>
+      <path d="M30,120 A90,90 0 0,1 75,42.1" fill="none" stroke="#39B54A" strokeWidth="14" strokeLinecap="round" />
+      <path d="M75,42.1 A90,90 0 0,1 165,42.1" fill="none" stroke="#f59e0b" strokeWidth="14" />
+      <path d="M165,42.1 A90,90 0 0,1 210,120" fill="none" stroke="#ED1C24" strokeWidth="14" strokeLinecap="round" />
+      {/* needle */}
+      <line x1="120" y1="120" x2="66" y2="75" stroke="var(--foreground)" strokeWidth="3" strokeLinecap="round" />
+      <circle cx="120" cy="120" r="7" fill="var(--foreground)" />
+      <text x="30" y="142" fontSize="10" textAnchor="middle" fill="var(--muted-foreground)">{t('ethGas.meterLabelLow')}</text>
+      <text x="210" y="142" fontSize="10" textAnchor="middle" fill="#ED1C24" fontWeight="700">{t('ethGas.meterLabelHigh')}</text>
+      <text x="120" y="98" fontSize="16" fontWeight="900" textAnchor="middle" fill="var(--foreground)" fontFamily="monospace">{t('ethGas.meterValue')}</text>
+      <text x="120" y="145" fontSize="9" textAnchor="middle" fill="var(--muted-foreground)">{t('ethGas.meterUnit')}</text>
+    </svg>
+  );
+}
+
+/** DeFi: you swap against a pool (a contract) that liquidity providers fund. */
+function DefiIllustration({ v }: { v: Record<string, string> }) {
+  const C = '#39B54A';
+  return (
+    <svg viewBox="0 0 360 190" className="w-full h-auto" role="img" aria-label={v.caption}>
+      <ArrowDefs id="defi-arrow" color={C} />
+      {/* you */}
+      <circle cx="46" cy="90" r="26" fill="#627EEA22" stroke="#627EEA" strokeWidth="2" />
+      <text x="46" y="98" fontSize="22" textAnchor="middle">🧑</text>
+      <text x="46" y="130" fontSize="10" fontWeight="700" textAnchor="middle" fill="#627EEA">{v.you}</text>
+      {/* pool */}
+      <rect x="118" y="36" width="140" height="108" rx="14" fill={C + '14'} stroke={C} strokeWidth="2" />
+      <text x="188" y="56" fontSize="11" fontWeight="800" textAnchor="middle" fill={C}>{v.pool}</text>
+      <text x="188" y="69" fontSize="9" fontFamily="monospace" textAnchor="middle" fill="var(--muted-foreground)">{v.poolSub}</text>
+      <circle cx="160" cy="104" r="20" fill="#627EEA" />
+      <text x="160" y="109" fontSize="10" fontWeight="800" textAnchor="middle" fill="#fff">ETH</text>
+      <circle cx="216" cy="104" r="20" fill="#2775CA" />
+      <text x="216" y="109" fontSize="9" fontWeight="800" textAnchor="middle" fill="#fff">USDC</text>
+      <text x="188" y="108" fontSize="12" textAnchor="middle" fill="var(--muted-foreground)">⇄</text>
+      {/* you → pool / pool → you */}
+      <line x1="78" y1="72" x2="114" y2="72" stroke={C} strokeWidth="2" markerEnd="url(#defi-arrow)" />
+      <text x="96" y="64" fontSize="8.5" fontWeight="700" textAnchor="middle" fill="var(--foreground)">{v.tokenIn}</text>
+      <line x1="114" y1="110" x2="78" y2="110" stroke={C} strokeWidth="2" markerEnd="url(#defi-arrow)" />
+      <text x="96" y="124" fontSize="8.5" fontWeight="700" textAnchor="middle" fill="var(--foreground)">{v.tokenOut}</text>
+      {/* liquidity providers */}
+      {[52, 90, 128].map((cy, i) => (
+        <g key={i}>
+          <circle cx="322" cy={cy} r="13" fill="var(--muted)" stroke="var(--border)" strokeWidth="1" />
+          <text x="322" y={cy + 5} fontSize="12" textAnchor="middle">👤</text>
+          <line x1="306" y1={cy} x2="262" y2={90 - (90 - cy) * 0.25} stroke={C} strokeWidth="1.5" strokeDasharray="3 3" markerEnd="url(#defi-arrow)" />
+        </g>
+      ))}
+      <text x="322" y="156" fontSize="8.5" textAnchor="middle" fill="var(--muted-foreground)">{v.providers}</text>
+      <text x="180" y="182" fontSize="10" fontStyle="italic" textAnchor="middle" fill="var(--muted-foreground)">{v.caption}</text>
+    </svg>
+  );
+}
+
+/** NFTs: identical coins vs unique numbered tokens with an on-chain owner. */
+function NftIllustration({ v }: { v: Record<string, string> }) {
+  const C = '#f97316';
+  const shapes = ['#8b5cf6', '#22d3ee', '#ED1C24'];
+  return (
+    <svg viewBox="0 0 360 190" className="w-full h-auto" role="img" aria-label={v.caption}>
+      {/* fungible coins */}
+      <text x="88" y="22" fontSize="11" fontWeight="800" textAnchor="middle" fill="var(--muted-foreground)">{v.fungible}</text>
+      {[40, 88, 136].map((cx, i) => (
+        <g key={i}>
+          <circle cx={cx} cy="78" r="20" fill="#627EEA" stroke="#4c5fd0" strokeWidth="2" />
+          <text x={cx} y="83" fontSize="9" fontWeight="800" textAnchor="middle" fill="#fff">1 ETH</text>
+          {i < 2 && <text x={cx + 24} y="83" fontSize="14" fontWeight="900" textAnchor="middle" fill="var(--muted-foreground)">=</text>}
+        </g>
+      ))}
+      <text x="88" y="118" fontSize="8.5" textAnchor="middle" fill="var(--muted-foreground)">{v.fungibleSub}</text>
+      {/* divider */}
+      <line x1="178" y1="14" x2="178" y2="150" stroke="var(--border)" strokeWidth="1.5" strokeDasharray="4 4" />
+      {/* non-fungible framed tokens */}
+      <text x="270" y="22" fontSize="11" fontWeight="800" textAnchor="middle" fill={C}>{v.nonFungible}</text>
+      {[204, 250, 296].map((x, i) => (
+        <g key={i}>
+          <rect x={x} y="48" width="44" height="58" rx="5" fill="var(--card)" stroke={C} strokeWidth="2" />
+          {i === 0 && <circle cx={x + 22} cy="70" r="11" fill={shapes[i]} />}
+          {i === 1 && <rect x={x + 11} y="59" width="22" height="22" rx="3" fill={shapes[i]} />}
+          {i === 2 && <polygon points={`${x + 22},58 ${x + 34},82 ${x + 10},82`} fill={shapes[i]} />}
+          <text x={x + 22} y="99" fontSize="8" fontFamily="monospace" fontWeight="700" textAnchor="middle" fill={C}>#00{i + 1}</text>
+          {i < 2 && <text x={x + 47} y="83" fontSize="14" fontWeight="900" textAnchor="middle" fill={C}>≠</text>}
+        </g>
+      ))}
+      <text x="270" y="118" fontSize="8.5" textAnchor="middle" fill="var(--muted-foreground)">{v.nonFungibleSub}</text>
+      {/* owner tag on the first token */}
+      <rect x="196" y="128" width="88" height="16" rx="8" fill={C + '22'} stroke={C} strokeWidth="1" />
+      <text x="240" y="139" fontSize="8" fontFamily="monospace" textAnchor="middle" fill={C}>{v.owner}</text>
+      <line x1="226" y1="108" x2="236" y2="126" stroke={C} strokeWidth="1" strokeDasharray="2 2" />
+      <text x="180" y="180" fontSize="10" fontStyle="italic" textAnchor="middle" fill="var(--muted-foreground)">{v.caption}</text>
+    </svg>
+  );
+}
+
+/** DAOs: token holders vote into a treasury contract, which executes the result. */
+function DaoIllustration({ v }: { v: Record<string, string> }) {
+  const C = '#6366f1';
+  const holders = [
+    { x: 60, y: 48 }, { x: 60, y: 132 }, { x: 300, y: 48 }, { x: 300, y: 132 }, { x: 180, y: 24 },
+  ];
+  return (
+    <svg viewBox="0 0 360 190" className="w-full h-auto" role="img" aria-label={v.caption}>
+      <ArrowDefs id="dao-arrow" color={C} />
+      {/* treasury contract */}
+      <rect x="120" y="60" width="120" height="60" rx="12" fill={C + '1a'} stroke={C} strokeWidth="2" />
+      <text x="180" y="84" fontSize="11" fontWeight="800" textAnchor="middle" fill={C}>{v.treasury}</text>
+      <text x="180" y="99" fontSize="9" fontFamily="monospace" textAnchor="middle" fill="var(--muted-foreground)">{v.treasurySub}</text>
+      {/* holders + votes */}
+      {holders.map((h, i) => {
+        const tx = h.x < 180 ? 116 : h.x > 180 ? 244 : 180;
+        const ty = h.y < 60 ? 56 : h.y > 120 ? 124 : 90;
+        return (
+          <g key={i}>
+            <line x1={h.x} y1={h.y} x2={tx} y2={ty} stroke={C} strokeWidth="1.5" strokeDasharray="3 3" markerEnd="url(#dao-arrow)" />
+            <circle cx={h.x} cy={h.y} r="15" fill="var(--muted)" stroke="var(--border)" strokeWidth="1" />
+            <text x={h.x} y={h.y + 5} fontSize="13" textAnchor="middle">👤</text>
+            <text x={(h.x + tx) / 2} y={(h.y + ty) / 2 - 4} fontSize="8" fontWeight="700" textAnchor="middle" fill={C}>{v.vote}</text>
+          </g>
+        );
+      })}
+      <text x="60" y="162" fontSize="8.5" textAnchor="middle" fill="var(--muted-foreground)">{v.holders}</text>
+      {/* proposal card */}
+      <rect x="18" y="78" width="46" height="28" rx="4" fill="var(--card)" stroke="#f59e0b" strokeWidth="1.5" />
+      <text x="41" y="96" fontSize="8" fontWeight="700" textAnchor="middle" fill="#f59e0b">{v.proposal}</text>
+      <line x1="66" y1="92" x2="116" y2="92" stroke="#f59e0b" strokeWidth="1.5" markerEnd="url(#dao-arrow)" />
+      {/* execution */}
+      <line x1="180" y1="122" x2="180" y2="148" stroke="#39B54A" strokeWidth="2" markerEnd="url(#dao-arrow)" />
+      <circle cx="180" cy="160" r="11" fill="#39B54A" />
+      <text x="180" y="165" fontSize="12" fontWeight="900" textAnchor="middle" fill="#fff">✓</text>
+      <text x="236" y="163" fontSize="8.5" fontWeight="700" fill="#39B54A">{v.executes}</text>
+      <text x="180" y="184" fontSize="10" fontStyle="italic" textAnchor="middle" fill="var(--muted-foreground)">{v.caption}</text>
+    </svg>
+  );
+}
+
+// ─── Sneak-peek slide (DeFi / NFTs / DAOs) ───────────────────────────────────
+
+interface AppPeek {
+  title: string; subtitle: string; replaces: string; tease: string; description: string;
+  examples: Array<{ name: string; desc: string }>; risk: string; stat: string; later: string;
+  visual: Record<string, string>;
+}
+
+function SneakPeekSlide({ id, index, color, icon, illustration }: {
+  id: string; index: number; color: string; icon: ReactNode; illustration: (v: Record<string, string>) => ReactNode;
+}) {
+  const { t } = useTranslation(NS);
+  const app = (t('ethApps.apps', { returnObjects: true }) as AppPeek[])[index];
+  return (
+    <div id={id} className="h-full flex flex-col p-5 lg:p-8">
+      <div className="shrink-0 mb-3">
+        <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
+          <span className="px-1.5 py-0.5 rounded font-bold" style={{ color: PEEK, backgroundColor: PEEK + '26' }}>{t('ethApps.peekBadge')}</span>
+          <span>{app.tease}</span>
+        </div>
+        <div className="flex items-center gap-3 mb-1">
+          <div className="size-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: color + '26', color }}>{icon}</div>
+          <div>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground leading-none">{app.title} <span className="text-base lg:text-lg font-semibold text-muted-foreground">— {app.subtitle}</span></h2>
+          </div>
+          <span className="ml-auto text-xs italic text-muted-foreground px-2.5 py-1 rounded-full border border-border bg-card">{t('ethApps.replacesLabel')} {app.replaces}</span>
+        </div>
+        <p className="text-sm text-muted-foreground max-w-4xl">{app.description}</p>
+      </div>
+
+      <div className="flex-1 min-h-0 grid grid-cols-5 gap-4">
+        <div className="col-span-2 flex flex-col gap-3 min-h-0">
+          <div className="flex-1 min-h-0 bg-card border rounded-xl p-3 flex items-center justify-center" style={{ borderColor: color + '55' }}>
+            {illustration(app.visual)}
+          </div>
+          <div className="shrink-0 p-3 rounded-xl border text-center" style={{ borderColor: color + '55', background: `linear-gradient(to bottom right, ${color}26, transparent)` }}>
+            <div className="text-sm font-black" style={{ color }}>{app.stat}</div>
+          </div>
+        </div>
+        <div className="col-span-3 flex flex-col gap-2 min-h-0">
+          <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{t('ethApps.examplesLabel')}</div>
+          {app.examples.map((ex, j) => (
+            <div key={j} className="flex-1 p-3 rounded-xl bg-card border border-border flex items-start gap-3">
+              <span className="size-7 rounded-lg flex items-center justify-center text-xs font-black text-white shrink-0" style={{ backgroundColor: color }}>{j + 1}</span>
+              <div>
+                <div className="font-bold text-sm text-foreground">{ex.name}</div>
+                <div className="text-xs text-muted-foreground">{ex.desc}</div>
+              </div>
+            </div>
+          ))}
+          <div className="shrink-0 p-2.5 rounded-lg bg-[#ef4444]/8 border border-[#ef4444]/30 text-xs text-muted-foreground">
+            <span className="font-bold text-[#ef4444]">{t('ethApps.riskLabel')} </span>{app.risk}
+          </div>
+        </div>
+      </div>
+
+      <PeekFooter body={app.later} />
+    </div>
+  );
+}
 
 // ─── Knowledge Wall — recap of all Course 1 vocabulary ──────────────────────
 
@@ -74,7 +350,7 @@ function sectionColor(s: 1 | 2 | 3): string {
 }
 
 function KnowledgeWall() {
-  const { t } = useTranslation('blockchain-fundamentals/section-3');
+  const { t } = useTranslation(NS);
 
   /** Build the runtime themed bricks: pull translated term + defn for each shape entry. */
   const themes = useMemo(() => KNOWLEDGE_WALL_SHAPE.map(shape => {
@@ -185,8 +461,93 @@ function KnowledgeWall() {
   );
 }
 
+// ─── Brainstorm — closing in-class activity ──────────────────────────────────
+
+function BrainstormSlide() {
+  const { t } = useTranslation(NS);
+  const COLOR = '#f59e0b';
+  const seeds = t('brainstorm.seeds', { returnObjects: true }) as Array<{ emoji: string; title: string; desc: string }>;
+  const questions = t('brainstorm.questions', { returnObjects: true }) as string[];
+  const steps = t('brainstorm.steps', { returnObjects: true }) as Array<{ time: string; label: string }>;
+  return (
+    <div className="h-full flex flex-col p-6 lg:p-10 relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none opacity-60"
+        style={{ background: `radial-gradient(circle at 20% 0%, ${COLOR}1f, transparent 60%), radial-gradient(circle at 80% 100%, #ED1C2418, transparent 60%)` }} />
+
+      {/* Header */}
+      <div className="shrink-0 relative z-10 mb-4 flex items-start justify-between gap-4 flex-wrap">
+        <div className="flex items-start gap-4">
+          <div className="px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-widest text-white shadow-md shrink-0"
+            style={{ background: `linear-gradient(135deg, ${COLOR}, #ED1C24)` }}>
+            {t('brainstorm.ribbon')}
+          </div>
+          <div>
+            <div className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">{t('brainstorm.contextLabel')}</div>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-0.5">{t('brainstorm.title')}</h2>
+            <p className="text-muted-foreground text-sm mt-1 max-w-3xl">{t('brainstorm.subtitle')}</p>
+          </div>
+        </div>
+        <div className="shrink-0 px-3 py-1.5 rounded-full text-xs font-bold border-2 self-center"
+          style={{ borderColor: COLOR + '50', color: COLOR, backgroundColor: COLOR + '10' }}>
+          ⏱ {t('brainstorm.duration')}
+        </div>
+      </div>
+
+      {/* Panes */}
+      <div className="flex-1 min-h-0 relative z-10 grid grid-cols-12 gap-4">
+        {/* Seeds */}
+        <div className="col-span-5 p-4 bg-card border-2 rounded-2xl flex flex-col gap-3 min-h-0" style={{ borderColor: COLOR + '50' }}>
+          <div className="text-[10px] font-black uppercase tracking-widest" style={{ color: COLOR }}>{t('brainstorm.seedsLabel')}</div>
+          <div className="flex-1 min-h-0 grid grid-cols-2 gap-2.5">
+            {seeds.map((s, i) => (
+              <div key={i} className="p-3 rounded-xl border border-border bg-muted/30 flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl leading-none">{s.emoji}</span>
+                  <div className="font-bold text-sm text-foreground leading-tight">{s.title}</div>
+                </div>
+                <p className="text-xs text-muted-foreground leading-snug">{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Questions */}
+        <div className="col-span-4 p-4 bg-card border-2 rounded-2xl flex flex-col gap-3 min-h-0 border-[#6366f1]/50">
+          <div className="text-[10px] font-black uppercase tracking-widest text-[#6366f1]">{t('brainstorm.questionsLabel')}</div>
+          <div className="flex-1 flex flex-col justify-center gap-2.5">
+            {questions.map((q, i) => (
+              <div key={i} className="flex items-start gap-3 p-2.5 rounded-lg bg-muted/30">
+                <div className="size-6 rounded-full bg-[#6366f1]/20 flex items-center justify-center shrink-0 text-xs font-bold text-[#6366f1]">{i + 1}</div>
+                <p className="text-sm text-foreground leading-snug">{q}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Steps */}
+        <div className="col-span-3 p-4 bg-card border-2 rounded-2xl flex flex-col gap-3 min-h-0 border-[#39B54A]/50">
+          <div className="text-[10px] font-black uppercase tracking-widest text-[#39B54A]">{t('brainstorm.stepsLabel')}</div>
+          <div className="flex-1 flex flex-col justify-center gap-3">
+            {steps.map((s, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <div className="shrink-0 px-2 py-1 rounded-md bg-[#39B54A]/15 text-[#39B54A] text-[10px] font-black font-mono">{s.time}</div>
+                <p className="text-sm text-foreground leading-snug">{s.label}</p>
+              </div>
+            ))}
+          </div>
+          <Lightbulb className="size-10 text-[#39B54A]/40 self-center shrink-0" />
+        </div>
+      </div>
+
+      <div className="shrink-0 relative z-10 mt-4 p-3 rounded-xl border-2 text-sm" style={{ borderColor: COLOR + '40', backgroundColor: COLOR + '10' }}>
+        <strong className="text-foreground">{t('brainstorm.footerStrong')}</strong> <span className="text-muted-foreground">{t('brainstorm.footerBody')}</span>
+      </div>
+    </div>
+  );
+}
+
+// ─── Section ────────────────────────────────────────────────────────────────
+
 export function Section3() {
-  const { t } = useTranslation('blockchain-fundamentals/section-3');
+  const { t } = useTranslation(NS);
   const section3Chapters = useMemo(
     () =>
       section3ChaptersShape.map((ch) =>
@@ -304,8 +665,8 @@ export function Section3() {
           </div>
         </div>
 
-        {/* ═══════ ETH ACCOUNTS & GAS ═══════ */}
-        <div id="s3-eth-accounts" className="h-full flex flex-col p-5 lg:p-8">
+        {/* ═══════ ETH ACCOUNTS — EOA vs CONTRACT ═══════ */}
+        <div id="s3-accounts" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-4">
             <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
               <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] font-bold">{t('ethAccounts.recapBadge')}</span>
@@ -313,15 +674,24 @@ export function Section3() {
             </div>
             <div className="flex items-center gap-3 mb-1">
               <img src={ethereumLogo} alt="Ethereum" className="h-7 object-contain" />
-              <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('ethAccounts.heading')}</h2>
+              <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('ethAccounts.title')}</h2>
             </div>
-            <p className="text-sm text-muted-foreground">{t('ethAccounts.lead')}</p>
+            <p className="text-sm text-muted-foreground">{t('ethAccounts.intro')}</p>
           </div>
           <div className="flex-1 min-h-0 grid grid-cols-2 gap-5">
-            {/* Accounts */}
-            <div className="flex flex-col gap-3">
-              <div className="font-bold text-sm text-foreground">{t('ethAccounts.accountsHeader')}</div>
-              <div className="flex-1 grid grid-rows-2 gap-3">
+            {/* Illustration + key rule */}
+            <div className="flex flex-col gap-3 min-h-0">
+              <div className="flex-1 min-h-0 bg-card border border-border rounded-xl p-4 flex items-center justify-center">
+                <AccountsIllustration />
+              </div>
+              <div className="shrink-0 p-3 bg-[#f59e0b]/10 border border-[#f59e0b]/30 rounded-lg text-xs text-muted-foreground">
+                <span className="font-bold text-[#f59e0b]">{t('ethAccounts.keyRuleStrong')}</span> {t('ethAccounts.keyRuleBody')}
+              </div>
+            </div>
+            {/* Two account cards */}
+            <div className="flex flex-col gap-3 min-h-0">
+              <div className="font-bold text-sm text-foreground shrink-0">{t('ethAccounts.accountsHeader')}</div>
+              <div className="flex-1 grid grid-rows-2 gap-3 min-h-0">
                 <div className="p-4 bg-[#627EEA]/8 border border-[#627EEA]/30 rounded-xl flex flex-col gap-2">
                   <div className="flex items-center gap-2">
                     <span className="text-xl">🧑</span>
@@ -329,7 +699,7 @@ export function Section3() {
                   </div>
                   <ul className="text-sm text-muted-foreground space-y-1.5">
                     {(t('ethAccounts.eoaPoints', { returnObjects: true }) as Array<{ leadA: string; strong: string; tail: string }>).map((p, i) => (
-                      <li key={i} className="flex gap-2"><span className="text-[#627EEA] shrink-0">•</span>{p.leadA}{p.strong && <span className="font-semibold text-foreground">{p.strong}</span>}{p.tail}</li>
+                      <li key={i} className="flex gap-2"><span className="text-[#627EEA] shrink-0">•</span><span>{p.leadA}{p.strong && <span className="font-semibold text-foreground">{p.strong}</span>}{p.tail}</span></li>
                     ))}
                   </ul>
                 </div>
@@ -340,100 +710,76 @@ export function Section3() {
                   </div>
                   <ul className="text-sm text-muted-foreground space-y-1.5">
                     {(t('ethAccounts.contractPoints', { returnObjects: true }) as Array<{ leadA: string; strong: string; tail: string }>).map((p, i) => (
-                      <li key={i} className="flex gap-2"><span className="text-[#39B54A] shrink-0">•</span>{p.leadA}{p.strong && <span className="font-semibold text-foreground">{p.strong}</span>}{p.tail}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              <div className="p-3 bg-[#f59e0b]/10 border border-[#f59e0b]/30 rounded-lg text-xs text-muted-foreground">
-                <span className="font-bold text-[#f59e0b]">{t('ethAccounts.keyRuleStrong')}</span> {t('ethAccounts.keyRuleBody')}
-              </div>
-            </div>
-            {/* Gas */}
-            <div className="flex flex-col gap-3">
-              <div className="font-bold text-sm text-foreground">{t('ethAccounts.gasHeader')}</div>
-              <div className="p-4 bg-card border border-border rounded-xl text-sm text-muted-foreground leading-relaxed">
-                {t('ethAccounts.gasIntroA')} <span className="font-semibold text-foreground">{t('ethAccounts.gasIntroStrong')}</span> {t('ethAccounts.gasIntroTail')}
-              </div>
-              <div className="flex-1 grid grid-rows-2 gap-3">
-                <div className="p-4 bg-card border border-border rounded-xl">
-                  <div className="font-bold text-sm text-foreground mb-2">{t('ethAccounts.gasExamplesTitle')}</div>
-                  {(['#39B54A','#6366f1','#f59e0b','#ED1C24','#8b5cf6']).map((color, i) => {
-                    const rows = t('ethAccounts.gasRows', { returnObjects: true }) as Array<{ op: string; gas: string; note: string }>;
-                    const r = rows[i];
-                    return (
-                      <div key={i} className="flex items-center gap-2 py-1 border-b border-border/50 last:border-0">
-                        <span className="text-xs text-muted-foreground flex-1">{r.op}</span>
-                        <span className="text-xs font-black shrink-0" style={{ color }}>{r.gas}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="p-4 bg-[#627EEA]/8 border border-[#627EEA]/30 rounded-xl">
-                  <div className="font-bold text-sm text-[#627EEA] mb-2">{t('ethAccounts.gasFormulaTitle')}</div>
-                  <ul className="text-sm text-muted-foreground space-y-1.5">
-                    {(t('ethAccounts.gasFormulaPoints', { returnObjects: true }) as Array<{ strong: string; tail: string }>).map((p, i) => (
-                      <li key={i} className="flex gap-2"><span className="text-[#627EEA] shrink-0">•</span>{p.strong && <span className="font-semibold text-foreground">{p.strong}</span>}<span dangerouslySetInnerHTML={{ __html: p.tail }} /></li>
+                      <li key={i} className="flex gap-2"><span className="text-[#39B54A] shrink-0">•</span><span>{p.leadA}{p.strong && <span className="font-semibold text-foreground">{p.strong}</span>}{p.tail}</span></li>
                     ))}
                   </ul>
                 </div>
               </div>
             </div>
           </div>
+          <PeekFooter body={t('ethAccounts.peek')} />
         </div>
 
-        {/* ═══════ ETH APPLICATIONS: DeFi · NFTs · DAOs ═══════ */}
-        <div id="s3-eth-apps" className="h-full flex flex-col p-5 lg:p-8">
+        {/* ═══════ GAS — FUEL OF THE EVM ═══════ */}
+        <div id="s3-gas" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-4">
             <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
-              <span className="px-1.5 py-0.5 rounded bg-[#627EEA]/15 text-[#627EEA] font-bold">{t('ethApps.recapBadge')}</span>
-              <span>{t('ethApps.recapBody')}</span>
+              <span className="px-1.5 py-0.5 rounded bg-[#627EEA]/15 text-[#627EEA] font-bold">{t('ethGas.recapBadge')}</span>
+              <span>{t('ethGas.recapBody')}</span>
             </div>
             <div className="flex items-center gap-3 mb-1">
-              <img src={ethereumLogo} alt="Ethereum" className="h-7 object-contain" />
-              <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('ethApps.heading')}</h2>
+              <span className="text-2xl">⛽</span>
+              <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('ethGas.heading')}</h2>
             </div>
-            <p className="text-sm text-muted-foreground">{t('ethApps.lead')}</p>
+            <p className="text-sm text-muted-foreground">{t('ethGas.lead')}</p>
           </div>
-          <div className="flex-1 min-h-0 flex gap-4">
-            {([
-              { icon: '🏦', color: '#39B54A' },
-              { icon: '🖼️', color: '#f97316' },
-              { icon: '🏛️', color: '#6366f1' },
-            ]).map((cfg, i) => {
-              const apps = t('ethApps.apps', { returnObjects: true }) as Array<{ title: string; subtitle: string; replaces: string; description: string; examples: Array<{ name: string; desc: string }>; risk: string; stat: string }>;
-              const app = apps[i];
-              return (
-                <div key={i} className="flex-1 flex flex-col rounded-xl border-2 bg-card overflow-hidden" style={{ borderColor: cfg.color + '40' }}>
-                  <div className="h-1.5 shrink-0" style={{ backgroundColor: cfg.color }} />
-                  <div className="flex flex-col flex-1 p-4 gap-3 min-h-0">
-                    <div className="shrink-0 flex items-center gap-2">
-                      <span className="text-2xl">{cfg.icon}</span>
-                      <div>
-                        <div className="font-black text-lg leading-none" style={{ color: cfg.color }}>{app.title}</div>
-                        <div className="text-xs font-semibold text-foreground">{app.subtitle}</div>
+          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4">
+            {/* Meter analogy */}
+            <div className="bg-card border border-border rounded-xl p-4 flex flex-col gap-3 min-h-0">
+              <div className="font-bold text-sm text-foreground">{t('ethGas.meterTitle')}</div>
+              <div className="flex-1 min-h-0 flex items-center justify-center"><GasMeter /></div>
+              <ul className="text-sm text-muted-foreground space-y-1.5 shrink-0">
+                {(t('ethGas.meterPoints', { returnObjects: true }) as string[]).map((p, i) => (
+                  <li key={i} className="flex gap-2"><span className="text-[#f59e0b] shrink-0">•</span>{p}</li>
+                ))}
+              </ul>
+            </div>
+            {/* Cost table */}
+            <div className="bg-card border border-border rounded-xl p-4 flex flex-col min-h-0">
+              <div className="font-bold text-sm text-foreground mb-2">{t('ethGas.examplesTitle')}</div>
+              <div className="flex-1 flex flex-col justify-around">
+                {(['#39B54A','#6366f1','#f59e0b','#ED1C24','#8b5cf6']).map((color, i) => {
+                  const rows = t('ethGas.rows', { returnObjects: true }) as Array<{ op: string; gas: string; note: string }>;
+                  const r = rows[i];
+                  return (
+                    <div key={i} className="flex items-center gap-3 py-2 border-b border-border/50 last:border-0">
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-semibold text-foreground">{r.op}</div>
+                        <div className="text-[11px] text-muted-foreground">{r.note}</div>
                       </div>
-                      <div className="ml-auto text-xs text-muted-foreground italic">{t('ethApps.replacesLabel')} {app.replaces}</div>
+                      <span className="text-sm font-black font-mono shrink-0" style={{ color }}>{r.gas}</span>
                     </div>
-                    <p className="text-sm text-muted-foreground shrink-0">{app.description}</p>
-                    <div className="flex-1 min-h-0 space-y-2">
-                      {app.examples.map((ex, j) => (
-                        <div key={j} className="p-2.5 rounded-lg bg-muted/40 border border-border">
-                          <div className="font-bold text-xs text-foreground mb-0.5">{ex.name}</div>
-                          <div className="text-xs text-muted-foreground">{ex.desc}</div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="shrink-0 pt-3 border-t border-border space-y-1.5">
-                      <div className="text-xs text-muted-foreground"><span className="font-semibold text-[#ef4444]">{t('ethApps.riskLabel')} </span>{app.risk}</div>
-                      <div className="text-xs font-semibold" style={{ color: cfg.color }}>{app.stat}</div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                  );
+                })}
+              </div>
+            </div>
+            {/* Fee formula */}
+            <div className="bg-[#627EEA]/8 border border-[#627EEA]/30 rounded-xl p-4 flex flex-col min-h-0">
+              <div className="font-black text-base font-mono text-[#627EEA] mb-3 text-center py-2 rounded-lg bg-[#627EEA]/10">{t('ethGas.formulaTitle')}</div>
+              <ul className="text-sm text-muted-foreground space-y-3 flex-1 flex flex-col justify-center">
+                {(t('ethGas.formulaPoints', { returnObjects: true }) as Array<{ strong: string; tail: string }>).map((p, i) => (
+                  <li key={i} className="flex gap-2"><span className="text-[#627EEA] shrink-0">•</span><span>{p.strong && <span className="font-semibold text-foreground">{p.strong}</span>}<span dangerouslySetInnerHTML={{ __html: p.tail }} /></span></li>
+                ))}
+              </ul>
+            </div>
           </div>
+          <PeekFooter body={t('ethGas.peek')} />
         </div>
+
+        {/* ═══════ SNEAK PEEKS: DeFi · NFTs · DAOs ═══════ */}
+        <SneakPeekSlide id="s3-defi" index={0} color="#39B54A" icon={<Landmark className="size-6" />} illustration={v => <DefiIllustration v={v} />} />
+        <SneakPeekSlide id="s3-nfts" index={1} color="#f97316" icon={<ImageIcon className="size-6" />} illustration={v => <NftIllustration v={v} />} />
+        <SneakPeekSlide id="s3-daos" index={2} color="#6366f1" icon={<Vote className="size-6" />} illustration={v => <DaoIllustration v={v} />} />
 
         {/* ═══════ 2. BLOCKCHAIN USE CASES — GROUPED BY PATTERN ═══════ */}
         <div id="s3-usecases" className="h-full flex flex-col p-5 lg:p-8">
@@ -678,10 +1024,8 @@ export function Section3() {
           />
         </div>
 
-        {/* ═══════ 5. ETHICAL CONSIDERATIONS ═══════ */}
+        {/* ═══════ 5a. ETHICS — FOUR TENSIONS ═══════ */}
         <div id="s3-ethics" className="h-full flex flex-col p-5 lg:p-8">
-
-          {/* Header */}
           <div className="shrink-0 mb-3">
             <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
               <span className="px-1.5 py-0.5 rounded bg-[#ED1C24]/15 text-[#ED1C24] font-bold">{t('ethics.recapBadge')}</span>
@@ -691,21 +1035,40 @@ export function Section3() {
             <p className="text-sm text-muted-foreground">{t('ethics.lead')}</p>
           </div>
 
-          {/* Top row — 4 compact ethical themes */}
-          <div className="grid grid-cols-4 gap-3 shrink-0 mb-3">
+          <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2 shrink-0">{t('ethics.tensionsLabel')}</div>
+          <div className="flex-1 min-h-0 grid grid-cols-2 grid-rows-2 gap-4">
             {(['#ED1C24','#8b5cf6','#f59e0b','#39B54A']).map((color, i) => {
-              const themes = t('ethics.themes', { returnObjects: true }) as Array<{ title: string; desc: string }>;
+              const themes = t('ethics.themes', { returnObjects: true }) as Array<{ title: string; desc: string; ask: string }>;
               const th = themes[i];
+              const [emoji, ...rest] = th.title.split(' ');
               return (
-                <div key={i} className="p-5 rounded-xl border" style={{ borderColor: color + '4D', background: `linear-gradient(to bottom right, ${color}26, transparent)` }}>
-                  <div className="font-bold text-sm mb-2" style={{ color }}>{th.title}</div>
-                  <p className="text-sm text-muted-foreground">{th.desc}</p>
+                <div key={i} className="p-5 rounded-xl border flex flex-col gap-2 min-h-0" style={{ borderColor: color + '4D', background: `linear-gradient(to bottom right, ${color}26, transparent)` }}>
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl leading-none">{emoji}</span>
+                    <div className="font-black text-lg" style={{ color }}>{rest.join(' ')}</div>
+                  </div>
+                  <p className="text-sm text-muted-foreground flex-1">{th.desc}</p>
+                  <div className="mt-auto p-2.5 rounded-lg bg-card/70 border border-border text-xs text-foreground italic">
+                    <span className="not-italic font-bold" style={{ color }}>{t('ethics.askLabel')}</span> {th.ask}
+                  </div>
                 </div>
               );
             })}
           </div>
+          <div className="shrink-0 mt-3 text-[11px] text-muted-foreground text-center">{t('ethics.footer')}</div>
+        </div>
 
-          {/* Bottom row — Promise vs Peril with real projects */}
+        {/* ═══════ 5b. ETHICS — FOR GOOD vs AS CONTROL ═══════ */}
+        <div id="s3-ethics-control" className="h-full flex flex-col p-5 lg:p-8">
+          <div className="shrink-0 mb-3">
+            <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
+              <span className="px-1.5 py-0.5 rounded bg-[#ED1C24]/15 text-[#ED1C24] font-bold">{t('ethicsControl.recapBadge')}</span>
+              <span>{t('ethicsControl.recapA')} <strong className="text-foreground">{t('ethicsControl.recapStrong')}</strong> {t('ethicsControl.recapTail')}</span>
+            </div>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{t('ethicsControl.heading')}</h2>
+            <p className="text-sm text-muted-foreground max-w-4xl">{t('ethicsControl.lead')}</p>
+          </div>
+
           <div className="flex-1 min-h-0 grid grid-cols-2 gap-4">
 
             {/* Positive projects */}
@@ -713,6 +1076,7 @@ export function Section3() {
               <div className="flex items-center gap-2 mb-2 shrink-0">
                 <div className="size-5 rounded-full bg-[#39B54A] flex items-center justify-center text-white text-xs font-black">+</div>
                 <h3 className="font-bold text-[#39B54A] text-sm tracking-wide">{t('ethics.goodHeader')}</h3>
+                <span className="ml-auto text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#39B54A]/15 text-[#39B54A]">{t('ethicsControl.goodTag')}</span>
               </div>
 
               <div className="bg-card border border-[#39B54A]/40 rounded-xl p-4 flex flex-col flex-1 min-h-0 gap-0">
@@ -741,6 +1105,7 @@ export function Section3() {
               <div className="flex items-center gap-2 mb-2 shrink-0">
                 <div className="size-5 rounded-full bg-[#ED1C24] flex items-center justify-center text-white text-xs font-black">!</div>
                 <h3 className="font-bold text-[#ED1C24] text-sm tracking-wide">{t('ethics.controlHeader')}</h3>
+                <span className="ml-auto text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#ED1C24]/15 text-[#ED1C24]">{t('ethicsControl.controlTag')}</span>
               </div>
 
               <div className="bg-card border border-[#ED1C24]/40 rounded-xl p-4 flex flex-col flex-1 min-h-0 gap-0">
@@ -765,29 +1130,37 @@ export function Section3() {
             </div>
 
           </div>
+
+          <div className="shrink-0 mt-3 p-2.5 bg-muted/40 border border-border rounded-lg text-[11px] text-muted-foreground">
+            <strong className="text-foreground">{t('ethicsControl.footerStrong')}</strong> {t('ethicsControl.footerBody')}
+          </div>
         </div>
 
         {/* ═══════ 6. FUTURE TRENDS ═══════ */}
-        <div id="s3-future" className="h-full">
-          <ConceptSlide
-            title={t('future.title')}
-            description={t('future.description')}
-            visual={
-              <div className="grid grid-cols-2 gap-4">
-                {(['#ED1C24','#6366f1','#39B54A','#f59e0b','#8b5cf6','#22d3ee']).map((color, i) => {
-                  const trends = t('future.trends', { returnObjects: true }) as Array<{ title: string; desc: string }>;
-                  const trend = trends[i];
-                  return (
-                    <div key={i} className="p-5 rounded-xl border" style={{ borderColor: color + '4D', background: `linear-gradient(to bottom right, ${color}33, transparent)` }}>
-                      <h4 className="font-bold mb-2" style={{ color }}>{trend.title}</h4>
-                      <p className="text-sm text-muted-foreground">{trend.desc}</p>
-                    </div>
-                  );
-                })}
-              </div>
-            }
-            keyPoints={t('future.keyPoints', { returnObjects: true }) as string[]}
-          />
+        <div id="s3-future" className="h-full flex flex-col p-5 lg:p-8">
+          <div className="shrink-0 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{t('future.title')}</h2>
+            <p className="text-sm text-muted-foreground max-w-3xl">{t('future.description')}</p>
+          </div>
+          <div className="flex-1 min-h-0 grid grid-cols-3 grid-rows-2 gap-4">
+            {(['#ED1C24','#6366f1','#39B54A','#f59e0b','#8b5cf6','#22d3ee']).map((color, i) => {
+              const trends = t('future.trends', { returnObjects: true }) as Array<{ title: string; desc: string }>;
+              const trend = trends[i];
+              const [emoji, ...rest] = trend.title.split(' ');
+              return (
+                <div key={i} className="p-5 rounded-xl border flex flex-col gap-2" style={{ borderColor: color + '4D', background: `linear-gradient(to bottom right, ${color}33, transparent)` }}>
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl leading-none">{emoji}</span>
+                    <h4 className="font-bold text-base" style={{ color }}>{rest.join(' ')}</h4>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{trend.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+          <div className="shrink-0 mt-3 p-2.5 rounded-lg border border-dashed text-[11px] text-muted-foreground" style={{ borderColor: PEEK + '80', backgroundColor: PEEK + '10' }}>
+            <strong style={{ color: PEEK }}>{t('future.footerStrong')}</strong> {t('future.footerBody')}
+          </div>
         </div>
 
         {/* ═══════ DISCUSSION ═══════ */}
@@ -836,42 +1209,9 @@ export function Section3() {
           <KnowledgeWall />
         </div>
 
-        {/* ═══════ TEAM CHECKPOINT — DAY 1 WRAP ═══════ */}
-        <div id="s3-team-checkpoint" className="h-full">
-          <TeamCheckpoint
-            contextLabel={t('teamCheckpoint.contextLabel')}
-            title={t('teamCheckpoint.title')}
-            subtitle={t('teamCheckpoint.subtitle')}
-            duration={t('teamCheckpoint.duration')}
-            sections={[
-              {
-                label: t('teamCheckpoint.doNowLabel'),
-                color: '#39B54A',
-                items: (t('teamCheckpoint.doNow', { returnObjects: true }) as Array<{ leadA: string; strong: string; tail: string }>).map((p, i) => (
-                  <span key={i}>{p.leadA}{p.strong && <strong>{p.strong}</strong>}{p.tail}</span>
-                )),
-              },
-              {
-                label: t('teamCheckpoint.discussLabel'),
-                color: '#6366f1',
-                items: (t('teamCheckpoint.discuss', { returnObjects: true }) as Array<{ leadA: string; strong: string; tail: string }>).map((p, i) => (
-                  <span key={i}>{p.leadA}{p.strong && <strong>{p.strong}</strong>}{p.tail}</span>
-                )),
-              },
-              {
-                label: t('teamCheckpoint.bringLabel'),
-                color: '#8b5cf6',
-                items: (t('teamCheckpoint.bring', { returnObjects: true }) as Array<{ leadA: string; strong: string; tail: string }>).map((p, i) => (
-                  <span key={i}>{p.leadA}{p.strong && <strong>{p.strong}</strong>}{p.tail}</span>
-                )),
-              },
-            ]}
-            footnote={
-              <span className="text-muted-foreground">
-                <strong className="text-foreground">{t('teamCheckpoint.footnoteStrong')}</strong> {t('teamCheckpoint.footnoteBody')}
-              </span>
-            }
-          />
+        {/* ═══════ BRAINSTORM — CLOSING ACTIVITY ═══════ */}
+        <div id="s3-brainstorm" className="h-full">
+          <BrainstormSlide />
         </div>
 
       </div>
