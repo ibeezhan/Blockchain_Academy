@@ -25,6 +25,7 @@ const section2ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
   { id: 's2-consensus' },
   { id: 's2-doublespend' },
   { id: 's2-utxo' },
+  { id: 's2-utxo-how' },
 
   { kind: 'group', id: 'g-s2-tokenomics' },
   { id: 's2-supply' },
@@ -1945,6 +1946,86 @@ function UtxoVsAccount() {
   );
 }
 
+/** Left-to-right walk-through of ONE spend: Alice (0.5 / 0.2 / 0.1) pays Bob 0.4 BTC.
+ *  Before → Transaction (input consumed, two outputs created) → After. */
+function UtxoSpendFlow() {
+  const { t } = useTranslation('blockchain-fundamentals/section-2');
+
+  const Coin = ({ value, color, tag, struck = false, ghost = false, ring = false }:
+    { value: string; color: string; tag?: string; struck?: boolean; ghost?: boolean; ring?: boolean }) => (
+    <div className={`relative flex items-center gap-2 rounded-lg border px-2.5 py-1.5 ${ghost ? 'border-dashed opacity-50' : ''} ${ring ? 'ring-2 ring-[#f59e0b] ring-offset-1 ring-offset-background' : ''}`}
+         style={{ borderColor: color + '80', backgroundColor: ghost ? 'transparent' : color + '1a' }}>
+      <span className="size-6 rounded-full flex items-center justify-center text-[11px] font-bold text-white shrink-0"
+            style={{ backgroundColor: ghost ? color + '66' : color }}>₿</span>
+      <span className={`font-mono font-bold text-sm ${struck ? 'line-through' : ''}`} style={{ color }}>{value} BTC</span>
+      {tag && <span className="ml-auto text-[10px] text-muted-foreground whitespace-nowrap">{tag}</span>}
+      {struck && <span className="absolute -top-1.5 -right-1.5 text-[10px] bg-[#ED1C24] text-white rounded-full px-1.5 leading-4">✕</span>}
+    </div>
+  );
+
+  const Arrow = () => (
+    <svg viewBox="0 0 40 24" className="w-8 h-6 shrink-0 self-center text-[#f59e0b] rotate-90 lg:rotate-0" aria-hidden="true">
+      <path d="M3 12h28M24 5l8 7-8 7" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+
+  const Panel = ({ title, color, children }: { title: string; color: string; children: React.ReactNode }) => (
+    <div className="flex-1 min-w-0 rounded-xl border-2 p-3 flex flex-col gap-2 bg-card"
+         style={{ borderColor: color + '66', background: `linear-gradient(to bottom right, ${color}1f, transparent)` }}>
+      <div className="text-[10px] font-bold uppercase tracking-wide" style={{ color }}>{title}</div>
+      {children}
+    </div>
+  );
+
+  const Label = ({ children }: { children: React.ReactNode }) => (
+    <div className="text-[10px] text-muted-foreground uppercase tracking-wide">{children}</div>
+  );
+
+  return (
+    <div className="flex-1 min-h-0 flex flex-col lg:flex-row items-stretch gap-1.5 lg:gap-2">
+      {/* 1 — Alice's wallet before: three separate coins */}
+      <Panel title={t('utxoHow.before')} color="#39B54A">
+        <Label>{t('utxoHow.aliceWallet')}</Label>
+        <Coin value="0.5" color="#39B54A" tag={t('utxoHow.selected')} ring />
+        <Coin value="0.2" color="#39B54A" tag={t('utxoHow.utxo')} />
+        <Coin value="0.1" color="#39B54A" tag={t('utxoHow.utxo')} />
+      </Panel>
+
+      <Arrow />
+
+      {/* 2 — The transaction: one input destroyed, two outputs created */}
+      <Panel title={t('utxoHow.tx')} color="#f59e0b">
+        <Label>{t('utxoHow.input')}</Label>
+        <Coin value="0.5" color="#ED1C24" struck />
+        <svg viewBox="0 0 120 28" className="w-full h-6 text-[#f59e0b]" aria-hidden="true">
+          <path d="M60 2v8M60 10 L30 10 L30 24M60 10 L90 10 L90 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M25 19l5 6 5-6M85 19l5 6 5-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <Label>{t('utxoHow.outputs')}</Label>
+        <div className="flex flex-wrap gap-2 [&>*]:flex-auto">
+          <Coin value="0.4" color="#6366f1" tag={t('utxoHow.toBob')} />
+          <Coin value="0.1" color="#39B54A" tag={t('utxoHow.change')} />
+        </div>
+      </Panel>
+
+      <Arrow />
+
+      {/* 3 — After: Bob owns a new coin, Alice's 0.5 is gone forever */}
+      <Panel title={t('utxoHow.after')} color="#6366f1">
+        <Label>{t('utxoHow.bobWallet')}</Label>
+        <Coin value="0.4" color="#6366f1" tag={t('utxoHow.newLabel')} />
+        <Label>{t('utxoHow.aliceWallet')}</Label>
+        <Coin value="0.5" color="#ED1C24" tag={t('utxoHow.gone')} struck ghost />
+        <div className="flex flex-wrap gap-1.5 [&>*]:flex-auto">
+          <Coin value="0.2" color="#39B54A" />
+          <Coin value="0.1" color="#39B54A" />
+          <Coin value="0.1" color="#39B54A" tag={t('utxoHow.newLabel')} />
+        </div>
+      </Panel>
+    </div>
+  );
+}
+
 /** Compact tinted card used for the non-programmability limits (throughput, finality, energy). */
 function LimitCard({ color, icon, title, children }: { color: string; icon: React.ReactNode; title: string; children: React.ReactNode }) {
   return (
@@ -2399,6 +2480,42 @@ export function Section2() {
                     <p className="text-sm text-foreground">{point}</p>
                   </div>
                 ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══════ 5c. UTXO — HOW ONE SPEND WORKS (mechanics) ═══════ */}
+        <div id="s2-utxo-how" className="h-full">
+          <div className="w-full h-full flex flex-col p-5 lg:p-8">
+            <SlideHeader
+              kicker={t('utxoHow.kicker')}
+              heading={t('utxoHow.title')}
+              lead={t('utxoHow.lead')}
+            />
+
+            <div className="flex-1 min-h-0 flex flex-col gap-3">
+              <UtxoSpendFlow />
+
+              <div className="shrink-0 grid grid-cols-1 lg:grid-cols-3 gap-3">
+                {(t('utxoHow.steps', { returnObjects: true }) as Array<{ title: string; body: string }>).map((s, i) => (
+                  <div key={i} className="flex items-start gap-3 p-3 bg-card rounded-lg border border-[#f59e0b]/30">
+                    <div className="size-7 rounded-full bg-[#f59e0b] flex items-center justify-center shrink-0 text-white font-bold text-sm">{i + 1}</div>
+                    <div>
+                      <div className="text-sm font-bold text-foreground">{s.title}</div>
+                      <p className="text-xs text-muted-foreground leading-snug">{s.body}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="shrink-0 flex flex-wrap items-center gap-2">
+                {(t('utxoHow.takeaways', { returnObjects: true }) as string[]).map((tk, i) => (
+                  <span key={i} className="px-3 py-1.5 rounded-full border border-[#39B54A]/40 bg-[#39B54A]/10 text-xs font-medium text-foreground">
+                    ✓ {tk}
+                  </span>
+                ))}
+                <span className="ml-auto text-[10px] text-muted-foreground italic">{t('utxoHow.feeNote')}</span>
               </div>
             </div>
           </div>

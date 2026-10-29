@@ -18,6 +18,7 @@
     "s2-consensus": "Solving It — 1982 to Bitcoin",
     "s2-doublespend": "Double-Spending",
     "s2-utxo": "Bitcoin's Fix — UTXO",
+    "s2-utxo-how": "UTXO — How a Spend Works",
     "s2-supply": "🧩 Supply Model",
     "s2-stats": "Network Statistics",
     "s2-nodes": "Node Types",
@@ -306,6 +307,44 @@
       "No central operator to seize, sue, or shut down — every node validates independently",
       "After a few confirmations, reversing a transaction would cost more than it is worth"
     ]
+  },
+  "utxoHow": {
+    "kicker": "UTXO — how one spend actually works",
+    "title": "Spending a UTXO, Step by Step",
+    "lead": "Think physical cash, not a bank balance. Your wallet holds separate coins; to pay, you hand over a whole coin and get change back.",
+    "before": "Alice's wallet (before)",
+    "tx": "Transaction",
+    "after": "After the transaction",
+    "aliceWallet": "Alice",
+    "bobWallet": "Bob",
+    "utxo": "UTXO",
+    "selected": "selected",
+    "input": "Input (consumed)",
+    "outputs": "Outputs (created)",
+    "toBob": "to Bob",
+    "change": "change to Alice",
+    "gone": "0.5 no longer exists",
+    "newLabel": "new",
+    "steps": [
+      {
+        "title": "Pick a coin and consume it",
+        "body": "Alice wants to pay Bob 0.4 BTC. She references her 0.5 UTXO as input. It is spent entirely — you cannot spend part of a coin."
+      },
+      {
+        "title": "Create two new outputs",
+        "body": "The transaction mints 0.4 BTC to Bob and 0.1 BTC back to Alice as change. Both are fresh UTXOs."
+      },
+      {
+        "title": "The old coin is gone for good",
+        "body": "Every node marks the 0.5 UTXO as spent. Any second transaction referencing it is rejected — no referee needed."
+      }
+    ],
+    "takeaways": [
+      "Spend = destroy old outputs, create new ones",
+      "Change is normal, like cash",
+      "Every node checks the inputs were unspent"
+    ],
+    "feeNote": "Miner fee omitted for simplicity."
   },
   "stats": {
     "title": "Bitcoin Network Statistics",
