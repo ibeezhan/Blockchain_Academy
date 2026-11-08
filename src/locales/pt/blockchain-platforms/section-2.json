@@ -90,12 +90,35 @@
     "accounts": "ECDSA key pairs · nonce · code hash · storage root · msg.sender",
     "gas": "opcode gas table · gasLimit vs gasUsed · revert · block gas limit (~30M)",
     "smartContracts": "Solidity → bytecode · ABI · CREATE / CREATE2 · immutability vs proxies",
-    "consensus": "beacon chain · RANDAO · attestations · Casper FFG finality · LMD-GHOST",
+    "consensus": "RANDAO (random picker) · committees · BLS signature aggregation · slots (12 s) / epochs · Casper FFG finality",
     "staking": "validator keys · withdrawal credentials · slashing conditions · churn limit · stETH / rETH",
     "issuance": "EIP-1559 base-fee burn · PoS issuance curve (∝ √ staked ETH) · ultrasound.money",
     "defi": "x·y=k · collateral ratio · liquidation bots · LP tokens · composability",
     "stablecoins": "ERC-20 mint/redeem · proof of reserves · liquidation ratio · delta-neutral hedge",
     "apps": "ERC-20 · ERC-721 · ERC-1155 · tokenURI · governor contracts · ENS · SIWE"
+  },
+  "keyPoint": {
+    "label": "🔑 Key point",
+    "why": "Bitcoin moves one asset by one rule; Ethereum runs any rule you can write.",
+    "accountsVisual": "Only wallets can start a transaction; contracts just react — so every action traces back to someone's key.",
+    "accounts": "People hold keys, contracts hold code — and only a key-holder can start a transaction.",
+    "evm": "Thousands of machines run the same program and must agree on one result — that's what makes code trustworthy.",
+    "transaction": "Every change on Ethereum starts as a signed message from a wallet — and that wallet pays for it.",
+    "gas": "Gas is the meter on the world computer: it prices every step and guarantees every program stops.",
+    "eip1559": "The network sets the price and burns it; the tip is the only part you negotiate.",
+    "smartContracts": "Once deployed, a contract is a vending machine: same input, same output, and nobody can quietly edit it.",
+    "consensus": "Security moved from burning electricity to risking capital.",
+    "staking": "A yield with a queue — the return is real, the liquidity isn't instant.",
+    "issuance": "Bitcoin sells scarcity by rule; Ethereum sells scarcity by usage.",
+    "evmEcosystem": "The EVM is the shared standard — build once, deploy on a dozen chains.",
+    "rollups": "Rollups make Ethereum cheap without making it less secure: execution moves out, security stays.",
+    "defi": "Three building blocks — swap, lend, earn — recombine into almost every DeFi product.",
+    "stablecoins": "A stablecoin is only as stable as whatever backs it — always ask what sits behind the peg.",
+    "apps1": "Tokens prove who owns what and who gets to decide — the business is in the proof, not the picture.",
+    "apps2": "Identity and gaming show the model works — adoption, not technology, is the open question.",
+    "comparison": "Bitcoin is a settlement asset; Ethereum is a settlement platform.",
+    "bestFits": "Choose Ethereum when composability and shared liquidity are the product.",
+    "worstFits": "A public world computer is a cost, not a feature, when you don't need programmability or openness."
   },
   "why": {
     "heading": "Porquê Ethereum?",
@@ -335,18 +358,12 @@
         { "icon": "👤", "label": "Requisito", "value": "Qualquer pessoa com 32 ETH" }
       ]
     },
-    "howHeading": "Como funciona o Proof of Stake",
+    "howHeading": "How Proof of Stake works — in plain language",
     "steps": [
-      { "label": "Depositar", "detail": "O validador bloqueia 32 ETH no contrato oficial de depósito da beacon chain. Cada validador corre as suas próprias chaves e cliente.", "metric": "Mín. 32 ETH · levantamentos ativos desde Shapella (abr. 2023)" },
-      { "label": "Propor", "detail": "Selecionado pseudo-aleatoriamente via RANDAO para construir o bloco seguinte. Os slots correm num relógio fixo de 12 segundos — 32 slots = 1 época.", "metric": "1 slot = 12s · 1 época ≈ 6,4 min" },
-      { "label": "Atestar", "detail": "Comités de ~128 validadores assinam votos agregados por BLS sobre o topo da cadeia e sobre o checkpoint da época.", "metric": "Exige supermaioria ≥ 2/3" },
-      { "label": "Finalizar", "detail": "O Casper FFG finaliza um checkpoint após duas épocas justificadas consecutivas. Revertê-lo exigiria fazer slashing a ≥ 1/3 de todo o ETH em stake.", "metric": "Finalidade ≈ 12,8 min · economicamente irreversível" }
-    ],
-    "stats": [
-      { "value": "~1M+", "label": "validadores ativos" },
-      { "value": "~3–5%", "label": "APR de staking" },
-      { "value": "~28% do total", "label": "ETH em stake (~34M ETH)" },
-      { "value": "−99,95%", "label": "energia vs PoW" }
+      { "label": "Deposit", "detail": "You lock 32 ETH as a security deposit. That deposit is what you stand to lose if you cheat.", "metric": "32 ETH security deposit" },
+      { "label": "Propose", "detail": "Every 12 seconds one validator is picked at random to build the next block.", "metric": "a new block every 12 s" },
+      { "label": "Attest", "detail": "The other validators check the block and vote on it. Most of the work is voting, not building.", "metric": "needs 2/3 of votes" },
+      { "label": "Finalize", "detail": "After enough votes the block is final. Undoing it would mean burning a third of all staked ETH — tens of billions of dollars.", "metric": "final in ~13 min" }
     ],
     "nextLabel": "Next two slides:",
     "nextBody": " what staking means for the people who put up the 32 ETH — and what the switch did to ETH's supply."
@@ -369,17 +386,33 @@
     ],
     "instructorLabel": "From the instructor:",
     "instructorBody": " Ether Capital (Toronto, publicly listed) was one of the first public companies to run its own ETH staking operation — turning validator yield into a line item a listed company reports.",
-    "queueLabel": "The entry / exit queue",
-    "queueIntro": "Unlike a savings account, the protocol admits and releases validators at a fixed rate so the validator set never changes too fast. That rate limit becomes a queue.",
-    "queue": [
-      { "label": "Deposit", "wait": "≈ 12 h processing", "detail": "32 ETH sent to the deposit contract" },
-      { "label": "Activation queue", "wait": "hours → weeks", "detail": "Rate-limited entry · 45+ days at the 2023 peak" },
-      { "label": "Active", "wait": "earning", "detail": "Proposing · attesting · ~3–4%" },
-      { "label": "Exit queue", "wait": "hours → weeks", "detail": "Rate-limited exit · >1 month in late 2025" },
-      { "label": "Withdrawal", "wait": "≥ ~27 h + sweep", "detail": "ETH lands back in your wallet" }
-    ],
-    "soWhatLabel": "So what?",
-    "soWhatBody": "The yield comes with a liquidity/redemption delay. Liquid staking tokens trade that queue for a market price — which can slip below 1:1 when many people want out at once (stETH traded at ~0.94 in June 2022)."
+    "sim": {
+      "label": "Try it — stake and exit simulator",
+      "intro": "The protocol admits and releases validators at a fixed rate, so entry and exit become queues. Pick an amount and a path:",
+      "amountLabel": "Amount",
+      "pathLabel": "Path",
+      "paths": ["Solo", "Liquid staking", "ETF"],
+      "qualifyLabel": "Do you qualify?",
+      "yieldLabel": "Indicative yield",
+      "yieldPerYear": "≈ {{eth}} ETH / year at {{pct}}%",
+      "qualify": {
+        "soloNo": "✗ Solo needs 32 ETH per validator — {{amount}} ETH is not enough.",
+        "soloYes": "✓ {{validators}} validator(s) · {{idle}} ETH left idle",
+        "soloOne": "✓ Exactly one validator",
+        "liquid": "✓ Any amount — you receive stETH / rETH that keeps earning",
+        "etf": "✓ Any amount — you buy fund shares; the fund holds the keys"
+      },
+      "stages": ["Entry queue", "Earning", "Exit queue", "Withdrawal"],
+      "waits": {
+        "solo": ["hours → weeks", "~3.5% / yr", "hours → weeks", "~1–2 days"],
+        "liquid": ["instant (mint)", "~3.1% / yr net", "sell now, or redeem in days", "instant if sold"],
+        "etf": ["T+1 (buy shares)", "~3.0% / yr net", "fund's exit queue", "T+1 (sell shares)"]
+      },
+      "needNow": "⚡ I need my ETH now",
+      "needNowQueue": "Join the exit queue — hours to weeks before your ETH is back in your wallet. The yield was real; the liquidity isn't instant.",
+      "needNowLiquid": "Sell stETH instantly on the market — but the price can slip below 1:1 when many people want out at once (≈ 0.94 in June 2022).",
+      "replay": "↻ Replay"
+    }
   },
   "issuance": {
     "badge": "🧩 Monetary policy",
@@ -391,12 +424,12 @@
       { "title": "EIP-1559 burns the base fee", "detail": "Every transaction destroys its base fee. Busy network → more burned than issued → net supply shrinks. The community calls it “ultrasound money”." }
     ],
     "visualLabel": "Issuance vs burn → net supply (illustrative daily figures)",
-    "scenarioLabel": "Network activity:",
-    "scenarios": [
-      { "label": "Quiet", "issued": 2600, "burned": 300, "note": "Low fees — supply grows slowly" },
-      { "label": "Normal", "issued": 2600, "burned": 1500, "note": "Burn offsets most issuance" },
-      { "label": "Busy", "issued": 2600, "burned": 4500, "note": "Burn > issuance — supply shrinks (deflationary)" }
-    ],
+    "sliderLabel": "Network activity — drag it:",
+    "sliderQuiet": "quiet",
+    "sliderBusy": "busy",
+    "zoneGrowing": "supply growing — issuance beats burn",
+    "zoneBalanced": "roughly flat — burn ≈ issuance",
+    "zoneShrinking": "supply shrinking — the “ultrasound” zone",
     "issuedLabel": "Issued to validators",
     "burnedLabel": "Burned (base fee)",
     "netLabel": "Net change",
@@ -405,9 +438,7 @@
     "btcLabel": "₿ Bitcoin (for contrast)",
     "btcBody": "Fixed 21M · ~450 BTC/day today, halving every ~4 years · nothing is burned · last coin ≈ 2140. Predictable, always mildly inflationary until then.",
     "ethLabel": "Ξ Ethereum",
-    "ethBody": "~120M ETH, roughly flat since the Merge (Sep 2022). Can inflate or deflate depending on demand for block space.",
-    "soWhatLabel": "Business read:",
-    "soWhatBody": " Bitcoin sells scarcity by rule; Ethereum sells scarcity by usage. The more the network is used, the scarcer ETH gets — which ties the asset's value to the platform's activity."
+    "ethBody": "~120M ETH, roughly flat since the Merge (Sep 2022). Can inflate or deflate depending on demand for block space."
   },
   "evmEcosystem": {
     "heading": "EVM em Todo o Lado",
@@ -708,9 +739,7 @@
       { "name": "Consórcios B2B privados, dados regulados", "why": "A mainnet da Ethereum é totalmente pública — má para dados de KYC, contratos com fornecedores, registos de saúde. As camadas de privacidade (Aztec) ajudam mas acrescentam complexidade e pressupostos de confiança.", "alt": "Usa Hyperledger Fabric · Quorum · R3 Corda para canais com permissão." },
       { "name": "Pagamentos de consumo na L1", "why": "A L1 finaliza em ~12 min e as taxas disparam com a procura. Mesmo com L2s, a latência de levantamento e a UX das pontes ainda incomodam no retalho.", "alt": "Usa Bitcoin Lightning · Solana · XRPL · Stellar para uma UX de pagamento abaixo do segundo." },
       { "name": "Jogos sensíveis à latência / apps em tempo real", "why": "Blocos de ~12 segundos na L1, ~1-2 s na maioria dos rollups — ainda demasiado lento para jogos por ticks ou negociação ao vivo. Emparelhar order books ao custo de gas é brutal.", "alt": "Usa Solana · Sui · Aptos · cadeias de order book dedicadas (dYdX v4) para apps limitadas pela latência." }
-    ],
-    "rightToolLabel": "Ferramenta certa, tarefa certa:",
-    "rightToolBody": " A Ethereum é imbatível para finanças on-chain componíveis, NFTs, DAOs, identidade e emissão de stablecoins. Para tudo o resto, pergunta se precisas mesmo de uma VM global pública — por vezes não precisas."
+    ]
   },
   "quiz": {
     "question": "Qual é a diferença fundamental entre uma Externally Owned Account (EOA) e uma Conta de Contrato na Ethereum?",
