@@ -8,17 +8,16 @@ import { TakeawaySlide } from '../../components/templates/TakeawaySlide';
 import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
 import { QuizSlide } from '../../components/templates/QuizSlide';
+import { UnderTheHood } from '../../components/shared/UnderTheHood';
+import { RecapHandoff } from '../../components/shared/RecapHandoff';
 import { Network } from 'lucide-react';
 
 // Language-neutral shape — IDs + kind only. Labels resolved via t() at render time.
 const chapterShape = [
   { kind: 'group' as const, id: 'g-s4-problem' },
   { id: 's4-interop' },
+  { id: 's4-usecases' },
   { id: 's4-interop-compare' },
-
-  { kind: 'group' as const, id: 'g-s4-l0' },
-  { id: 's4-layer0' },
-  { id: 's4-layer0-2' },
 
   { kind: 'group' as const, id: 'g-s4-bridges' },
   { id: 's4-bridges' },
@@ -26,6 +25,10 @@ const chapterShape = [
   { kind: 'group' as const, id: 'g-s4-cosmos' },
   { id: 's4-cosmos' },
   { id: 's4-cosmos-eco' },
+
+  { kind: 'group' as const, id: 'g-s4-l0' },
+  { id: 's4-layer0' },
+  { id: 's4-layer0-2' },
 
   { kind: 'group' as const, id: 'g-s4-xrp' },
   { id: 's4-xrp' },
@@ -475,6 +478,7 @@ interface PlatformItem { name: string; tagline: string; }
 interface ZoneItem { label: string; purpose: string; }
 interface MetricItem { metric: string; label: string; }
 interface HackItem { name: string; amount: string; year: string; chain: string; method: string; }
+interface UseCaseItem { title: string; scenario: string; how: string; }
 interface EcoApp {
   emoji: string;
   name: string;
@@ -498,8 +502,10 @@ export function BP_Section4() {
   );
 
   const islandCards = t('interop.islands.cards', { returnObjects: true }) as CardItem[];
-  const mattersItems = t('interop.matters.items', { returnObjects: true }) as string[];
   const mattersSolutions = t('interop.matters.solutions', { returnObjects: true }) as SolutionItem[];
+  const useCases = t('usecases.items', { returnObjects: true }) as UseCaseItem[];
+  const hoodLabel = t('ui.hood');
+  const recapLabel = t('ui.recap');
 
   const layer0Provides = t('layer0.provides', { returnObjects: true }) as IconCard[];
   const layer0Platforms = t('layer02.platforms', { returnObjects: true }) as PlatformItem[];
@@ -537,6 +543,23 @@ export function BP_Section4() {
   ];
   const cosmosAppColors = ['#7B2BF9', '#6966FF', '#7E5CF7', '#FF414C', '#E91E63'];
   const xrpPillarColors = ['#06b6d4', '#f59e0b', '#10b981'];
+  const useCaseMeta = [
+    { emoji: '💱', color: '#6366f1' },
+    { emoji: '₿',  color: '#f7931a' },
+    { emoji: '💵', color: '#10b981' },
+    { emoji: '🎮', color: '#ec4899' },
+    { emoji: '🏢', color: '#0EA5E9' },
+    { emoji: '🌍', color: '#f59e0b' },
+  ];
+  // Island map for the opening slide — positions in a 480×240 viewBox.
+  const islands = [
+    { name: 'Bitcoin',  x: 80,  y: 70,  color: '#f7931a' },
+    { name: 'Ethereum', x: 240, y: 55,  color: '#627EEA' },
+    { name: 'Solana',   x: 400, y: 80,  color: '#9945FF' },
+    { name: 'Fabric',   x: 160, y: 185, color: '#0EA5E9' },
+    { name: 'XRPL',     x: 330, y: 190, color: '#06b6d4' },
+  ];
+  const islandGaps: [number, number][] = [[0, 1], [1, 2], [0, 3], [1, 4], [3, 4], [2, 4]];
 
   return (
     <div className="h-full w-full flex overflow-hidden">
@@ -557,77 +580,77 @@ export function BP_Section4() {
 
         {/* ═══════ S4-INTEROP ═══════ */}
         <div id="s4-interop" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="mb-4 lg:mb-6">
-            <h2 className="text-2xl lg:text-4xl font-bold text-foreground mb-1 lg:mb-2">
-              {t('interop.heading')}
-            </h2>
-            <p className="text-sm lg:text-base text-muted-foreground">
-              {t('interop.subtitle')}
-            </p>
+          <div className="shrink-0 mb-4">
+            <h2 className="text-2xl lg:text-4xl font-bold text-foreground mb-1">{t('interop.heading')}</h2>
+            <p className="text-sm lg:text-base text-muted-foreground max-w-4xl">{t('interop.subtitle')}</p>
+            <div className="mt-2">
+              <RecapHandoff label={recapLabel} text={t('interop.recap')} color="#39B54A" />
+            </div>
           </div>
 
           <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 min-h-0">
-            {/* Left — Blockchain Islands */}
+            {/* Left — island map + analogy */}
             <div className="flex flex-col gap-3 min-h-0">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="size-2 rounded-full bg-[#22d3ee]" />
-                <h3 className="text-base lg:text-lg font-semibold text-foreground">{t('interop.islands.title')}</h3>
+              <div className="flex-1 min-h-[220px] rounded-xl border border-border bg-card/40 p-3 flex flex-col">
+                <svg viewBox="0 0 480 240" className="w-full flex-1">
+                  {islandGaps.map(([a, b], i) => {
+                    const A = islands[a], B = islands[b];
+                    const mx = (A.x + B.x) / 2, my = (A.y + B.y) / 2;
+                    return (
+                      <g key={i}>
+                        <line x1={A.x} y1={A.y} x2={B.x} y2={B.y} stroke="hsl(var(--muted-foreground))" strokeWidth="1" strokeDasharray="3 4" opacity="0.35" />
+                        <circle cx={mx} cy={my} r="8" fill="hsl(var(--card))" stroke="#ef4444" strokeWidth="1" />
+                        <text x={mx} y={my + 3.5} textAnchor="middle" fontSize="9" fontWeight="900" fill="#ef4444">✕</text>
+                      </g>
+                    );
+                  })}
+                  {islands.map((isl) => (
+                    <g key={isl.name}>
+                      <circle cx={isl.x} cy={isl.y} r="30" fill={isl.color + '22'} stroke={isl.color} strokeWidth="1.5" />
+                      <text x={isl.x} y={isl.y + 4} textAnchor="middle" fontSize="11" fontWeight="800" fill={isl.color}>{isl.name}</text>
+                    </g>
+                  ))}
+                  <text x="240" y="232" textAnchor="middle" fontSize="9" fill="hsl(var(--muted-foreground))">✕ = {t('interop.svg.noLink')}</text>
+                </svg>
+                <p className="text-[11px] text-muted-foreground text-center shrink-0 mt-1">{t('interop.svg.caption')}</p>
               </div>
-              <p className="text-xs lg:text-sm text-muted-foreground leading-relaxed">
-                {t('interop.islands.intro')}
-              </p>
-
-              {/* Problem cards */}
-              {islandCards.map((card) => (
-                <motion.div
-                  key={card.title}
-                  initial={{ opacity: 0, x: -16 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3 }}
-                  className="flex gap-3 p-3 lg:p-4 bg-card rounded-xl border border-[#22d3ee]/20 hover:border-[#22d3ee]/60 transition-colors"
-                >
-                  <span className="text-xl lg:text-2xl flex-shrink-0">{card.emoji}</span>
-                  <div>
-                    <p className="text-sm lg:text-base font-semibold text-foreground">{card.title}</p>
-                    <p className="text-xs lg:text-sm text-muted-foreground mt-0.5 leading-relaxed">{card.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
+              <div className="shrink-0 rounded-xl border p-3" style={{ borderColor: '#22d3ee55', backgroundColor: '#22d3ee0d' }}>
+                <p className="text-[10px] font-black uppercase tracking-widest text-[#22d3ee]">{t('interop.analogyLabel')}</p>
+                <p className="text-sm text-foreground mt-1 leading-snug">{t('interop.analogy')}</p>
+              </div>
             </div>
 
-            {/* Right — Why it matters */}
+            {/* Right — the three frictions + where we go next */}
             <div className="flex flex-col gap-3 min-h-0">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="size-2 rounded-full bg-[#6366f1]" />
-                <h3 className="text-base lg:text-lg font-semibold text-foreground">{t('interop.matters.title')}</h3>
+              <div className="shrink-0">
+                <h3 className="text-base lg:text-lg font-semibold text-foreground">{t('interop.islands.title')}</h3>
+                <p className="text-xs lg:text-sm text-muted-foreground">{t('interop.islands.intro')}</p>
               </div>
-
-              <div className="p-3 lg:p-4 bg-card/50 rounded-xl border border-border">
-                <p className="text-xs lg:text-sm text-muted-foreground leading-relaxed mb-3">
-                  {t('interop.matters.intro')}
-                </p>
-                <ul className="space-y-2">
-                  {mattersItems.map((item) => (
-                    <li key={item} className="flex items-start gap-2 text-xs lg:text-sm text-foreground">
-                      <span className="text-[#22d3ee] flex-shrink-0 mt-0.5">→</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+              <div className="flex-1 min-h-0 grid auto-rows-fr gap-2">
+                {islandCards.map((card) => (
+                  <motion.div
+                    key={card.title}
+                    initial={{ opacity: 0, x: 16 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3 }}
+                    className="flex gap-3 p-3 bg-card rounded-xl border border-[#22d3ee]/20 hover:border-[#22d3ee]/60 transition-colors min-h-0 items-start"
+                  >
+                    <span className="text-xl lg:text-2xl flex-shrink-0">{card.emoji}</span>
+                    <div className="min-w-0">
+                      <p className="text-sm lg:text-base font-semibold text-foreground">{card.title}</p>
+                      <p className="text-xs lg:text-sm text-muted-foreground mt-0.5 leading-snug">{card.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
-
-              <div className="mt-auto">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">{t('interop.matters.solutionsLabel')}</p>
+              <div className="shrink-0">
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t('interop.matters.solutionsLabel')}</p>
                 <div className="grid grid-cols-3 gap-2">
                   {mattersSolutions.map((s, i) => {
                     const color = ['#f59e0b', '#22d3ee', '#6366f1'][i];
                     return (
-                      <div
-                        key={s.label}
-                        className="p-2 lg:p-3 bg-card rounded-lg border text-center"
-                        style={{ borderColor: `${color}40` }}
-                      >
+                      <div key={s.label} className="p-2 bg-card rounded-lg border text-center" style={{ borderColor: `${color}40` }}>
                         <p className="text-xs lg:text-sm font-semibold" style={{ color }}>{s.label}</p>
                         <p className="text-[10px] lg:text-xs text-muted-foreground mt-0.5">{s.sub}</p>
                       </div>
@@ -635,7 +658,49 @@ export function BP_Section4() {
                   })}
                 </div>
               </div>
+              <UnderTheHood label={hoodLabel} terms={['consensus', 'state', 'wrapped token', 'light client']} className="self-start" />
             </div>
+          </div>
+        </div>
+
+        {/* ═══════ S4-USECASES — real-world situations ═══════ */}
+        <div id="s4-usecases" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('usecases.heading')}</h2>
+            <p className="text-sm text-muted-foreground mt-1 max-w-4xl">{t('usecases.subtitle')}</p>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-3">
+            {useCases.map((u, i) => {
+              const { emoji, color } = useCaseMeta[i % useCaseMeta.length];
+              return (
+                <motion.div
+                  key={u.title}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: i * 0.05 }}
+                  className="rounded-xl border-2 p-4 flex flex-col gap-2 min-h-0"
+                  style={{ borderColor: color + '50', backgroundColor: color + '08' }}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-2xl leading-none">{emoji}</span>
+                    <p className="font-bold text-lg text-foreground leading-tight">{u.title}</p>
+                  </div>
+                  <p className="text-base text-muted-foreground leading-snug flex-1">{u.scenario}</p>
+                  <div className="shrink-0 flex items-baseline gap-1.5 flex-wrap">
+                    <span className="text-[9px] font-black uppercase tracking-widest" style={{ color }}>{t('usecases.howLabel')}</span>
+                    <span className="text-[11px] font-semibold text-foreground">{u.how}</span>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <div className="shrink-0 mt-4 rounded-xl border p-3" style={{ borderColor: '#22d3ee55', backgroundColor: '#22d3ee0d' }}>
+            <p className="text-sm text-foreground leading-snug">
+              <span className="font-bold text-[#22d3ee]">{t('usecases.footerStrong')}</span>{t('usecases.footer')}
+            </p>
           </div>
         </div>
 
@@ -665,7 +730,8 @@ export function BP_Section4() {
                 rowColors: { mechanism: '#6366f1', trust: '#10b981', risk: '#f59e0b', finality: '#10b981', compatibility: '#ef4444' },
               },
             ].map((col) => {
-              const rowKeys = ['mechanism', 'trust', 'risk', 'finality', 'compatibility'] as const;
+              // Three plain-language rows; the analogy card is the one to read first.
+              const rowKeys = ['mechanism', 'trust', 'risk'] as const;
               return (
                 <div key={col.key} className="flex flex-col gap-2 min-h-0 rounded-xl border-2 p-4" style={{ borderColor: col.accent + '55', backgroundColor: col.accent + '05' }}>
                   <div className="shrink-0">
@@ -674,11 +740,16 @@ export function BP_Section4() {
                     <div className="text-xs text-muted-foreground mt-0.5">{t(`interopCompare.${col.key}.subtitle`)}</div>
                   </div>
 
+                  <div className="shrink-0 p-3 rounded-lg border-2" style={{ borderColor: col.accent + '70', backgroundColor: col.accent + '12' }}>
+                    <div className="text-[9px] font-black uppercase tracking-wider mb-1" style={{ color: col.accent }}>{t('interopCompare.rowLabels.analogy')}</div>
+                    <div className="text-sm font-semibold text-foreground leading-snug">{t(`interopCompare.${col.key}.analogy`)}</div>
+                  </div>
+
                   <div className="flex-1 min-h-0 flex flex-col gap-2">
                     {rowKeys.map((rk) => (
                       <div key={rk} className="flex flex-col gap-0.5 p-2 rounded-lg bg-card border border-border">
                         <div className="text-[9px] font-black uppercase tracking-wider" style={{ color: col.rowColors[rk] }}>{t(`interopCompare.rowLabels.${rk}`)}</div>
-                        <div className="text-[11px] text-muted-foreground leading-snug">{t(`interopCompare.${col.key}.${rk}`)}</div>
+                        <div className="text-xs text-muted-foreground leading-snug">{t(`interopCompare.${col.key}.${rk}`)}</div>
                       </div>
                     ))}
                     <div className="mt-auto p-2 rounded-lg border" style={{ borderColor: col.accent + '40', backgroundColor: col.accent + '08' }}>
@@ -691,100 +762,8 @@ export function BP_Section4() {
             })}
 
           </div>
-        </div>
-
-        {/* ═══════ S4-LAYER0 (1/2) — Animated Concept ═══════ */}
-        <div id="s4-layer0" className="h-full flex flex-col p-5 lg:p-8">
-          <div className="shrink-0 mb-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#22d3ee]/15 border border-[#22d3ee]/40 text-[#22d3ee] text-xs font-bold">{t('layer0.badge')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('layer0.heading')}</h2>
-            <p className="text-sm text-muted-foreground max-w-3xl">
-              {t('layer0.leadA')}<strong className="text-foreground">{t('layer0.leadStrong')}</strong>{t('layer0.leadB')}<em>{t('layer0.leadEm')}</em>{t('layer0.leadC')}
-            </p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-5">
-            {/* Left: animated stack */}
-            <Layer0AnimatedStack />
-
-            {/* Right: what L0 provides */}
-            <div className="flex flex-col gap-3 min-h-0">
-              <div className="rounded-xl border p-3" style={{ borderColor: '#22d3ee55', backgroundColor: '#22d3ee0d' }}>
-                <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#22d3ee' }}>{t('layer0.inOneLineLabel')}</p>
-                <p className="text-sm text-foreground mt-1 leading-snug">
-                  {t('layer0.inOneLine')}
-                </p>
-              </div>
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider shrink-0">{t('layer0.providesLabel')}</p>
-              <div className="flex-1 min-h-0 grid auto-rows-fr gap-2">
-                {layer0Provides.map(c => (
-                  <div key={c.title} className="rounded-lg border border-[#22d3ee]/30 bg-card p-2.5 flex items-start gap-2.5 min-h-0">
-                    <span className="text-lg shrink-0 leading-none mt-0.5">{c.icon}</span>
-                    <div className="min-w-0">
-                      <p className="text-xs font-bold text-foreground">{c.title}</p>
-                      <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">{c.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ═══════ S4-LAYER0 (2/2) — Platforms & Trade-off vs Cosmos ═══════ */}
-        <div id="s4-layer0-2" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('layer02.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('layer02.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-0">
-
-            {/* Left — L0 platforms */}
-            <div className="flex flex-col gap-3 min-h-0">
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider shrink-0">{t('layer02.platformsLabel')}</p>
-              <div className="flex-1 min-h-0 grid auto-rows-fr gap-3">
-                {layer0Platforms.map((p, i) => {
-                  const meta = platformMeta[i];
-                  return (
-                    <div key={p.name} className="rounded-xl p-4 min-h-0 flex flex-col gap-2 border" style={{ borderColor: meta.color + '55', backgroundColor: meta.color + '08' }}>
-                      <div className="flex items-center gap-2 shrink-0">
-                        <span className="text-base">{meta.emoji}</span>
-                        <p className="text-base font-bold text-foreground">{p.name}</p>
-                        <span className="text-xs px-1.5 py-0.5 rounded font-mono" style={{ backgroundColor: meta.color + '18', color: meta.color, border: `1px solid ${meta.color}35` }}>{meta.token}</span>
-                        <span className="ml-auto text-xs text-muted-foreground">{meta.consensus}</span>
-                      </div>
-                      <p className="text-sm text-muted-foreground leading-snug">{p.tagline}</p>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Right — Trade-off vs Cosmos */}
-            <div className="flex flex-col justify-center min-h-0">
-              <div className="rounded-xl border p-6" style={{ borderColor: '#6366f155', backgroundColor: '#6366f10d' }}>
-                <p className="text-[10px] font-black uppercase tracking-widest mb-4" style={{ color: '#6366f1' }}>{t('layer02.tradeoffLabel')}</p>
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <p className="text-sm font-bold text-foreground mb-2">{t('layer02.l0ModelTitle')}</p>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      <span className="text-[#10b981]">↑</span> {t('layer02.l0ModelBody1')}<br/>
-                      <span className="text-[#10b981]">↑</span> {t('layer02.l0ModelBody2')}<br/>
-                      <span className="text-[#ef4444]">↓</span> {t('layer02.l0ModelBody3')}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-foreground mb-2">{t('layer02.cosmosModelTitle')}</p>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      <span className="text-[#10b981]">↑</span> {t('layer02.cosmosModelBody1')}<br/>
-                      <span className="text-[#10b981]">↑</span> {t('layer02.cosmosModelBody2')}<br/>
-                      <span className="text-[#ef4444]">↓</span> {t('layer02.cosmosModelBody3')}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="shrink-0 mt-3">
+            <UnderTheHood label={hoodLabel} terms={['lock-and-mint', 'multisig', 'light client', 'relayer', 'shared validator set']} />
           </div>
         </div>
 
@@ -793,9 +772,41 @@ export function BP_Section4() {
           <div className="shrink-0 mb-4">
             <span className="text-xs font-black uppercase tracking-widest text-[#ef4444]">{t('bridges.sectionLabel')}</span>
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1 mb-1">{t('bridges.heading')}</h2>
-            <p className="text-sm text-muted-foreground">{t('bridges.subA')}<span className="font-semibold text-foreground">{t('bridges.subAmount')}</span>{t('bridges.subB')}</p>
+            <p className="text-sm text-muted-foreground max-w-4xl">{t('bridges.subA')}<span className="font-semibold text-foreground">{t('bridges.subAmount')}</span>{t('bridges.subB')}</p>
           </div>
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4">
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
+
+            {/* How a bridge works — the vault visual */}
+            <div className="flex flex-col gap-2 min-h-0">
+              <div className="text-xs font-black uppercase tracking-widest text-muted-foreground shrink-0">{t('bridges.vault.label')}</div>
+              <div className="flex-1 min-h-0 rounded-xl border border-border bg-card/40 p-3 flex flex-col">
+                <svg viewBox="0 0 300 200" className="w-full flex-1">
+                  {/* Chain A vault */}
+                  <rect x="12" y="40" width="110" height="120" rx="10" fill="#f59e0b14" stroke="#f59e0b" strokeWidth="1.5" />
+                  <text x="67" y="30" textAnchor="middle" fontSize="11" fontWeight="900" fill="#f59e0b">{t('bridges.vault.chainA')}</text>
+                  <text x="67" y="78" textAnchor="middle" fontSize="26">🔒</text>
+                  <text x="67" y="112" textAnchor="middle" fontSize="15" fontWeight="900" fill="hsl(var(--foreground))">1,000 ETH</text>
+                  <text x="67" y="128" textAnchor="middle" fontSize="8.5" fill="hsl(var(--muted-foreground))">{t('bridges.vault.locked')}</text>
+                  <text x="67" y="150" textAnchor="middle" fontSize="8.5" fill="#f59e0b">+ every new user ↑</text>
+                  {/* Arrow */}
+                  <line x1="128" y1="100" x2="168" y2="100" stroke="hsl(var(--muted-foreground))" strokeWidth="1.5" strokeDasharray="4 3" />
+                  <polygon points="168,95 178,100 168,105" fill="hsl(var(--muted-foreground))" />
+                  <text x="150" y="90" textAnchor="middle" fontSize="8" fill="hsl(var(--muted-foreground))">bridge</text>
+                  {/* Chain B copies */}
+                  <rect x="178" y="40" width="110" height="120" rx="10" fill="#6366f114" stroke="#6366f1" strokeWidth="1.5" />
+                  <text x="233" y="30" textAnchor="middle" fontSize="11" fontWeight="900" fill="#6366f1">{t('bridges.vault.chainB')}</text>
+                  <text x="233" y="78" textAnchor="middle" fontSize="26">🎟️</text>
+                  <text x="233" y="112" textAnchor="middle" fontSize="15" fontWeight="900" fill="hsl(var(--foreground))">1,000 wETH</text>
+                  <text x="233" y="128" textAnchor="middle" fontSize="8.5" fill="hsl(var(--muted-foreground))">{t('bridges.vault.minted')}</text>
+                  <text x="150" y="190" textAnchor="middle" fontSize="9" fontWeight="700" fill="#ef4444">🍯 {bridgeDangers[0]?.title}</text>
+                </svg>
+                <p className="text-[11px] text-muted-foreground leading-snug shrink-0 mt-1">{t('bridges.vault.caption')}</p>
+              </div>
+              <div className="shrink-0 rounded-lg border p-2.5" style={{ borderColor: '#f59e0b60', backgroundColor: '#f59e0b10' }}>
+                <p className="text-[10px] font-black uppercase tracking-widest text-[#f59e0b]">⚖️ {t('bridges.honestLabel')}</p>
+                <p className="text-xs text-foreground leading-snug mt-0.5">{t('bridges.honest')}</p>
+              </div>
+            </div>
 
             {/* Hall of shame */}
             <div className="flex flex-col gap-2 min-h-0">
@@ -807,9 +818,9 @@ export function BP_Section4() {
                     <div key={h.name} className="min-h-0 p-3 bg-card border rounded-xl flex flex-col gap-1" style={{ borderColor: color + '40' }}>
                       <div className="flex items-center justify-between">
                         <span className="font-bold text-sm text-foreground">{h.name}</span>
-                        <span className="font-black text-sm" style={{ color }}>{h.amount}</span>
+                        <span className="font-black text-base" style={{ color }}>{h.amount}</span>
                       </div>
-                      <div className="text-xs text-muted-foreground">{h.year} · {h.chain}</div>
+                      <div className="text-[11px] text-muted-foreground">{h.year} · {h.chain}</div>
                       <div className="text-xs text-muted-foreground leading-snug">{h.method}</div>
                     </div>
                   );
@@ -817,12 +828,12 @@ export function BP_Section4() {
               </div>
             </div>
 
-            {/* Why bridges are risky */}
+            {/* Why risky (3) + what safer looks like (3) */}
             <div className="flex flex-col gap-2 min-h-0">
               <div className="text-xs font-black uppercase tracking-widest text-muted-foreground shrink-0">{t('bridges.dangerLabel')}</div>
               <div className="flex-1 min-h-0 grid auto-rows-fr gap-2">
-                {bridgeDangers.map(r => (
-                  <div key={r.title} className="min-h-0 p-3 bg-card border border-border rounded-xl flex gap-2.5 items-start">
+                {bridgeDangers.slice(0, 3).map(r => (
+                  <div key={r.title} className="min-h-0 p-2.5 bg-card border border-border rounded-xl flex gap-2.5 items-start">
                     <span className="text-xl shrink-0 leading-none">{r.icon}</span>
                     <div className="min-w-0">
                       <div className="font-bold text-xs text-foreground mb-0.5">{r.title}</div>
@@ -831,16 +842,14 @@ export function BP_Section4() {
                   </div>
                 ))}
               </div>
-            </div>
-
-            {/* Safer alternatives + best practices */}
-            <div className="flex flex-col gap-2 min-h-0">
-              <div className="text-xs font-black uppercase tracking-widest text-muted-foreground shrink-0">{t('bridges.saferLabel')}</div>
+              <div className="text-xs font-black uppercase tracking-widest text-muted-foreground shrink-0 mt-1">{t('bridges.saferLabel')}</div>
               <div className="flex-1 min-h-0 grid auto-rows-fr gap-2">
-                {bridgeSafer.map((p, i) => {
-                  const color = saferColors[i];
+                {[0, 1, 4].map((idx) => {
+                  const p = bridgeSafer[idx];
+                  if (!p) return null;
+                  const color = saferColors[idx];
                   return (
-                    <div key={p.title} className="min-h-0 flex gap-2.5 p-3 bg-card border rounded-xl items-start" style={{ borderColor: color + '30' }}>
+                    <div key={p.title} className="min-h-0 flex gap-2.5 p-2.5 bg-card border rounded-xl items-start" style={{ borderColor: color + '30' }}>
                       <div className="w-1 self-stretch rounded-full shrink-0" style={{ backgroundColor: color }} />
                       <div className="min-w-0">
                         <div className="font-bold text-xs mb-0.5" style={{ color }}>{p.title}</div>
@@ -1066,7 +1075,7 @@ export function BP_Section4() {
                   </div>
 
                   <div className="flex-1 min-h-0 flex flex-col gap-1">
-                    {app.items.map(item => (
+                    {app.items.slice(0, 3).map(item => (
                       <div
                         key={item.name}
                         className="rounded-md border bg-card/60 px-1.5 py-1 min-h-0"
@@ -1090,7 +1099,104 @@ export function BP_Section4() {
           </div>
         </div>
 
-        {/* (Layer 0 slides moved to after Approaches Compared — see s4-layer0 and s4-layer0-2 above) */}
+        {/* ═══════ S4-LAYER0 (1/2) — Animated Concept ═══════ */}
+        <div id="s4-layer0" className="h-full flex flex-col p-5 lg:p-8">
+          <div className="shrink-0 mb-3">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#22d3ee]/15 border border-[#22d3ee]/40 text-[#22d3ee] text-xs font-bold">{t('layer0.badge')}</span>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('layer0.heading')}</h2>
+            <p className="text-sm text-muted-foreground max-w-3xl">
+              {t('layer0.leadA')}<strong className="text-foreground">{t('layer0.leadStrong')}</strong>{t('layer0.leadB')}<em>{t('layer0.leadEm')}</em>{t('layer0.leadC')}
+            </p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <RecapHandoff label={recapLabel} text="Section 02 · Rollups & L2s" to="/blockchain-platforms/section-2" color="#39B54A" />
+              <UnderTheHood label={hoodLabel} terms={['relay chain', 'parachain', 'XCM', 'Warp', 'restaking']} />
+            </div>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-5">
+            {/* Left: animated stack */}
+            <Layer0AnimatedStack />
+
+            {/* Right: what L0 provides */}
+            <div className="flex flex-col gap-3 min-h-0">
+              <div className="rounded-xl border p-3" style={{ borderColor: '#22d3ee55', backgroundColor: '#22d3ee0d' }}>
+                <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#22d3ee' }}>{t('layer0.inOneLineLabel')}</p>
+                <p className="text-sm text-foreground mt-1 leading-snug">
+                  {t('layer0.inOneLine')}
+                </p>
+              </div>
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider shrink-0">{t('layer0.providesLabel')}</p>
+              <div className="flex-1 min-h-0 grid auto-rows-fr gap-2">
+                {layer0Provides.map(c => (
+                  <div key={c.title} className="rounded-lg border border-[#22d3ee]/30 bg-card p-2.5 flex items-start gap-2.5 min-h-0">
+                    <span className="text-lg shrink-0 leading-none mt-0.5">{c.icon}</span>
+                    <div className="min-w-0">
+                      <p className="text-xs font-bold text-foreground">{c.title}</p>
+                      <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">{c.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══════ S4-LAYER0 (2/2) — Platforms & Trade-off vs Cosmos ═══════ */}
+        <div id="s4-layer0-2" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-5">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('layer02.heading')}</h2>
+            <p className="text-sm text-muted-foreground mt-1">{t('layer02.subtitle')}</p>
+          </div>
+
+          <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-0">
+
+            {/* Left — L0 platforms */}
+            <div className="flex flex-col gap-3 min-h-0">
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider shrink-0">{t('layer02.platformsLabel')}</p>
+              <div className="flex-1 min-h-0 grid auto-rows-fr gap-3">
+                {layer0Platforms.map((p, i) => {
+                  const meta = platformMeta[i];
+                  return (
+                    <div key={p.name} className="rounded-xl p-4 min-h-0 flex flex-col gap-2 border" style={{ borderColor: meta.color + '55', backgroundColor: meta.color + '08' }}>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className="text-base">{meta.emoji}</span>
+                        <p className="text-base font-bold text-foreground">{p.name}</p>
+                        <span className="text-xs px-1.5 py-0.5 rounded font-mono" style={{ backgroundColor: meta.color + '18', color: meta.color, border: `1px solid ${meta.color}35` }}>{meta.token}</span>
+                        <span className="ml-auto text-xs text-muted-foreground">{meta.consensus}</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-snug">{p.tagline}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Right — Trade-off vs Cosmos */}
+            <div className="flex flex-col justify-center min-h-0">
+              <div className="rounded-xl border p-6" style={{ borderColor: '#6366f155', backgroundColor: '#6366f10d' }}>
+                <p className="text-[10px] font-black uppercase tracking-widest mb-4" style={{ color: '#6366f1' }}>{t('layer02.tradeoffLabel')}</p>
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <p className="text-sm font-bold text-foreground mb-2">{t('layer02.l0ModelTitle')}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      <span className="text-[#10b981]">↑</span> {t('layer02.l0ModelBody1')}<br/>
+                      <span className="text-[#10b981]">↑</span> {t('layer02.l0ModelBody2')}<br/>
+                      <span className="text-[#ef4444]">↓</span> {t('layer02.l0ModelBody3')}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-foreground mb-2">{t('layer02.cosmosModelTitle')}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      <span className="text-[#10b981]">↑</span> {t('layer02.cosmosModelBody1')}<br/>
+                      <span className="text-[#10b981]">↑</span> {t('layer02.cosmosModelBody2')}<br/>
+                      <span className="text-[#ef4444]">↓</span> {t('layer02.cosmosModelBody3')}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* ═══════ S4-XRP — XRP Ledger (focused, one takeaway) ═══════ */}
         <div id="s4-xrp" className="h-full flex flex-col p-5 lg:p-8">
@@ -1136,11 +1242,14 @@ export function BP_Section4() {
           </div>
 
           {/* Honest context footer */}
-          <div className="shrink-0 mt-3 p-2.5 bg-[#f59e0b]/08 rounded-lg border border-[#f59e0b]/40">
-            <p className="text-[11px] font-bold text-[#f59e0b] mb-1 flex items-center gap-1.5">
-              <span>⚖️</span> {t('xrp.honestTitle')}
-            </p>
-            <p className="text-[11px] text-muted-foreground leading-snug">{t('xrp.honestBody')}</p>
+          <div className="shrink-0 mt-3 flex flex-col lg:flex-row gap-2 lg:items-stretch">
+            <div className="flex-1 p-2.5 bg-[#f59e0b]/08 rounded-lg border border-[#f59e0b]/40">
+              <p className="text-[11px] font-bold text-[#f59e0b] mb-1 flex items-center gap-1.5">
+                <span>⚖️</span> {t('xrp.honestTitle')}
+              </p>
+              <p className="text-[11px] text-muted-foreground leading-snug">{t('xrp.honestBody')}</p>
+            </div>
+            <UnderTheHood label={hoodLabel} terms={['UNL', 'federated BFT', 'Trust Lines', 'XLS-30 AMM', 'Hooks']} className="self-start lg:self-center" />
           </div>
         </div>
 

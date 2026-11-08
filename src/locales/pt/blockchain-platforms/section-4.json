@@ -1,4 +1,23 @@
 {
+  "usecases": {
+    "heading": "Where this shows up in real life",
+    "subtitle": "Interoperability sounds abstract until you see who needs it. Six everyday situations — and how value crosses today.",
+    "howLabel": "How it crosses",
+    "items": [
+      { "title": "Moving to a cheaper lane", "scenario": "You hold ETH on Ethereum, but a swap costs $20 in fees. You move it to Arbitrum or Base, where the same swap costs cents.", "how": "Canonical rollup bridge (Section 02)" },
+      { "title": "Using Bitcoin in DeFi", "scenario": "You want to earn yield on BTC inside an Ethereum lending app. A custodian holds the BTC and issues WBTC you can use.", "how": "Wrapped token · custodian risk" },
+      { "title": "One stablecoin, many chains", "scenario": "USDC lives natively on a dozen-plus chains; Circle's CCTP burns it on one chain and mints it on another. RLUSD settles on XRPL and Ethereum.", "how": "Native multi-chain issuance" },
+      { "title": "Game items that travel", "scenario": "A game runs on its own chain for speed (Ronin, Immutable), but players want to sell items on an Ethereum marketplace.", "how": "Bridge · wrapped NFT" },
+      { "title": "Private data, public settlement", "scenario": "A consortium keeps supplier data on a private Fabric network but wants final settlement or tokens on a public chain for liquidity.", "how": "Anchoring · messaging layer" },
+      { "title": "Cross-border payment routes", "scenario": "A payment starts as a stablecoin on one chain and must arrive as a local-currency token on another — in one trip, not three hops.", "how": "Message + value routing (Axelar, IBC)" }
+    ],
+    "footerStrong": "Notice the pattern: ",
+    "footer": "in every case somebody has to hold the asset or verify the other chain. Who that is — an operator, the maths, or a shared validator set — is the whole design question. Next slide."
+  },
+  "ui": {
+    "hood": "under the hood →",
+    "recap": "Already covered"
+  },
   "groups": {
     "g-s4-problem": "🌉 O Problema",
     "g-s4-l0": "🏛️ Layer 0",
@@ -8,6 +27,7 @@
     "g-s4-wrap": "✅ Resumo"
   },
   "chapters": {
+    "s4-usecases": "Real-World Use Cases",
     "s4-interop": "Interoperabilidade",
     "s4-interop-compare": "Abordagens Comparadas",
     "s4-layer0": "🧩 Layer 0: Conceito",
@@ -83,6 +103,13 @@
     }
   },
   "interop": {
+    "svg": {
+      "noLink": "no native link",
+      "caption": "Each island validates only its own ledger. A coin cannot \"swim\" across."
+    },
+    "analogy": "Early email: a Gmail user could not write to a Hotmail user until providers agreed on a shared standard. Blockchains today are mostly still at the \"no shared standard\" stage.",
+    "analogyLabel": "Everyday analogy",
+    "recap": "Bitcoin (Section 01) · Ethereum (Section 02) · Hyperledger Fabric (Section 03) — each one is its own island",
     "heading": "O Problema da Interoperabilidade",
     "subtitle": "Bitcoin, Ethereum, Solana e Hyperledger Fabric operam cada uma como redes isoladas — não conseguem comunicar nativamente entre si.",
     "islands": {
@@ -127,6 +154,7 @@
     "heading": "Abordagens de Interoperabilidade — Comparadas",
     "subtitle": "Três respostas fundamentalmente diferentes à mesma pergunta: como é que duas blockchains trocam valor ou mensagens sem confiarem numa terceira parte?",
     "rowLabels": {
+      "analogy": "Think of it as",
       "mechanism": "Mecanismo",
       "trust": "Modelo de confiança",
       "risk": "Risco",
@@ -135,6 +163,7 @@
     },
     "examplesLabel": "Exemplos",
     "col1": {
+      "analogy": "A courier keeps your luggage and gives you a claim ticket to use in the other city.",
       "approachLabel": "Abordagem 1",
       "title": "Bridges & Tokens Embrulhados",
       "subtitle": "Lock-and-mint · baseada em smart contracts",
@@ -146,6 +175,7 @@
       "examples": "WBTC · Ronin · Wormhole · Hop Protocol · LayerZero · Stargate"
     },
     "col2": {
+      "analogy": "Both airports read each other's boarding passes directly — no courier needed.",
       "approachLabel": "Abordagem 2",
       "title": "Nativa de protocolo / IBC",
       "subtitle": "Light clients · mensagens com confiança minimizada",
@@ -157,6 +187,7 @@
       "examples": "Cosmos IBC · IBC Eureka (Ethereum) · Polkadot XCM (entre parachains)"
     },
     "col3": {
+      "analogy": "One security team guards every terminal in the airport — moving between terminals is just walking.",
       "approachLabel": "Abordagem 3",
       "title": "Rede Layer 0",
       "subtitle": "Validadores partilhados · chamadas cross-chain nativas",
@@ -205,6 +236,16 @@
     "cosmosModelBody3": "cada chain arranca os seus próprios validadores"
   },
   "bridges": {
+    "honest": "Using a bridge is a trust decision, not a technical detail: you are trusting whoever controls the vault. Prefer a chain's official (canonical) bridge, and move only what you need.",
+    "honestLabel": "Honest note",
+    "vault": {
+      "label": "How a lock-and-mint bridge works",
+      "chainA": "Chain A",
+      "chainB": "Chain B",
+      "locked": "locked in one vault",
+      "minted": "copies (wrapped) issued",
+      "caption": "Every user adds to the same vault. The bigger it gets, the bigger the prize — that is the honeypot."
+    },
     "sectionLabel": "Secção 04",
     "heading": "Segurança das Bridges Cross-Chain",
     "subA": "As bridges são a categoria mais explorada na blockchain. Mais de ",

@@ -8,6 +8,80 @@ import { SiteFooter } from '../../components/shared/SiteFooter';
 import { QuizSlide } from '../../components/templates/QuizSlide';
 import { Zap } from 'lucide-react';
 import { TeamCheckpoint } from '../../components/TeamCheckpoint';
+import { UnderTheHood } from '../../components/shared/UnderTheHood';
+import { RecapHandoff } from '../../components/shared/RecapHandoff';
+
+/* ──────────── ZK bouncer demo — pick passport or proof, watch what leaks ──────────── */
+function ZkBouncerDemo() {
+  const { t } = useTranslation('blockchain-platforms/section-5');
+  const [mode, setMode] = useState<'idle' | 'passport' | 'proof'>('idle');
+  const leaked = t('zkp.demo.leaked', { returnObjects: true }) as string[];
+  const accent = mode === 'passport' ? '#ef4444' : mode === 'proof' ? '#39B54A' : '#8b5cf6';
+
+  const optionCls = (active: boolean, color: string) =>
+    `text-left rounded-xl border-2 px-4 py-3 transition-all hover:-translate-y-0.5 hover:shadow-md font-bold text-sm text-foreground ${active ? 'shadow-md' : ''}`;
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full min-h-0">
+      {/* You */}
+      <div className="rounded-xl border-2 p-4 flex flex-col gap-3 min-h-0" style={{ borderColor: '#8b5cf655', backgroundColor: '#8b5cf608' }}>
+        <div className="flex items-center gap-3 shrink-0">
+          <span className="text-3xl">🧍</span>
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-widest text-[#8b5cf6]">{t('zkp.demo.youLabel')}</p>
+            <p className="text-sm text-muted-foreground">{t('zkp.demo.pick')}</p>
+          </div>
+        </div>
+        <button
+          onClick={() => setMode('passport')}
+          className={optionCls(mode === 'passport', '#ef4444')}
+          style={{ borderColor: mode === 'passport' ? '#ef4444' : '#ef444455', backgroundColor: mode === 'passport' ? '#ef444414' : 'hsl(var(--card))' }}
+        >{t('zkp.demo.passportBtn')}</button>
+        <button
+          onClick={() => setMode('proof')}
+          className={optionCls(mode === 'proof', '#39B54A')}
+          style={{ borderColor: mode === 'proof' ? '#39B54A' : '#39B54A55', backgroundColor: mode === 'proof' ? '#39B54A14' : 'hsl(var(--card))' }}
+        >{t('zkp.demo.proofBtn')}</button>
+      </div>
+
+      {/* Bouncer */}
+      <div className="rounded-xl border-2 p-4 flex flex-col gap-3 min-h-0 transition-colors" style={{ borderColor: accent + '66', backgroundColor: accent + '0a' }}>
+        <div className="flex items-center gap-3 shrink-0">
+          <span className="text-3xl">🕴️</span>
+          <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: accent }}>{t('zkp.demo.bouncerLabel')}</p>
+        </div>
+        {mode === 'idle' ? (
+          <p className="text-sm text-muted-foreground italic">{t('zkp.demo.idle')}</p>
+        ) : (
+          <>
+            <motion.div
+              key={`verdict-${mode}`}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="shrink-0 rounded-lg border-2 px-3 py-2 text-sm font-black"
+              style={{ borderColor: '#39B54A', backgroundColor: '#39B54A14', color: '#39B54A' }}
+            >{t('zkp.demo.verdict')}</motion.div>
+            <div className="flex flex-wrap gap-1.5">
+              {leaked.map((f, i) => (
+                <motion.span
+                  key={`${mode}-${f}`}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.06 }}
+                  className={`text-xs px-2 py-1 rounded-md border ${mode === 'proof' ? 'line-through text-muted-foreground/60 border-dashed border-border' : 'font-semibold'}`}
+                  style={mode === 'passport' ? { borderColor: '#ef444480', backgroundColor: '#ef444414', color: '#ef4444' } : undefined}
+                >{mode === 'passport' ? f : `${f} ${t('zkp.demo.hidden')}`}</motion.span>
+              ))}
+            </div>
+            <p className="mt-auto text-xs font-black" style={{ color: accent }}>
+              {mode === 'passport' ? t('zkp.demo.leakedCountPassport') : t('zkp.demo.leakedCountProof')}
+            </p>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
 
 /* ──────────── Interactive Platform Recommender (Airtable-style) ────────────
    5 questions appear one at a time. Each answer narrows the field of
@@ -250,17 +324,17 @@ const chapterShape = [
   { kind: 'group' as const, id: 'g-s5-zk' },
   { id: 's5-zkp' },
   { id: 's5-zkp-cave' },
-  { id: 's5-zkp-props' },
-
-  { kind: 'group' as const, id: 'g-s5-stark' },
-  { id: 's5-starknet' },
-  { id: 's5-starknet-compare' },
-  { id: 's5-starknet-eco' },
+  { id: 's5-zk-apps' },
+  { id: 's5-zk-identity' },
 
   { kind: 'group' as const, id: 'g-s5-l2' },
   { id: 's5-l2-why' },
   { id: 's5-layer2' },
   { id: 's5-l2apps' },
+
+  { kind: 'group' as const, id: 'g-s5-stark' },
+  { id: 's5-starknet' },
+  { id: 's5-starknet-eco' },
 
   { kind: 'group' as const, id: 'g-s5-polka' },
   { id: 's5-polkadot' },
@@ -286,6 +360,7 @@ const chapterShape = [
 
   { kind: 'group' as const, id: 'g-s5-wrap' },
   { id: 's5-quiz' },
+  { id: 's5-quiz-2' },
   { id: 's5-takeaways' },
   { id: 's5-team-checkpoint' },
 ];
@@ -313,16 +388,20 @@ export function BP_Section5() {
 
   // ── Array data resolved via t() ──
   const caveSteps = t('zkpCave.steps', { returnObjects: true }) as { title: string; text: string }[];
-  const zkpProperties = t('zkpProps.properties', { returnObjects: true }) as { prop: string; desc: string }[];
-  const zkpUses = t('zkpProps.uses', { returnObjects: true }) as { title: string; desc: string }[];
+  const zkMore = t('zkp.more', { returnObjects: true }) as { icon: string; text: string }[];
+  const zkAppProps = t('zkApps.props', { returnObjects: true }) as { t: string; d: string }[];
+  const zkAppItems = t('zkApps.items', { returnObjects: true }) as { name: string; who: string; does: string; since: string }[];
+  const zkIdFlow = t('zkIdentity.flow', { returnObjects: true }) as { node: string; holds: string }[];
+  const zkIdBusiness = t('zkIdentity.business', { returnObjects: true }) as string[];
   const starknetCards = t('starknet.cards', { returnObjects: true }) as { title: string; desc: string }[];
   const starknetNews = t('starknet.news', { returnObjects: true }) as { label: string; sub: string }[];
   const kycSteps = t('starknetCompare.kycSteps', { returnObjects: true }) as { label: string; desc: string }[];
-  const compareZkRows = t('starknetCompare.zk.rows', { returnObjects: true }) as CompareRow[];
-  const compareOpRows = t('starknetCompare.op.rows', { returnObjects: true }) as CompareRow[];
   const starknetEcoCards = t('starknetEco.cards', { returnObjects: true }) as EcoCard[];
   const l2WhySteps = t('l2Why.steps', { returnObjects: true }) as { title: string; text: string }[];
   const l2WhyMetrics = t('l2Why.metrics', { returnObjects: true }) as { k: string; l1: string; l2: string }[];
+  const triCorners = t('l2Why.triangle.corners', { returnObjects: true }) as { name: string; biz: string }[];
+  const hoodLabel = t('ui.hood');
+  const recapLabel = t('ui.recap');
   const layer2OpRows = t('layer2.op.rows', { returnObjects: true }) as CompareRow[];
   const layer2ZkRows = t('layer2.zk.rows', { returnObjects: true }) as CompareRow[];
   const layer2Shared = t('layer2.shared', { returnObjects: true }) as string[];
@@ -339,7 +418,9 @@ export function BP_Section5() {
   const avalancheDevs = t('avalanche.developments', { returnObjects: true }) as DevItem[];
   const avalancheEcoCards = t('avalancheEco.cards', { returnObjects: true }) as EcoCard[];
   const privacyApproaches = t('privacyApproaches.items', { returnObjects: true }) as { name: string; sub: string; mech: string; trade: string }[];
-  const privacyEvents = t('privacyRegulation.events', { returnObjects: true }) as { yr: string; t: string; d: string }[];
+  const privacyTrace = t('privacy.trace', { returnObjects: true }) as { who: string; note: string }[];
+  const privacyBusiness = t('privacy.business', { returnObjects: true }) as string[];
+  const privacyStory = t('privacyRegulation.story', { returnObjects: true }) as { yr: string; t: string; d: string }[];
   const privacyFutureItems = t('privacyFuture.items', { returnObjects: true }) as { title: string; d: string }[];
   const evaluateAxes = t('evaluate.axes', { returnObjects: true }) as EvalAxis[];
   const evaluate2Axes = t('evaluate2.axes', { returnObjects: true }) as EvalAxis[];
@@ -355,20 +436,35 @@ export function BP_Section5() {
     { emoji: '🔒', color: '#ED1C24' },
     { emoji: '🙈', color: '#8b5cf6' },
   ];
-  const zkpUseMeta = [
-    { icon: '🪪', color: '#6366f1' },
-    { icon: '🗳️', color: '#39B54A' },
-    { icon: '🏦', color: '#f59e0b' },
+  const zkAppMeta = [
     { icon: '⚡', color: '#8b5cf6' },
+    { icon: '🧑', color: '#10b981' },
+    { icon: '🛡️', color: '#f59e0b' },
+    { icon: '🏦', color: '#6366f1' },
+    { icon: '📧', color: '#ec4899' },
+    { icon: '🌐', color: '#06b6d4' },
+    { icon: '🔑', color: '#0EA5E9' },
+    { icon: '🗳️', color: '#39B54A' },
+    { icon: '✅', color: '#f97316' },
   ];
+  const zkIdFlowMeta = [
+    { icon: '🏦', color: '#6366f1' },
+    { icon: '👛', color: '#8b5cf6' },
+    { icon: '🖥️', color: '#39B54A' },
+  ];
+  const triCornerMeta = [
+    { color: '#6366f1', anchor: 'start' as const },
+    { color: '#ED1C24', anchor: 'middle' as const },
+    { color: '#39B54A', anchor: 'end' as const },
+  ];
+  const privacyTraceMeta = ['🏦', '👛', '🏠', '❤️'];
+  const privacyStoryColors = ['#6366f1', '#ef4444', '#f59e0b', '#39B54A', '#8b5cf6'];
   const starknetCardMeta = [
     { emoji: '⚡', color: '#8b5cf6' },
     { emoji: '💸', color: '#39B54A' },
     { emoji: '🔒', color: '#22d3ee' },
     { emoji: '🛡️', color: '#ec4899' },
   ];
-  const compareZkColors = ['#8b5cf6', '#39B54A', '#ef4444', '#f97316', '#39B54A', '#6366f1'];
-  const compareOpColors = ['#f59e0b', '#ef4444', '#39B54A', '#39B54A', '#f59e0b', '#6366f1'];
   const layer2OpColors = ['#f97316', '#ef4444', '#39B54A', '#39B54A', '#f97316', '#f97316', '#6366f1'];
   const layer2ZkColors = ['#6366f1', '#39B54A', '#ef4444', '#f97316', '#39B54A', '#6366f1', '#6366f1'];
   const l2WhyStepMeta = ['⚡', '📦', '⚖️'];
@@ -417,7 +513,6 @@ export function BP_Section5() {
     { icon: '🧬', color: '#10b981' },
     { icon: '🔀', color: '#6b7280' },
   ];
-  const privacyEventColors = ['#ef4444', '#f59e0b', '#8b5cf6'];
   const privacyFutureMeta = [
     { icon: '🏦', color: '#6366f1' },
     { icon: '🪪', color: '#10b981' },
@@ -471,26 +566,34 @@ export function BP_Section5() {
             <div className="shrink-0 flex items-center gap-2.5">
               <span className="text-3xl">🍺</span>
               <div>
-                <p className="font-bold text-foreground text-lg">{t('zkp.exampleTitle')}</p>
+                <p className="font-bold text-foreground text-lg">{t('zkp.exampleTitle')} <span className="ml-1 px-2 py-0.5 rounded-full bg-[#8b5cf6]/15 border border-[#8b5cf6]/40 text-[#8b5cf6] text-[10px] font-bold align-middle">{t('zkp.demo.badge')}</span></p>
                 <p className="text-sm text-muted-foreground">{t('zkp.exampleSubtitle')}</p>
               </div>
             </div>
 
-            <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <div className="rounded-xl border-2 p-5 flex flex-col gap-3 justify-center" style={{ borderColor: '#ef444450', backgroundColor: '#ef44440a' }}>
-                <p className="text-xs font-black uppercase tracking-widest text-[#ef4444]">{t('zkp.withoutLabel')}</p>
-                <p className="text-base text-foreground leading-relaxed">{t('zkp.withoutBodyA')}<span className="font-semibold">{t('zkp.withoutBodyStrong')}</span>{t('zkp.withoutBodyB')}</p>
-                <p className="text-sm text-muted-foreground">{t('zkp.withoutCaption')}</p>
-              </div>
-              <div className="rounded-xl border-2 p-5 flex flex-col gap-3 justify-center" style={{ borderColor: '#39B54A50', backgroundColor: '#39B54A0a' }}>
-                <p className="text-xs font-black uppercase tracking-widest text-[#39B54A]">{t('zkp.withLabel')}</p>
-                <p className="text-base text-foreground leading-relaxed">{t('zkp.withBodyA')}<span className="font-semibold">{t('zkp.withBodyStrong')}</span>{t('zkp.withBodyB')}</p>
-                <p className="text-sm text-muted-foreground">{t('zkp.withCaptionA')}<span className="italic">{t('zkp.withCaptionItalic')}</span>{t('zkp.withCaptionB')}</p>
-              </div>
+            <div className="flex-1 min-h-0">
+              <ZkBouncerDemo />
             </div>
           </div>
 
-          <div className="shrink-0 mt-4 text-center text-sm text-muted-foreground italic">{t('zkp.next')}</div>
+          {/* Same trick, other doors */}
+          <div className="shrink-0 mt-4 flex flex-col lg:flex-row gap-3 lg:items-stretch">
+            <div className="flex-1 rounded-xl border border-border bg-card p-3">
+              <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1.5">{t('zkp.moreLabel')}</p>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
+                {zkMore.map((m) => (
+                  <div key={m.text} className="flex gap-2 items-start text-xs text-foreground leading-snug">
+                    <span className="text-base leading-none shrink-0">{m.icon}</span>
+                    <span>{m.text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-col justify-between gap-2 lg:items-end">
+              <UnderTheHood label={hoodLabel} terms={['prover', 'verifier', 'statement', 'witness']} />
+              <span className="text-xs text-muted-foreground italic">{t('zkp.next')}</span>
+            </div>
+          </div>
         </div>
 
         {/* ═══════ S5-ZKP-CAVE — Where's Waldo ═══════ */}
@@ -530,253 +633,134 @@ export function BP_Section5() {
               <p className="text-sm text-foreground leading-snug"><span className="font-bold text-[#6366f1]">{t('zkpCave.classicLabel')}</span>{t('zkpCave.classicBody')}</p>
             </div>
           </div>
-        </div>
-
-        {/* ═══════ S5-ZKP-PROPS — Properties & Blockchain Uses ═══════ */}
-        <div id="s5-zkp-props" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-4">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">
-              {t('zkpProps.heading')}
-            </h2>
-            <p className="text-sm text-muted-foreground mt-1">
-              {t('zkpProps.subtitle')}
-            </p>
-          </div>
-
-          {/* Three properties — horizontal row */}
-          <div className="shrink-0 grid grid-cols-3 gap-4 mb-5">
-            {zkpProperties.map((p, i) => (
-              <div key={i} className="flex gap-4 items-start rounded-xl border p-4 bg-card" style={{ borderColor: zkpPropMeta[i].color + '50' }}>
-                <span className="text-3xl shrink-0">{zkpPropMeta[i].emoji}</span>
-                <div>
-                  <p className="font-black text-lg mb-1.5" style={{ color: zkpPropMeta[i].color }}>{p.prop}</p>
-                  <p className="text-sm text-muted-foreground leading-snug">{p.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Four blockchain uses — 2×2 */}
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-4">
-            {zkpUses.map((u, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3 }}
-                className="rounded-xl border p-4 bg-card flex gap-4 items-start"
-                style={{ borderColor: zkpUseMeta[i].color + '40' }}
-              >
-                <span className="text-3xl shrink-0">{zkpUseMeta[i].icon}</span>
-                <div>
-                  <p className="font-bold text-base mb-1.5" style={{ color: zkpUseMeta[i].color }}>{u.title}</p>
-                  <p className="text-sm text-muted-foreground leading-snug">{u.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* SNARK vs STARK */}
-          <div className="shrink-0 mt-4 rounded-xl border p-3 grid grid-cols-2 gap-6" style={{ borderColor: '#8b5cf655', backgroundColor: '#8b5cf60d' }}>
-            <div>
-              <p className="text-xs font-black uppercase tracking-widest mb-1" style={{ color: '#8b5cf6' }}>{t('zkpProps.snarkLabel')}</p>
-              <p className="text-sm text-muted-foreground leading-snug">{t('zkpProps.snarkBody')}</p>
-            </div>
-            <div>
-              <p className="text-xs font-black uppercase tracking-widest mb-1" style={{ color: '#8b5cf6' }}>{t('zkpProps.starkLabel')}</p>
-              <p className="text-sm text-muted-foreground leading-snug">{t('zkpProps.starkBodyA')}<span className="font-semibold text-foreground">{t('zkpProps.starkBodyStrong')}</span>{t('zkpProps.starkBodyB')}</p>
-            </div>
+          <div className="shrink-0 mt-3">
+            <UnderTheHood label={hoodLabel} terms={['interactive proof', 'soundness', 'repeated rounds', 'Fiat–Shamir']} />
           </div>
         </div>
 
-        {/* ═══════ S5-STARKNET ═══════ */}
-        <div id="s5-starknet" className="h-full flex flex-col p-6 lg:p-10">
+        {/* ═══════ S5-ZK-APPS — real, live ZK products ═══════ */}
+        <div id="s5-zk-apps" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-3">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">
-              {t('starknet.heading')}
-            </h2>
-            <p className="text-sm text-muted-foreground mt-1">
-              {t('starknet.subtitle')}
-            </p>
+            <span className="text-xs font-black uppercase tracking-widest text-[#8b5cf6]">{t('zkApps.eyebrow')}</span>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('zkApps.heading')}</h2>
+            <p className="text-sm text-muted-foreground mt-1 max-w-4xl">{t('zkApps.subtitle')}</p>
           </div>
 
-          {/* Why ZK is the next step */}
-          <div className="shrink-0 mb-3 rounded-xl border p-3" style={{ borderColor: '#8b5cf655', backgroundColor: '#8b5cf60d' }}>
-            <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#8b5cf6' }}>
-              {t('starknet.whyLabel')}
-            </p>
-            <p className="text-sm text-foreground mt-0.5 leading-snug">
-              {t('starknet.whyBodyA')}<span className="font-semibold">{t('starknet.whyBodyStrong1')}</span>{t('starknet.whyBodyB')}<span className="font-semibold">{t('starknet.whyBodyStrong2')}</span>{t('starknet.whyBodyC')}<span className="font-semibold">{t('starknet.whyBodyStrong3')}</span>{t('starknet.whyBodyD')}<span className="italic">{t('starknet.whyBodyItalic')}</span>{t('starknet.whyBodyE')}
-            </p>
-          </div>
-
-          {/* 4 core properties — 2×2 */}
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-4 mb-4">
-            {starknetCards.map((card, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -16 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3 }}
-                className="flex gap-4 p-4 bg-card rounded-xl border"
-                style={{ borderColor: starknetCardMeta[i].color + '40' }}
-              >
-                <span className="text-3xl shrink-0 leading-none mt-0.5">{starknetCardMeta[i].emoji}</span>
-                <div>
-                  <p className="font-bold text-lg mb-1.5" style={{ color: starknetCardMeta[i].color }}>{card.title}</p>
-                  <p className="text-sm text-muted-foreground leading-snug">{card.desc}</p>
+          {/* Three promises — plain words */}
+          <div className="shrink-0 grid grid-cols-1 lg:grid-cols-3 gap-2 mb-3">
+            {zkAppProps.map((p, i) => (
+              <div key={p.t} className="flex gap-2.5 items-center rounded-lg border px-3 py-2 bg-card" style={{ borderColor: zkpPropMeta[i].color + '50' }}>
+                <span className="text-xl shrink-0 leading-none">{zkpPropMeta[i].emoji}</span>
+                <div className="min-w-0">
+                  <p className="text-xs font-black leading-tight" style={{ color: zkpPropMeta[i].color }}>{p.t}</p>
+                  <p className="text-[11px] text-muted-foreground leading-snug">{p.d}</p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
 
-          {/* 2024–2025 news */}
-          <div className="shrink-0 p-3 bg-[#8b5cf6]/5 rounded-xl border border-[#8b5cf6]/20">
-            <p className="text-xs font-semibold text-[#8b5cf6] mb-2">{t('starknet.newsTitle')}</p>
-            <div className="grid grid-cols-4 gap-2">
-              {starknetNews.map((item, i) => (
-                <div key={i} className="p-2 bg-card rounded-lg border border-border">
-                  <p className="text-xs font-semibold text-foreground">{item.label}</p>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">{item.sub}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* ═══════ S5-STARKNET-COMPARE — ZK in Practice ═══════ */}
-        <div id="s5-starknet-compare" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-4">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">
-              {t('starknetCompare.heading')}
-            </h2>
-            <p className="text-sm text-muted-foreground mt-1">
-              {t('starknetCompare.subtitle')}
-            </p>
-          </div>
-
-          {/* KYC walkthrough — full width */}
-          <div className="shrink-0 mb-4 rounded-xl border p-4" style={{ borderColor: '#8b5cf660', backgroundColor: '#8b5cf608' }}>
-            <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#8b5cf6' }}>
-              {t('starknetCompare.kycLabel')}
-            </p>
-            <div className="grid grid-cols-3 gap-4">
-              {kycSteps.map((s, i) => (
-                <div key={i} className="rounded-xl border bg-card p-4 flex flex-col gap-2" style={{ borderColor: '#8b5cf640' }}>
-                  <div className="flex items-center gap-2">
-                    <div className="size-7 rounded-full flex items-center justify-center text-sm font-black text-white shrink-0" style={{ backgroundColor: '#8b5cf6' }}>{i + 1}</div>
-                    <p className="text-sm font-bold text-foreground leading-tight">{s.label}</p>
-                  </div>
-                  <p className="text-sm text-muted-foreground leading-snug">{s.desc}</p>
-                </div>
-              ))}
-            </div>
-            <p className="text-xs text-muted-foreground italic mt-3">
-              {t('starknetCompare.kycFootA')}<span className="font-medium text-foreground">{t('starknetCompare.kycFootStrong')}</span>{t('starknetCompare.kycFootB')}
-            </p>
-          </div>
-
-          {/* ZK vs Optimistic — full-width comparison */}
-          <div className="flex-1 min-h-0 bg-card rounded-xl border border-border overflow-hidden">
-            <div className="grid grid-cols-2 divide-x divide-border h-full">
-              <div className="p-5 flex flex-col gap-3 min-h-0">
-                <div className="shrink-0">
-                  <p className="text-xl font-black text-[#8b5cf6]">{t('starknetCompare.zk.title')}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{t('starknetCompare.zk.sub')}</p>
-                </div>
-                <p className="text-sm text-muted-foreground leading-snug shrink-0">{t('starknetCompare.zk.introA')}<span className="font-semibold text-foreground">{t('starknetCompare.zk.introStrong')}</span>{t('starknetCompare.zk.introB')}</p>
-                <div className="flex-1 min-h-0 flex flex-col gap-2.5">
-                  {compareZkRows.map((r, i) => (
-                    <div key={i} className="flex gap-2 items-baseline">
-                      <span className="text-muted-foreground w-36 shrink-0 text-xs">{r.label}</span>
-                      <span style={{ color: compareZkColors[i] }} className="font-medium text-sm">{r.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="p-5 flex flex-col gap-3 min-h-0">
-                <div className="shrink-0">
-                  <p className="text-xl font-black text-[#f59e0b]">{t('starknetCompare.op.title')}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{t('starknetCompare.op.sub')}</p>
-                </div>
-                <p className="text-sm text-muted-foreground leading-snug shrink-0">{t('starknetCompare.op.introA')}<span className="font-semibold text-foreground">{t('starknetCompare.op.introStrong')}</span>{t('starknetCompare.op.introB')}</p>
-                <div className="flex-1 min-h-0 flex flex-col gap-2.5">
-                  {compareOpRows.map((r, i) => (
-                    <div key={i} className="flex gap-2 items-baseline">
-                      <span className="text-muted-foreground w-36 shrink-0 text-xs">{r.label}</span>
-                      <span style={{ color: compareOpColors[i] }} className="font-medium text-sm">{r.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ═══════ STARKNET APPS — ecosystem ═══════ */}
-        <div id="s5-starknet-eco" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-3">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('starknetEco.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('starknetEco.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-4 gap-3">
-            {starknetEcoCards.map((app, i) => {
-              const color = starknetEcoMeta[i].color;
+          {/* Nine live apps — 3×3 */}
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-2.5">
+            {zkAppItems.map((u, i) => {
+              const { icon, color } = zkAppMeta[i % zkAppMeta.length];
               return (
+                <motion.div
+                  key={u.name}
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: i * 0.04 }}
+                  className="rounded-xl border-2 p-3 bg-card flex flex-col gap-1 min-h-0"
+                  style={{ borderColor: color + '55' }}
+                >
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-xl leading-none">{icon}</span>
+                    <div className="min-w-0">
+                      <p className="font-black text-sm leading-tight" style={{ color }}>{u.name}</p>
+                      <p className="text-[10px] text-muted-foreground leading-tight truncate">{u.who}</p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-foreground leading-snug flex-1"><span className="font-black text-[9px] uppercase tracking-widest mr-1" style={{ color }}>{t('zkApps.doesLabel')}</span>{u.does}</p>
+                  <p className="text-[10px] font-semibold shrink-0" style={{ color }}>{u.since}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <div className="shrink-0 mt-3 flex flex-col lg:flex-row gap-2 lg:items-center">
+            <p className="flex-1 text-[11px] text-muted-foreground leading-snug">
+              <span className="font-bold text-[#8b5cf6]">{t('zkApps.familiesLabel')}</span>{t('zkApps.families')}
+            </p>
+            <UnderTheHood label={hoodLabel} terms={['SNARK', 'STARK', 'trusted setup', 'circuit', 'prover cost']} className="self-start" />
+          </div>
+        </div>
+
+        {/* ═══════ S5-ZK-IDENTITY — KYC walkthrough ═══════ */}
+        <div id="s5-zk-identity" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-4">
+            <span className="text-xs font-black uppercase tracking-widest text-[#8b5cf6]">{t('zkIdentity.eyebrow')}</span>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('zkIdentity.heading')}</h2>
+            <p className="text-sm text-muted-foreground mt-1 max-w-4xl">{t('zkIdentity.subtitle')}</p>
+          </div>
+
+          {/* Who holds what — three nodes with arrows */}
+          <div className="shrink-0 mb-4 rounded-xl border p-3" style={{ borderColor: '#8b5cf640', backgroundColor: '#8b5cf608' }}>
+            <p className="text-[10px] font-black uppercase tracking-widest text-[#8b5cf6] mb-2">{t('zkIdentity.flowLabel')}</p>
+            <div className="flex flex-col lg:flex-row items-stretch gap-2">
+              {zkIdFlow.map((n, i) => {
+                const { icon, color } = zkIdFlowMeta[i % zkIdFlowMeta.length];
+                return (
+                  <div key={n.node} className="flex-1 flex items-center gap-2">
+                    <div className="flex-1 rounded-lg border-2 bg-card px-3 py-2 flex items-center gap-2.5" style={{ borderColor: color + '70' }}>
+                      <span className="text-2xl leading-none">{icon}</span>
+                      <div className="min-w-0">
+                        <p className="text-sm font-black leading-tight" style={{ color }}>{n.node}</p>
+                        <p className="text-[11px] text-muted-foreground leading-snug">{n.holds}</p>
+                      </div>
+                    </div>
+                    {i < zkIdFlow.length - 1 && <span className="hidden lg:block text-xl text-muted-foreground shrink-0">→</span>}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Three steps */}
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {kycSteps.map((s, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.3 }}
-                className="flex flex-col gap-1.5 p-2.5 rounded-xl border-2 min-h-0"
-                style={{ borderColor: color + '55', backgroundColor: color + '0a' }}
+                className="rounded-xl border bg-card p-4 flex flex-col gap-2"
+                style={{ borderColor: '#8b5cf640' }}
               >
-                <div className="shrink-0">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-base shrink-0 leading-none">{starknetEcoMeta[i].emoji}</span>
-                    <div className="font-black text-[12px] leading-tight" style={{ color }}>{app.name}</div>
-                  </div>
-                  <span
-                    className="inline-block text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded mt-1"
-                    style={{ backgroundColor: color + '20', color, border: `1px solid ${color}40` }}
-                  >
-                    {app.category}
-                  </span>
+                <div className="flex items-center gap-2">
+                  <div className="size-8 rounded-full flex items-center justify-center text-sm font-black text-white shrink-0" style={{ backgroundColor: '#8b5cf6' }}>{i + 1}</div>
+                  <p className="text-lg font-bold text-foreground leading-tight">{s.label}</p>
                 </div>
-
-                <div className="shrink-0">
-                  <div className="text-[10px] text-foreground font-medium leading-tight">{app.tag}</div>
-                  <div className="text-[9px] text-muted-foreground italic leading-snug mt-0.5">{app.stats}</div>
-                </div>
-
-                <div className="flex-1 min-h-0 flex flex-col gap-1">
-                  {app.apps.map((item, j) => (
-                    <div
-                      key={j}
-                      className="rounded-md border bg-card/60 px-1.5 py-1 min-h-0"
-                      style={{ borderColor: color + '35' }}
-                    >
-                      <div className="text-[10px] font-bold leading-tight" style={{ color }}>{item.name}</div>
-                      <div className="text-[9px] text-muted-foreground leading-snug mt-0.5">{item.kind}</div>
-                    </div>
-                  ))}
-                </div>
+                <p className="text-base text-muted-foreground leading-relaxed">{s.desc}</p>
               </motion.div>
-            );})}
+            ))}
           </div>
 
-          <div className="shrink-0 mt-3 rounded-xl border p-2.5" style={{ borderColor: '#8b5cf655', backgroundColor: '#8b5cf60d' }}>
-            <p className="text-[11px] text-muted-foreground leading-snug">
-              <span className="font-bold" style={{ color: '#8b5cf6' }}>{t('starknetEco.alsoLabel')}</span>
-              <Trans
-                t={t}
-                i18nKey="starknetEco.alsoBody"
-                components={Array.from({ length: 10 }, (_, k) => <span key={k} className="font-medium text-foreground" />)}
-              />
-            </p>
+          <div className="shrink-0 mt-4 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-3">
+            <div className="rounded-xl border p-3" style={{ borderColor: '#39B54A50', backgroundColor: '#39B54A0a' }}>
+              <p className="text-[10px] font-black uppercase tracking-widest text-[#39B54A] mb-1.5">{t('zkIdentity.businessLabel')}</p>
+              <ul className="grid grid-cols-1 lg:grid-cols-3 gap-2">
+                {zkIdBusiness.map((b) => (
+                  <li key={b} className="text-xs text-foreground leading-snug flex gap-1.5"><span className="text-[#39B54A]">✓</span>{b}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex flex-col gap-2 justify-between">
+              <p className="text-xs text-muted-foreground italic leading-snug">
+                {t('starknetCompare.kycFootA')}<span className="font-medium text-foreground">{t('starknetCompare.kycFootStrong')}</span>{t('starknetCompare.kycFootB')}
+              </p>
+              <UnderTheHood label={hoodLabel} terms={['verifiable credential', 'selective disclosure', 'nullifier', 'issuer signature']} className="self-start" />
+            </div>
           </div>
         </div>
 
@@ -785,39 +769,75 @@ export function BP_Section5() {
           <div className="shrink-0 mb-4">
             <span className="text-xs font-black uppercase tracking-widest text-[#39B54A]">{t('l2Why.eyebrow')}</span>
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('l2Why.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('l2Why.subtitle')}</p>
-          </div>
-
-          <div className="shrink-0 mb-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="rounded-xl border-2 p-4" style={{ borderColor: '#ef444450', backgroundColor: '#ef44440a' }}>
-              <p className="text-xs font-black uppercase tracking-widest text-[#ef4444] mb-1">{t('l2Why.problemLabel')}</p>
-              <p className="text-base text-foreground leading-snug">{t('l2Why.problemA')}<span className="font-semibold">{t('l2Why.problemStrong1')}</span>{t('l2Why.problemB')}<span className="font-semibold">{t('l2Why.problemStrong2')}</span>{t('l2Why.problemC')}</p>
-            </div>
-            <div className="rounded-xl border-2 p-4" style={{ borderColor: '#39B54A50', backgroundColor: '#39B54A0a' }}>
-              <p className="text-xs font-black uppercase tracking-widest text-[#39B54A] mb-1">{t('l2Why.ideaLabel')}</p>
-              <p className="text-base text-foreground leading-snug">{t('l2Why.ideaA')}<span className="font-semibold">{t('l2Why.ideaStrong1')}</span>{t('l2Why.ideaB')}<span className="font-semibold">{t('l2Why.ideaStrong2')}</span>{t('l2Why.ideaC')}</p>
+            <p className="text-sm text-muted-foreground mt-1 max-w-4xl">{t('l2Why.subtitle')}</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <RecapHandoff label={recapLabel} text={t('l2Why.recap1')} to="/blockchain-platforms/section-1" color="#39B54A" />
+              <RecapHandoff label={recapLabel} text={t('l2Why.recap2')} to="/blockchain-platforms/section-2" color="#39B54A" />
             </div>
           </div>
 
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
-            {l2WhySteps.map((s, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3 }}
-                className="flex flex-col gap-3 rounded-xl border-2 p-5"
-                style={{ borderColor: '#6366f145', backgroundColor: '#6366f10a' }}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="size-9 rounded-full flex items-center justify-center text-base font-black text-white shrink-0" style={{ backgroundColor: '#6366f1' }}>{i + 1}</div>
-                  <span className="text-3xl">{l2WhyStepMeta[i]}</span>
-                </div>
-                <p className="font-bold text-foreground text-lg">{s.title}</p>
-                <p className="text-sm text-muted-foreground leading-relaxed flex-1">{s.text}</p>
-              </motion.div>
-            ))}
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-4">
+            {/* Trilemma triangle — business labels, L1 position, L2 adds the third corner */}
+            <div className="rounded-xl border border-border bg-card/40 p-3 flex flex-col min-h-[240px]">
+              <svg viewBox="0 0 360 270" className="w-full flex-1">
+                <polygon points="180,45 60,205 300,205" fill="hsl(var(--muted))" fillOpacity="0.25" stroke="hsl(var(--muted-foreground))" strokeWidth="1.2" />
+                <text x="180" y="100" textAnchor="middle" fontSize="9" fontWeight="800" fill="hsl(var(--muted-foreground))" letterSpacing="1.5">{t('l2Why.triangle.pickTwo').toUpperCase()}</text>
+                {/* L1 on the open–secure edge */}
+                <line x1="180" y1="45" x2="60" y2="205" stroke="#6366f1" strokeWidth="4" strokeOpacity="0.5" />
+                <circle cx="120" cy="125" r="9" fill="#627EEA" stroke="hsl(var(--card))" strokeWidth="2" />
+                <text x="120" y="129" textAnchor="middle" fontSize="9" fontWeight="900" fill="#fff">L1</text>
+                <text x="134" y="121" fontSize="8.5" fontWeight="700" fill="#627EEA">{t('l2Why.triangle.l1Label')}</text>
+                {/* L2 reaches the cheap & fast corner */}
+                <line x1="130" y1="132" x2="282" y2="196" stroke="#39B54A" strokeWidth="2" strokeDasharray="5 4" />
+                <polygon points="282,196 270,187 274,201" fill="#39B54A" />
+                <text x="222" y="152" textAnchor="middle" fontSize="8.5" fontWeight="700" fill="#39B54A">{t('l2Why.triangle.l2Label')}</text>
+                {/* Corners — captions split on " · " so the bottom two never collide */}
+                {triCorners.map((c, i) => {
+                  const m = triCornerMeta[i % triCornerMeta.length];
+                  const cx = i === 1 ? 180 : i === 0 ? 60 : 300, cy = i === 1 ? 45 : 205;
+                  const tx = i === 1 ? 180 : i === 0 ? 14 : 346, ty = i === 1 ? 24 : 228;
+                  const lines = c.biz.split(' · ');
+                  return (
+                    <g key={c.name}>
+                      <circle cx={cx} cy={cy} r="6" fill={m.color} />
+                      <text x={tx} y={ty} textAnchor={m.anchor} fontSize="11" fontWeight="900" fill={m.color}>{c.name}</text>
+                      {lines.map((ln, k) => (
+                        <text key={k} x={tx} y={ty + 12 + k * 10} textAnchor={m.anchor} fontSize="8" fill="hsl(var(--muted-foreground))">{ln}</text>
+                      ))}
+                    </g>
+                  );
+                })}
+              </svg>
+            </div>
+
+            {/* Analogy + the three steps */}
+            <div className="flex flex-col gap-3 min-h-0">
+              <div className="shrink-0 rounded-xl border-2 p-4" style={{ borderColor: '#39B54A50', backgroundColor: '#39B54A0a' }}>
+                <p className="text-xs font-black uppercase tracking-widest text-[#39B54A] mb-1">⚖️ {t('l2Why.analogyLabel')}</p>
+                <p className="text-sm text-foreground leading-snug">{t('l2Why.analogy')}</p>
+              </div>
+              <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-2">
+                {l2WhySteps.map((s, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3 }}
+                    className="flex flex-col gap-1.5 rounded-xl border-2 p-3 min-h-0"
+                    style={{ borderColor: '#6366f145', backgroundColor: '#6366f10a' }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className="size-7 rounded-full flex items-center justify-center text-sm font-black text-white shrink-0" style={{ backgroundColor: '#6366f1' }}>{i + 1}</div>
+                      <span className="text-2xl">{l2WhyStepMeta[i]}</span>
+                    </div>
+                    <p className="font-bold text-foreground text-sm leading-tight">{s.title}</p>
+                    <p className="text-xs text-muted-foreground leading-snug">{s.text}</p>
+                  </motion.div>
+                ))}
+              </div>
+              <UnderTheHood label={hoodLabel} terms={['throughput', 'block space', 'sequencer', 'data availability', 'EIP-4844 blobs']} className="self-start" />
+            </div>
           </div>
 
           <div className="shrink-0 mt-4 rounded-xl border bg-card p-3 grid grid-cols-3 gap-3 text-center">
@@ -837,6 +857,10 @@ export function BP_Section5() {
             <span className="text-xs font-black uppercase tracking-widest text-[#39B54A]">{t('layer2.eyebrow')}</span>
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1 mb-1">{t('layer2.heading')}</h2>
             <p className="text-sm text-muted-foreground">{t('layer2.subtitleA')}<em>{t('layer2.subtitleItalic')}</em>{t('layer2.subtitleB')}</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <RecapHandoff label={recapLabel} text={t('layer2.recap')} to="/blockchain-platforms/section-2" color="#39B54A" />
+              <UnderTheHood label={hoodLabel} terms={['fraud proof', 'validity proof', 'challenge window', 'sequencer', 'zkEVM types']} />
+            </div>
           </div>
           <div className="flex-1 min-h-0 flex flex-col gap-4">
             {/* Head-to-head cards */}
@@ -953,11 +977,140 @@ export function BP_Section5() {
           </div>
         </div>
 
+        {/* ═══════ S5-STARKNET ═══════ */}
+        <div id="s5-starknet" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-3">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">
+              {t('starknet.heading')}
+            </h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              {t('starknet.subtitle')}
+            </p>
+          </div>
+
+          {/* Where Starknet fits + the public-by-default caveat */}
+          <div className="shrink-0 mb-3 rounded-xl border p-3" style={{ borderColor: '#8b5cf655', backgroundColor: '#8b5cf60d' }}>
+            <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#8b5cf6' }}>
+              {t('starknet.whyLabel')}
+            </p>
+            <p className="text-sm text-foreground mt-0.5 leading-snug">
+              {t('starknet.whyBodyA')}<span className="font-semibold">{t('starknet.whyBodyStrong1')}</span>{t('starknet.whyBodyB')}<span className="font-semibold">{t('starknet.whyBodyStrong2')}</span>{t('starknet.whyBodyC')}<span className="font-semibold">{t('starknet.whyBodyStrong3')}</span>{t('starknet.whyBodyD')}<span className="italic">{t('starknet.whyBodyItalic')}</span>{t('starknet.whyBodyE')}
+            </p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <RecapHandoff label={recapLabel} text={t('starknet.recap')} to="/blockchain-platforms/section-2" color="#39B54A" />
+              <UnderTheHood label={hoodLabel} terms={['Cairo', 'STARK', 'sequencer', 'prover', 'state diff']} />
+            </div>
+          </div>
+
+          {/* 4 core properties — 2×2 */}
+          <div className="flex-1 min-h-0 grid grid-cols-2 gap-4 mb-4">
+            {starknetCards.map((card, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -16 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3 }}
+                className="flex gap-4 p-4 bg-card rounded-xl border"
+                style={{ borderColor: starknetCardMeta[i].color + '40' }}
+              >
+                <span className="text-3xl shrink-0 leading-none mt-0.5">{starknetCardMeta[i].emoji}</span>
+                <div>
+                  <p className="font-bold text-lg mb-1.5" style={{ color: starknetCardMeta[i].color }}>{card.title}</p>
+                  <p className="text-sm text-muted-foreground leading-snug">{card.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* 2024–2025 news */}
+          <div className="shrink-0 p-3 bg-[#8b5cf6]/5 rounded-xl border border-[#8b5cf6]/20">
+            <p className="text-xs font-semibold text-[#8b5cf6] mb-2">{t('starknet.newsTitle')}</p>
+            <div className="grid grid-cols-4 gap-2">
+              {starknetNews.map((item, i) => (
+                <div key={i} className="p-2 bg-card rounded-lg border border-border">
+                  <p className="text-xs font-semibold text-foreground">{item.label}</p>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">{item.sub}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ═══════ STARKNET APPS — ecosystem ═══════ */}
+        <div id="s5-starknet-eco" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-3">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('starknetEco.heading')}</h2>
+            <p className="text-sm text-muted-foreground mt-1">{t('starknetEco.subtitle')}</p>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-4 gap-3">
+            {starknetEcoCards.map((app, i) => {
+              const color = starknetEcoMeta[i].color;
+              return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="flex flex-col gap-1.5 p-2.5 rounded-xl border-2 min-h-0"
+                style={{ borderColor: color + '55', backgroundColor: color + '0a' }}
+              >
+                <div className="shrink-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-base shrink-0 leading-none">{starknetEcoMeta[i].emoji}</span>
+                    <div className="font-black text-[12px] leading-tight" style={{ color }}>{app.name}</div>
+                  </div>
+                  <span
+                    className="inline-block text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded mt-1"
+                    style={{ backgroundColor: color + '20', color, border: `1px solid ${color}40` }}
+                  >
+                    {app.category}
+                  </span>
+                </div>
+
+                <div className="shrink-0">
+                  <div className="text-[10px] text-foreground font-medium leading-tight">{app.tag}</div>
+                  <div className="text-[9px] text-muted-foreground italic leading-snug mt-0.5">{app.stats}</div>
+                </div>
+
+                <div className="flex-1 min-h-0 flex flex-col gap-1">
+                  {app.apps.slice(0, 3).map((item, j) => (
+                    <div
+                      key={j}
+                      className="rounded-md border bg-card/60 px-1.5 py-1 min-h-0"
+                      style={{ borderColor: color + '35' }}
+                    >
+                      <div className="text-[10px] font-bold leading-tight" style={{ color }}>{item.name}</div>
+                      <div className="text-[9px] text-muted-foreground leading-snug mt-0.5">{item.kind}</div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            );})}
+          </div>
+
+          <div className="shrink-0 mt-3 rounded-xl border p-2.5" style={{ borderColor: '#8b5cf655', backgroundColor: '#8b5cf60d' }}>
+            <p className="text-[11px] text-muted-foreground leading-snug">
+              <span className="font-bold" style={{ color: '#8b5cf6' }}>{t('starknetEco.alsoLabel')}</span>
+              <Trans
+                t={t}
+                i18nKey="starknetEco.alsoBody"
+                components={Array.from({ length: 10 }, (_, k) => <span key={k} className="font-medium text-foreground" />)}
+              />
+            </p>
+          </div>
+        </div>
+
         {/* ═══════ S5-POLKADOT ═══════ */}
         <div id="s5-polkadot" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-3">
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('polkadot.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1">{t('polkadot.subtitle')}</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <RecapHandoff label={recapLabel} text="Section 04 · Layer 0" to="/blockchain-platforms/section-4" color="#39B54A" />
+              <UnderTheHood label={hoodLabel} terms={['BABE', 'GRANDPA', 'XCM', 'Coretime', 'JAM']} />
+            </div>
           </div>
 
           <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-5">
@@ -1047,7 +1200,7 @@ export function BP_Section5() {
                   <div className="text-[9px] text-muted-foreground italic leading-snug mt-0.5">{app.stats}</div>
                 </div>
                 <div className="flex-1 min-h-0 flex flex-col gap-1">
-                  {app.apps.map((item, j) => (
+                  {app.apps.slice(0, 3).map((item, j) => (
                     <div key={j} className="rounded-md border bg-card/60 px-1.5 py-1 min-h-0" style={{ borderColor: color + '35' }}>
                       <div className="text-[10px] font-bold leading-tight" style={{ color }}>{item.name}</div>
                       <div className="text-[9px] text-muted-foreground leading-snug mt-0.5">{item.kind}</div>
@@ -1075,6 +1228,10 @@ export function BP_Section5() {
           <div className="shrink-0 mb-3">
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('avalanche.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1">{t('avalanche.subtitle')}</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <RecapHandoff label={recapLabel} text="Section 04 · Layer 0" to="/blockchain-platforms/section-4" color="#39B54A" />
+              <UnderTheHood label={hoodLabel} terms={['Snowman', 'P-Chain', 'Warp messaging', 'ACP-77']} />
+            </div>
           </div>
 
           <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-5">
@@ -1164,7 +1321,7 @@ export function BP_Section5() {
                   <div className="text-[9px] text-muted-foreground italic leading-snug mt-0.5">{app.stats}</div>
                 </div>
                 <div className="flex-1 min-h-0 flex flex-col gap-1">
-                  {app.apps.map((item, j) => (
+                  {app.apps.slice(0, 3).map((item, j) => (
                     <div key={j} className="rounded-md border bg-card/60 px-1.5 py-1 min-h-0" style={{ borderColor: color + '35' }}>
                       <div className="text-[10px] font-bold leading-tight" style={{ color }}>{item.name}</div>
                       <div className="text-[9px] text-muted-foreground leading-snug mt-0.5">{item.kind}</div>
@@ -1193,43 +1350,75 @@ export function BP_Section5() {
           <div className="shrink-0 mb-4">
             <span className="text-xs font-black uppercase tracking-widest text-[#8b5cf6]">{t('privacy.eyebrow')}</span>
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('privacy.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('privacy.subtitle')}</p>
+            <p className="text-sm text-muted-foreground mt-1 max-w-4xl">{t('privacy.subtitle')}</p>
+            <div className="mt-2">
+              <RecapHandoff label={recapLabel} text={t('privacy.recapCypherpunk')} to="/blockchain-fundamentals/prologue" color="#ED1C24" />
+            </div>
           </div>
 
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-5">
-            <div className="flex flex-col gap-3 justify-center">
-              <div className="rounded-xl border-2 p-4" style={{ borderColor: '#ef444450', backgroundColor: '#ef44440a' }}>
-                <p className="text-xs font-black uppercase tracking-widest text-[#ef4444] mb-2">{t('privacy.normalLabel')}</p>
-                <div className="font-mono text-sm text-foreground space-y-1">
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* Left — what a normal vs shielded tx exposes */}
+            <div className="flex flex-col gap-3 min-h-0">
+              <div className="flex-1 rounded-xl border-2 p-3" style={{ borderColor: '#ef444450', backgroundColor: '#ef44440a' }}>
+                <p className="text-xs font-black uppercase tracking-widest text-[#ef4444] mb-1.5">{t('privacy.normalLabel')}</p>
+                <div className="font-mono text-xs text-foreground space-y-0.5">
                   <div>from <span className="text-[#ef4444]">0xA1b2…</span></div>
                   <div>to&nbsp;&nbsp; <span className="text-[#ef4444]">0xC3d4…</span></div>
                   <div>value <span className="text-[#ef4444]">12.5 ETH</span></div>
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">{t('privacy.normalCaption')}</p>
+                <p className="text-xs text-muted-foreground mt-1.5">{t('privacy.normalCaption')}</p>
               </div>
-              <div className="rounded-xl border-2 p-4" style={{ borderColor: '#39B54A50', backgroundColor: '#39B54A0a' }}>
-                <p className="text-xs font-black uppercase tracking-widest text-[#39B54A] mb-2">{t('privacy.shieldedLabel')}</p>
-                <div className="font-mono text-sm text-foreground space-y-1">
+              <div className="flex-1 rounded-xl border-2 p-3" style={{ borderColor: '#39B54A50', backgroundColor: '#39B54A0a' }}>
+                <p className="text-xs font-black uppercase tracking-widest text-[#39B54A] mb-1.5">{t('privacy.shieldedLabel')}</p>
+                <div className="font-mono text-xs text-foreground space-y-0.5">
                   <div>from <span className="text-[#39B54A]">••••••</span></div>
                   <div>to&nbsp;&nbsp; <span className="text-[#39B54A]">••••••</span></div>
-                  <div>value <span className="text-[#39B54A]">••••••</span></div>
-                  <div className="text-[#39B54A]">{t('privacy.shieldedProof')}</div>
+                  <div>value <span className="text-[#39B54A]">••••••</span> <span className="text-[#39B54A]">{t('privacy.shieldedProof')}</span></div>
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">{t('privacy.shieldedCaption')}</p>
+                <p className="text-xs text-muted-foreground mt-1.5">{t('privacy.shieldedCaption')}</p>
               </div>
             </div>
 
-            <div className="flex flex-col gap-4 justify-center">
-              <div className="rounded-xl border-2 p-5" style={{ borderColor: '#8b5cf680', backgroundColor: '#8b5cf60d' }}>
-                <p className="text-xs font-black uppercase tracking-widest text-[#8b5cf6] mb-2">{t('privacy.difficultyLabel')}</p>
-                <p className="text-base text-foreground leading-relaxed">{t('privacy.difficultyA')}<span className="font-semibold">{t('privacy.difficultyStrong')}</span>{t('privacy.difficultyB')}</p>
+            {/* Right — the trail + why a business cares */}
+            <div className="flex flex-col gap-3 min-h-0">
+              <div className="flex-1 rounded-xl border border-border bg-card p-3 flex flex-col">
+                <p className="text-xs font-black uppercase tracking-widest text-[#8b5cf6] mb-2">{t('privacy.traceLabel')}</p>
+                <div className="flex-1 flex flex-col lg:flex-row items-stretch gap-1.5">
+                  {privacyTrace.map((n, i) => (
+                    <div key={n.who} className="flex-1 flex items-center gap-1.5 min-w-0">
+                      <div className="flex-1 rounded-lg border px-2 py-1.5 min-w-0" style={{ borderColor: i === 0 ? '#ef444480' : '#8b5cf640', backgroundColor: i === 0 ? '#ef44440d' : 'transparent' }}>
+                        <div className="text-base leading-none">{privacyTraceMeta[i % privacyTraceMeta.length]}</div>
+                        <div className="text-[11px] font-bold text-foreground leading-tight mt-1">{n.who}</div>
+                        <div className="text-[10px] text-muted-foreground leading-snug">{n.note}</div>
+                      </div>
+                      {i < privacyTrace.length - 1 && <span className="hidden lg:block text-muted-foreground shrink-0">→</span>}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[11px] text-muted-foreground mt-2 leading-snug">{t('privacy.traceCaption')}</p>
               </div>
-              <div className="rounded-xl border p-5 bg-card">
-                <p className="text-base text-foreground leading-relaxed">
-                  {t('privacy.trickA')}<span className="font-semibold text-[#8b5cf6]">{t('privacy.trickStrong1')}</span>{t('privacy.trickB')}<span className="font-semibold">{t('privacy.trickStrong2')}</span>{t('privacy.trickC')}<span className="font-semibold">{t('privacy.trickStrong3')}</span>{t('privacy.trickD')}<span className="font-semibold">{t('privacy.trickStrong4')}</span>{t('privacy.trickE')}
-                </p>
-                <p className="text-sm text-muted-foreground mt-2">{t('privacy.trickCaption')}</p>
+              <div className="shrink-0 rounded-xl border p-3" style={{ borderColor: '#f59e0b50', backgroundColor: '#f59e0b0a' }}>
+                <p className="text-[10px] font-black uppercase tracking-widest text-[#f59e0b] mb-1">{t('privacy.businessLabel')}</p>
+                <ul className="grid grid-cols-1 lg:grid-cols-3 gap-1.5">
+                  {privacyBusiness.map((b) => (
+                    <li key={b} className="text-xs text-foreground leading-snug flex gap-1.5"><span className="text-[#f59e0b]">•</span>{b}</li>
+                  ))}
+                </ul>
               </div>
+            </div>
+          </div>
+
+          {/* The core difficulty + the trick */}
+          <div className="shrink-0 mt-4 grid grid-cols-1 lg:grid-cols-2 gap-3">
+            <div className="rounded-xl border-2 p-3" style={{ borderColor: '#8b5cf680', backgroundColor: '#8b5cf60d' }}>
+              <p className="text-[10px] font-black uppercase tracking-widest text-[#8b5cf6] mb-1">{t('privacy.difficultyLabel')}</p>
+              <p className="text-sm text-foreground leading-snug">{t('privacy.difficultyA')}<span className="font-semibold">{t('privacy.difficultyStrong')}</span>{t('privacy.difficultyB')}</p>
+            </div>
+            <div className="rounded-xl border p-3 bg-card">
+              <p className="text-sm text-foreground leading-snug">
+                {t('privacy.trickA')}<span className="font-semibold text-[#8b5cf6]">{t('privacy.trickStrong1')}</span>{t('privacy.trickB')}<span className="font-semibold">{t('privacy.trickStrong2')}</span>{t('privacy.trickC')}<span className="font-semibold">{t('privacy.trickStrong3')}</span>{t('privacy.trickD')}<span className="font-semibold">{t('privacy.trickStrong4')}</span>{t('privacy.trickE')}
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">{t('privacy.trickCaption')}</p>
             </div>
           </div>
         </div>
@@ -1267,6 +1456,9 @@ export function BP_Section5() {
               </motion.div>
             );})}
           </div>
+          <div className="shrink-0 mt-3">
+            <UnderTheHood label={hoodLabel} terms={['zk-SNARK', 'ring signature', 'stealth address', 'nullifier', 'anonymity set']} />
+          </div>
         </div>
 
         {/* ═══════ S5-PRIVACY-REGULATION — the contested frontier ═══════ */}
@@ -1277,28 +1469,45 @@ export function BP_Section5() {
             <p className="text-sm text-muted-foreground mt-1">{t('privacyRegulation.subtitle')}</p>
           </div>
 
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
-            {privacyEvents.map((s, i) => {
-              const c = privacyEventColors[i];
+          {/* Timeline — five beats */}
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-5 gap-2.5">
+            {privacyStory.map((s, i) => {
+              const c = privacyStoryColors[i % privacyStoryColors.length];
               return (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.3 }}
-                className="flex flex-col gap-2 rounded-xl border-2 p-5 justify-center"
-                style={{ borderColor: c + '50', backgroundColor: c + '0a' }}
+                transition={{ duration: 0.3, delay: i * 0.06 }}
+                className="flex flex-col gap-1.5 rounded-xl border-2 p-3 min-h-0"
+                style={{ borderColor: c + '55', backgroundColor: c + '0a' }}
               >
-                <span className="text-xs font-black uppercase tracking-widest" style={{ color: c }}>{s.yr}</span>
-                <p className="font-bold text-foreground text-lg">{s.t}</p>
-                <p className="text-sm text-muted-foreground leading-relaxed flex-1">{s.d}</p>
+                <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: c }}>{s.yr}</span>
+                <p className="font-bold text-foreground text-base leading-tight">{s.t}</p>
+                <p className="text-sm text-muted-foreground leading-snug flex-1">{s.d}</p>
               </motion.div>
             );})}
           </div>
 
-          <div className="shrink-0 mt-4 rounded-xl border-2 p-4" style={{ borderColor: '#39B54A50', backgroundColor: '#39B54A0d' }}>
-            <p className="text-base text-foreground leading-snug">
+          {/* Two truths + the cypherpunk tie-back */}
+          <div className="shrink-0 mt-3 grid grid-cols-1 lg:grid-cols-3 gap-3">
+            <div className="rounded-xl border-2 p-3 flex flex-col gap-1" style={{ borderColor: '#ef444450', backgroundColor: '#ef44440a' }}>
+              <p className="text-[10px] font-black uppercase tracking-widest text-[#ef4444]">⚖️ {t('privacyRegulation.truthsLabel')} · 1</p>
+              <p className="text-xs text-foreground leading-snug">{t('privacyRegulation.truthA')}</p>
+            </div>
+            <div className="rounded-xl border-2 p-3 flex flex-col gap-1" style={{ borderColor: '#39B54A50', backgroundColor: '#39B54A0a' }}>
+              <p className="text-[10px] font-black uppercase tracking-widest text-[#39B54A]">⚖️ {t('privacyRegulation.truthsLabel')} · 2</p>
+              <p className="text-xs text-foreground leading-snug">{t('privacyRegulation.truthB')}</p>
+            </div>
+            <div className="rounded-xl border-2 p-3 flex flex-col gap-1" style={{ borderColor: '#ED1C2460', backgroundColor: '#ED1C240a' }}>
+              <p className="text-[10px] font-black uppercase tracking-widest text-[#ED1C24]">🔁 {t('privacyRegulation.cypherpunkLabel')}</p>
+              <p className="text-xs text-foreground leading-snug">{t('privacyRegulation.cypherpunk')}</p>
+            </div>
+          </div>
+
+          <div className="shrink-0 mt-3 rounded-xl border p-2.5" style={{ borderColor: '#39B54A50', backgroundColor: '#39B54A0d' }}>
+            <p className="text-xs text-foreground leading-snug">
               <span className="font-bold text-[#39B54A]">{t('privacyRegulation.guidanceLabel')}</span>
               {t('privacyRegulation.guidanceA')}<span className="font-semibold">{t('privacyRegulation.guidanceStrong1')}</span>{t('privacyRegulation.guidanceB')}<span className="font-semibold">{t('privacyRegulation.guidanceStrong2')}</span>{t('privacyRegulation.guidanceC')}
             </p>

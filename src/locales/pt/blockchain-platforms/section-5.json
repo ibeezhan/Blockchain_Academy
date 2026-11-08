@@ -1,4 +1,50 @@
 {
+  "zkIdentity": {
+    "eyebrow": "Section 05 · Zero-Knowledge",
+    "heading": "A concrete walkthrough — KYC without handing over your identity",
+    "subtitle": "The identity pattern from the previous slide, step by step. Nothing here is specific to one chain — any ZK-capable platform can run it.",
+    "flowLabel": "Who holds what",
+    "flow": [
+      { "node": "Bank", "holds": "verifies you once · signs a credential" },
+      { "node": "Your wallet", "holds": "keeps the credential · makes the proof" },
+      { "node": "The app", "holds": "checks the proof · sees only ✓" }
+    ],
+    "businessLabel": "Why a business cares",
+    "business": [
+      "No database of passports to leak — far less GDPR exposure",
+      "Onboarding in seconds, reusable across every service that trusts the issuer",
+      "Regulators still get what they need: proof the check was done, on demand"
+    ]
+  },
+  "zkApps": {
+    "eyebrow": "Section 05 · Zero-Knowledge",
+    "heading": "ZK is already in production — what it lets you do today",
+    "subtitle": "Not a research idea. Each card is a live product or protocol. Read the bold line: that is what ZK buys you.",
+    "propsLabel": "Three promises, in plain words",
+    "props": [
+      { "t": "True claims always pass", "d": "If you really are over 18, the proof always works." },
+      { "t": "False claims always fail", "d": "No clever trick lets a 16-year-old forge the proof." },
+      { "t": "Nothing else leaks", "d": "The checker learns the yes/no — and nothing more." }
+    ],
+    "doesLabel": "Lets you",
+    "items": [
+      { "name": "ZK rollups", "who": "zkSync Era · Starknet · Scroll · Linea", "does": "Let Ethereum check thousands of transactions by verifying one small proof — fees in cents, withdrawals in hours instead of a week.", "since": "Scaling · live since 2021–23" },
+      { "name": "Proof of personhood", "who": "World ID (Worldcoin)", "does": "Prove to an app that you are a unique human — without revealing which human.", "since": "Identity · live since 2023" },
+      { "name": "Private payments", "who": "Zcash shielded transactions", "does": "Send money where sender, receiver and amount stay hidden, yet the network still proves the payment is valid.", "since": "Payments · live since 2016" },
+      { "name": "Proof of reserves", "who": "Binance · OKX (zk-based PoR)", "does": "Let an exchange prove it holds every customer's deposit — without publishing any customer's balance.", "since": "Finance · since 2023" },
+      { "name": "zkEmail", "who": "zk.email (Ethereum ecosystem)", "does": "Prove an email says something — a payment confirmation, a ticket, a password reset — without showing the email or your inbox.", "since": "Web data · since 2023" },
+      { "name": "zkTLS / web proofs", "who": "Reclaim Protocol · Opacity · TLSNotary", "does": "Prove a fact from any website you log into (bank balance above X, your driver rating) without sharing your password or a screenshot.", "since": "Web data · 2023+" },
+      { "name": "zkLogin", "who": "Sui zkLogin", "does": "Sign in to a blockchain app with your Google or Apple account — without that identity being linked to you on-chain.", "since": "Login · live since 2023" },
+      { "name": "Private voting", "who": "MACI (Ethereum Foundation PSE) · Vocdoni", "does": "Vote in an election anyone can audit, where nobody — not even the organiser — can see your ballot.", "since": "Governance · in use since 2021" },
+      { "name": "Compliance proofs", "who": "Privacy Pools (Ethereum mainnet)", "does": "Prove your funds do not come from a flagged source — without revealing your transaction history. Returns in the privacy chapter.", "since": "Compliance · live Mar 2025" }
+    ],
+    "familiesLabel": "Two proof families — ",
+    "families": "SNARKs (tiny proofs, one-off setup ceremony — Zcash, zkSync) and STARKs (bigger proofs, no setup, quantum-resistant — Starknet). For a business decision the difference rarely matters; for an engineer it does."
+  },
+  "ui": {
+    "hood": "under the hood →",
+    "recap": "Already covered"
+  },
   "groups": {
     "g-s5-zk": "🔐 Zero-Knowledge",
     "g-s5-stark": "⭑ Starknet",
@@ -11,6 +57,9 @@
     "g-s5-wrap": "✅ Conclusão"
   },
   "chapters": {
+    "s5-quiz-2": "Quiz 2",
+    "s5-zk-identity": "ZK: Identity Walkthrough",
+    "s5-zk-apps": "ZK: Real Apps Today",
     "s5-zkp": "ZK: A Ideia",
     "s5-zkp-cave": "ZK: Onde Está o Wally?",
     "s5-zkp-props": "ZK: Propriedades e Usos",
@@ -122,6 +171,26 @@
     "runAgain": "↺ Correr de novo com respostas diferentes"
   },
   "zkp": {
+    "more": [
+      { "icon": "🔑", "text": "Log in by proving you know the password — without typing it anywhere." },
+      { "icon": "🏠", "text": "Prove your salary clears a mortgage threshold — without handing over the payslip." },
+      { "icon": "🧑", "text": "Prove you are one unique human — without saying which human." }
+    ],
+    "moreLabel": "Same trick, other doors",
+    "demo": {
+      "badge": "🧩 Try it",
+      "youLabel": "You, at the door",
+      "pick": "Pick how you prove you're over 18:",
+      "passportBtn": "🛂 Show my passport",
+      "proofBtn": "🔐 Show a ZK proof",
+      "bouncerLabel": "What the bouncer now knows",
+      "idle": "Choose an option on the left…",
+      "verdict": "Over 18 ✓",
+      "leaked": ["Full name", "Home address", "Nationality", "Exact birth date", "Photo"],
+      "hidden": "— stays with you",
+      "leakedCountPassport": "1 fact proven · 5 facts leaked",
+      "leakedCountProof": "1 fact proven · 0 facts leaked"
+    },
     "eyebrow": "Secção 05 · Zero-Knowledge",
     "heading": "Zero-Knowledge Proofs — a ideia única",
     "subtitle": "Esquece a matemática. Uma frase e um exemplo do dia a dia bastam para a perceberes.",
@@ -181,6 +250,7 @@
     "starkBodyB": " — secção seguinte."
   },
   "starknet": {
+    "recap": "ZK rollups · earlier in this section — and Section 02 · Rollups & L2s",
     "heading": "Starknet: ZK-Rollup na Ethereum",
     "subtitle": "Agrupa milhares de transações off-chain, gera uma prova STARK criptográfica e publica apenas essa prova na Ethereum L1.",
     "whyLabel": "Porque é que o ZK tem de ser o próximo passo",
@@ -319,6 +389,20 @@
     "alsoBody": "<0>JediSwap</0>, <1>mySwap</1> (AMMs alternativas) · <2>Mintsquare</2>, <3>Briq</3> (marketplaces de NFT) · <4>Influence</4> (MMO espacial on-chain) · <5>Ethereal / Topology</5> (estúdios de jogos) · <6>Voyager</6> · <7>Starkscan</7> (block explorers) · <8>Layerswap</8>, <9>Orbiter</9> (bridges)."
   },
   "l2Why": {
+    "analogy": "A courthouse and a card terminal. You don't take every coffee purchase to court — too slow, too expensive. You use a fast terminal and only go to court for disputes. L1 is the court (slow, final, trusted); L2 is the terminal that reports back to it.",
+    "analogyLabel": "Business framing",
+    "triangle": {
+      "corners": [
+        { "name": "Open to everyone", "biz": "no single owner · anyone can verify" },
+        { "name": "Hard to attack", "biz": "settlement you can rely on" },
+        { "name": "Cheap & fast", "biz": "fees in cents · instant confirmations" }
+      ],
+      "pickTwo": "pick two",
+      "l1Label": "Ethereum L1 lives here",
+      "l2Label": "L2 adds this corner on top"
+    },
+    "recap2": "Section 02 · Rollups & L2s",
+    "recap1": "Section 01 · The Blockchain Trilemma",
     "eyebrow": "Secção 05 · Escalabilidade",
     "heading": "Layer 2 — o que é e porque precisamos dela",
     "subtitle": "A Ethereum L1 é segura mas pequena. Uma Layer 2 mantém essa segurança enquanto faz o trabalho pesado num sítio mais barato.",
@@ -346,6 +430,7 @@
     ]
   },
   "layer2": {
+    "recap": "Section 02 · L1 ↔ L2 Flow animation",
     "eyebrow": "Secção 05",
     "heading": "Escalabilidade Layer 2: Optimistic vs ZK Rollups",
     "subtitleA": "Ambos os tipos de rollup executam transações off-chain e publicam resultados na Ethereum L1 — mas diferem fundamentalmente na ",
@@ -619,6 +704,21 @@
     "alsoBody": "<0>Steakhut</0> (gestão automatizada de posições LB) · <1>GoGoPool</1> (liquid staking de minipools para validadores) · <2>Yield Yak</2> (auto-compounder) · <3>Arena-Z</3> (L1 de esports) · <4>MapleStory Universe</4> (L1 de jogos da Nexon, 2025) · <5>Core DAO bridge</5> (PoS garantido por BTC via Avalanche Warp)."
   },
   "privacy": {
+    "business": [
+      "Payroll on-chain = every salary public",
+      "Suppliers can read your volumes and margins",
+      "Competitors watch your treasury move in real time"
+    ],
+    "businessLabel": "Why a business cares",
+    "traceCaption": "Everyone — employer, ex-partner, competitor — can follow the same trail, backwards and forwards, forever.",
+    "trace": [
+      { "who": "Exchange", "note": "knows your name (KYC)" },
+      { "who": "Your wallet", "note": "0xA1b2… — now linked to you" },
+      { "who": "Landlord", "note": "rent, every month" },
+      { "who": "Charity", "note": "a donation you'd rather keep quiet" }
+    ],
+    "traceLabel": "How one link exposes everything",
+    "recapCypherpunk": "Course 01 · Prologue — the Cypherpunks: \"privacy is a precondition for freedom\"",
     "eyebrow": "Secção 05 · Privacidade",
     "heading": "Privacidade num registo público — porque é difícil",
     "subtitle": "As chains públicas são transparentes por defeito: cada endereço, saldo e transferência é visível para qualquer pessoa, para sempre.",
@@ -672,6 +772,18 @@
     ]
   },
   "privacyRegulation": {
+    "cypherpunk": "Course 01 opened with the Cypherpunks: privacy as a precondition for freedom. Eric Hughes defined it as \"the power to selectively reveal oneself to the world\" — not secrecy. Mixers offer all-or-nothing hiding. ZK offers selective reveal. That shift is the next slide.",
+    "cypherpunkLabel": "Back to where this course began",
+    "truthB": "The same tools protected ordinary people from surveillance — and sanctioning code punished users who had done nothing wrong.",
+    "truthA": "Privacy tools really did shield a state-sponsored hacking group's loot. Regulators had a genuine problem.",
+    "truthsLabel": "Two things are true at once",
+    "story": [
+      { "yr": "2019", "t": "Tornado Cash launches", "d": "A non-custodial mixer on Ethereum: deposit, wait, withdraw to a fresh address. Nobody operates it — the code simply runs." },
+      { "yr": "Aug 2022", "t": "OFAC sanctions the code", "d": "The US Treasury sanctioned the smart-contract addresses themselves — a first. Its reason: ~$7B laundered, including $455M by North Korea's Lazarus Group. Ordinary users were swept in too." },
+      { "yr": "2024", "t": "Developers on trial", "d": "Alexey Pertsev convicted in the Netherlands (64 months, under appeal); Roman Storm charged in the US. Writing privacy software itself became the legal question." },
+      { "yr": "Nov 2024 → Mar 2025", "t": "Courts push back", "d": "A US appeals court ruled immutable smart contracts are not \"property\" that can be sanctioned. OFAC delisted Tornado Cash on 21 March 2025." },
+      { "yr": "Aug 2025 → 2027", "t": "Still unsettled", "d": "Storm convicted on one count (unlicensed money transmission); jury hung on laundering and sanctions — retrial set for 2027. Samourai Wallet's founders received 4–5 years (Nov 2025)." }
+    ],
     "eyebrow": "Secção 05 · Privacidade",
     "heading": "A privacidade é a área mais contestada em cripto",
     "subtitle": "O código de privacidade não-custodial está a ser testado em tribunal neste momento. Constrói tendo esta realidade em mente.",
