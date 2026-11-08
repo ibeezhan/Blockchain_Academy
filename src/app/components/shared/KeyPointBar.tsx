@@ -1,27 +1,22 @@
-import { KeyRound } from 'lucide-react';
-
 interface KeyPointBarProps {
-  /** One memorable, business-relevant sentence — the single thing to remember from the slide. */
+  /** One memorable, business-relevant sentence for this slide. */
   text: string;
-  /** Accent colour; defaults to the course's amber highlight. */
+  /** Optional accent (hex). Defaults to the course-neutral amber. */
   color?: string;
   label?: string;
   className?: string;
 }
 
-/** Shared "Key point" footer bar. Literal label on purpose: slides are English-only until the pt pass. */
+/** Shared slim "🔑 Key point" footer used across all courses. Literal label on purpose: slides are English-only until the pt pass. */
 export function KeyPointBar({ text, color = '#f59e0b', label = 'Key point', className = '' }: KeyPointBarProps) {
-  if (!text) return null;
   return (
     <div
-      className={`flex items-center gap-3 rounded-xl border px-3 py-2 ${className}`}
-      style={{ borderColor: color + '66', backgroundColor: color + '0f' }}
+      className={`shrink-0 flex items-center gap-2.5 px-3.5 py-2 rounded-xl border ${className}`}
+      style={{ borderColor: color + '66', backgroundColor: color + '12' }}
     >
-      <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest shrink-0" style={{ color }}>
-        <KeyRound className="size-3.5 shrink-0" />
-        {label}
-      </span>
-      <p className="text-xs lg:text-sm font-semibold text-foreground leading-snug">{text}</p>
+      <span className="text-base leading-none" aria-hidden>🔑</span>
+      <span className="text-[10px] font-black uppercase tracking-widest shrink-0" style={{ color }}>{label}</span>
+      <span className="text-sm font-semibold text-foreground leading-snug">{text}</span>
     </div>
   );
 }
