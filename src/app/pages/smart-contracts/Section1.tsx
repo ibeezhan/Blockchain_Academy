@@ -7,6 +7,7 @@ import { QuizSlide } from '../../components/templates/QuizSlide';
 import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
 import { UnderTheHood } from '../../components/shared/UnderTheHood';
+import { KeyPointBar } from '../../components/shared/KeyPointBar';
 import { FileCode2, Check, X } from 'lucide-react';
 
 import imgSzaboVending from '../../../assets/sc/szabo-vending-machine.png';
@@ -16,24 +17,24 @@ const chapterIds = [
   's1-warmup',
   's1-recap',
   's1-what',
+  's1-exercise',
   's1-hype',
   's1-szabo',
   's1-history',
-  's1-exercise',
   's1-quiz',
   's1-takeaways',
   's1-summary',
 ] as const;
 
 
-// ─── Exercise: Is this a Smart Contract? ────────────────────────────────────
+// ─── Interactive: Contract or not? ──────────────────────────────────────────
 
-// Language-neutral data: only the boolean answer is fixed per scenario.
-const SCENARIO_ANSWERS = [true, true, false, true, false, true, false, true, false, true];
+// Language-neutral data: true = could run as a smart contract, false = needs a human / institution.
+const SCENARIO_ANSWERS = [true, false, true, false, false, true];
 
 interface Scenario { title: string; desc: string; reason: string; }
 
-function SmartContractSortingExercise() {
+function ContractOrNotExercise() {
   const { t } = useTranslation('smart-contracts/section-1');
   const scenarioText = t('exercise.scenarios', { returnObjects: true }) as Scenario[];
   const SCENARIOS = scenarioText.map((s, i) => ({ ...s, answer: SCENARIO_ANSWERS[i] }));
@@ -54,13 +55,10 @@ function SmartContractSortingExercise() {
 
   return (
     <div className="h-full flex flex-col p-6 lg:p-8">
-      {/* Header */}
       <div className="shrink-0 flex items-center justify-between mb-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#6366f1]/15 border border-[#6366f1]/40 text-[#6366f1] text-xs font-bold">{t('exercise.badge')}</span>
-          </div>
-          <h2 className="text-2xl font-bold text-foreground">{t('exercise.heading')}</h2>
+          <span className="px-2.5 py-0.5 rounded-full bg-[#6366f1]/15 border border-[#6366f1]/40 text-[#6366f1] text-xs font-bold">{t('exercise.badge')}</span>
+          <h2 className="text-2xl font-bold text-foreground mt-1">{t('exercise.heading')}</h2>
           <p className="text-muted-foreground text-sm mt-0.5">{t('exercise.subtitle')}</p>
         </div>
         <div className="flex items-center gap-4">
@@ -76,8 +74,7 @@ function SmartContractSortingExercise() {
         </div>
       </div>
 
-      {/* Grid */}
-      <div className="flex-1 min-h-0 grid grid-cols-5 grid-rows-2 gap-3">
+      <div className="flex-1 min-h-0 grid grid-cols-3 grid-rows-2 gap-3">
         {SCENARIOS.map((s, i) => {
           const picked  = answers[i];
           const isRight = picked === s.answer;
@@ -92,17 +89,15 @@ function SmartContractSortingExercise() {
                 backgroundColor: !isOpen ? 'var(--card)' : isRight ? '#39B54A10' : '#ED1C2410',
               }}
             >
-              {/* Card body */}
-              <div className="flex-1 p-4 flex flex-col gap-2">
-                <div className="font-black text-sm text-foreground leading-tight">{s.title}</div>
-                <div className="text-xs text-muted-foreground leading-snug flex-1">{s.desc}</div>
-
+              <div className="flex-1 p-4 flex flex-col gap-1.5">
+                <div className="font-black text-lg text-foreground leading-tight">{s.title}</div>
+                <div className="text-sm text-muted-foreground leading-snug">{s.desc}</div>
                 <AnimatePresence>
                   {isOpen && (
                     <motion.div
                       initial={{ opacity: 0, y: 4 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="text-xs leading-snug font-medium"
+                      className="text-sm leading-snug font-medium mt-auto"
                       style={{ color: isRight ? '#39B54A' : '#ED1C24' }}
                     >
                       {isRight ? '✓ ' : '✗ '}{s.reason}
@@ -111,16 +106,15 @@ function SmartContractSortingExercise() {
                 </AnimatePresence>
               </div>
 
-              {/* Buttons or result badge */}
               {!isOpen ? (
                 <div className="flex border-t border-border shrink-0">
                   <button
                     onClick={() => handlePick(i, true)}
-                    className="flex-1 py-2 text-sm font-black text-[#39B54A] hover:bg-[#39B54A]/15 transition-colors border-r border-border"
+                    className="flex-1 py-2 px-1 text-xs font-black text-[#39B54A] hover:bg-[#39B54A]/15 transition-colors border-r border-border"
                   >{t('exercise.yes')}</button>
                   <button
                     onClick={() => handlePick(i, false)}
-                    className="flex-1 py-2 text-sm font-black text-[#ED1C24] hover:bg-[#ED1C24]/15 transition-colors"
+                    className="flex-1 py-2 px-1 text-xs font-black text-[#ED1C24] hover:bg-[#ED1C24]/15 transition-colors"
                   >{t('exercise.no')}</button>
                 </div>
               ) : (
@@ -335,8 +329,11 @@ export function SC_Section1() {
         </div>
 
         {/* ═══════ 0a. WARM-UP: BITCOIN vs ETHEREUM ═══════ */}
-        <div id="s1-warmup" className="h-full">
-          <BitcoinEthereumWarmup />
+        <div id="s1-warmup" className="h-full flex flex-col">
+          <div className="flex-1 min-h-0">
+            <BitcoinEthereumWarmup />
+          </div>
+          <KeyPointBar text={t('keyPoints.s1-warmup')} className="mx-6 lg:mx-8 mb-6 -mt-3" />
         </div>
 
         {/* ═══════ 0b. ETHEREUM RECAP (warm-up) ═══════ */}
@@ -372,6 +369,7 @@ export function SC_Section1() {
             <span className="text-muted-foreground">{t('recap.footerA')}<em>{t('recap.footerEm')}</em>{t('recap.footerB')}</span>
           </div>
           <UnderTheHood terms={['EOA vs contract account', 'EVM', 'gas · gwei', 'nonce', 'state']} className="shrink-0 mt-2 justify-center" />
+          <KeyPointBar text={t('keyPoints.s1-recap')} className="mt-3" />
         </div>
 
         {/* ═══════ 1. WHAT IS A SMART CONTRACT ═══════ */}
@@ -424,6 +422,15 @@ export function SC_Section1() {
             </div>
 
           </div>
+          <KeyPointBar text={t('keyPoints.s1-what')} className="mt-3" />
+        </div>
+
+        {/* ═══════ INTERACTIVE: CONTRACT OR NOT? ═══════ */}
+        <div id="s1-exercise" className="h-full flex flex-col">
+          <div className="flex-1 min-h-0">
+            <ContractOrNotExercise />
+          </div>
+          <KeyPointBar text={t('keyPoints.s1-exercise')} className="mx-6 lg:mx-8 mb-6 -mt-3" />
         </div>
 
         {/* ═══════ 1b. HYPE vs VALUE ═══════ */}
@@ -469,6 +476,7 @@ export function SC_Section1() {
               <UnderTheHood terms={['legal wrapper', 'oracle', 'admin key', 'front-end vs contract']} />
             </div>
           </div>
+          <KeyPointBar text={t('keyPoints.s1-hype')} className="mt-3" />
         </div>
 
         {/* ═══════ 2. NICK SZABO'S VENDING MACHINE ═══════ */}
@@ -529,6 +537,7 @@ export function SC_Section1() {
             </div>
 
           </div>
+          <KeyPointBar text={t('keyPoints.s1-szabo')} className="mt-3" />
         </div>
 
         {/* ═══════ 3. HISTORICAL EVOLUTION ═══════ */}
@@ -562,11 +571,7 @@ export function SC_Section1() {
             ))}
           </div>
           <UnderTheHood terms={['Bitcoin Script', 'EVM', 'ERC-20', 'ERC-721', 'reentrancy']} className="shrink-0 mt-3" />
-        </div>
-
-        {/* ═══════ EXERCISE ═══════ */}
-        <div id="s1-exercise" className="h-full">
-          <SmartContractSortingExercise />
+          <KeyPointBar text={t('keyPoints.s1-history')} className="mt-3" />
         </div>
 
         {/* ═══════ QUIZ ═══════ */}

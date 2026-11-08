@@ -7,8 +7,9 @@ import { QuizSlide } from '../../components/templates/QuizSlide';
 import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
 import { Brain } from 'lucide-react';
-import { TeamCheckpoint } from '../../components/TeamCheckpoint';
+import { ClassDiscussion } from '../../components/shared/ClassDiscussion';
 import { UnderTheHood } from '../../components/shared/UnderTheHood';
+import { KeyPointBar } from '../../components/shared/KeyPointBar';
 
 import imgDaoTimeline   from '../../../assets/sc/dao-timeline.png';
 import imgAsxAsic       from '../../../assets/sc/asx-asic.jpg';
@@ -20,7 +21,7 @@ const chapterShape = [
   { id: 's4-decision-intro' },
   { id: 's4-decision-chart' },
   { id: 's4-decision-flow' },
-  { id: 's4-team-framework' },
+  { id: 's4-discussion' },
   { id: 's4-decision-yes' },
   { id: 's4-decision-no' },
 
@@ -171,8 +172,6 @@ interface PillarItem { label: string; desc: string }
 interface CostItem { label: string; range: string; desc: string }
 interface OppItem { label: string; desc: string }
 interface StrategyItem { name: string; moat: string; desc: string }
-interface RichItem { a: string; strong?: string; b?: string; em?: string; c?: string }
-
 const YES_EMOJI = ['👥', '⚡', '🔍', '💰', '🔓', '🔒', '🌍'];
 const NO_EMOJI = ['🏢', '⚡', '🔄', '📦', '🤐', '⚖️', '🧑', '💸'];
 const CASE_COLORS = ['#39B54A', '#f59e0b', '#ED1C24'];
@@ -203,18 +202,6 @@ const CHALLENGE_META = [
 const STRATEGY_EMOJI = ['🏦', '🌐', '🦄', '🏡', '✈️', '🛠'];
 
 // Rebuild a rich-text bullet (text + bold/italic spans) from a structured item.
-function renderRich(item: RichItem) {
-  return (
-    <>
-      {item.a}
-      {item.strong && <strong>{item.strong}</strong>}
-      {item.b}
-      {item.em && <em>{item.em}</em>}
-      {item.c}
-    </>
-  );
-}
-
 export function SC_Section4() {
   const { t } = useTranslation('smart-contracts/section-4');
 
@@ -261,9 +248,6 @@ export function SC_Section4() {
   const challengeItems = t('challenges.items', { returnObjects: true }) as TitleDesc[];
   const competitive    = t('strategies.items', { returnObjects: true }) as StrategyItem[];
 
-  const tfMethod  = t('teamFramework.method', { returnObjects: true }) as RichItem[];
-  const tfDiscuss = t('teamFramework.discuss', { returnObjects: true }) as RichItem[];
-  const tfCapture = t('teamFramework.capture', { returnObjects: true }) as RichItem[];
 
   const daoQuizOptionsTyped = daoQuizOptions.map((text, i) => ({ text, correct: i === 0 }));
   const asxQuizOptionsTyped = asxQuizOptions.map((text, i) => ({ text, correct: i === 2 }));
@@ -315,6 +299,7 @@ export function SC_Section4() {
               </p>
             </div>
           </div>
+          <KeyPointBar text={t('keyPoints.s4-decision-intro')} className="mt-3" />
         </div>
 
         {/* ═══════ DECISION TREE — CANONICAL CHART ═══════ */}
@@ -351,43 +336,26 @@ export function SC_Section4() {
               <UnderTheHood terms={['permissioned vs public', 'access control', 'Bitcoin-like ledger']} />
             </div>
           </div>
+          <KeyPointBar text={t('keyPoints.s4-decision-chart')} className="mt-3" />
         </div>
 
         {/* ═══════ INTERACTIVE DECISION FLOW ═══════ */}
-        <div id="s4-decision-flow" className="h-full">
-          <DecisionFlow />
+        <div id="s4-decision-flow" className="h-full flex flex-col">
+          <div className="flex-1 min-h-0">
+            <DecisionFlow />
+          </div>
+          <KeyPointBar text={t('keyPoints.s4-decision-flow')} className="mx-6 lg:mx-8 mb-6 -mt-3" />
         </div>
 
-        {/* ═══════ TEAM CHECKPOINT — RUN YOUR PROBLEM ═══════ */}
-        <div id="s4-team-framework" className="h-full">
-          <TeamCheckpoint
-            contextLabel={t('teamFramework.contextLabel')}
-            title={t('teamFramework.title')}
-            subtitle={t('teamFramework.subtitle')}
-            duration={t('teamFramework.duration')}
-            sections={[
-              {
-                label: t('teamFramework.methodLabel'),
-                color: '#22d3ee',
-                items: tfMethod.map((item, i) => <span key={i}>{renderRich(item)}</span>),
-              },
-              {
-                label: t('teamFramework.discussLabel'),
-                color: '#6366f1',
-                items: tfDiscuss.map((item, i) => <span key={i}>{renderRich(item)}</span>),
-              },
-              {
-                label: t('teamFramework.captureLabel'),
-                color: '#39B54A',
-                items: tfCapture.map((item, i) => <span key={i}>{renderRich(item)}</span>),
-              },
-            ]}
-            footnote={
-              <span className="text-muted-foreground">
-                <strong className="text-foreground">{t('teamFramework.footnote.strong')}</strong>
-                {t('teamFramework.footnote.a')}<em>{t('teamFramework.footnote.em')}</em>{t('teamFramework.footnote.b')}
-              </span>
-            }
+        {/* ═══════ DISCUSSION — RUN THE FRAMEWORK TOGETHER ═══════ */}
+        <div id="s4-discussion" className="h-full">
+          <ClassDiscussion
+            badge={t('discussion.badge')}
+            duration={t('discussion.duration')}
+            title={t('discussion.title')}
+            lead={t('discussion.lead')}
+            questions={t('discussion.questions', { returnObjects: true }) as string[]}
+            note={t('discussion.note')}
           />
         </div>
 
@@ -408,6 +376,7 @@ export function SC_Section4() {
               </div>
             ))}
           </div>
+          <KeyPointBar text={t('keyPoints.s4-decision-yes')} className="mt-3" />
         </div>
 
         {/* ═══════ WHEN TO RETHINK ═══════ */}
@@ -427,6 +396,7 @@ export function SC_Section4() {
               </div>
             ))}
           </div>
+          <KeyPointBar text={t('keyPoints.s4-decision-no')} className="mt-3" />
         </div>
 
         {/* ═══════════════════════════════════════════════════════════ */}
@@ -465,6 +435,7 @@ export function SC_Section4() {
           <div className="shrink-0 mt-4 p-3 rounded-xl border border-border bg-muted/30 text-xs text-muted-foreground">
             <span className="font-semibold text-foreground">{t('casesIntro.patternLabel')}</span>{t('casesIntro.patternBody')}
           </div>
+          <KeyPointBar text={t('keyPoints.s4-cases-intro')} className="mt-3" />
         </div>
 
         {/* ═══════ CASE: ESTONIA — SUCCESS ═══════ */}
@@ -506,6 +477,7 @@ export function SC_Section4() {
               </div>
             </div>
           </div>
+          <KeyPointBar text={t('keyPoints.s4-case-success')} className="mt-3" />
         </div>
 
         {/* ═══════ CASE: THE DAO — SMART CONTRACT FAILURE ═══════ */}
@@ -547,6 +519,7 @@ export function SC_Section4() {
               </div>
             </div>
           </div>
+          <KeyPointBar text={t('keyPoints.s4-case-sc-fail')} className="mt-3" />
         </div>
 
         {/* ═══════ CASE: ASX — ORGANISATIONAL FAILURE ═══════ */}
@@ -588,6 +561,7 @@ export function SC_Section4() {
               </div>
             </div>
           </div>
+          <KeyPointBar text={t('keyPoints.s4-case-org-fail')} className="mt-3" />
         </div>
 
         {/* ═══════ QUIZ — DAO ═══════ */}
@@ -634,6 +608,7 @@ export function SC_Section4() {
           <div className="shrink-0 mt-4 p-3 rounded-xl border border-border bg-muted/30 text-xs text-muted-foreground italic">
             {t('adoptionIntro.footnote')}
           </div>
+          <KeyPointBar text={t('keyPoints.s4-adoption-intro')} className="mt-3" />
         </div>
 
         {/* ═══════ STRATEGIC ALIGNMENT ═══════ */}
@@ -654,6 +629,7 @@ export function SC_Section4() {
               );
             })}
           </div>
+          <KeyPointBar text={t('keyPoints.s4-adoption-strategy')} className="mt-3" />
         </div>
 
         {/* ═══════ TECHNICAL INFRASTRUCTURE ═══════ */}
@@ -678,6 +654,7 @@ export function SC_Section4() {
             })}
           </div>
           <UnderTheHood terms={['RPC node', 'indexer', 'HSM / multisig', 'IPFS + encryption']} className="shrink-0 mt-3" />
+          <KeyPointBar text={t('keyPoints.s4-adoption-tech')} className="mt-3" />
         </div>
 
         {/* ═══════ LEGAL & REGULATORY ═══════ */}
@@ -711,6 +688,7 @@ export function SC_Section4() {
               </div>
             </div>
           </div>
+          <KeyPointBar text={t('keyPoints.s4-adoption-legal')} className="mt-3" />
         </div>
 
         {/* ═══════ RISK MANAGEMENT ═══════ */}
@@ -735,6 +713,7 @@ export function SC_Section4() {
             })}
           </div>
           <UnderTheHood terms={['audit', 'formal verification', 'proxy upgrade', 'timelock', 'bug bounty']} className="shrink-0 mt-3" />
+          <KeyPointBar text={t('keyPoints.s4-adoption-risk')} className="mt-3" />
         </div>
 
         {/* ═══════ FINANCIAL PLANNING ═══════ */}
@@ -773,6 +752,7 @@ export function SC_Section4() {
           <div className="shrink-0 mt-3 p-3 rounded-xl border border-border bg-muted/30 text-xs text-muted-foreground italic">
             {t('adoptionFinance.footnote')}
           </div>
+          <KeyPointBar text={t('keyPoints.s4-adoption-finance')} className="mt-3" />
         </div>
 
         {/* ═══════ OPPORTUNITIES ═══════ */}
@@ -804,6 +784,7 @@ export function SC_Section4() {
           <div className="shrink-0 mt-3 text-[10px] text-muted-foreground italic">
             {t('opportunities.sources')}
           </div>
+          <KeyPointBar text={t('keyPoints.s4-opportunities')} className="mt-3" />
         </div>
 
         {/* ═══════ CHALLENGES (ACADEMIC) ═══════ */}
@@ -827,6 +808,7 @@ export function SC_Section4() {
           <div className="shrink-0 mt-3 text-[10px] text-muted-foreground italic">
             {t('challenges.sources')}
           </div>
+          <KeyPointBar text={t('keyPoints.s4-challenges-academic')} className="mt-3" />
         </div>
 
         {/* ═══════ STRATEGIES — APPLIED ═══════ */}
@@ -856,6 +838,7 @@ export function SC_Section4() {
           <div className="shrink-0 mt-3 text-[10px] text-muted-foreground italic">
             {t('strategies.sources')}
           </div>
+          <KeyPointBar text={t('keyPoints.s4-strategies')} className="mt-3" />
         </div>
 
         {/* ═══════ QUIZ ═══════ */}

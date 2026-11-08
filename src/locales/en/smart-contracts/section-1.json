@@ -5,7 +5,7 @@
     "s1-what": "What is a Smart Contract?",
     "s1-szabo": "Nick Szabo's Vending Machine",
     "s1-history": "Historical Evolution",
-    "s1-exercise": "🧩 Exercise",
+    "s1-exercise": "🧩 Contract or not?",
     "s1-quiz": "Quiz",
     "s1-takeaways": "Takeaways",
     "s1-summary": "Summary",
@@ -160,30 +160,46 @@
     ]
   },
   "exercise": {
-    "badge": "🧩 Exercise",
-    "heading": "Is this a Smart Contract?",
-    "subtitle": "Click YES or NO for each scenario, then see the explanation.",
+    "badge": "🧩 Interactive",
+    "heading": "Contract or not?",
+    "subtitle": "Six everyday agreements. Tap: could this run as code, or does it still need a person or an institution?",
     "scoreLabel": "correct so far",
     "reset": "↺ Reset",
-    "yes": "YES",
-    "no": "NO",
-    "resultSc": "Smart Contract",
-    "resultNotSc": "Not a SC",
+    "yes": "Could be a smart contract",
+    "no": "Needs a human / institution",
+    "resultSc": "Could be a smart contract",
+    "resultNotSc": "Needs a human / institution",
     "scenarios": [
-      { "title": "Vending Machine", "desc": "Insert coins → get snack automatically", "reason": "Self-executing logic with automatic conditional payout — the original analogy Szabo used." },
-      { "title": "Airbnb Escrow", "desc": "Platform holds payment until host confirms check-in", "reason": "Conditional fund release based on a confirmed event — a textbook smart contract use case." },
-      { "title": "Hospital Records", "desc": "Store & share medical history across doctors", "reason": "Data is private, frequently updated, and legally sensitive. On-chain storage is 50,000× more expensive than a database." },
       {
-        "title": "Concert Ticket Resale",
-        "desc": "NFT tickets — resale rules (price cap, artist cut) applied by the ticket contract",
-        "reason": "When resale happens through the ticket contract, caps and artist royalties apply automatically — something paper and barcode tickets cannot enforce."
+        "title": "A vending machine",
+        "desc": "Insert coins, pick a snack, get it — or get your coins back.",
+        "reason": "Fixed rule, instant check, automatic delivery — Szabo's original smart contract."
       },
-      { "title": "Company Expenses", "desc": "Submit receipts for manager approval", "reason": "Internal process, single trusted party. No decentralisation needed — a simple approval workflow is cheaper and faster." },
-      { "title": "Crop Insurance", "desc": "Auto-payout when rainfall falls below threshold", "reason": "Parametric insurance: oracle provides data, contract executes payout. No claims adjuster, no delay." },
-      { "title": "Social Media Likes", "desc": "Track likes and followers in real-time", "reason": "Millisecond updates + massive data volume. Gas costs alone would make each like cost dollars." },
-      { "title": "DAO Treasury", "desc": "Token holders vote; funds released if proposal passes", "reason": "Multi-party conditional payment with no board or legal entity needed. This is exactly what DAOs do." },
-      { "title": "Streaming Service", "desc": "Pay monthly fee to access video library", "reason": "Storing a 2-hour movie on-chain would cost billions. Off-chain storage + access token is the right model." },
-      { "title": "Trade Finance", "desc": "Letter of credit: pay importer when goods are confirmed delivered", "reason": "Multiple untrusting parties + conditional cross-border payment. Banks already pilot this with Hyperledger." }
+      {
+        "title": "A Netflix subscription",
+        "desc": "Pay monthly for access to a video library run by one company.",
+        "reason": "One company runs the content, the servers and the rules — nothing needs trustless enforcement. A billing database wins."
+      },
+      {
+        "title": "Escrow for a house sale",
+        "desc": "Buyer's money is held until the title transfer is confirmed, then released.",
+        "reason": "Funds move only when a verifiable condition is met — the textbook pattern (Propy does this today). The title itself still needs the land registry."
+      },
+      {
+        "title": "A loyalty-points scheme",
+        "desc": "Earn points at one retailer, spend them at the same retailer.",
+        "reason": "A single issuer defines, prices and can cancel the points. It is their database — a blockchain adds cost, not trust."
+      },
+      {
+        "title": "A court judgement",
+        "desc": "A judge decides who was at fault and what the compensation is.",
+        "reason": "Needs interpretation of facts, intent and fairness. Code executes; it does not judge."
+      },
+      {
+        "title": "Flight-delay insurance payout",
+        "desc": "If your flight lands more than two hours late, you are paid automatically.",
+        "reason": "The delay is a public, checkable fact — an oracle reports it and the payout fires by itself (parametric insurance)."
+      }
     ]
   },
   "quiz": {
@@ -248,5 +264,14 @@
       "Settling across borders in seconds, around the clock, with a public audit trail"
     ],
     "footer": "Keep this lens for the rest of the course: does this use case need one of these three things? If not, a database will usually win."
+  },
+  "keyPoints": {
+    "s1-warmup": "Bitcoin is a ledger for one asset; Ethereum is a shared computer — smart contracts only make sense on the second.",
+    "s1-recap": "A smart contract is just an account controlled by code instead of a person — everything else follows from that.",
+    "s1-what": "A smart contract turns an agreement into a rule that runs itself — no one has to be trusted to honour it.",
+    "s1-hype": "Not legal, not smart, not free, not unstoppable — the value is removing a middleman, locking a rule and settling fast.",
+    "s1-szabo": "The vending machine is the whole idea: fixed rules, instant verification, no negotiation — and no one to appeal to.",
+    "s1-history": "Thirty years from idea to $100B in live contracts — and every expensive lesson came from code doing exactly what it was told.",
+    "s1-exercise": "If one trusted institution already runs the process well, a smart contract adds cost, not trust."
   }
 }

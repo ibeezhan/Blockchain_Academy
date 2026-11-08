@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { Check, X, KeyRound } from 'lucide-react';
 import { UnderTheHood } from '../../components/shared/UnderTheHood';
+import { KeyPointBar } from '../../components/shared/KeyPointBar';
 
 // Section 3 — NFT Utility & DAO applications block + TradeLens failure case.
 // Text lives in smart-contracts/section-3.json; this file holds layout + language-neutral data.
@@ -56,6 +57,7 @@ export function NftUtilitySlide() {
         </div>
         <UnderTheHood terms={['ERC-721', 'ERC-1155', 'soulbound (ERC-5192)', 'tokenURI']} />
       </div>
+      <KeyPointBar text={t('keyPoints.s3-nft-utility')} className="mt-3" />
     </div>
   );
 }
@@ -165,6 +167,7 @@ export function TokenGateDemo() {
           </div>
         </div>
       </div>
+      <KeyPointBar text={t('keyPoints.s3-nft-gate')} className="mt-3" />
     </div>
   );
 }
@@ -213,6 +216,7 @@ export function NftHonestSlide() {
           </div>
         ))}
       </div>
+      <KeyPointBar text={t('keyPoints.s3-nft-honest')} className="mt-3" />
     </div>
   );
 }
@@ -267,6 +271,7 @@ export function DaoIntroSlide() {
           <UnderTheHood terms={['Governor contract', 'proposal', 'quorum', 'timelock', 'Safe multisig']} />
         </div>
       </div>
+      <KeyPointBar text={t('keyPoints.s3-dao-intro')} className="mt-3" />
     </div>
   );
 }
@@ -377,6 +382,7 @@ export function GovernanceBlocksExplorer() {
           </motion.div>
         </AnimatePresence>
       </div>
+      <KeyPointBar text={t('keyPoints.s3-dao-structures')} className="mt-3" />
     </div>
   );
 }
@@ -476,6 +482,7 @@ export function VotingPowerSim() {
           <UnderTheHood terms={['getVotes()', 'delegation', 'quorum', 'Sybil resistance']} />
         </div>
       </div>
+      <KeyPointBar text={t('keyPoints.s3-dao-vote')} className="mt-3" />
     </div>
   );
 }
@@ -534,6 +541,7 @@ export function DaoExamplesSlide() {
       <div className="shrink-0 mt-3 p-2.5 rounded-xl border border-[#f59e0b]/30 text-xs text-muted-foreground" style={{ backgroundColor: '#f59e0b0f' }}>
         <span className="font-bold text-[#f59e0b]">{t('daoExamples.legalLabel')}</span>{t('daoExamples.legalBody')}
       </div>
+      <KeyPointBar text={t('keyPoints.s3-dao-examples')} className="mt-3" />
     </div>
   );
 }
@@ -589,6 +597,7 @@ export function TradeLensCase() {
           </div>
         ))}
       </div>
+      <KeyPointBar text={t('keyPoints.s3-tradelens')} className="mt-3" />
     </div>
   );
 }

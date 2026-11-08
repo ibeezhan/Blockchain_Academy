@@ -461,5 +461,22 @@
       { "title": "Porquê Construir com SC?",            "summary": "Usar quando: várias partes + lógica condicional + sem intermediário de confiança + necessidade de auditabilidade" }
     ],
     "footer": "Avança para a Secção 3 para casos de estudo do mundo real e análise sem hype →"
+  },
+  "keyPoints": {
+    "s2-web3": "Web3 moves trust from the company running the service to the rules running the network — that is the product change.",
+    "s2-dapp": "The blockchain is one layer of a dApp; the website, data feeds and storage are ordinary servers that someone controls.",
+    "s2-ex-stack": "Only the contract is decentralised by default — every other box in the stack is a vendor you still depend on.",
+    "s2-vs": "Web2 apps can change the rules on you overnight; Web3 apps make the rules public and hard to change — for better and worse.",
+    "s2-vs-2": "A traditional contract is enforced after a breach; a smart contract makes the breach impossible — or the bug permanent.",
+    "s2-standards": "Standards are why one wallet works with thousands of tokens — interoperability is the business value, not the token itself.",
+    "s2-components": "State, functions, conditions, events, addresses — five words that let you follow any contract summary in a meeting.",
+    "s2-workflow": "Once deployed, nobody triggers the contract — a transaction does, and the result is final on every node at once.",
+    "s2-solidity": "You will never write this — but knowing a contract is readable code, not a black box, changes how you question a vendor.",
+    "s2-execution": "Thousands of machines compute the same result, so the result is trustworthy — and slow, expensive and public.",
+    "s2-capabilities": "The new capability is not automation — it is automation that no single party, including the operator, can override.",
+    "s2-why": "Choose smart contracts when many parties must share one truth without a referee — otherwise choose a database.",
+    "s2-gas": "Every step costs real money, so good design keeps computation and data off-chain and puts only the proof on-chain.",
+    "s2-ex-gas": "Storage is the budget killer — writing data costs orders of magnitude more than reading it or sending value.",
+    "s2-reshape": "Smart-contract businesses earn from protocols and tokens, not from being the trusted middleman — the revenue model moves."
   }
 }

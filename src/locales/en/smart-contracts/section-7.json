@@ -22,6 +22,7 @@
     "badge": "In-class assignment",
     "heading": "The assignment at a glance",
     "subtitle": "A consulting exercise, not a coding one. Your job is to think clearly about a real problem and give an honest recommendation.",
+    "linkLine": "This is the second of two graded in-class assignments; the first was in Fundamentals §3.",
     "stats": [
       { "label": "Groups", "value": "3–4 people", "note": "form them in the room" },
       { "label": "Time in class", "value": "~45 min", "note": "discussion + drafting" },

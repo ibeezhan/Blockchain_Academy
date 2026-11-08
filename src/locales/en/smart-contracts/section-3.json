@@ -1,48 +1,14 @@
 {
   "chapters": {
-    "s3-team-pick": "🤝 Pick Your Industry",
+    "s3-discussion": "💬 Discussion",
     "s3-industries-intro": "Industries Overview",
-    "s3-defi-intro": "Intro",
-    "s3-defi-dex": "DEX Examples",
+    "s3-defi-intro": "What is DeFi?",
     "s3-defi-amm": "🧩 AMM Curve",
-    "s3-defi-stablecoins-intro": "Stablecoins",
     "s3-defi-stablecoins": "🧩 Peg Simulator",
-    "s3-defi-borderless": "Borderless",
     "s3-defi-prosCons": "Pros & Cons",
-    "s3-nft-intro": "Intro",
-    "s3-nft-economies": "True Ownership",
-    "s3-nft-p2e": "🧩 Play-to-Earn",
-    "s3-nft-p2e-real": "Ubisoft Example",
-    "s3-nft-finance": "NFT Finance",
+    "s3-nft-intro": "What is an NFT?",
+    "s3-nft-real": "In Production",
     "s3-nft-prosCons": "Pros & Cons",
-    "s3-rwa-intro": "Intro",
-    "s3-rwa-spectrum": "🧩 Spectrum",
-    "s3-rwa-securitize": "BUIDL",
-    "s3-rwa-mortgages": "Mortgages",
-    "s3-rwa-collateral": "Collateral",
-    "s3-rwa-property": "Property",
-    "s3-rwa-prosCons": "Pros & Cons",
-    "s3-sc-intro": "Intro",
-    "s3-sc-provenance": "🧩 Provenance",
-    "s3-sc-prov-real": "LVMH & Carrefour",
-    "s3-sc-shipping": "Shipping",
-    "s3-sc-prosCons": "Pros & Cons",
-    "s3-cert-intro": "Intro",
-    "s3-cert-howitworks": "🧩 Proof of Exist",
-    "s3-cert-law": "Estonia KSI",
-    "s3-cert-education": "MIT Blockcerts",
-    "s3-cert-products": "AURA Luxury",
-    "s3-cert-prosCons": "Pros & Cons",
-    "s3-cases-intro": "Overview",
-    "s3-homedepot": "Home Depot",
-    "s3-realestate": "Propy",
-    "s3-dmv": "CA DMV",
-    "s3-walmart": "Walmart",
-    "s3-santander": "Santander",
-    "s3-exercise": "🧩 Design Your Own",
-    "s3-quiz": "Quiz",
-    "s3-takeaways": "Takeaways",
-    "s3-summary": "Summary",
     "s3-nft-utility": "NFTs Beyond Art",
     "s3-nft-gate": "🧩 Token Gate",
     "s3-nft-honest": "The Honest NFT Story",
@@ -51,8 +17,21 @@
     "s3-dao-vote": "🧩 Who Holds Power?",
     "s3-dao-examples": "Real DAOs",
     "s3-dao-prosCons": "DAO Pros & Cons",
+    "s3-rwa-spectrum": "🧩 Spectrum",
+    "s3-rwa-real": "In Production",
+    "s3-rwa-prosCons": "Pros & Cons",
+    "s3-sc-provenance": "🧩 Provenance",
+    "s3-sc-real": "In Production",
+    "s3-sc-prosCons": "Pros & Cons",
+    "s3-cert-howitworks": "🧩 Proof of Exist",
+    "s3-cert-real": "In Production",
+    "s3-cert-prosCons": "Pros & Cons",
+    "s3-case-gallery": "Case Gallery",
     "s3-tradelens": "TradeLens ✗",
-    "s3-apps-intro": "Intro"
+    "s3-exercise": "🧩 Design Your Own",
+    "s3-quiz": "Quiz",
+    "s3-takeaways": "Takeaways",
+    "s3-summary": "Summary"
   },
   "groups": {
     "g-defi": "💸 DeFi",
@@ -69,15 +48,247 @@
     "title": "Industries & Case Studies",
     "subtitle": "Where smart contracts are reshaping real industries — and the case studies that prove it (and the ones that didn't)"
   },
-  "verticalDivider": {
-    "industryVertical": "Industry Vertical",
-    "scrollHint": "↓ Scroll for the full vertical"
-  },
   "prosCons": {
     "prosLabel": "✓ Pros",
     "consLabel": "✗ Cons"
   },
   "interactiveBadge": "🧩 Interactive",
+  "discussion": {
+    "badge": "💬 Class discussion",
+    "duration": "5 min",
+    "title": "Discussion: which industry hurts most?",
+    "lead": "Before the five deep-dives: where does today's process cause the most pain — and would code enforcing the rules actually fix it?",
+    "questions": [
+      "Of the five verticals on the next slide — finance, gaming & NFTs, real-world assets, supply chain, certification — which slow or expensive process have you personally run into? Who gets paid for that friction today?",
+      "Which single party in that process does everyone currently have to trust? What happens when they fail, cheat or shut down?",
+      "If the rules were code instead of a contract between people, what would still need a human to decide?"
+    ],
+    "note": "Keep your answer in mind — the Section 4 framework and the Section 7 one-pager both start from exactly this question."
+  },
+  "defiIntro": {
+    "examplesLabel": "In production today",
+    "examples": [
+      {
+        "name": "Uniswap",
+        "tag": "DEX · token swaps",
+        "stat": "~$1.5B / day",
+        "desc": "Any wallet swaps thousands of tokens in one on-chain call; the contract quotes the price and never takes custody of user funds."
+      },
+      {
+        "name": "CoW Swap",
+        "tag": "DEX · intent-based",
+        "stat": "no front-running",
+        "desc": "Users sign an intent; solvers batch and match orders off-chain and settle them in one transaction, with MEV protection built in."
+      },
+      {
+        "name": "USDC on an L2",
+        "tag": "Borderless transfer",
+        "stat": "seconds · cent fees",
+        "desc": "A SWIFT wire takes 3–5 days and $25–50 plus FX spread; a stablecoin on Base or Arbitrum settles wallet-to-wallet in seconds — irreversibly, and the on/off-ramp still needs a bank."
+      }
+    ]
+  },
+  "nftReal": {
+    "heading": "NFTs in production",
+    "subtitle": "Two live deployments — a AAA studio running a game economy on NFTs, and a lending desk that takes NFTs as collateral.",
+    "columns": [
+      {
+        "kicker": "Gaming · Ubisoft",
+        "title": "Champions Tactics: Grimoria Chronicles",
+        "tag": "Strategic Innovation Lab · launched Oct 2024 on the Oasys chain",
+        "points": [
+          "75,000 Champion NFTs minted in a capped drop — sold out in hours, funding live-ops upfront",
+          "Players battle squads in PvP; victories earn on-chain reward tokens redeemable for gear",
+          "Every secondary sale routes a 5% royalty to Ubisoft and collaborating artists — when the marketplace honours it",
+          "The servers, artwork and matchmaking are still Ubisoft's — the NFT only covers who owns the item"
+        ],
+        "footnote": "A mainstream studio using NFTs for an active game economy — and a reminder that the chain owns the item, not the game."
+      },
+      {
+        "kicker": "NFT finance · Zharta",
+        "title": "Borrow against an NFT without selling it",
+        "tag": "Collateralised lending · also NFTfi, BendDAO",
+        "points": [
+          "The NFT is locked in a contract; if the loan defaults, the contract hands it to the lender — no court, no collections agency",
+          "Zharta grew to 300+ loans at ~13.6% APR with terms up to two years, secured by on-chain collateral",
+          "Rentals follow the same pattern: lend the asset to a new player and split the earnings automatically",
+          "The weak point is pricing — an illiquid NFT can lose most of its value before any liquidation fires"
+        ],
+        "footnote": "If a digital asset has value, lending, renting and yield can be built around it — with the same liquidation risks as any collateral."
+      }
+    ]
+  },
+  "rwaReal": {
+    "heading": "Tokenised assets in production",
+    "subtitle": "Where real-world assets already live on-chain — and what still happens off-chain.",
+    "columns": [
+      {
+        "kicker": "Securities",
+        "title": "BlackRock BUIDL · Securitize · BNY Mellon",
+        "tag": "Regulated issuance · SEC/FINRA-registered platform",
+        "points": [
+          "Tokenised money-market and credit funds issued on Ethereum, Polygon and Avalanche",
+          "Each token is a share in an off-chain fund; KYC/AML runs through on-chain compliance modules",
+          "24/7 settlement instead of T+1 / T+2, and fractional access to institutional products"
+        ],
+        "footnote": "The token settles in seconds; the fund share it represents is still governed by a prospectus and a transfer agent."
+      },
+      {
+        "kicker": "Property",
+        "title": "Sweden · Brickblock · Zurich Bahnhofstrasse",
+        "tag": "Land registry pilot and real-estate tokens",
+        "points": [
+          "Sweden's land-registry pilot cut title registration from about 4 months to a few days (€100M+ estimated yearly savings)",
+          "Brickblock (Frankfurt) issued property tokens on Ethereum under BaFin supervision",
+          "A Zurich Bahnhofstrasse building was tokenised through a Swiss GmbH — investors receive rent and trade shares under FINMA guidelines"
+        ],
+        "footnote": "EU MiCA (2024) gives crypto-assets one legal framework across 27 states — the clarity these pilots were waiting for."
+      },
+      {
+        "kicker": "Lending",
+        "title": "Automated mortgages & tokenised collateral",
+        "tag": "Pilots and DeFi-native lenders",
+        "points": [
+          "The contract holds funds, tracks repayments, applies late penalties and liquidates collateral by itself",
+          "Borrowing against tokenised securities keeps market exposure while unlocking liquidity; margin calls settle instantly",
+          "Limitation: the house itself still changes hands through a legal title transfer off-chain"
+        ],
+        "footnote": "The further right on the spectrum, the more the token depends on a legal wrapper — and the wrapper is where the risk sits."
+      }
+    ]
+  },
+  "scReal": {
+    "heading": "Provenance and shipping documents in production",
+    "subtitle": "Three consortia where rivals agreed to write to one shared record — luxury, food and global shipping.",
+    "columns": [
+      {
+        "kicker": "Luxury · anti-counterfeit",
+        "title": "LVMH · Aura Blockchain Consortium",
+        "tag": "Louis Vuitton, Prada, Cartier and partners",
+        "points": [
+          "Every handbag, watch or perfume gets a digital passport on a permissioned chain: materials, production date, ownership changes",
+          "Shoppers scan the NFC or QR tag to see provenance; resale platforms and after-sales read the same brand-verified record",
+          "Goal: make counterfeits detectable and keep the resale market honest"
+        ],
+        "footnote": "Competitors share infrastructure because none of them could fight counterfeiting alone."
+      },
+      {
+        "kicker": "Food · traceability",
+        "title": "Carrefour BIO · organic chicken",
+        "tag": "Consumer-facing QR code on every pack",
+        "points": [
+          "Farmers, processors and logistics partners upload at each hand-off: breed, farm, feed, antibiotic-free status, slaughter date, transport temperature",
+          "The record is locked on a permissioned ledger; a shopper's scan shows the full trail",
+          "Payoff: faster recalls and a stronger organic label"
+        ],
+        "footnote": "The chain proves who entered what and when — it cannot prove the chicken was actually organic."
+      },
+      {
+        "kicker": "Shipping · documents",
+        "title": "GSBN electronic Bills of Lading",
+        "tag": "COSCO · Hapag-Lloyd · OOCL · Hutchison Ports · PSA",
+        "points": [
+          "Bills of Lading used to travel as couriered paper — lost, forged or delayed for weeks",
+          "Each eBL is cryptographically signed, shared in seconds and tamper-evident; contracts notify customs on loading and release goods on ownership transfer",
+          "Live since 2021: 2M+ containers processed, document turnaround cut from days to hours"
+        ],
+        "footnote": "Same industry as TradeLens — this one works because the carriers own it together."
+      }
+    ]
+  },
+  "certReal": {
+    "heading": "Verifiable records in production",
+    "subtitle": "A government, a university and a luxury consortium — all using the chain so anyone can verify a record without phoning the issuer.",
+    "columns": [
+      {
+        "kicker": "Government · Estonia",
+        "title": "KSI blockchain (Guardtime)",
+        "tag": "Since 2012 · registries, courts, health records",
+        "points": [
+          "Permissioned hash-chain guaranteeing the integrity of the land registry, business registry, court system and health records",
+          "\"Keyless\" signatures: any later change to a historical record is detectable — even by a future government insider",
+          "Blockchain treated as infrastructure, not a product; the same backbone supports e-Residency and X-Road"
+        ],
+        "footnote": "\"History cannot be rewritten by anybody and the authenticity of electronic data can be guaranteed.\""
+      },
+      {
+        "kicker": "Education · MIT",
+        "title": "Blockcerts digital diplomas",
+        "tag": "Open standard · pilot 2017",
+        "points": [
+          "Verifying a diploma used to mean emailing the registrar and waiting days; fake credentials are a multi-billion-dollar market",
+          "MIT issued blockchain-anchored certificates to 100+ graduates; employers scan a QR code and verify instantly",
+          "Graduates hold their own credential — the university no longer sits in every verification"
+        ],
+        "footnote": "An open standard since adopted by universities worldwide."
+      },
+      {
+        "kicker": "Luxury · AURA",
+        "title": "Product authenticity certificates",
+        "tag": "LVMH · Prada · Cartier founding partners",
+        "points": [
+          "Each item carries a unique on-chain certificate: origin, materials, manufacturing date, ownership history",
+          "Buyers verify instantly, resellers prove provenance, after-sales is tied to verified ownership",
+          "Counterfeiters cannot forge the history — but they can still copy the bag"
+        ],
+        "footnote": "Collaborative rather than competitive infrastructure — the same consortium we met in supply chain."
+      }
+    ]
+  },
+  "caseGallery": {
+    "heading": "Cross-industry case gallery",
+    "subtitle": "Five production deployments in one view — the problem, what runs on-chain, the headline result. Section 4 adds three more lessons.",
+    "problemLabel": "Problem",
+    "solutionLabel": "What runs on-chain",
+    "platformLabel": "Platform",
+    "items": [
+      {
+        "industry": "Supply chain",
+        "name": "Home Depot",
+        "problem": "Supplier disputes over damaged or late goods took 3–5 weeks of emails and paper reconciliation.",
+        "solution": "Purchase orders, deliveries and invoices on one shared ledger; contracts auto-match deliveries to POs and flag discrepancies instantly.",
+        "metric": "Weeks → hours",
+        "metricLabel": "dispute resolution time",
+        "platform": "IBM · Hyperledger Fabric (permissioned)"
+      },
+      {
+        "industry": "Real estate",
+        "name": "Propy",
+        "problem": "Closing a property sale takes 30–60 days and about 6% in intermediary fees.",
+        "solution": "The deed sits in an LLC; an ERC-721 NFT represents the LLC, and escrow releases funds only once title is confirmed.",
+        "metric": "$653,000",
+        "metricLabel": "first US NFT home sale (2022)",
+        "platform": "Ethereum · LLC legal wrapper"
+      },
+      {
+        "industry": "Government",
+        "name": "California DMV",
+        "problem": "42M paper vehicle titles — easy to lose or forge, and a 2–3 hour DMV visit to transfer one.",
+        "solution": "Each title becomes an NFT on a permissioned Avalanche subnet; transfers and lien releases are blockchain transactions.",
+        "metric": "42 million",
+        "metricLabel": "titles digitised (2024)",
+        "platform": "Avalanche subnet · Oxhead Alpha"
+      },
+      {
+        "industry": "Food supply",
+        "name": "Walmart",
+        "problem": "Tracing contaminated lettuce to its farm took 7 days; whole categories were pulled from shelves.",
+        "solution": "Farmers, packers, distributors and stores record each hand-off on IBM Food Trust; QR codes link the product to its provenance.",
+        "metric": "7 days → 2.2 s",
+        "metricLabel": "trace-back time",
+        "platform": "IBM Food Trust · Hyperledger Fabric"
+      },
+      {
+        "industry": "Banking",
+        "name": "Santander",
+        "problem": "Bond settlement across jurisdictions takes T+2 through a chain of intermediaries.",
+        "solution": "A $20M bond issued on public Ethereum in 2019 with the cash leg tokenised too — end-to-end on-chain settlement.",
+        "metric": "T+2 → same day",
+        "metricLabel": "settlement · ~50% estimated cost cut",
+        "platform": "Ethereum mainnet (public)"
+      }
+    ]
+  },
   "exerciseBadge": "🧩 Exercise",
   "amm": {
     "title": "AMM Bonding Curve · ",
@@ -186,27 +397,6 @@
       "crypto": "Crypto-collateralized stablecoins survive shocks via liquidations — but only if the collateral ratio is comfortably above 100%. Drop below that during a flash crash and the protocol can't liquidate fast enough.",
       "algo": "Algorithmic stablecoins are vulnerable to reflexive death spirals: as the stable de-pegs, traders dump the sister token, which collapses, which removes the cushion. UST/LUNA wiped out $40B in May 2022."
     }
-  },
-  "royalty": {
-    "title": "Royalty Cascade · ERC-2981 in action",
-    "subtitle": "A secondary sale closes. Watch the smart contract pay every party — automatically, on-chain.",
-    "salePrice": "Secondary sale price",
-    "creatorRoyalty": "Creator royalty",
-    "marketplaceFee": "Marketplace fee",
-    "futureResales": "Future resales (this asset)",
-    "splitForSale": "Split for this sale",
-    "sellerLabel": "Seller",
-    "creatorLabel": "Creator",
-    "marketplaceLabel": "Marketplace",
-    "cumulativeTitle": "Cumulative creator royalties",
-    "acrossResales_one": "across {{count}} resale",
-    "acrossResales_other": "across {{count}} resales",
-    "tradWeb2": "Traditional Web2",
-    "tradWeb2Desc": "creator earns nothing on resales",
-    "withErc2981": "With ERC-2981",
-    "withErc2981Desc": "if the marketplace honours ERC-2981",
-    "caveatLabel": "Caveat:",
-    "caveatBody": " ERC-2981 only tells a marketplace what the royalty should be — paying it is voluntary, and since 2023 most marketplaces don't. See \"The Honest NFT Story\"."
   },
   "provenance": {
     "title": "Scan a Carrefour BIO Chicken",
@@ -324,35 +514,6 @@
       }
     }
   },
-  "teamPick": {
-    "contextLabel": "Day 3 · before Industries deep-dive",
-    "title": "Pick your industry",
-    "subtitle": "The next five chapters walk through DeFi, Gaming/NFTs, RWA, Supply Chain, and Digital Certification — pick the one your team's problem statement lives in, so you can study it with intent.",
-    "duration": "10 min",
-    "haveLabel": "What you have",
-    "have": {
-      "item1A": "The ",
-      "item1Strong": "problem statement",
-      "item1B": " your team agreed on at the end of Day 2.",
-      "item2": "Some sense of which industry it touches (banking? retail? logistics? government?)."
-    },
-    "discussLabel": "Discuss as a team",
-    "discuss": {
-      "item1": "Which of the five upcoming verticals fits your problem best?",
-      "item2A": "If multiple fit, pick the one where the smart-contract pattern is ",
-      "item2Strong": "most established",
-      "item2B": " — you'll have more references.",
-      "item3": "If none fit cleanly, that's a signal worth noting — your problem may need adapting (or may not be a great smart-contract fit)."
-    },
-    "duringLabel": "During the next chapters",
-    "during": {
-      "item1": "Pay extra attention to the vertical you chose — note the existing players, the real-world deployments, and the pros/cons.",
-      "item2": "The other verticals still matter — patterns transfer. Capture anything that looks adjacent to your problem.",
-      "item3A": "The ",
-      "item3Strong": "Critical Thinking decision flow",
-      "item3B": " later in the day is where you'll formally test if blockchain is the right tool."
-    }
-  },
   "industriesIntro": {
     "heading": "Smart Contracts Across Industries",
     "subtitle": "Five verticals where smart contracts have moved from theory to deployed production systems.",
@@ -365,10 +526,6 @@
     },
     "commonThreadLabel": "Common thread:",
     "commonThreadBody": " in every vertical below, smart contracts replace a slow, intermediary-dependent process with code-enforced execution. We examine each, go deeper on NFT utility and DAOs, then look at six flagship case studies — including one that was shut down."
-  },
-  "defiDivider": {
-    "title": "Decentralized Finance",
-    "subtitle": "Blockchain-based financial applications that operate without banks or brokers — peer-to-peer transactions enforced by smart contracts."
   },
   "defiWhat": {
     "heading": "What is DeFi?",
@@ -385,28 +542,6 @@
       "yield": { "name": "Yield", "desc": "Automated strategies that route deposits to highest-return pools (Yearn)" },
       "derivatives": { "name": "Derivatives", "desc": "Perpetuals, options, synthetics — trading without intermediaries (dYdX, GMX)" }
     }
-  },
-  "defiDex": {
-    "heading": "Decentralized Exchanges (DEXs)",
-    "subtitle": "Trading venues executed entirely by smart contracts — no central broker, no clearing house, no custody risk.",
-    "uniswapName": "Uniswap",
-    "uniswapTag": "Non-custodial token swaps",
-    "uniswapBody": "Lets any wallet swap thousands of tokens in one on-chain call. Liquidity providers deposit token pairs; the smart contract's AMM quotes the rate, moves the assets, and charges 0.01–1% per pool, settling in about 15 seconds.",
-    "uniswapStat1Value": "~$1.5B",
-    "uniswapStat1Label": "Daily volume (07/2025)",
-    "uniswapStat2Value": "never",
-    "uniswapStat2Label": "Takes custody of user funds",
-    "cowName": "CoW Swap",
-    "cowTag": "MEV-protected, intent-based",
-    "cowBodyA": "Wallets trade tokens by submitting ",
-    "cowBodyStrong": "signed intents",
-    "cowBodyB": " rather than on-chain swap transactions. Off-chain solvers batch orders, match users directly through Coincidence of Wants, and route any leftover flow to on-chain liquidity. Trades settle in a single transaction with built-in MEV protection.",
-    "cowStat1Value": "CoW",
-    "cowStat1Label": "Coincidence of Wants matching",
-    "cowStat2Value": "no MEV",
-    "cowStat2Label": "Front-running mitigated",
-    "whyMattersLabel": "Why this matters:",
-    "whyMattersBody": " a DEX delivers centralized-exchange-scale liquidity without ever taking custody of user funds. The contract enforces the rules; users keep their keys."
   },
   "stablecoinsIntro": {
     "heading": "Stablecoins — Crypto That Holds $1",
@@ -432,35 +567,6 @@
     "nextLabel": "Next: ",
     "nextBody": "stress-test a peg yourself — push collateral and demand until a stablecoin breaks."
   },
-  "borderless": {
-    "imgAlt": "A laptop with a shield, a wallet, and a secure cloud — borderless value transfer",
-    "heading": "Borderless Value Transfers",
-    "subtitle": "Moving digital assets entirely by smart contract — no correspondent banks, no clearing networks.",
-    "traditionalLabel": "Traditional",
-    "traditionalTitle": "SWIFT cross-border wire",
-    "traditionalItems": [
-      "3–5 business days",
-      "$25–50 fixed fee + 1–3% FX spread",
-      "Multiple correspondent banks in chain",
-      "Limited transparency on status"
-    ],
-    "scLabel": "Smart Contract Rails",
-    "scTitle": "USDC over L2 (Base, Arbitrum)",
-    "scItems": [
-      "Settles in seconds",
-      "$0.01–0.10 in network fees",
-      "No correspondent — direct wallet-to-wallet",
-      "On-chain explorer = full transparency"
-    ],
-    "tradeoffsLabel": "Trade-offs",
-    "tradeoffsTitle": "What you give up",
-    "tradeoffsItems": [
-      "No reversibility — sent is sent",
-      "On/off-ramp friction at edges (KYC + bank)",
-      "Wallet UX: seed phrases, gas, approvals",
-      "Regulatory uncertainty in some jurisdictions"
-    ]
-  },
   "defiProsCons": {
     "title": "DeFi · Pros & Cons",
     "pros": [
@@ -480,10 +586,6 @@
       { "label": "UX Complexity", "desc": "Setting up wallets, safeguarding seed phrases, paying gas — all deter mainstream adoption." },
       { "label": "On/Off-Ramp Friction", "desc": "Moving funds between banks and blockchain wallets still depends on centralized exchanges and KYC." }
     ]
-  },
-  "nftDivider": {
-    "title": "Gaming & NFTs",
-    "subtitle": "Non-Fungible Tokens turn digital items into player-owned assets — with embedded royalties and tradeable secondary markets."
   },
   "nftIntro": {
     "heading": "What is an NFT?",
@@ -536,44 +638,6 @@
       }
     }
   },
-  "p2eReal": {
-    "imgAlt": "Play-to-Earn ecosystem icons: gaming, NFTs, tokens, creatures",
-    "heading": "Play-to-Earn in Production",
-    "subtitle": "Smart contracts link in-game achievements to token rewards — and route perpetual royalties back to creators on every resale.",
-    "howTitle": "How it works",
-    "howPoints": [
-      "Win a match, breed a creature, finish a quest → smart contract mints/transfers token rewards to your wallet",
-      "Tokens swappable for stablecoins or reinvested in better gear",
-      "Guilds emerge — NFT holders lend assets to new players for revenue split",
-      "Labor and capital combine inside a self-governing digital economy"
-    ],
-    "ubisoftTitle": "Ubisoft · Champions Tactics: Grimoria Chronicles",
-    "ubisoftTag": "Strategic Innovation Lab · Oct 2024",
-    "ubisoftPoints": [
-      { "a": "Launched on the ", "strong": "Oasys", "b": " blockchain (gaming-focused EVM L1)" },
-      { "a": "", "strong": "75,000 Champion NFTs", "b": " minted in a capped drop — sold out in hours, funding live-ops upfront" },
-      { "a": "Players battle squads in PvP; victories earn on-chain reward tokens redeemable for gear", "strong": "", "b": "" },
-      { "a": "Every secondary sale routes a ", "strong": "5% royalty", "b": " to Ubisoft and collaborating artists — perpetual revenue loop" }
-    ],
-    "ubisoftFootnote": "A mainstream AAA studio using NFTs and smart-contract royalties to power an active game economy in 2025."
-  },
-  "nftFinance": {
-    "heading": "NFT Finance · Lending, Renting, Yield",
-    "subtitle": "If digital assets have value, secondary liquidity can be built around them.",
-    "lendingTitle": "Collateralized lending",
-    "lendingBody": "NFT holders borrow against their assets without selling. The NFT is locked in a smart contract; if the loan defaults, the contract auctions or transfers the NFT to the lender. Liquidity unlocked, ownership preserved.",
-    "lendingExamples": "Examples: NFTfi, BendDAO, Zharta",
-    "rentalsTitle": "Rentals & flywheels",
-    "rentalsBody": "NFTs can be rented to new players for a revenue split. As assets circulate, utilization grows, lenders earn yield secured by on-chain collateral, liquidity deepens, better pricing emerges, attracting more capital — a self-reinforcing flywheel.",
-    "rentalsPattern": "Pattern: borrow → use in-game → earn → split with owner",
-    "zhartaLabel": "Real-world example · Zharta",
-    "zhartaImgAlt": "Zharta loan volume — Borrow chart over a year, +300 loans, 13.6% APR",
-    "zhartaBodyA": "Borrow against your NFT — keep 100% upside, retain investing opportunities, share the risk. Zharta's smart contracts grew to ",
-    "zhartaBodyStrong1": "300+ loans",
-    "zhartaBodyB": " at ",
-    "zhartaBodyStrong2": "13.6% APR",
-    "zhartaBodyC": ", with 2-year terms — secured by on-chain collateral."
-  },
   "nftProsCons": {
     "title": "Gaming & NFTs · Pros & Cons",
     "pros": [
@@ -597,97 +661,6 @@
       { "label": "Market Saturation", "desc": "A flood of low-quality drops dilutes attention and depresses resale demand." }
     ]
   },
-  "rwaDivider": {
-    "title": "Real Asset Tokenization",
-    "subtitle": "Converting ownership rights in physical or financial assets into digital tokens — automated by smart contracts."
-  },
-  "rwaSecuritize": {
-    "heading": "Securitize · BlackRock BUIDL · BNY Mellon",
-    "subtitle": "A regulated digital asset issuance and management platform bridging TradFi and blockchain.",
-    "howTitle": "How it works",
-    "howPoints": [
-      "Financial firms issue digital securities on blockchain networks (Ethereum, Polygon, Avalanche)",
-      "Each token represents ownership of off-chain assets — treasuries, private credit, structured products",
-      "Investors receive tokenized shares, tradeable and settleable on-chain",
-      "KYC/AML automated via on-chain compliance modules"
-    ],
-    "regulatoryLabel": "Regulatory status:",
-    "regulatoryBody": " Registered with SEC/FINRA — supports compliant digital securities issuance under U.S. law.",
-    "deploymentsLabel": "Flagship deployments",
-    "buidlTitle": "BlackRock BUIDL",
-    "buidlBody": "USD Institutional Digital Liquidity Fund — tokenized money-market exposure for institutions.",
-    "bnyTitle": "Securitize × BNY Mellon",
-    "bnyBody": "Tokenized fund backed by AAA-rated structured credit — institutional credit exposure on-chain.",
-    "valueTitle": "Value unlocked",
-    "valuePoints": [
-      "Fractional access to institutional-grade assets",
-      "24/7 settlement vs T+1 / T+2 legacy",
-      "Streamlined investor onboarding"
-    ]
-  },
-  "rwaMortgages": {
-    "heading": "Automated Mortgages",
-    "subtitle": "Lending agreements executed entirely by smart contracts — no banks or loan officers required.",
-    "contractTitle": "What the contract does",
-    "contractPoints": [
-      "Holds and transfers funds based on pre-coded conditions",
-      "Monitors repayment schedule — calculates interest, principal split",
-      "Applies penalties on late payments automatically",
-      "Manages collateral — liquidates if loan defaults"
-    ],
-    "whyTitle": "Why on-chain?",
-    "whyPoints": [
-      "No 30–60 day origination process",
-      "Transparent terms — borrower and lender see the same code",
-      "Lower cost — no bank back office",
-      "Programmable repayments — dynamic interest, deferrals encoded"
-    ],
-    "limitationLabel": "Limitation:",
-    "limitationBody": " the property itself still requires legal title transfer off-chain — for now."
-  },
-  "rwaCollateral": {
-    "heading": "RWA Collateral Lending",
-    "subtitle": "Borrowing against tokenized real-world assets without selling them.",
-    "cards": [
-      { "title": "Capital efficiency", "desc": "Investors borrow against tokenized securities without selling — keeping market exposure while unlocking liquidity." },
-      { "title": "Programmable collateral", "desc": "On-chain securities enable real-time valuation, automated margining, and instant collateral management." },
-      { "title": "Lower lender risk", "desc": "Loans secured by regulated, price-discoverable assets with enforceable claims under existing law." },
-      { "title": "Faster settlement", "desc": "Margin calls, top-ups, and liquidations execute instantly — no T+1 or T+2 delay." },
-      { "title": "Scalable credit layer", "desc": "A compliant on-chain securities financing market — bridging TradFi and DeFi." },
-      { "title": "New investor classes", "desc": "Retail investors gain access to instruments historically reserved for institutions." }
-    ]
-  },
-  "rwaProperty": {
-    "heading": "Property Sales · Real Pilots",
-    "subtitle": "Property transactions involve escrow, title, notaries — and weeks. Blockchain pilots compress this dramatically.",
-    "sweden": {
-      "country": "Sweden",
-      "title": "Land Registry Pilot",
-      "bodyA": "Private blockchain for property conveyance involving banks and government agencies. Title registration dropped from ",
-      "bodyStrong": "4 months to a few days",
-      "bodyB": ". All parties access the same tamper-proof records; signing and title updates done digitally.",
-      "badgeStrong": "€100M+",
-      "badgeRest": " potential annual savings (Swedish official estimate)"
-    },
-    "frankfurt": {
-      "country": "Frankfurt",
-      "title": "Brickblock",
-      "bodyA": "Blockchain-based real-estate investment platform. Built on ",
-      "bodyStrong": "Ethereum",
-      "bodyB": ". Property tokens issued under German regulation.",
-      "badgeStrong": "BaFin",
-      "badgeRest": " — operated under Germany's financial regulator"
-    },
-    "switzerland": {
-      "country": "Switzerland",
-      "title": "Zurich Bahnhofstrasse Building",
-      "body": "Tokenization of a prestigious building on Zurich's most expensive street. Ownership shares issued as digital tokens via a Swiss GmbH structure. Investors receive rental income and trade tokens on a secondary market.",
-      "badgeStrong": "FINMA",
-      "badgeRest": " — Swiss DLT/security-token guidelines"
-    },
-    "micaLabel": "EU MiCA · 2024:",
-    "micaBody": " the first comprehensive regulatory framework for crypto-assets across the EU — providing legal clarity, consumer protection, and market stability across all 27 member states."
-  },
   "rwaProsCons": {
     "title": "RWA Tokenization · Pros & Cons",
     "pros": [
@@ -709,49 +682,6 @@
       { "label": "Valuation Drift", "desc": "On-chain token prices may diverge from underlying asset NAV — pricing reliability is an open problem." }
     ]
   },
-  "scDivider": {
-    "title": "Supply Chain",
-    "subtitle": "Recording every hand-off of a physical good — from raw-material pickup to retail shelf — as a tamper-proof block."
-  },
-  "scProvReal": {
-    "heading": "Provenance in Production",
-    "subtitle": "Two flagship deployments — luxury anti-counterfeit and organic-food traceability.",
-    "lvmhTitle": "LVMH · Aura Consortium",
-    "lvmhTag": "Louis Vuitton, Prada, Cartier coalition",
-    "lvmhBodyA": "Every handbag, watch, or perfume bottle gets a ",
-    "lvmhBodyStrong": "digital passport",
-    "lvmhBodyB": " on a permissioned blockchain — recording materials, manufacturing date, and ownership changes. Scanning the embedded NFC or QR tag reveals provenance to shoppers, while smart-contract updates ensure resale platforms and after-sales services access accurate, brand-verified data throughout the product's lifetime.",
-    "lvmhGoalLabel": "Goal:",
-    "lvmhGoalBody": " fight counterfeiting and enhance customer trust across luxury brands.",
-    "carrefourTitle": "Carrefour BIO · Organic chicken provenance",
-    "carrefourTag": "European retailer, consumer-facing QR",
-    "carrefourBody": "Every Carrefour BIO chicken carries a QR code. Scanning pulls a blockchain record showing breed, farm GPS, organic feed, antibiotic-free status, slaughter date, packing plant, and temperature-controlled transport history. Data uploaded by farmers, processors, and logistics partners at hand-off — locked on a permissioned ledger.",
-    "carrefourFootnote": "Faster recalls, stronger trust in the organic label, instant tamper-proof proof of authenticity."
-  },
-  "scShipping": {
-    "heading": "Global Shipping Documents · GSBN eBL",
-    "subtitle": "Bills of Lading and customs forms, courier-couriered for centuries — now tokenized on a shared ledger.",
-    "legacyTitle": "The legacy problem",
-    "legacyPoints": [
-      "Bills of Lading and Letters of Credit move as paper — couriered across oceans",
-      "Documents prone to loss, fraud, week-long delays",
-      "Carriers, ports, banks, and regulators each maintain separate records",
-      "Reconciling discrepancies takes days of phone calls"
-    ],
-    "gsbnImgAlt": "Container ship and an electronic Bill of Lading with QR code",
-    "gsbnTitle": "Global Shipping Business Network (GSBN)",
-    "gsbnTag": "COSCO · Hapag-Lloyd · OOCL · ONE + major ports",
-    "gsbnPoints": [
-      { "a": "Permissioned blockchain issuing electronic Bills of Lading (eBLs)", "strong": "", "b": "" },
-      { "a": "Each digital document cryptographically signed, shareable in seconds, tamper-evident", "strong": "", "b": "" },
-      { "a": "Smart contracts notify customs on cargo load, trigger goods release on ownership transfer, settle carrier fees", "strong": "", "b": "" },
-      { "a": "Live since 2021 — over ", "strong": "2 million containers", "b": " processed" },
-      { "a": "Targeting ", "strong": "50% eBL adoption by 2026", "b": "" }
-    ],
-    "gsbnFootnoteA": "Document turnaround compressed from ",
-    "gsbnFootnoteStrong": "days to hours",
-    "gsbnFootnoteB": "."
-  },
   "scProsCons": {
     "title": "Supply Chain · Pros & Cons",
     "pros": [
@@ -772,64 +702,6 @@
       { "label": "Stakeholder Coordination", "desc": "Rival companies must cooperate. Adoption stalls if key partners refuse to participate." }
     ]
   },
-  "certDivider": {
-    "title": "Digital Certification",
-    "subtitle": "Tamper-proof, easily verifiable digital records — diplomas, land titles, product authenticity — issued and validated on-chain."
-  },
-  "certLaw": {
-    "heading": "Estonia · KSI Blockchain (Guardtime)",
-    "subtitle": "Government records, registries, and healthcare data integrity since 2012.",
-    "whatTitle": "What Estonia did",
-    "whatPoints": [
-      { "a": "Permissioned blockchain (Guardtime's KSI) used since ", "strong": "2012", "b": "" },
-      { "a": "Enforces integrity of land registry, business registry, court system, healthcare records", "strong": "", "b": "" },
-      { "a": "\"Keyless\" signatures — relies on hash chains, not private keys", "strong": "", "b": "" },
-      { "a": "Detects any tampering of historical records", "strong": "", "b": "" }
-    ],
-    "principleTitle": "The principle",
-    "principleQuote": "\"History cannot be rewritten by anybody and the authenticity of electronic data can be guaranteed.\"",
-    "principleBody": "By using blockchain as a backbone for data integrity, Estonia ensures official records are beyond tampering — even by future government insiders. This is digital sovereignty by mathematical proof rather than institutional trust.",
-    "whyLabel": "Why it matters:",
-    "whyBodyA": " Estonia treats blockchain as ",
-    "whyBodyEmphasis": "infrastructure",
-    "whyBodyB": " — not a product. The same principle now underpins their e-Residency program and X-Road data exchange."
-  },
-  "certEducation": {
-    "heading": "Education · MIT Blockcerts",
-    "subtitle": "Combating fake degrees and simplifying credential verification.",
-    "problemTitle": "The problem",
-    "problemPoints": [
-      "Verifying a diploma traditionally requires emailing the registrar — days of delay",
-      "Fake transcripts and credentials are a multi-billion-dollar fraud market",
-      "International credential recognition is especially friction-heavy",
-      "Students don't truly own their academic record — institutions do"
-    ],
-    "mitTitle": "MIT pilot · 2017",
-    "mitTag": "Open Blockcerts standard",
-    "mitPoints": [
-      { "a": "Issued blockchain-based digital certificates to ", "strong": "100+ graduates", "b": "" },
-      { "a": "App lets graduates share a tamper-proof, verifiable digital diploma", "strong": "", "b": "" },
-      { "a": "Employers click a link or scan a QR code → instantly verify on-chain", "strong": "", "b": "" },
-      { "a": "No more transcript request bureaucracy", "strong": "", "b": "" }
-    ],
-    "footnote": "Open standard now adopted by universities globally — students truly own their credentials."
-  },
-  "certProducts": {
-    "heading": "Product Authenticity · Luxury Goods",
-    "subtitle": "Digital \"title deeds\" of authenticity for high-value physical products.",
-    "howTitle": "How it works",
-    "howBody": "When a customer buys a high-end handbag, watch, or piece of jewelry, they scan a code that retrieves the item's blockchain certificate. The certificate includes origin, materials, manufacturing date, and full ownership history.",
-    "howPoints": [
-      "Buyers verify authenticity instantly",
-      "Resellers prove provenance",
-      "Counterfeiters can't fake on-chain history",
-      "After-sales service tied to verified ownership"
-    ],
-    "auraTitle": "AURA Blockchain Consortium",
-    "auraTag": "LVMH · Prada · Cartier (founding partners)",
-    "auraBody": "Co-founded by LVMH (Louis Vuitton, Hublot, Bulgari, etc.) alongside Prada and Cartier. Issues a unique digital certificate for each luxury item — handbag, watch, jewelry — recorded on a secure blockchain. Consumers scan to access authenticity, provenance, and ownership history.",
-    "auraFootnote": "Industry-wide standard for luxury authentication — collaborative rather than competitive infrastructure."
-  },
   "certProsCons": {
     "title": "Digital Certification · Pros & Cons",
     "pros": [
@@ -849,181 +721,11 @@
       { "label": "Vendor Lock-in", "desc": "Different consortia use different chains — interoperability still emerging." }
     ]
   },
-  "casesDivider": {
-    "title": "Cross-Industry Case Studies",
-    "subtitle": "Six deployments — five running in production and one that was shut down. Section 4 adds three more lessons, including The DAO hack and the ASX write-off."
-  },
   "common": {
     "theProblem": "The Problem",
     "theSolution": "The Solution",
     "theResults": "The Results",
     "whatHappened": "What Happened"
-  },
-  "homedepot": {
-    "kicker": "Case Study 01 — Supply Chain",
-    "heading": "Home Depot: Supply Chain Dispute Resolution",
-    "subtitle": "How the world's largest home improvement retailer used blockchain to eliminate weeks of supplier disputes.",
-    "problemBodyA": "Home Depot manages ",
-    "problemBodyStrong": "thousands of suppliers",
-    "problemBodyB": " across a global supply chain. When goods arrived damaged, delayed, or incorrect, resolving the dispute required:",
-    "problemPoints": [
-      "Weeks of back-and-forth emails between buyer and supplier",
-      "Manual reconciliation of paper invoices, purchase orders, and shipping docs",
-      "No single source of truth — each party had different records",
-      "Average resolution time: 3–5 weeks, tying up cash flow"
-    ],
-    "problemCostLabel": "Cost:",
-    "problemCostBody": "Millions in delayed payments, admin overhead, and strained supplier relationships",
-    "solutionBodyA": "Home Depot deployed a ",
-    "solutionBodyStrong": "blockchain-based supply chain platform",
-    "solutionBodyB": " in partnership with IBM (Hyperledger Fabric):",
-    "solutionPoints": [
-      "All purchase orders, shipping confirmations, and invoices recorded on a shared ledger in real time",
-      "Smart contracts auto-match delivery confirmations against POs — flagging discrepancies instantly",
-      "Both Home Depot and suppliers see the same immutable data — no he-said-she-said",
-      "Dispute resolution triggers automatically when conditions deviate from contract terms"
-    ],
-    "solutionFlow": "Delivery confirmed → Invoice auto-approved → Payment released",
-    "results": [
-      { "metric": "3–5 weeks → hours", "label": "Dispute resolution time" },
-      { "metric": "↓ significantly", "label": "Administrative overhead" },
-      { "metric": "↑ improved", "label": "Supplier relationships" },
-      { "metric": "Single source of truth", "label": "Shared data for all parties" }
-    ],
-    "platformLabel": "Platform:",
-    "platformBody": " IBM Blockchain (Hyperledger Fabric) — permissioned, only Home Depot and its suppliers participate."
-  },
-  "propy": {
-    "kicker": "Case Study 02 — Real Estate",
-    "heading": "Propy: Real-Estate NFT Deeds",
-    "subtitle": "The first legally recognised property sale via NFT — and what it means for real estate globally.",
-    "problemBodyA": "Real estate transactions remain one of the most ",
-    "problemBodyStrong": "friction-heavy processes",
-    "problemBodyB": " in the modern economy:",
-    "problemPoints": [
-      "30–60 day closing timelines: title search, escrow, notarization, county recording",
-      "Multiple intermediaries: agents, lawyers, title companies, banks — each taking a cut",
-      "Paper-based deeds stored in local county offices — vulnerable to loss, fraud, and errors",
-      "Cross-border property purchases nearly impossible without local legal representation"
-    ],
-    "problemCostLabel": "US market:",
-    "problemCostBody": "$1.7T in annual home sales — ~6% in transaction costs",
-    "solutionBodyA": "Propy places the property deed inside an ",
-    "solutionBodyStrong": "ERC-721 NFT",
-    "solutionBodyB": " (Ethereum). Ownership of the NFT = legal ownership of the property:",
-    "solutionPoints": [
-      "Property is held inside an LLC; the NFT represents ownership of the LLC",
-      "Transferring the NFT = transferring the LLC = transferring the property",
-      "Smart contract handles escrow — funds released only when title is confirmed",
-      "Transaction recorded on Ethereum: public, permanent, globally accessible",
-      "Settlement time: hours instead of weeks"
-    ],
-    "solutionFlow": "NFT transfer → LLC transfer → Property transfer",
-    "results": [
-      { "metric": "$215,000", "label": "First NFT property sale — Kyiv, Ukraine (2017)" },
-      { "metric": "$653,000", "label": "First US NFT home sale — Gulfport, Florida (2022)" },
-      { "metric": "Hours vs weeks", "label": "Settlement time reduction" },
-      { "metric": "Cross-border", "label": "Any buyer, anywhere — no local agent required" }
-    ],
-    "caveatLabel": "Caveat:",
-    "caveatBody": " legal framework still requires the LLC wrapper. Direct deed-as-NFT requires legislative change in most jurisdictions."
-  },
-  "dmv": {
-    "kicker": "Case Study 03 — Government",
-    "heading": "California DMV: Vehicle Titles on Avalanche",
-    "subtitle": "The largest US state DMV moves 42 million vehicle titles to a public blockchain — live in 2024.",
-    "problemBodyA": "California's DMV manages ",
-    "problemBodyStrong": "42 million vehicle titles",
-    "problemBodyB": " on legacy paper-based systems dating back decades:",
-    "problemPoints": [
-      "Paper titles easily lost, damaged, or forged — enabling vehicle fraud worth billions annually",
-      "Title transfers require in-person DMV visits — average wait: 2–3 hours",
-      "Lenders cannot instantly verify clear title before approving auto loans",
-      "Out-of-state transfers require duplicate paperwork and weeks of processing"
-    ],
-    "problemScaleLabel": "Scale:",
-    "problemScaleBody": "~42M titles, largest state vehicle registry in the US",
-    "solutionBodyA": "Partnership with ",
-    "solutionBodyStrong1": "Oxhead Alpha",
-    "solutionBodyB": " to migrate all CA vehicle titles to the ",
-    "solutionBodyStrong2": "Avalanche blockchain",
-    "solutionBodyC": " as digital NFTs:",
-    "solutionPoints": [
-      "Each vehicle title becomes a unique NFT — representing legal ownership on-chain",
-      "Title transfers executed as blockchain transactions — instant, tamper-proof, auditable",
-      "Lienholders (banks) can verify and release liens digitally — no paper, no delay",
-      "Avalanche chosen for: EVM compatibility, low fees, high throughput, and custom subnet support",
-      "DMV retains control via a permissioned Avalanche subnet"
-    ],
-    "solutionFlow": "Title NFT minted → Transfer = blockchain tx → Lien released on-chain",
-    "results": [
-      { "metric": "42 million", "label": "Vehicle titles migrated to blockchain (2024)" },
-      { "metric": "Minutes vs weeks", "label": "Title transfer processing time" },
-      { "metric": "Real-time", "label": "Lien verification for lenders" },
-      { "metric": "First in the US", "label": "State government blockchain title system at scale" }
-    ],
-    "takeawayLabel": "Key takeaway:",
-    "takeawayBody": " even government institutions trust blockchain for legal record-keeping — when the use case (immutable, auditable, shared ownership) fits perfectly."
-  },
-  "walmart": {
-    "imgAlt": "Walmart Food Trust — IBM Blockchain on a phone next to a crate of oranges",
-    "kicker": "Case Study 04 — Food Supply",
-    "heading": "Walmart · Food Trust",
-    "subtitle": "Tracing food contamination from 7 days to 2.2 seconds — IBM Hyperledger Fabric in production.",
-    "problemTitle": "The Problem",
-    "problemBodyA": "Food contamination outbreaks (E. coli in lettuce, 2018) took ",
-    "problemBodyStrong": "7 days",
-    "problemBodyB": " to trace back to source. Entire product categories pulled from shelves. Massive collateral damage to suppliers.",
-    "problemPoints": [
-      "Manual paper trails through farms, distributors, retailers",
-      "Multiple parties, each with isolated systems",
-      "Trust gaps — who's accountable for contamination?"
-    ],
-    "solutionTitle": "The Solution",
-    "solutionBodyStrong1": "IBM Food Trust",
-    "solutionBodyMid": " on ",
-    "solutionBodyStrong2": "Hyperledger Fabric",
-    "solutionBodyEnd": ". Every step recorded on a permissioned blockchain — from farm to shelf. All participants see the same data.",
-    "solutionPoints": [
-      "Farmers, packers, distributors, stores all submit data at hand-off",
-      "QR codes link physical products to on-chain provenance",
-      "Permissioned chain — only network members can read/write"
-    ],
-    "resultsTitle": "The Results",
-    "results": [
-      { "metric": "7 days → 2.2 seconds", "label": "Trace-back time for product origin" },
-      { "metric": "25+", "label": "Product categories tracked" },
-      { "metric": "750+", "label": "Suppliers onboarded" }
-    ],
-    "whyLabel": "Why it works:",
-    "whyBody": " high-value transparency, multi-party trust gap, and a network with strong incentives to participate."
-  },
-  "santander": {
-    "imgAlt": "Santander branch storefront",
-    "kicker": "Case Study 05 — Banking",
-    "heading": "Santander · End-to-End Blockchain Bond",
-    "subtitle": "$20M bond issued entirely on Ethereum — the first major bank to settle a security on a public chain.",
-    "backgroundTitle": "Background",
-    "backgroundPoints": [
-      { "a": "", "strong": "$20M bond", "b": " issued in 2019" },
-      { "a": "Entirely on Ethereum mainnet — public, permissionless", "strong": "", "b": "" },
-      { "a": "First major bank to issue a security on a public blockchain", "strong": "", "b": "" },
-      { "a": "Cash leg also tokenized — full end-to-end on-chain settlement", "strong": "", "b": "" }
-    ],
-    "backgroundQuote": "\"A technology innovation issue more than a pure financial issue.\"",
-    "whyTitle": "Why It Worked",
-    "whyPoints": [
-      "Multiple jurisdictions involved — public chain neutralizes location",
-      "Complex traditional settlement → atomic on-chain settlement",
-      "Immutability creates a permanent audit trail for regulators",
-      "Value of fast settlement > the gas cost"
-    ],
-    "benefitsTitle": "Benefits",
-    "benefits": [
-      { "metric": "T+2 → same day", "label": "Settlement timeline" },
-      { "metric": "~50%", "label": "Estimated cost reduction" },
-      { "metric": "No clearinghouse", "label": "Reduced intermediaries" }
-    ]
   },
   "quiz": {
     "question": "The California DMV digitized 42 million vehicle titles on blockchain. What is the primary advantage of blockchain over the traditional paper title system?",
@@ -1091,10 +793,6 @@
       { "title": "TradeLens ✗", "summary": "Maersk × IBM shipping ledger shut down 2023 — rivals would not join a competitor-owned platform" }
     ],
     "footer": "Continue to Section 4 — Critical Thinking: when to use a smart contract → and when not to →"
-  },
-  "appsDivider": {
-    "title": "NFT Utility & DAOs",
-    "subtitle": "Two applications that only exist because contracts can hold rights and run rules: tokens as keys, and organisations whose bylaws are code. Deeper than the Fundamentals teaser — including what failed."
   },
   "nftUtility": {
     "heading": "NFTs Beyond Art: the Token as a Key",
@@ -1426,5 +1124,35 @@
     ],
     "lessonLabel": "The lesson:",
     "lessonBody": " a consortium chain is only as useful as the rivals willing to join it. Who owns the platform decides who adopts it — compare GSBN, owned jointly by several carriers, which is still running."
+  },
+  "keyPoints": {
+    "s3-industries-intro": "Every winning use case here replaces a slow, paid-for middleman with a shared rule — look for that pattern first.",
+    "s3-defi-intro": "What is DeFi?",
+    "s3-defi-amm": "Price comes from a formula, not a market maker — big trades move it, so liquidity depth is the product.",
+    "s3-defi-stablecoins": "The most-used thing on Ethereum is a dollar — and every stablecoin design is a bet on what backs it.",
+    "s3-defi-prosCons": "DeFi removes the bank but not the risk — it moves risk into code, collateral and the people holding the admin keys.",
+    "s3-nft-intro": "What is an NFT?",
+    "s3-nft-real": "The NFT only controls ownership — the game servers, the artwork and the marketplace are still run by companies.",
+    "s3-nft-prosCons": "Ownership you can prove and resell is new; demand for the asset is not guaranteed by the blockchain.",
+    "s3-nft-utility": "Think of an NFT as a key, not a picture — tickets, memberships and credentials are where the utility is.",
+    "s3-nft-gate": "A membership card that the club can't secretly revoke and you can resell.",
+    "s3-nft-honest": "Royalties, floor prices and 'community' were promises by marketplaces and founders — only what the contract enforces survived.",
+    "s3-dao-intro": "Code can enforce the rules, but people still choose the rules — governance design is the product.",
+    "s3-dao-structures": "Each building block trades speed for legitimacy — a multisig moves fast, a token vote looks fair, a timelock protects both.",
+    "s3-dao-vote": "Ask who holds power after launch — not who promised what before it.",
+    "s3-dao-examples": "Successful DAOs manage billions with a small active group — low turnout and whale votes are the norm, not the exception.",
+    "s3-dao-prosCons": "A DAO buys transparency and global participation at the cost of speed, legal clarity and attack surface.",
+    "s3-rwa-spectrum": "The simpler the legal claim, the easier the token — treasuries went first, real estate and infrastructure come last.",
+    "s3-rwa-real": "BlackRock and a national land registry are on-chain because settlement time and reconciliation cost are measurable.",
+    "s3-rwa-prosCons": "A token moves in seconds; the legal title it represents still moves at the speed of the law — the wrapper is the risk.",
+    "s3-sc-provenance": "The chain proves who recorded what and when — it cannot prove the goods are what the record says.",
+    "s3-sc-real": "LVMH, Carrefour and GSBN work because rivals agreed to share one record — the hard part was the consortium, not the code.",
+    "s3-sc-prosCons": "Traceability pays when recalls, counterfeits or paperwork are expensive — and only if every partner actually uploads.",
+    "s3-cert-howitworks": "Store the fingerprint, not the document — a hash proves a record existed unchanged without revealing it.",
+    "s3-cert-real": "Estonia, MIT and the luxury brands use the chain for one thing: letting anyone verify a record without calling the issuer.",
+    "s3-cert-prosCons": "Verification becomes instant and free; the issuer's honesty when creating the record is still the weak point.",
+    "s3-case-gallery": "Five production deployments share one pattern: many parties, one shared record, and a measurable cost that disappeared.",
+    "s3-tradelens": "Great technology, wrong owner — rivals would not join a platform run by their biggest competitor.",
+    "s3-exercise": "Pain point, parties, trigger, output, risk — if you can't fill all five in a sentence each, it isn't a smart-contract brief yet."
   }
 }

@@ -10,7 +10,7 @@
     "s4-decision-intro": "Usar SC?",
     "s4-decision-chart": "Árvore de Decisão",
     "s4-decision-flow": "🧩 Fluxo de Decisão",
-    "s4-team-framework": "🤝 Testa o Teu Problema",
+    "s4-discussion": "💬 Discussion",
     "s4-decision-yes": "Quando Fazem Sentido",
     "s4-decision-no": "Quando Repensar",
     "s4-cases-intro": "Visão Geral dos Exemplos",
@@ -97,35 +97,17 @@
     "pointLabel": "A ideia-chave:",
     "pointBody": " a maioria dos caminhos termina numa base de dados. Os smart contracts são a resposta apenas quando todas as outras opções ficam aquém."
   },
-  "teamFramework": {
-    "contextLabel": "Dia 3 · após o Fluxo de Decisão",
-    "title": "Testa o teu problema com esta estrutura",
-    "subtitle": "Pega na definição do problema que trouxeste do Dia 2 e responde às 8 perguntas do diapositivo anterior — em conjunto, como equipa. Trata isto como um verdadeiro ponto de decisão de avançar/não avançar do teu projeto.",
-    "duration": "15 min",
-    "methodLabel": "Método",
-    "method": [
-      { "a": "Abre o fluxo de decisão interativo do diapositivo anterior. Responde a cada pergunta ", "strong": "com honestidade para o teu problema específico", "b": " — não a resposta otimista." },
-      { "a": "Discordem como equipa se for preciso — anotem as discordâncias como questões em aberto a investigar." },
-      { "a": "Registem o vosso veredito: ✅ Smart Contract · ⚠️ Híbrido · ❌ Base de Dados." }
+  "discussion": {
+    "badge": "💬 Class discussion",
+    "duration": "10 min",
+    "title": "Discussion: run the framework on one example together",
+    "lead": "Pick ONE shared example as a class — Carrefour's organic-chicken QR trail, or flight-delay insurance — and walk it through the eight questions on the previous slide, live, out loud.",
+    "questions": [
+      "Answer each of the eight questions for the example with the honest answer, not the hopeful one. Where does the room disagree, and why?",
+      "Land on a verdict — ✅ smart contract · ⚠️ hybrid · ❌ database — then say in two sentences why a sceptical CFO should believe it.",
+      "Name the single weakest point in the design: the data feed, the legal wrapper, the admin key, or the partners who have to join?"
     ],
-    "discussLabel": "Depois discutam",
-    "discuss": [
-      { "a": "Se ", "strong": "✅ Smart Contract", "b": ": ótimo — continuem com convicção. Anotem ", "em": "porquê", "c": " (multipartido? défice de confiança? automação?)." },
-      { "a": "Se ", "strong": "⚠️ Híbrido", "b": ": descubram que parte fica on-chain vs off-chain. É aqui que vive a maioria das implementações reais." },
-      { "a": "Se ", "strong": "❌ Base de Dados", "b": ": também é um projeto perfeitamente válido. O vosso resultado passa a ser ", "em": "\"investigámos X e concluímos que a blockchain não é a ferramenta certa por causa de Y, Z\"", "c": " — sustentado pela análise. A grelha de avaliação recompensa o pensamento crítico, não o entusiasmo pela blockchain." }
-    ],
-    "captureLabel": "Registem",
-    "capture": [
-      { "a": "O vosso veredito + uma justificação de 2 frases." },
-      { "a": "Um risco específico que a estrutura revelou (preocupação de privacidade? necessidade de flexibilidade? uma única parte de confiança escondida?)." },
-      { "a": "Isto entra na ", "strong": "Parte 1 do resultado do projeto", "b": " — guardem as vossas notas." }
-    ],
-    "footnote": {
-      "strong": "Uma regra útil:",
-      "a": " se a tua equipa não conseguir convencer um avaliador céptico, em duas frases, ",
-      "em": "porquê",
-      "b": " a blockchain é a ferramenta certa, o veredito provavelmente não é ✅ — e não há problema nisso. Um \"não, e eis porquê\" lúcido vale os mesmos pontos de encaixe Problema-Solução que um \"sim\" forte. As Três Lições que se seguem (Estónia / The DAO / ASX) tornam concretos os três resultados."
-    }
+    "note": "This is the warm-up for the Section 7 one-page assignment, where you run the same framework on a problem of your own."
   },
   "decisionYes": {
     "heading": "Quando os Smart Contracts Fazem Sentido ✅",
@@ -454,5 +436,25 @@
       "Realidade de custos: 50k$–500k$+ para implementar um contrato sério. Planeia o gas contínuo, a monitorização e a manutenção",
       "A verdadeira vantagem estratégica vem de remover um problema genuíno de intermediação — não de \"fazer blockchain\""
     ]
+  },
+  "keyPoints": {
+    "s4-decision-intro": "The most expensive blockchain projects failed at the first question: did this need a blockchain at all?",
+    "s4-decision-chart": "Most paths end at a database — a smart contract is the answer only when every cheaper option falls short.",
+    "s4-decision-flow": "Answered honestly, most ideas land on 'hybrid' or 'database' — that is a good outcome, not a failure.",
+    "s4-decision-yes": "Many parties, no trusted referee, value in automation and shared truth — when all three hold, the engineering cost pays off.",
+    "s4-decision-no": "Private data, changing rules or a single trusted operator are red flags — any one of them usually means database.",
+    "s4-cases-intro": "Three outcomes, one lesson: technology fit and organisational readiness are separate questions — both must be yes.",
+    "s4-case-success": "Estonia won by treating blockchain as boring infrastructure for integrity — not as a product to sell.",
+    "s4-case-sc-fail": "The DAO's use case fit blockchain perfectly; one bug drained $60M because code is enforced even when it is wrong.",
+    "s4-case-org-fail": "ASX spent $255M on a blockchain for a problem one trusted party already solved — the framework would have said no on day one.",
+    "s4-adoption-intro": "Adoption is an organisational change with a technology inside it — strategy, legal and risk teams decide the outcome.",
+    "s4-adoption-strategy": "Start from the business problem and the parties who must join — a blockchain nobody else joins is an expensive database.",
+    "s4-adoption-tech": "You still run servers, keys and integrations — the chain removes a middleman, not your IT department.",
+    "s4-adoption-legal": "Pair the code with a normal legal agreement — courts enforce contracts, not Solidity.",
+    "s4-adoption-risk": "Immutability cuts both ways: audits, timelocks and upgrade paths are the price of code you cannot patch on Friday night.",
+    "s4-adoption-finance": "Budget like infrastructure: high upfront cost, then low marginal cost — the savings arrive only if the network is actually used.",
+    "s4-opportunities": "The measurable wins are settlement time, reconciliation cost and audit trails — not 'disruption'.",
+    "s4-challenges-academic": "Scalability, interoperability, regulation and usability are systemic — no single company can fix them alone.",
+    "s4-strategies": "Advantage comes from owning the network effects, not the technology — the code is open to every competitor."
   }
 }

@@ -10,7 +10,7 @@
     "s4-decision-intro": "Should You Use SC?",
     "s4-decision-chart": "Decision Tree",
     "s4-decision-flow": "🧩 Decision Flow",
-    "s4-team-framework": "🤝 Run Your Problem",
+    "s4-discussion": "💬 Discussion",
     "s4-decision-yes": "When SC Make Sense",
     "s4-decision-no": "When to Rethink",
     "s4-cases-intro": "Examples Overview",
@@ -97,45 +97,17 @@
     "pointLabel": "The point:",
     "pointBody": " most paths end at a database. Smart contracts are the answer only when every other option falls short."
   },
-  "teamFramework": {
-    "contextLabel": "Day 3 · after the Decision Flow",
-    "title": "Run your problem through the framework",
-    "subtitle": "Take the problem your group is considering for the in-class assignment and answer the 8 questions on the previous slide — together. Treat this as a real go/no-go gate.",
-    "duration": "15 min",
-    "methodLabel": "Method",
-    "method": [
-      { "a": "Open the interactive decision flow on the previous slide. Answer each question ", "strong": "honestly for your specific problem", "b": " — not the optimistic answer." },
-      { "a": "Disagree as a team if you must — note the disagreements as open questions to research." },
-      { "a": "Record your verdict: ✅ Smart Contract · ⚠️ Hybrid · ❌ Database." }
+  "discussion": {
+    "badge": "💬 Class discussion",
+    "duration": "10 min",
+    "title": "Discussion: run the framework on one example together",
+    "lead": "Pick ONE shared example as a class — Carrefour's organic-chicken QR trail, or flight-delay insurance — and walk it through the eight questions on the previous slide, live, out loud.",
+    "questions": [
+      "Answer each of the eight questions for the example with the honest answer, not the hopeful one. Where does the room disagree, and why?",
+      "Land on a verdict — ✅ smart contract · ⚠️ hybrid · ❌ database — then say in two sentences why a sceptical CFO should believe it.",
+      "Name the single weakest point in the design: the data feed, the legal wrapper, the admin key, or the partners who have to join?"
     ],
-    "discussLabel": "Then discuss",
-    "discuss": [
-      { "a": "If ", "strong": "✅ Smart Contract", "b": ": great — continue with conviction. Note ", "em": "why", "c": " (multi-party? trust gap? automation?)." },
-      { "a": "If ", "strong": "⚠️ Hybrid", "b": ": figure out what part is on-chain vs off-chain. Most real-world deployments live here." },
-      {
-        "a": "If ",
-        "strong": "❌ Database",
-        "b": ": that's a perfectly valid outcome. Your report becomes ",
-        "em": "\"we investigated X and concluded blockchain isn't the right tool because Y, Z\"",
-        "c": " — backed by the analysis. The rubric rewards critical thinking, not blockchain enthusiasm."
-      }
-    ],
-    "captureLabel": "Capture",
-    "capture": [
-      { "a": "Your verdict + a 2-sentence justification." },
-      { "a": "One specific risk the framework surfaced (privacy concern? flexibility need? single trusted party lurking?)." },
-      {
-        "a": "This goes straight into ",
-        "strong": "Part 3 of your 1-page report",
-        "b": " (Section 7) — keep your notes."
-      }
-    ],
-    "footnote": {
-      "strong": "A useful rule:",
-      "a": " if your team can't convince a sceptical reviewer in two sentences ",
-      "em": "why",
-      "b": " blockchain is the right tool, the verdict probably isn't ✅ — and that's fine. A clear-eyed \"no, here's why\" scores as well as a strong \"yes\" in the in-class assignment. The Three Lessons coming up (Estonia / The DAO / ASX) make all three outcomes concrete."
-    }
+    "note": "This is the warm-up for the Section 7 one-page assignment, where you run the same framework on a problem of your own."
   },
   "decisionYes": {
     "heading": "When Smart Contracts Make Sense ✅",
@@ -464,5 +436,25 @@
       "Cost reality: $50k–$500k+ to deploy a serious contract. Plan for ongoing gas, monitoring, and maintenance",
       "Real strategic advantage comes from removing genuine intermediation pain — not from \"doing blockchain\""
     ]
+  },
+  "keyPoints": {
+    "s4-decision-intro": "The most expensive blockchain projects failed at the first question: did this need a blockchain at all?",
+    "s4-decision-chart": "Most paths end at a database — a smart contract is the answer only when every cheaper option falls short.",
+    "s4-decision-flow": "Answered honestly, most ideas land on 'hybrid' or 'database' — that is a good outcome, not a failure.",
+    "s4-decision-yes": "Many parties, no trusted referee, value in automation and shared truth — when all three hold, the engineering cost pays off.",
+    "s4-decision-no": "Private data, changing rules or a single trusted operator are red flags — any one of them usually means database.",
+    "s4-cases-intro": "Three outcomes, one lesson: technology fit and organisational readiness are separate questions — both must be yes.",
+    "s4-case-success": "Estonia won by treating blockchain as boring infrastructure for integrity — not as a product to sell.",
+    "s4-case-sc-fail": "The DAO's use case fit blockchain perfectly; one bug drained $60M because code is enforced even when it is wrong.",
+    "s4-case-org-fail": "ASX spent $255M on a blockchain for a problem one trusted party already solved — the framework would have said no on day one.",
+    "s4-adoption-intro": "Adoption is an organisational change with a technology inside it — strategy, legal and risk teams decide the outcome.",
+    "s4-adoption-strategy": "Start from the business problem and the parties who must join — a blockchain nobody else joins is an expensive database.",
+    "s4-adoption-tech": "You still run servers, keys and integrations — the chain removes a middleman, not your IT department.",
+    "s4-adoption-legal": "Pair the code with a normal legal agreement — courts enforce contracts, not Solidity.",
+    "s4-adoption-risk": "Immutability cuts both ways: audits, timelocks and upgrade paths are the price of code you cannot patch on Friday night.",
+    "s4-adoption-finance": "Budget like infrastructure: high upfront cost, then low marginal cost — the savings arrive only if the network is actually used.",
+    "s4-opportunities": "The measurable wins are settlement time, reconciliation cost and audit trails — not 'disruption'.",
+    "s4-challenges-academic": "Scalability, interoperability, regulation and usability are systemic — no single company can fix them alone.",
+    "s4-strategies": "Advantage comes from owning the network effects, not the technology — the code is open to every competitor."
   }
 }

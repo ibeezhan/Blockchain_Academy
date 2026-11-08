@@ -236,6 +236,7 @@ export function SC_Section7() {
             <span className="text-xs font-black uppercase tracking-widest text-[#6366f1]">{t('brief.badge')}</span>
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('brief.heading')}</h2>
             <p className="text-muted-foreground text-sm mt-1">{t('brief.subtitle')}</p>
+            <p className="text-xs font-semibold text-[#6366f1] mt-2">{t('brief.linkLine')}</p>
           </div>
 
           <div className="flex-1 min-h-0 grid grid-cols-[1fr_1.3fr] gap-5">

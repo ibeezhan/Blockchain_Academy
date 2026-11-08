@@ -7,8 +7,9 @@ import { QuizSlide } from '../../components/templates/QuizSlide';
 import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
 import { Building2 } from 'lucide-react';
-import { TeamCheckpoint } from '../../components/TeamCheckpoint';
 import { UnderTheHood } from '../../components/shared/UnderTheHood';
+import { KeyPointBar } from '../../components/shared/KeyPointBar';
+import { ClassDiscussion } from '../../components/shared/ClassDiscussion';
 import {
   NftUtilitySlide, TokenGateDemo, NftHonestSlide,
   DaoIntroSlide, GovernanceBlocksExplorer, VotingPowerSim, DaoExamplesSlide,
@@ -16,41 +17,28 @@ import {
 } from './Section3Extras';
 
 import imgDefiIntro      from '../../../assets/sc/defi-intro.png';
-import imgDefiBorderless from '../../../assets/sc/defi-borderless.png';
 import imgNftGaming      from '../../../assets/sc/nft-gaming.png';
-import imgP2eEcosystem   from '../../../assets/sc/p2e-ecosystem.png';
-import imgZhartaLoans    from '../../../assets/sc/zharta-loans.png';
 import imgRwaProcess     from '../../../assets/sc/rwa-process.png';
 import imgSupplyProv     from '../../../assets/sc/supply-provenance.png';
-import imgGsbnEbl        from '../../../assets/sc/gsbn-ebl.png';
 import imgCertDecent     from '../../../assets/sc/cert-decentralization.png';
-import imgWalmart        from '../../../assets/sc/walmart-food-trust.jpg';
-import imgSantander      from '../../../assets/sc/santander-bank.jpg';
 
 // Language-neutral shape — IDs + kind only. Labels resolved via t() at render time.
 const chapterShape = [
-  { id: 's3-team-pick' },
+  { id: 's3-discussion' },
   { id: 's3-industries-intro' },
 
   { kind: 'group' as const, id: 'g-defi' },
   { id: 's3-defi-intro' },
-  { id: 's3-defi-dex' },
   { id: 's3-defi-amm' },
-  { id: 's3-defi-stablecoins-intro' },
   { id: 's3-defi-stablecoins' },
-  { id: 's3-defi-borderless' },
   { id: 's3-defi-prosCons' },
 
   { kind: 'group' as const, id: 'g-nft' },
   { id: 's3-nft-intro' },
-  { id: 's3-nft-economies' },
-  { id: 's3-nft-p2e' },
-  { id: 's3-nft-p2e-real' },
-  { id: 's3-nft-finance' },
+  { id: 's3-nft-real' },
   { id: 's3-nft-prosCons' },
 
   { kind: 'group' as const, id: 'g-apps' },
-  { id: 's3-apps-intro' },
   { id: 's3-nft-utility' },
   { id: 's3-nft-gate' },
   { id: 's3-nft-honest' },
@@ -61,36 +49,22 @@ const chapterShape = [
   { id: 's3-dao-prosCons' },
 
   { kind: 'group' as const, id: 'g-rwa' },
-  { id: 's3-rwa-intro' },
   { id: 's3-rwa-spectrum' },
-  { id: 's3-rwa-securitize' },
-  { id: 's3-rwa-mortgages' },
-  { id: 's3-rwa-collateral' },
-  { id: 's3-rwa-property' },
+  { id: 's3-rwa-real' },
   { id: 's3-rwa-prosCons' },
 
   { kind: 'group' as const, id: 'g-sc' },
-  { id: 's3-sc-intro' },
   { id: 's3-sc-provenance' },
-  { id: 's3-sc-prov-real' },
-  { id: 's3-sc-shipping' },
+  { id: 's3-sc-real' },
   { id: 's3-sc-prosCons' },
 
   { kind: 'group' as const, id: 'g-cert' },
-  { id: 's3-cert-intro' },
   { id: 's3-cert-howitworks' },
-  { id: 's3-cert-law' },
-  { id: 's3-cert-education' },
-  { id: 's3-cert-products' },
+  { id: 's3-cert-real' },
   { id: 's3-cert-prosCons' },
 
   { kind: 'group' as const, id: 'g-cases' },
-  { id: 's3-cases-intro' },
-  { id: 's3-homedepot' },
-  { id: 's3-realestate' },
-  { id: 's3-dmv' },
-  { id: 's3-walmart' },
-  { id: 's3-santander' },
+  { id: 's3-case-gallery' },
   { id: 's3-tradelens' },
 
   { kind: 'group' as const, id: 'g-close' },
@@ -100,41 +74,15 @@ const chapterShape = [
   { id: 's3-summary' },
 ];
 
-// ─── Industry Vertical Divider ───────────────────────────────────────────────
-
-function VerticalDivider({
-  emoji, title, subtitle, color, image,
-}: { emoji: string; title: string; subtitle: string; color: string; image?: string }) {
-  const { t } = useTranslation('smart-contracts/section-3');
-  return (
-    <div className="h-full flex items-center justify-center p-10">
-      <div className="text-center max-w-2xl">
-        {image ? (
-          <img src={image} alt="" className="mx-auto mb-4 h-40 lg:h-48 object-contain" />
-        ) : (
-          <div className="text-7xl mb-5">{emoji}</div>
-        )}
-        <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color }}>
-          {emoji} &nbsp; {t('verticalDivider.industryVertical')}
-        </div>
-        <h2 className="text-4xl lg:text-5xl font-black text-foreground mb-3">{title}</h2>
-        <p className="text-base text-muted-foreground leading-relaxed">{subtitle}</p>
-        <div className="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full border" style={{ borderColor: color + '40', backgroundColor: color + '10' }}>
-          <span className="text-xs font-semibold" style={{ color }}>{t('verticalDivider.scrollHint')}</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // ─── Pros / Cons Slide Helper ────────────────────────────────────────────────
 
 function ProsConsSlide({
-  title, accent, pros, cons,
+  title, accent, pros, cons, keyPoint,
 }: {
   title: string; accent: string;
   pros: { label: string; desc: string }[];
   cons: { label: string; desc: string }[];
+  keyPoint: string;
 }) {
   const { t } = useTranslation('smart-contracts/section-3');
   return (
@@ -163,6 +111,7 @@ function ProsConsSlide({
         </div>
       </div>
       <div className="shrink-0 mt-3 h-1 rounded-full" style={{ backgroundColor: accent + '30' }} />
+      <KeyPointBar text={keyPoint} className="mt-3" />
     </div>
   );
 }
@@ -346,6 +295,7 @@ function InteractiveAMM() {
         </div>
 
       </div>
+      <KeyPointBar text={t('keyPoints.s3-defi-amm')} className="mt-3" />
     </div>
   );
 }
@@ -433,6 +383,7 @@ function RWASpectrum() {
           </div>
         </motion.div>
       </div>
+      <KeyPointBar text={t('keyPoints.s3-rwa-spectrum')} className="mt-3" />
     </div>
   );
 }
@@ -560,6 +511,7 @@ function ProofOfExistenceDemo() {
       <div className="shrink-0 mt-3 p-2 bg-muted/50 rounded-lg text-[11px] text-muted-foreground">
         <span className="font-semibold text-foreground">{t('poe.whyWorksLabel')}</span>{t('poe.whyWorksBody')}
       </div>
+      <KeyPointBar text={t('keyPoints.s3-cert-howitworks')} className="mt-3" />
     </div>
   );
 }
@@ -632,7 +584,7 @@ function PegSimulator() {
     <div className="h-full flex flex-col p-6 lg:p-8">
       <div className="shrink-0 mb-3">
         <span className="px-2.5 py-0.5 rounded-full bg-[#6366f1]/15 border border-[#6366f1]/40 text-[#6366f1] text-xs font-bold">{t('interactiveBadge')}</span>
-        <h2 className="text-2xl font-bold text-foreground mt-1">{t('pegSim.title')}</h2>
+        <h2 className="text-2xl font-bold text-foreground mt-1">{t('stablecoinsIntro.heading')}</h2>
         <p className="text-muted-foreground text-sm">{t('pegSim.subtitle')}</p>
       </div>
 
@@ -656,6 +608,10 @@ function PegSimulator() {
                 </button>
               );
             })}
+          </div>
+          <div className="p-2.5 rounded-lg border text-[11px] leading-snug" style={{ borderColor: cfg.color + '40', backgroundColor: cfg.color + '0a' }}>
+            <span className="text-foreground">{t(`stablecoinsIntro.cards.${type}.how`)}</span>{' '}
+            <span className="text-muted-foreground"><span className="font-semibold" style={{ color: cfg.color }}>{t('stablecoinsIntro.riskLabel')}</span>{t(`stablecoinsIntro.cards.${type}.risk`)}</span>
           </div>
 
           <div className="p-3 bg-card border border-border rounded-xl">
@@ -721,136 +677,7 @@ function PegSimulator() {
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-// ─── Interactive Royalty Cascade Calculator ──────────────────────────────────
-
-function RoyaltyCalculator() {
-  const { t } = useTranslation('smart-contracts/section-3');
-  const [salePrice, setSalePrice] = useState(10000);
-  const [creatorPct,  setCreator]   = useState(5);   // ERC-2981 default-ish
-  const [marketPct,   setMarketPct] = useState(2.5); // marketplace fee
-  const [resales,     setResales]   = useState(3);
-
-  const creator   = salePrice * creatorPct  / 100;
-  const market    = salePrice * marketPct   / 100;
-  const seller    = salePrice - creator - market;
-
-  // Royalty earned across N resales (cumulative)
-  const totalRoyalty = creator * resales;
-
-  const slices = [
-    { key: 'seller',      label: t('royalty.sellerLabel'),      value: seller,  color: '#6366f1' },
-    { key: 'creator',     label: t('royalty.creatorLabel'),     value: creator, color: '#39B54A' },
-    { key: 'marketplace', label: t('royalty.marketplaceLabel'), value: market,  color: '#f59e0b' },
-  ];
-
-  return (
-    <div className="h-full flex flex-col p-6 lg:p-8">
-      <div className="shrink-0 mb-3">
-        <span className="px-2.5 py-0.5 rounded-full bg-[#8b5cf6]/15 border border-[#8b5cf6]/40 text-[#8b5cf6] text-xs font-bold">{t('interactiveBadge')}</span>
-        <h2 className="text-2xl font-bold text-foreground mt-1">{t('royalty.title')}</h2>
-        <p className="text-muted-foreground text-sm">{t('royalty.subtitle')}</p>
-      </div>
-
-      <div className="flex-1 min-h-0 grid grid-cols-2 gap-5">
-
-        {/* Controls */}
-        <div className="flex flex-col gap-3">
-          <div className="p-3 bg-card border border-border rounded-xl">
-            <div className="flex items-center justify-between mb-1">
-              <div className="text-xs font-semibold text-foreground">{t('royalty.salePrice')}</div>
-              <div className="font-mono font-bold text-sm text-foreground">${salePrice.toLocaleString()}</div>
-            </div>
-            <input type="range" min={100} max={100000} step={100} value={salePrice}
-              onChange={e => setSalePrice(Number(e.target.value))}
-              className="w-full accent-[#6366f1]" />
-          </div>
-
-          {[
-            { key: 'creator', label: t('royalty.creatorRoyalty'),  val: creatorPct, set: setCreator,   color: '#39B54A', max: 15 },
-            { key: 'market',  label: t('royalty.marketplaceFee'),  val: marketPct,  set: setMarketPct, color: '#f59e0b', max: 10 },
-          ].map(s => (
-            <div key={s.key} className="p-3 bg-card border border-border rounded-xl">
-              <div className="flex items-center justify-between mb-1">
-                <div className="text-xs font-semibold text-foreground">{s.label}</div>
-                <div className="font-mono font-bold text-sm" style={{ color: s.color }}>{s.val}%</div>
-              </div>
-              <input type="range" min={0} max={s.max} step={0.5} value={s.val}
-                onChange={e => s.set(Number(e.target.value))}
-                className="w-full" style={{ accentColor: s.color }} />
-            </div>
-          ))}
-
-          <div className="p-3 bg-card border border-border rounded-xl">
-            <div className="flex items-center justify-between mb-1">
-              <div className="text-xs font-semibold text-foreground">{t('royalty.futureResales')}</div>
-              <div className="font-mono font-bold text-sm text-[#22d3ee]">{resales}×</div>
-            </div>
-            <input type="range" min={0} max={20} step={1} value={resales}
-              onChange={e => setResales(Number(e.target.value))}
-              className="w-full accent-[#22d3ee]" />
-          </div>
-        </div>
-
-        {/* Output */}
-        <div className="flex flex-col gap-3 min-h-0">
-          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('royalty.splitForSale')}</div>
-
-          {/* Stacked-bar */}
-          <div className="p-3 bg-card border border-border rounded-xl">
-            <div className="h-8 rounded-lg overflow-hidden flex">
-              {slices.map(s => s.value > 0 && (
-                <div key={s.key} className="h-full flex items-center justify-center text-[10px] font-bold text-white"
-                  style={{ width: `${(s.value / salePrice) * 100}%`, backgroundColor: s.color }}
-                  title={`${s.label}: $${s.value.toFixed(0)}`}>
-                  {(s.value / salePrice) >= 0.08 ? `${((s.value / salePrice) * 100).toFixed(0)}%` : ''}
-                </div>
-              ))}
-            </div>
-            <div className="grid grid-cols-2 gap-1.5 mt-3">
-              {slices.map(s => (
-                <div key={s.key} className="flex items-center justify-between p-1.5 rounded text-xs" style={{ backgroundColor: s.color + '12' }}>
-                  <div className="flex items-center gap-1.5">
-                    <div className="size-3 rounded-sm" style={{ backgroundColor: s.color }} />
-                    <span className="text-foreground font-semibold">{s.label}</span>
-                  </div>
-                  <span className="font-mono font-bold" style={{ color: s.color }}>${s.value.toFixed(0)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Cumulative royalty over N resales */}
-          <div className="p-3 bg-gradient-to-br from-[#39B54A]/10 to-transparent border border-[#39B54A]/30 rounded-xl">
-            <div className="text-[10px] font-bold text-[#39B54A] uppercase tracking-widest">{t('royalty.cumulativeTitle')}</div>
-            <div className="flex items-baseline gap-2 mt-1">
-              <div className="font-mono font-black text-2xl text-[#39B54A]">${totalRoyalty.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
-              <div className="text-xs text-muted-foreground">{t('royalty.acrossResales', { count: resales })}</div>
-            </div>
-          </div>
-
-          {/* Trad vs SC */}
-          <div className="grid grid-cols-2 gap-2 mt-auto">
-            <div className="p-3 bg-card border border-[#ED1C24]/30 rounded-xl text-center">
-              <div className="text-[10px] font-bold text-[#ED1C24] uppercase tracking-widest">{t('royalty.tradWeb2')}</div>
-              <div className="font-mono font-black text-base text-[#ED1C24] mt-1">$0</div>
-              <div className="text-[10px] text-muted-foreground">{t('royalty.tradWeb2Desc')}</div>
-            </div>
-            <div className="p-3 bg-card border border-[#39B54A]/30 rounded-xl text-center">
-              <div className="text-[10px] font-bold text-[#39B54A] uppercase tracking-widest">{t('royalty.withErc2981')}</div>
-              <div className="font-mono font-black text-base text-[#39B54A] mt-1">${totalRoyalty.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
-              <div className="text-[10px] text-muted-foreground">{t('royalty.withErc2981Desc')}</div>
-            </div>
-          </div>
-          <div className="p-2 rounded-lg border border-[#f59e0b]/40 text-[11px] text-muted-foreground" style={{ backgroundColor: '#f59e0b0f' }}>
-            <span className="font-bold text-[#f59e0b]">{t('royalty.caveatLabel')}</span>{t('royalty.caveatBody')}
-          </div>
-        </div>
-
-      </div>
+      <KeyPointBar text={t('keyPoints.s3-defi-stablecoins')} className="mt-3" />
     </div>
   );
 }
@@ -985,6 +812,7 @@ function ProvenanceQR() {
         </div>
 
       </div>
+      <KeyPointBar text={t('keyPoints.s3-sc-provenance')} className="mt-3" />
     </div>
   );
 }
@@ -1107,13 +935,67 @@ function DesignYourOwnExercise() {
         </div>
 
       </div>
+      <KeyPointBar text={t('keyPoints.s3-exercise')} className="mt-3" />
     </div>
   );
 }
 
 interface ProsConsItem { label: string; desc: string }
-interface MetricItem { metric: string; label: string }
-interface StrongBullet { a: string; strong: string; b: string }
+interface ExampleChip { name: string; tag: string; stat: string; desc: string }
+interface RealColumn { kicker: string; title: string; tag: string; points: string[]; footnote: string }
+interface CaseCard { industry: string; name: string; problem: string; solution: string; metric: string; metricLabel: string; platform: string }
+
+const CASE_META = [
+  { emoji: '🏠', color: '#f59e0b' },
+  { emoji: '🏡', color: '#8b5cf6' },
+  { emoji: '🚗', color: '#22d3ee' },
+  { emoji: '🥬', color: '#39B54A' },
+  { emoji: '💼', color: '#6366f1' },
+];
+
+// ─── "In production" slide: 2–3 real deployments side by side ────────────────
+
+function RealWorldSlide({
+  heading, subtitle, image, columns, colors, terms, keyPoint,
+}: {
+  heading: string; subtitle: string; image?: string;
+  columns: RealColumn[]; colors: string[]; terms: string[]; keyPoint: string;
+}) {
+  return (
+    <div className="h-full flex flex-col p-6 lg:p-10">
+      <div className="shrink-0 mb-4 flex items-start gap-4">
+        {image && <img src={image} alt="" className="hidden lg:block h-16 object-contain shrink-0" />}
+        <div>
+          <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{heading}</h2>
+          <p className="text-muted-foreground text-sm mt-1">{subtitle}</p>
+        </div>
+      </div>
+      <div className="flex-1 min-h-0 grid gap-4" style={{ gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))` }}>
+        {columns.map((c, i) => {
+          const color = colors[i];
+          return (
+            <div key={c.title} className="flex flex-col rounded-2xl border-2 bg-card overflow-hidden min-h-0" style={{ borderColor: color + '50' }}>
+              <div className="h-1.5 shrink-0" style={{ backgroundColor: color }} />
+              <div className="flex-1 min-h-0 flex flex-col gap-2 p-4 overflow-y-auto">
+                <div className="text-[10px] font-bold uppercase tracking-widest" style={{ color }}>{c.kicker}</div>
+                <div className="font-black text-base text-foreground leading-tight">{c.title}</div>
+                <div className="text-xs text-muted-foreground">{c.tag}</div>
+                <ul className="space-y-1.5 mt-1 flex-1">
+                  {c.points.map((p, j) => (
+                    <li key={j} className="flex gap-2 text-sm text-foreground/90 leading-snug"><span className="shrink-0 mt-0.5 font-bold" style={{ color }}>›</span>{p}</li>
+                  ))}
+                </ul>
+                <div className="mt-auto p-2.5 rounded-lg text-xs text-muted-foreground leading-snug" style={{ backgroundColor: color + '12' }}>{c.footnote}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <UnderTheHood terms={terms} className="shrink-0 mt-3" />
+      <KeyPointBar text={keyPoint} className="mt-2" />
+    </div>
+  );
+}
 
 export function SC_Section3() {
   const { t } = useTranslation('smart-contracts/section-3');
@@ -1127,6 +1009,7 @@ export function SC_Section3() {
       ),
     [t]
   );
+  const kp = (id: string) => t(`keyPoints.${id}`);
 
   // Pros/Cons
   const defiPros = t('defiProsCons.pros', { returnObjects: true }) as ProsConsItem[];
@@ -1142,7 +1025,7 @@ export function SC_Section3() {
   const daoPros = t('daoProsCons.pros', { returnObjects: true }) as ProsConsItem[];
   const daoCons = t('daoProsCons.cons', { returnObjects: true }) as ProsConsItem[];
 
-  // Bullet/array content
+  // Language-neutral presentation data
   const industryVerticals = [
     { key: 'defi', emoji: '💸', color: '#6366f1' },
     { key: 'nft',  emoji: '🎮', color: '#8b5cf6' },
@@ -1157,55 +1040,20 @@ export function SC_Section3() {
     { key: 'yield', color: '#f59e0b' },
     { key: 'derivatives', color: '#22d3ee' },
   ];
-  const stablecoinCards = [
-    { key: 'fiat',   icon: '🏦', color: '#39B54A', ex: ['USDC', 'USDT'] },
-    { key: 'crypto', icon: '⛓️', color: '#6366f1', ex: ['DAI'] },
-    { key: 'algo',   icon: '🧮', color: '#ED1C24', ex: ['UST ✝'] },
-  ];
-  const borderlessTraditional = t('borderless.traditionalItems', { returnObjects: true }) as string[];
-  const borderlessSc = t('borderless.scItems', { returnObjects: true }) as string[];
-  const borderlessTradeoffs = t('borderless.tradeoffsItems', { returnObjects: true }) as string[];
-  const nftGamingPoints = t('nftIntro.gamingPoints', { returnObjects: true }) as string[];
+  const defiExamples = t('defiIntro.examples', { returnObjects: true }) as ExampleChip[];
+  const defiExampleColors = ['#6366f1', '#8b5cf6', '#39B54A'];
   const nftEcoCards = [
-    { key: 'before',   emoji: '🏛', color: '#ED1C24' },
-    { key: 'withNft',  emoji: '🎯', color: '#8b5cf6' },
+    { key: 'before',    emoji: '🏛', color: '#ED1C24' },
+    { key: 'withNft',   emoji: '🎯', color: '#8b5cf6' },
     { key: 'parallels', emoji: '💼', color: '#39B54A' },
   ];
-  const p2eHowPoints = t('p2eReal.howPoints', { returnObjects: true }) as string[];
-  const ubisoftPoints = t('p2eReal.ubisoftPoints', { returnObjects: true }) as StrongBullet[];
-  const rwaSecuritizeHow = t('rwaSecuritize.howPoints', { returnObjects: true }) as string[];
-  const rwaSecuritizeValue = t('rwaSecuritize.valuePoints', { returnObjects: true }) as string[];
-  const rwaMortgageContract = t('rwaMortgages.contractPoints', { returnObjects: true }) as string[];
-  const rwaMortgageWhy = t('rwaMortgages.whyPoints', { returnObjects: true }) as string[];
-  const rwaCollateralCards = t('rwaCollateral.cards', { returnObjects: true }) as { title: string; desc: string }[];
-  const rwaCollateralEmojis = ['💰', '⚙️', '🛡', '⚡', '🏗', '🌍'];
-  const rwaCollateralColors = ['#39B54A', '#6366f1', '#8b5cf6', '#f59e0b', '#22d3ee', '#ec4899'];
-  const scLegacyPoints = t('scShipping.legacyPoints', { returnObjects: true }) as string[];
-  const gsbnPoints = t('scShipping.gsbnPoints', { returnObjects: true }) as StrongBullet[];
-  const certWhatPoints = t('certLaw.whatPoints', { returnObjects: true }) as StrongBullet[];
-  const certEduProblem = t('certEducation.problemPoints', { returnObjects: true }) as string[];
-  const certMitPoints = t('certEducation.mitPoints', { returnObjects: true }) as StrongBullet[];
-  const certProductsPoints = t('certProducts.howPoints', { returnObjects: true }) as string[];
 
-  // Case studies
-  const homedepotProblem = t('homedepot.problemPoints', { returnObjects: true }) as string[];
-  const homedepotSolution = t('homedepot.solutionPoints', { returnObjects: true }) as string[];
-  const homedepotResults = t('homedepot.results', { returnObjects: true }) as MetricItem[];
-  const homedepotResultColors = ['#39B54A', '#6366f1', '#f59e0b', '#8b5cf6'];
-  const propyProblem = t('propy.problemPoints', { returnObjects: true }) as string[];
-  const propySolution = t('propy.solutionPoints', { returnObjects: true }) as string[];
-  const propyResults = t('propy.results', { returnObjects: true }) as MetricItem[];
-  const propyResultColors = ['#39B54A', '#8b5cf6', '#f59e0b', '#6366f1'];
-  const dmvProblem = t('dmv.problemPoints', { returnObjects: true }) as string[];
-  const dmvSolution = t('dmv.solutionPoints', { returnObjects: true }) as string[];
-  const dmvResults = t('dmv.results', { returnObjects: true }) as MetricItem[];
-  const dmvResultColors = ['#22d3ee', '#39B54A', '#6366f1', '#f59e0b'];
-  const walmartProblem = t('walmart.problemPoints', { returnObjects: true }) as string[];
-  const walmartSolution = t('walmart.solutionPoints', { returnObjects: true }) as string[];
-  const walmartResults = t('walmart.results', { returnObjects: true }) as MetricItem[];
-  const santanderBackground = t('santander.backgroundPoints', { returnObjects: true }) as StrongBullet[];
-  const santanderWhy = t('santander.whyPoints', { returnObjects: true }) as string[];
-  const santanderBenefits = t('santander.benefits', { returnObjects: true }) as MetricItem[];
+  // "In production" columns
+  const nftReal  = t('nftReal.columns',  { returnObjects: true }) as RealColumn[];
+  const rwaReal  = t('rwaReal.columns',  { returnObjects: true }) as RealColumn[];
+  const scReal   = t('scReal.columns',   { returnObjects: true }) as RealColumn[];
+  const certReal = t('certReal.columns', { returnObjects: true }) as RealColumn[];
+  const cases    = t('caseGallery.items', { returnObjects: true }) as CaseCard[];
 
   // Closing
   const quizOptionTexts = t('quiz.options', { returnObjects: true }) as string[];
@@ -1242,41 +1090,15 @@ export function SC_Section3() {
           />
         </div>
 
-        {/* ═══════ TEAM CHECKPOINT — PICK YOUR INDUSTRY ═══════ */}
-        <div id="s3-team-pick" className="h-full">
-          <TeamCheckpoint
-            contextLabel={t('teamPick.contextLabel')}
-            title={t('teamPick.title')}
-            subtitle={t('teamPick.subtitle')}
-            duration={t('teamPick.duration')}
-            sections={[
-              {
-                label: t('teamPick.haveLabel'),
-                color: '#22d3ee',
-                items: [
-                  <>{t('teamPick.have.item1A')}<strong>{t('teamPick.have.item1Strong')}</strong>{t('teamPick.have.item1B')}</>,
-                  <>{t('teamPick.have.item2')}</>,
-                ],
-              },
-              {
-                label: t('teamPick.discussLabel'),
-                color: '#39B54A',
-                items: [
-                  <>{t('teamPick.discuss.item1')}</>,
-                  <>{t('teamPick.discuss.item2A')}<strong>{t('teamPick.discuss.item2Strong')}</strong>{t('teamPick.discuss.item2B')}</>,
-                  <>{t('teamPick.discuss.item3')}</>,
-                ],
-              },
-              {
-                label: t('teamPick.duringLabel'),
-                color: '#6366f1',
-                items: [
-                  <>{t('teamPick.during.item1')}</>,
-                  <>{t('teamPick.during.item2')}</>,
-                  <>{t('teamPick.during.item3A')}<strong>{t('teamPick.during.item3Strong')}</strong>{t('teamPick.during.item3B')}</>,
-                ],
-              },
-            ]}
+        {/* ═══════ DISCUSSION — WHICH INDUSTRY HURTS MOST? ═══════ */}
+        <div id="s3-discussion" className="h-full">
+          <ClassDiscussion
+            badge={t('discussion.badge')}
+            duration={t('discussion.duration')}
+            title={t('discussion.title')}
+            lead={t('discussion.lead')}
+            questions={t('discussion.questions', { returnObjects: true }) as string[]}
+            note={t('discussion.note')}
           />
         </div>
 
@@ -1300,227 +1122,81 @@ export function SC_Section3() {
           <div className="shrink-0 mt-4 p-3 rounded-xl border border-border bg-muted/30 text-xs text-muted-foreground">
             <span className="font-semibold text-foreground">{t('industriesIntro.commonThreadLabel')}</span>{t('industriesIntro.commonThreadBody')}
           </div>
+          <KeyPointBar text={kp('s3-industries-intro')} className="mt-3" />
         </div>
 
         {/* ═══════════════════════════════════════════════════════════ */}
-        {/* DeFi vertical                                              */}
+        {/* DeFi                                                        */}
         {/* ═══════════════════════════════════════════════════════════ */}
 
-        <div id="s3-defi-intro" className="h-full">
-          <VerticalDivider
-            emoji="💸"
-            title={t('defiDivider.title')}
-            subtitle={t('defiDivider.subtitle')}
-            color="#6366f1"
-            image={imgDefiIntro}
-          />
-        </div>
-
-        {/* DeFi: What is it */}
-        <div className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('defiWhat.heading')}</h2>
-            <p className="text-muted-foreground text-base mt-1">{t('defiWhat.subtitle')}</p>
+        {/* DeFi: what it is + what runs today */}
+        <div id="s3-defi-intro" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-4 flex items-start gap-4">
+            <img src={imgDefiIntro} alt="" className="hidden lg:block h-16 object-contain shrink-0" />
+            <div>
+              <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('defiWhat.heading')}</h2>
+              <p className="text-muted-foreground text-sm mt-1">{t('defiWhat.subtitle')}</p>
+            </div>
           </div>
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5 grid-rows-1">
+          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5">
             <div className="flex flex-col gap-3 justify-center">
               <div className="p-4 bg-card border border-[#6366f1]/30 rounded-xl">
-                <div className="font-bold text-base text-[#6366f1] mb-2">{t('defiWhat.coreIdeaTitle')}</div>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t('defiWhat.coreIdeaBody')}
-                </p>
+                <div className="font-bold text-sm text-[#6366f1] mb-1">{t('defiWhat.coreIdeaTitle')}</div>
+                <p className="text-xs text-muted-foreground leading-relaxed">{t('defiWhat.coreIdeaBody')}</p>
               </div>
               <div className="p-4 bg-card border border-[#8b5cf6]/30 rounded-xl">
-                <div className="font-bold text-base text-[#8b5cf6] mb-2">{t('defiWhat.valueCodeTitle')}</div>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t('defiWhat.valueCodeBody')}
-                </p>
+                <div className="font-bold text-sm text-[#8b5cf6] mb-1">{t('defiWhat.valueCodeTitle')}</div>
+                <p className="text-xs text-muted-foreground leading-relaxed">{t('defiWhat.valueCodeBody')}</p>
               </div>
             </div>
-            <div className="flex flex-col gap-3 justify-center">
-              <div className="text-sm font-semibold text-muted-foreground uppercase tracking-widest">{t('defiWhat.primitivesLabel')}</div>
+            <div className="flex flex-col gap-2 justify-center">
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('defiWhat.primitivesLabel')}</div>
               {defiPrimitives.map(p => (
-                <div key={p.key} className="flex items-start gap-3 p-2.5 bg-card border border-border rounded-lg">
-                  <div className="px-2 py-0.5 rounded font-bold text-sm shrink-0 text-white" style={{ backgroundColor: p.color }}>{t(`defiWhat.primitives.${p.key}.name`)}</div>
-                  <div className="text-sm text-muted-foreground">{t(`defiWhat.primitives.${p.key}.desc`)}</div>
+                <div key={p.key} className="flex items-start gap-3 p-2 bg-card border border-border rounded-lg">
+                  <div className="px-2 py-0.5 rounded font-bold text-xs shrink-0 text-white" style={{ backgroundColor: p.color }}>{t(`defiWhat.primitives.${p.key}.name`)}</div>
+                  <div className="text-xs text-muted-foreground">{t(`defiWhat.primitives.${p.key}.desc`)}</div>
                 </div>
               ))}
             </div>
           </div>
-        </div>
-
-        {/* DeFi: DEX use cases */}
-        <div id="s3-defi-dex" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('defiDex.heading')}</h2>
-            <p className="text-muted-foreground text-base mt-1">{t('defiDex.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5 grid-rows-1">
-            <div className="p-5 bg-card border border-[#6366f1]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="flex items-center gap-2">
-                <div className="size-10 rounded-xl bg-[#6366f1]/15 flex items-center justify-center text-xl shrink-0">🦄</div>
-                <div>
-                  <div className="font-black text-base text-foreground">{t('defiDex.uniswapName')}</div>
-                  <div className="text-sm text-[#6366f1]">{t('defiDex.uniswapTag')}</div>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {t('defiDex.uniswapBody')}
-              </p>
-              <div className="grid grid-cols-2 gap-2 mt-auto">
-                <div className="p-2 bg-[#6366f1]/10 rounded-lg text-center">
-                  <div className="font-mono font-black text-base text-[#6366f1]">{t('defiDex.uniswapStat1Value')}</div>
-                  <div className="text-xs text-muted-foreground">{t('defiDex.uniswapStat1Label')}</div>
-                </div>
-                <div className="p-2 bg-[#6366f1]/10 rounded-lg text-center">
-                  <div className="font-mono font-black text-base text-[#6366f1]">{t('defiDex.uniswapStat2Value')}</div>
-                  <div className="text-xs text-muted-foreground">{t('defiDex.uniswapStat2Label')}</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-5 bg-card border border-[#8b5cf6]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="flex items-center gap-2">
-                <div className="size-10 rounded-xl bg-[#8b5cf6]/15 flex items-center justify-center text-xl shrink-0">🐮</div>
-                <div>
-                  <div className="font-black text-base text-foreground">{t('defiDex.cowName')}</div>
-                  <div className="text-sm text-[#8b5cf6]">{t('defiDex.cowTag')}</div>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {t('defiDex.cowBodyA')}<span className="font-semibold text-foreground">{t('defiDex.cowBodyStrong')}</span>{t('defiDex.cowBodyB')}
-              </p>
-              <div className="grid grid-cols-2 gap-2 mt-auto">
-                <div className="p-2 bg-[#8b5cf6]/10 rounded-lg text-center">
-                  <div className="font-mono font-black text-base text-[#8b5cf6]">{t('defiDex.cowStat1Value')}</div>
-                  <div className="text-xs text-muted-foreground">{t('defiDex.cowStat1Label')}</div>
-                </div>
-                <div className="p-2 bg-[#8b5cf6]/10 rounded-lg text-center">
-                  <div className="font-mono font-black text-base text-[#8b5cf6]">{t('defiDex.cowStat2Value')}</div>
-                  <div className="text-xs text-muted-foreground">{t('defiDex.cowStat2Label')}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="shrink-0 mt-4 p-3 rounded-xl border border-border bg-muted/30 text-sm text-muted-foreground">
-            <span className="font-semibold text-foreground">{t('defiDex.whyMattersLabel')}</span>{t('defiDex.whyMattersBody')}
-          </div>
-        </div>
-
-        {/* DeFi: Interactive AMM */}
-        <div id="s3-defi-amm" className="h-full">
-          <InteractiveAMM />
-        </div>
-
-        {/* DeFi: Stablecoins — concept primer */}
-        <div id="s3-defi-stablecoins-intro" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('stablecoinsIntro.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('stablecoinsIntro.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-5 grid-rows-1">
-            {stablecoinCards.map(s => (
-              <div key={s.key} className="flex flex-col rounded-2xl border-2 bg-card overflow-hidden" style={{ borderColor: s.color + '40' }}>
-                <div className="h-1.5" style={{ backgroundColor: s.color }} />
-                <div className="flex-1 flex flex-col gap-3 p-5 justify-center">
-                  <div className="flex items-center gap-3">
-                    <span className="text-3xl">{s.icon}</span>
-                    <div className="font-black text-lg" style={{ color: s.color }}>{t(`stablecoinsIntro.cards.${s.key}.name`)}</div>
+          <div className="shrink-0 mt-3">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5">{t('defiIntro.examplesLabel')}</div>
+            <div className="grid grid-cols-3 gap-3">
+              {defiExamples.map((e, i) => (
+                <div key={e.name} className="p-2.5 rounded-xl border bg-card flex flex-col gap-0.5" style={{ borderColor: defiExampleColors[i] + '40' }}>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <div className="font-black text-sm text-foreground">{e.name}</div>
+                    <div className="font-mono text-[11px] font-bold shrink-0" style={{ color: defiExampleColors[i] }}>{e.stat}</div>
                   </div>
-                  <p className="text-sm text-foreground leading-relaxed">{t(`stablecoinsIntro.cards.${s.key}.how`)}</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed"><span className="font-semibold" style={{ color: s.color }}>{t('stablecoinsIntro.riskLabel')}</span>{t(`stablecoinsIntro.cards.${s.key}.risk`)}</p>
-                  <div className="flex flex-wrap gap-1.5 mt-1">
-                    {s.ex.map(e => <span key={e} className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: s.color + '15', color: s.color }}>{e}</span>)}
-                  </div>
+                  <div className="text-[10px] font-semibold" style={{ color: defiExampleColors[i] }}>{e.tag}</div>
+                  <div className="text-[11px] text-muted-foreground leading-snug">{e.desc}</div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-
-          <div className="shrink-0 mt-4 p-3 rounded-xl border border-[#6366f1]/30 text-center text-sm" style={{ backgroundColor: '#6366f10f' }}>
-            <span className="font-bold text-[#6366f1]">{t('stablecoinsIntro.nextLabel')}</span>
-            <span className="text-muted-foreground">{t('stablecoinsIntro.nextBody')}</span>
-          </div>
-          <UnderTheHood terms={['collateral ratio', 'liquidation', 'redemption', 'reserve attestation']} className="shrink-0 mt-2 justify-center w-full" />
+          <KeyPointBar text={kp('s3-defi-intro')} className="mt-3" />
         </div>
 
-        {/* DeFi: Stablecoins */}
-        <div id="s3-defi-stablecoins" className="h-full">
-          <PegSimulator />
-        </div>
-
-        {/* DeFi: Borderless transfers */}
-        <div id="s3-defi-borderless" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5 flex items-start gap-4">
-            <img src={imgDefiBorderless} alt={t('borderless.imgAlt')} className="hidden lg:block h-24 object-contain shrink-0" />
-            <div>
-              <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('borderless.heading')}</h2>
-              <p className="text-muted-foreground text-sm mt-1">{t('borderless.subtitle')}</p>
-            </div>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4 content-center">
-            <div className="p-5 bg-card border border-[#ED1C24]/30 rounded-xl flex flex-col gap-2">
-              <div className="text-xs font-bold text-[#ED1C24] uppercase tracking-widest">{t('borderless.traditionalLabel')}</div>
-              <div className="font-black text-foreground">{t('borderless.traditionalTitle')}</div>
-              <ul className="text-xs text-muted-foreground space-y-1.5 mt-2">
-                {borderlessTraditional.map((item, i) => (
-                  <li key={i} className="flex gap-1.5"><span className="text-[#ED1C24]">›</span>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="p-5 bg-card border border-[#39B54A]/30 rounded-xl flex flex-col gap-2">
-              <div className="text-xs font-bold text-[#39B54A] uppercase tracking-widest">{t('borderless.scLabel')}</div>
-              <div className="font-black text-foreground">{t('borderless.scTitle')}</div>
-              <ul className="text-xs text-muted-foreground space-y-1.5 mt-2">
-                {borderlessSc.map((item, i) => (
-                  <li key={i} className="flex gap-1.5"><span className="text-[#39B54A]">›</span>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="p-5 bg-card border border-[#6366f1]/30 rounded-xl flex flex-col gap-2">
-              <div className="text-xs font-bold text-[#6366f1] uppercase tracking-widest">{t('borderless.tradeoffsLabel')}</div>
-              <div className="font-black text-foreground">{t('borderless.tradeoffsTitle')}</div>
-              <ul className="text-xs text-muted-foreground space-y-1.5 mt-2">
-                {borderlessTradeoffs.map((item, i) => (
-                  <li key={i} className="flex gap-1.5"><span className="text-[#6366f1]">›</span>{item}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* DeFi: Pros / Cons */}
+        <div id="s3-defi-amm" className="h-full"><InteractiveAMM /></div>
+        <div id="s3-defi-stablecoins" className="h-full"><PegSimulator /></div>
         <div id="s3-defi-prosCons" className="h-full">
-          <ProsConsSlide
-            title={t('defiProsCons.title')}
-            accent="#6366f1"
-            pros={defiPros}
-            cons={defiCons}
-          />
+          <ProsConsSlide title={t('defiProsCons.title')} accent="#6366f1" pros={defiPros} cons={defiCons} keyPoint={kp('s3-defi-prosCons')} />
         </div>
 
         {/* ═══════════════════════════════════════════════════════════ */}
-        {/* Gaming & NFTs vertical                                     */}
+        {/* Gaming & NFTs                                               */}
         {/* ═══════════════════════════════════════════════════════════ */}
 
-        <div id="s3-nft-intro" className="h-full">
-          <VerticalDivider
-            emoji="🎮"
-            title={t('nftDivider.title')}
-            subtitle={t('nftDivider.subtitle')}
-            color="#8b5cf6"
-            image={imgNftGaming}
-          />
-        </div>
-
-        {/* NFTs: Intro */}
-        <div className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('nftIntro.heading')}</h2>
-            <p className="text-muted-foreground text-base mt-1">{t('nftIntro.subtitle')}</p>
+        {/* NFTs: what they are + true ownership */}
+        <div id="s3-nft-intro" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-4 flex items-start gap-4">
+            <img src={imgNftGaming} alt="" className="hidden lg:block h-16 object-contain shrink-0" />
+            <div>
+              <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('nftIntro.heading')}</h2>
+              <p className="text-muted-foreground text-sm mt-1">{t('nftIntro.subtitle')}</p>
+            </div>
           </div>
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5 grid-rows-1">
+          <div className="flex-1 min-h-0 grid grid-cols-[1fr_1.6fr] gap-5">
             <div className="p-5 bg-card border border-[#8b5cf6]/30 rounded-xl flex flex-col gap-3 justify-center">
               <div className="font-bold text-base text-[#8b5cf6]">{t('nftIntro.unlikeTitle')}</div>
               <p className="text-sm text-muted-foreground leading-relaxed">
@@ -1538,145 +1214,47 @@ export function SC_Section3() {
               </div>
               <UnderTheHood terms={['tokenId', 'tokenURI', 'metadata', 'IPFS']} />
             </div>
-            <div className="p-5 bg-card border border-[#6366f1]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="font-bold text-base text-[#6366f1]">{t('nftIntro.gamingTitle')}</div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {t('nftIntro.gamingBody')}
-              </p>
-              <ul className="space-y-1.5 text-sm text-muted-foreground">
-                {nftGamingPoints.map((p, i) => (
-                  <li key={i} className="flex gap-1.5"><span className="text-[#6366f1]">›</span>{p}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* NFTs: Economies */}
-        <div id="s3-nft-economies" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('nftEconomies.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('nftEconomies.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4 content-center">
-            {nftEcoCards.map(c => {
-              const points = t(`nftEconomies.cards.${c.key}.points`, { returnObjects: true }) as string[];
-              return (
-                <div key={c.key} className="p-4 bg-card border rounded-xl flex flex-col gap-2"
-                  style={{ borderColor: c.color + '30' }}>
-                  <div className="text-3xl">{c.emoji}</div>
-                  <div className="font-bold text-sm" style={{ color: c.color }}>{t(`nftEconomies.cards.${c.key}.title`)}</div>
-                  <ul className="space-y-1.5 text-xs text-muted-foreground flex-1 mt-1">
-                    {points.map((p, i) => (
-                      <li key={i} className="flex gap-1.5"><span style={{ color: c.color }} className="shrink-0 mt-0.5">›</span>{p}</li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* NFTs: Play-to-Earn (interactive royalty calculator) */}
-        <div id="s3-nft-p2e" className="h-full">
-          <RoyaltyCalculator />
-        </div>
-
-        {/* NFTs: Ubisoft real-world */}
-        <div id="s3-nft-p2e-real" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5 flex items-start gap-4">
-            <img src={imgP2eEcosystem} alt={t('p2eReal.imgAlt')} className="hidden lg:block h-20 object-contain shrink-0" />
-            <div>
-              <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('p2eReal.heading')}</h2>
-              <p className="text-muted-foreground text-base mt-1">{t('p2eReal.subtitle')}</p>
-            </div>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5 grid-rows-1">
-            <div className="p-5 bg-card border border-[#8b5cf6]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="font-bold text-base text-[#8b5cf6]">{t('p2eReal.howTitle')}</div>
-              <ul className="text-sm text-muted-foreground space-y-2 flex-1">
-                {p2eHowPoints.map((p, i) => (
-                  <li key={i} className="flex gap-2"><span className="text-[#8b5cf6] shrink-0 mt-0.5">›</span>{p}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="p-5 bg-gradient-to-br from-[#8b5cf6]/10 to-transparent border border-[#8b5cf6]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">⚔️</span>
-                <div>
-                  <div className="font-black text-base text-foreground">{t('p2eReal.ubisoftTitle')}</div>
-                  <div className="text-sm text-[#8b5cf6]">{t('p2eReal.ubisoftTag')}</div>
-                </div>
+            <div className="flex flex-col gap-2 min-h-0">
+              <div>
+                <div className="font-bold text-sm text-foreground">{t('nftEconomies.heading')}</div>
+                <div className="text-xs text-muted-foreground">{t('nftEconomies.subtitle')}</div>
               </div>
-              <ul className="text-sm text-muted-foreground space-y-2 flex-1">
-                {ubisoftPoints.map((p, i) => (
-                  <li key={i} className="flex gap-2"><span className="text-[#8b5cf6] shrink-0 mt-0.5">›</span>{p.a}{p.strong && <span className="font-semibold text-foreground">{p.strong}</span>}{p.b}</li>
-                ))}
-              </ul>
-              <div className="mt-auto p-2 bg-[#8b5cf6]/10 rounded-lg text-sm text-muted-foreground">
-                {t('p2eReal.ubisoftFootnote')}
+              <div className="flex-1 min-h-0 grid grid-cols-3 gap-3">
+                {nftEcoCards.map(c => {
+                  const points = t(`nftEconomies.cards.${c.key}.points`, { returnObjects: true }) as string[];
+                  return (
+                    <div key={c.key} className="p-3 bg-card border rounded-xl flex flex-col gap-1.5 min-h-0 overflow-y-auto" style={{ borderColor: c.color + '30' }}>
+                      <div className="text-2xl">{c.emoji}</div>
+                      <div className="font-bold text-xs" style={{ color: c.color }}>{t(`nftEconomies.cards.${c.key}.title`)}</div>
+                      <ul className="space-y-1.5 text-xs text-muted-foreground leading-snug">
+                        {points.map((p, i) => (
+                          <li key={i} className="flex gap-1.5"><span style={{ color: c.color }} className="shrink-0">›</span>{p}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
+          <KeyPointBar text={kp('s3-nft-intro')} className="mt-3" />
         </div>
 
-        {/* NFTs: Finance */}
-        <div id="s3-nft-finance" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('nftFinance.heading')}</h2>
-            <p className="text-muted-foreground text-base mt-1">{t('nftFinance.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5 grid-rows-1">
-            <div className="flex flex-col gap-3 justify-center">
-              <div className="p-4 bg-card border border-[#8b5cf6]/30 rounded-xl flex flex-col gap-2 justify-center">
-                <div className="font-bold text-base text-[#8b5cf6]">{t('nftFinance.lendingTitle')}</div>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t('nftFinance.lendingBody')}
-                </p>
-                <div className="text-xs text-muted-foreground italic">{t('nftFinance.lendingExamples')}</div>
-              </div>
-              <div className="p-4 bg-card border border-[#22d3ee]/30 rounded-xl flex flex-col gap-2 justify-center">
-                <div className="font-bold text-base text-[#22d3ee]">{t('nftFinance.rentalsTitle')}</div>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t('nftFinance.rentalsBody')}
-                </p>
-                <div className="text-xs text-muted-foreground italic">{t('nftFinance.rentalsPattern')}</div>
-              </div>
-            </div>
-            <div className="flex flex-col gap-2 justify-center">
-              <div className="text-sm font-bold text-[#8b5cf6] uppercase tracking-widest">{t('nftFinance.zhartaLabel')}</div>
-              <div className="p-3 bg-card border border-[#8b5cf6]/30 rounded-xl">
-                <img src={imgZhartaLoans} alt={t('nftFinance.zhartaImgAlt')} className="w-full h-auto rounded-lg" />
-                <p className="text-sm text-muted-foreground leading-relaxed mt-2">
-                  {t('nftFinance.zhartaBodyA')}<span className="font-semibold text-foreground">{t('nftFinance.zhartaBodyStrong1')}</span>{t('nftFinance.zhartaBodyB')}<span className="font-semibold text-foreground">{t('nftFinance.zhartaBodyStrong2')}</span>{t('nftFinance.zhartaBodyC')}
-                </p>
-              </div>
-            </div>
-          </div>
+        <div id="s3-nft-real" className="h-full">
+          <RealWorldSlide
+            heading={t('nftReal.heading')} subtitle={t('nftReal.subtitle')}
+            columns={nftReal} colors={['#8b5cf6', '#22d3ee']}
+            terms={['ERC-721', 'royalty (ERC-2981)', 'NFT collateral', 'liquidation']}
+            keyPoint={kp('s3-nft-real')}
+          />
         </div>
-
-        {/* NFTs: Pros / Cons */}
         <div id="s3-nft-prosCons" className="h-full">
-          <ProsConsSlide
-            title={t('nftProsCons.title')}
-            accent="#8b5cf6"
-            pros={nftPros}
-            cons={nftCons}
-          />
+          <ProsConsSlide title={t('nftProsCons.title')} accent="#8b5cf6" pros={nftPros} cons={nftCons} keyPoint={kp('s3-nft-prosCons')} />
         </div>
 
         {/* ═══════════════════════════════════════════════════════════ */}
-        {/* NFT Utility & DAOs — applications block                     */}
+        {/* NFT Utility & DAOs                                          */}
         {/* ═══════════════════════════════════════════════════════════ */}
-
-        <div id="s3-apps-intro" className="h-full">
-          <VerticalDivider
-            emoji="🏛"
-            title={t('appsDivider.title')}
-            subtitle={t('appsDivider.subtitle')}
-            color="#a855f7"
-          />
-        </div>
 
         <div id="s3-nft-utility" className="h-full"><NftUtilitySlide /></div>
         <div id="s3-nft-gate" className="h-full"><TokenGateDemo /></div>
@@ -1686,770 +1264,109 @@ export function SC_Section3() {
         <div id="s3-dao-vote" className="h-full"><VotingPowerSim /></div>
         <div id="s3-dao-examples" className="h-full"><DaoExamplesSlide /></div>
         <div id="s3-dao-prosCons" className="h-full">
-          <ProsConsSlide
-            title={t('daoProsCons.title')}
-            accent="#a855f7"
-            pros={daoPros}
-            cons={daoCons}
-          />
+          <ProsConsSlide title={t('daoProsCons.title')} accent="#a855f7" pros={daoPros} cons={daoCons} keyPoint={kp('s3-dao-prosCons')} />
         </div>
 
         {/* ═══════════════════════════════════════════════════════════ */}
-        {/* Real Asset Tokenization vertical                            */}
+        {/* Real-World Assets                                           */}
         {/* ═══════════════════════════════════════════════════════════ */}
 
-        <div id="s3-rwa-intro" className="h-full">
-          <VerticalDivider
-            emoji="🏢"
-            title={t('rwaDivider.title')}
-            subtitle={t('rwaDivider.subtitle')}
-            color="#39B54A"
-            image={imgRwaProcess}
+        <div id="s3-rwa-spectrum" className="h-full"><RWASpectrum /></div>
+        <div id="s3-rwa-real" className="h-full">
+          <RealWorldSlide
+            heading={t('rwaReal.heading')} subtitle={t('rwaReal.subtitle')} image={imgRwaProcess}
+            columns={rwaReal} colors={['#39B54A', '#6366f1', '#8b5cf6']}
+            terms={['transfer restrictions', 'whitelist', 'ERC-1400 / ERC-3643', 'on-chain KYC']}
+            keyPoint={kp('s3-rwa-real')}
           />
         </div>
-
-        {/* RWA: Interactive spectrum */}
-        <div id="s3-rwa-spectrum" className="h-full">
-          <RWASpectrum />
-        </div>
-
-        {/* RWA: Securitize */}
-        <div id="s3-rwa-securitize" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('rwaSecuritize.heading')}</h2>
-            <p className="text-muted-foreground text-base mt-1">{t('rwaSecuritize.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5 grid-rows-1">
-            <div className="p-5 bg-card border border-[#39B54A]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="font-bold text-base text-[#39B54A]">{t('rwaSecuritize.howTitle')}</div>
-              <ul className="text-sm text-muted-foreground space-y-2 flex-1">
-                {rwaSecuritizeHow.map((item, i) => (
-                  <li key={i} className="flex gap-2"><span className="text-[#39B54A]">›</span>{item}</li>
-                ))}
-              </ul>
-              <div className="p-2 bg-[#39B54A]/10 rounded-lg text-sm">
-                <span className="font-semibold text-foreground">{t('rwaSecuritize.regulatoryLabel')}</span> <span className="text-muted-foreground">{t('rwaSecuritize.regulatoryBody')}</span>
-              </div>
-              <UnderTheHood terms={['transfer restrictions', 'whitelist', 'ERC-1400 / ERC-3643', 'on-chain KYC']} />
-            </div>
-            <div className="flex flex-col gap-3 justify-center">
-              <div className="text-sm font-bold text-[#39B54A] uppercase tracking-widest">{t('rwaSecuritize.deploymentsLabel')}</div>
-              <div className="p-4 bg-card border border-[#39B54A]/25 rounded-xl">
-                <div className="font-bold text-foreground text-base mb-1">{t('rwaSecuritize.buidlTitle')}</div>
-                <p className="text-sm text-muted-foreground">{t('rwaSecuritize.buidlBody')}</p>
-              </div>
-              <div className="p-4 bg-card border border-[#39B54A]/25 rounded-xl">
-                <div className="font-bold text-foreground text-base mb-1">{t('rwaSecuritize.bnyTitle')}</div>
-                <p className="text-sm text-muted-foreground">{t('rwaSecuritize.bnyBody')}</p>
-              </div>
-              <div className="p-4 bg-[#39B54A]/10 border border-[#39B54A]/30 rounded-xl">
-                <div className="font-bold text-foreground text-base mb-1">{t('rwaSecuritize.valueTitle')}</div>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  {rwaSecuritizeValue.map((item, i) => (
-                    <li key={i} className="flex gap-1.5"><span className="text-[#39B54A]">›</span>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* RWA: Mortgages */}
-        <div id="s3-rwa-mortgages" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('rwaMortgages.heading')}</h2>
-            <p className="text-muted-foreground text-base mt-1">{t('rwaMortgages.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5 grid-rows-1">
-            <div className="p-5 bg-card border border-[#39B54A]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="font-bold text-base text-[#39B54A]">{t('rwaMortgages.contractTitle')}</div>
-              <ul className="text-sm text-muted-foreground space-y-2 flex-1">
-                {rwaMortgageContract.map((item, i) => (
-                  <li key={i} className="flex gap-2"><span className="text-[#39B54A]">›</span>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="p-5 bg-card border border-[#6366f1]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="font-bold text-base text-[#6366f1]">{t('rwaMortgages.whyTitle')}</div>
-              <ul className="text-sm text-muted-foreground space-y-2 flex-1">
-                {rwaMortgageWhy.map((item, i) => (
-                  <li key={i} className="flex gap-2"><span className="text-[#6366f1]">›</span>{item}</li>
-                ))}
-              </ul>
-              <div className="p-2 bg-[#6366f1]/10 rounded-lg text-sm text-muted-foreground mt-auto">
-                <span className="font-semibold text-foreground">{t('rwaMortgages.limitationLabel')}</span>{t('rwaMortgages.limitationBody')}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* RWA: Collateral */}
-        <div id="s3-rwa-collateral" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('rwaCollateral.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('rwaCollateral.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4 content-center">
-            {rwaCollateralCards.map((c, i) => (
-              <div key={i} className="p-4 bg-card border rounded-xl flex flex-col gap-2"
-                style={{ borderColor: rwaCollateralColors[i] + '30' }}>
-                <div className="text-3xl">{rwaCollateralEmojis[i]}</div>
-                <div className="font-bold text-sm" style={{ color: rwaCollateralColors[i] }}>{c.title}</div>
-                <div className="text-xs text-muted-foreground leading-snug">{c.desc}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* RWA: Property */}
-        <div id="s3-rwa-property" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('rwaProperty.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('rwaProperty.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4 content-center">
-            <div className="p-4 bg-card border border-[#39B54A]/30 rounded-xl flex flex-col gap-2">
-              <div className="text-xs font-bold text-[#39B54A] uppercase tracking-widest">{t('rwaProperty.sweden.country')}</div>
-              <div className="font-black text-foreground text-sm">{t('rwaProperty.sweden.title')}</div>
-              <p className="text-xs text-muted-foreground leading-relaxed flex-1">
-                {t('rwaProperty.sweden.bodyA')}<span className="font-semibold text-foreground">{t('rwaProperty.sweden.bodyStrong')}</span>{t('rwaProperty.sweden.bodyB')}
-              </p>
-              <div className="p-2 bg-[#39B54A]/10 rounded-lg text-[10px] text-muted-foreground">
-                <span className="font-bold text-[#39B54A]">{t('rwaProperty.sweden.badgeStrong')}</span>{t('rwaProperty.sweden.badgeRest')}
-              </div>
-            </div>
-            <div className="p-4 bg-card border border-[#6366f1]/30 rounded-xl flex flex-col gap-2">
-              <div className="text-xs font-bold text-[#6366f1] uppercase tracking-widest">{t('rwaProperty.frankfurt.country')}</div>
-              <div className="font-black text-foreground text-sm">{t('rwaProperty.frankfurt.title')}</div>
-              <p className="text-xs text-muted-foreground leading-relaxed flex-1">
-                {t('rwaProperty.frankfurt.bodyA')}<span className="font-semibold text-foreground">{t('rwaProperty.frankfurt.bodyStrong')}</span>{t('rwaProperty.frankfurt.bodyB')}
-              </p>
-              <div className="p-2 bg-[#6366f1]/10 rounded-lg text-[10px] text-muted-foreground">
-                <span className="font-bold text-[#6366f1]">{t('rwaProperty.frankfurt.badgeStrong')}</span>{t('rwaProperty.frankfurt.badgeRest')}
-              </div>
-            </div>
-            <div className="p-4 bg-card border border-[#8b5cf6]/30 rounded-xl flex flex-col gap-2">
-              <div className="text-xs font-bold text-[#8b5cf6] uppercase tracking-widest">{t('rwaProperty.switzerland.country')}</div>
-              <div className="font-black text-foreground text-sm">{t('rwaProperty.switzerland.title')}</div>
-              <p className="text-xs text-muted-foreground leading-relaxed flex-1">
-                {t('rwaProperty.switzerland.body')}
-              </p>
-              <div className="p-2 bg-[#8b5cf6]/10 rounded-lg text-[10px] text-muted-foreground">
-                <span className="font-bold text-[#8b5cf6]">{t('rwaProperty.switzerland.badgeStrong')}</span>{t('rwaProperty.switzerland.badgeRest')}
-              </div>
-            </div>
-          </div>
-          <div className="shrink-0 mt-4 p-3 rounded-xl border border-[#22d3ee]/30 bg-[#22d3ee]/06 text-xs text-muted-foreground">
-            <span className="font-bold text-[#22d3ee]">{t('rwaProperty.micaLabel')}</span>{t('rwaProperty.micaBody')}
-          </div>
-        </div>
-
-        {/* RWA: Pros / Cons */}
         <div id="s3-rwa-prosCons" className="h-full">
-          <ProsConsSlide
-            title={t('rwaProsCons.title')}
-            accent="#39B54A"
-            pros={rwaPros}
-            cons={rwaCons}
-          />
+          <ProsConsSlide title={t('rwaProsCons.title')} accent="#39B54A" pros={rwaPros} cons={rwaCons} keyPoint={kp('s3-rwa-prosCons')} />
         </div>
 
         {/* ═══════════════════════════════════════════════════════════ */}
-        {/* Supply Chain vertical                                       */}
+        {/* Supply Chain                                                */}
         {/* ═══════════════════════════════════════════════════════════ */}
 
-        <div id="s3-sc-intro" className="h-full">
-          <VerticalDivider
-            emoji="🚚"
-            title={t('scDivider.title')}
-            subtitle={t('scDivider.subtitle')}
-            color="#f59e0b"
-            image={imgSupplyProv}
+        <div id="s3-sc-provenance" className="h-full"><ProvenanceQR /></div>
+        <div id="s3-sc-real" className="h-full">
+          <RealWorldSlide
+            heading={t('scReal.heading')} subtitle={t('scReal.subtitle')} image={imgSupplyProv}
+            columns={scReal} colors={['#f59e0b', '#39B54A', '#6366f1']}
+            terms={['permissioned ledger', 'hash anchoring', 'IoT oracle', 'NFC / QR', 'eBL']}
+            keyPoint={kp('s3-sc-real')}
           />
         </div>
-
-        {/* Supply Chain: Provenance (interactive QR scan) */}
-        <div id="s3-sc-provenance" className="h-full">
-          <ProvenanceQR />
-        </div>
-
-        {/* Supply Chain: LVMH + Carrefour real-world */}
-        <div id="s3-sc-prov-real" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('scProvReal.heading')}</h2>
-            <p className="text-muted-foreground text-base mt-1">{t('scProvReal.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5 grid-rows-1">
-            <div className="p-5 bg-gradient-to-br from-[#f59e0b]/10 to-transparent border border-[#f59e0b]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">👜</span>
-                <div>
-                  <div className="font-black text-base text-foreground">{t('scProvReal.lvmhTitle')}</div>
-                  <div className="text-sm text-[#f59e0b]">{t('scProvReal.lvmhTag')}</div>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {t('scProvReal.lvmhBodyA')}<span className="font-semibold text-foreground">{t('scProvReal.lvmhBodyStrong')}</span>{t('scProvReal.lvmhBodyB')}
-              </p>
-              <div className="p-2 bg-[#f59e0b]/10 rounded-lg text-sm text-muted-foreground mt-auto">
-                <span className="font-semibold text-foreground">{t('scProvReal.lvmhGoalLabel')}</span>{t('scProvReal.lvmhGoalBody')}
-              </div>
-            </div>
-            <div className="p-5 bg-gradient-to-br from-[#39B54A]/10 to-transparent border border-[#39B54A]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">🐔</span>
-                <div>
-                  <div className="font-black text-base text-foreground">{t('scProvReal.carrefourTitle')}</div>
-                  <div className="text-sm text-[#39B54A]">{t('scProvReal.carrefourTag')}</div>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {t('scProvReal.carrefourBody')}
-              </p>
-              <div className="p-2 bg-[#39B54A]/10 rounded-lg text-sm text-muted-foreground mt-auto">
-                {t('scProvReal.carrefourFootnote')}
-              </div>
-            </div>
-          </div>
-          <UnderTheHood terms={['permissioned ledger', 'hash anchoring', 'IoT oracle', 'NFC / QR']} className="shrink-0 mt-3" />
-        </div>
-
-        {/* Supply Chain: Shipping */}
-        <div id="s3-sc-shipping" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('scShipping.heading')}</h2>
-            <p className="text-muted-foreground text-base mt-1">{t('scShipping.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5 grid-rows-1">
-            <div className="p-5 bg-card border border-[#ED1C24]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="font-bold text-base text-[#ED1C24]">{t('scShipping.legacyTitle')}</div>
-              <ul className="text-sm text-muted-foreground space-y-2 flex-1">
-                {scLegacyPoints.map((item, i) => (
-                  <li key={i} className="flex gap-2"><span className="text-[#ED1C24]">›</span>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="p-5 bg-gradient-to-br from-[#39B54A]/10 to-transparent border border-[#39B54A]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="flex items-center gap-3">
-                <img src={imgGsbnEbl} alt={t('scShipping.gsbnImgAlt')} className="hidden lg:block h-16 object-contain shrink-0" />
-                <div>
-                  <div className="font-black text-base text-foreground">{t('scShipping.gsbnTitle')}</div>
-                  <div className="text-sm text-[#39B54A]">{t('scShipping.gsbnTag')}</div>
-                </div>
-              </div>
-              <ul className="text-sm text-muted-foreground space-y-2 flex-1">
-                {gsbnPoints.map((p, i) => (
-                  <li key={i} className="flex gap-2"><span className="text-[#39B54A]">›</span>{p.a}{p.strong && <span className="font-semibold text-foreground">{p.strong}</span>}{p.b}</li>
-                ))}
-              </ul>
-              <div className="p-2 bg-[#39B54A]/10 rounded-lg text-sm text-muted-foreground mt-auto">
-                {t('scShipping.gsbnFootnoteA')}<span className="font-semibold text-foreground">{t('scShipping.gsbnFootnoteStrong')}</span>{t('scShipping.gsbnFootnoteB')}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Supply Chain: Pros / Cons */}
         <div id="s3-sc-prosCons" className="h-full">
-          <ProsConsSlide
-            title={t('scProsCons.title')}
-            accent="#f59e0b"
-            pros={scPros}
-            cons={scCons}
-          />
+          <ProsConsSlide title={t('scProsCons.title')} accent="#f59e0b" pros={scPros} cons={scCons} keyPoint={kp('s3-sc-prosCons')} />
         </div>
 
         {/* ═══════════════════════════════════════════════════════════ */}
-        {/* Digital Certification vertical                              */}
+        {/* Digital Certification                                       */}
         {/* ═══════════════════════════════════════════════════════════ */}
 
-        <div id="s3-cert-intro" className="h-full">
-          <VerticalDivider
-            emoji="📜"
-            title={t('certDivider.title')}
-            subtitle={t('certDivider.subtitle')}
-            color="#22d3ee"
-            image={imgCertDecent}
+        <div id="s3-cert-howitworks" className="h-full"><ProofOfExistenceDemo /></div>
+        <div id="s3-cert-real" className="h-full">
+          <RealWorldSlide
+            heading={t('certReal.heading')} subtitle={t('certReal.subtitle')} image={imgCertDecent}
+            columns={certReal} colors={['#22d3ee', '#8b5cf6', '#f59e0b']}
+            terms={['hash chain', 'KSI', 'Merkle tree', 'timestamping', 'verifiable credential']}
+            keyPoint={kp('s3-cert-real')}
           />
         </div>
-
-        {/* Cert: Interactive proof-of-existence */}
-        <div id="s3-cert-howitworks" className="h-full">
-          <ProofOfExistenceDemo />
-        </div>
-
-        {/* Cert: Estonia */}
-        <div id="s3-cert-law" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('certLaw.heading')}</h2>
-            <p className="text-muted-foreground text-base mt-1">{t('certLaw.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5 grid-rows-1">
-            <div className="p-5 bg-card border border-[#22d3ee]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="font-bold text-base text-[#22d3ee]">{t('certLaw.whatTitle')}</div>
-              <ul className="text-sm text-muted-foreground space-y-2 flex-1">
-                {certWhatPoints.map((p, i) => (
-                  <li key={i} className="flex gap-2"><span className="text-[#22d3ee]">›</span>{p.a}{p.strong && <span className="font-semibold text-foreground">{p.strong}</span>}{p.b}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="p-5 bg-gradient-to-br from-[#22d3ee]/10 to-transparent border border-[#22d3ee]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="font-bold text-base text-[#22d3ee]">{t('certLaw.principleTitle')}</div>
-              <p className="text-sm text-muted-foreground leading-relaxed italic border-l-2 border-[#22d3ee] pl-3">
-                {t('certLaw.principleQuote')}
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {t('certLaw.principleBody')}
-              </p>
-              <div className="p-2 bg-[#22d3ee]/10 rounded-lg text-sm text-muted-foreground mt-auto">
-                <span className="font-semibold text-foreground">{t('certLaw.whyLabel')}</span>{t('certLaw.whyBodyA')}<span className="italic">{t('certLaw.whyBodyEmphasis')}</span>{t('certLaw.whyBodyB')}
-              </div>
-            </div>
-          </div>
-          <UnderTheHood terms={['hash chain', 'KSI', 'Merkle tree', 'timestamping']} className="shrink-0 mt-3" />
-        </div>
-
-        {/* Cert: Education */}
-        <div id="s3-cert-education" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('certEducation.heading')}</h2>
-            <p className="text-muted-foreground text-base mt-1">{t('certEducation.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5 grid-rows-1">
-            <div className="p-5 bg-card border border-[#22d3ee]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="font-bold text-base text-[#22d3ee]">{t('certEducation.problemTitle')}</div>
-              <ul className="text-sm text-muted-foreground space-y-2 flex-1">
-                {certEduProblem.map((item, i) => (
-                  <li key={i} className="flex gap-2"><span className="text-[#22d3ee]">›</span>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="p-5 bg-gradient-to-br from-[#22d3ee]/10 to-transparent border border-[#22d3ee]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">🎓</span>
-                <div>
-                  <div className="font-black text-base text-foreground">{t('certEducation.mitTitle')}</div>
-                  <div className="text-sm text-[#22d3ee]">{t('certEducation.mitTag')}</div>
-                </div>
-              </div>
-              <ul className="text-sm text-muted-foreground space-y-2 flex-1">
-                {certMitPoints.map((p, i) => (
-                  <li key={i} className="flex gap-2"><span className="text-[#22d3ee]">›</span>{p.a}{p.strong && <span className="font-semibold text-foreground">{p.strong}</span>}{p.b}</li>
-                ))}
-              </ul>
-              <div className="p-2 bg-[#22d3ee]/10 rounded-lg text-sm text-muted-foreground mt-auto">
-                {t('certEducation.footnote')}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Cert: Products */}
-        <div id="s3-cert-products" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('certProducts.heading')}</h2>
-            <p className="text-muted-foreground text-base mt-1">{t('certProducts.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5 grid-rows-1">
-            <div className="p-5 bg-card border border-[#8b5cf6]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="font-bold text-base text-[#8b5cf6]">{t('certProducts.howTitle')}</div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {t('certProducts.howBody')}
-              </p>
-              <ul className="text-sm text-muted-foreground space-y-1.5 mt-1">
-                {certProductsPoints.map((item, i) => (
-                  <li key={i} className="flex gap-1.5"><span className="text-[#8b5cf6]">›</span>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="p-5 bg-gradient-to-br from-[#8b5cf6]/10 to-transparent border border-[#8b5cf6]/30 rounded-xl flex flex-col gap-3 justify-center">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">💎</span>
-                <div>
-                  <div className="font-black text-base text-foreground">{t('certProducts.auraTitle')}</div>
-                  <div className="text-sm text-[#8b5cf6]">{t('certProducts.auraTag')}</div>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {t('certProducts.auraBody')}
-              </p>
-              <div className="p-2 bg-[#8b5cf6]/10 rounded-lg text-sm text-muted-foreground mt-auto">
-                {t('certProducts.auraFootnote')}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Cert: Pros / Cons */}
         <div id="s3-cert-prosCons" className="h-full">
-          <ProsConsSlide
-            title={t('certProsCons.title')}
-            accent="#22d3ee"
-            pros={certPros}
-            cons={certCons}
-          />
+          <ProsConsSlide title={t('certProsCons.title')} accent="#22d3ee" pros={certPros} cons={certCons} keyPoint={kp('s3-cert-prosCons')} />
         </div>
 
         {/* ═══════════════════════════════════════════════════════════ */}
-        {/* Cross-industry Case Studies                                 */}
+        {/* Case gallery + the one that was shut down                   */}
         {/* ═══════════════════════════════════════════════════════════ */}
 
-        <div id="s3-cases-intro" className="h-full">
-          <VerticalDivider
-            emoji="📁"
-            title={t('casesDivider.title')}
-            subtitle={t('casesDivider.subtitle')}
-            color="#6366f1"
-          />
-        </div>
-
-        {/* ═══════ CASE STUDY 1 — HOME DEPOT ═══════ */}
-        <div id="s3-homedepot" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-1">
-            <div className="text-xs font-bold text-[#f59e0b] uppercase tracking-widest mb-1">{t('homedepot.kicker')}</div>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('homedepot.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('homedepot.subtitle')}</p>
+        <div id="s3-case-gallery" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('caseGallery.heading')}</h2>
+            <p className="text-muted-foreground text-sm mt-1">{t('caseGallery.subtitle')}</p>
           </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4 content-center mt-4">
-
-            {/* Problem */}
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <div className="size-7 rounded-lg bg-[#ED1C24] flex items-center justify-center text-white text-xs font-black shrink-0">01</div>
-                <div className="text-xs font-bold text-[#ED1C24] uppercase tracking-widest">{t('common.theProblem')}</div>
-              </div>
-              <div className="flex-1 p-4 bg-gradient-to-br from-[#ED1C24]/10 to-transparent border border-[#ED1C24]/30 rounded-xl flex flex-col gap-3">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t('homedepot.problemBodyA')}<span className="text-foreground font-semibold">{t('homedepot.problemBodyStrong')}</span>{t('homedepot.problemBodyB')}
-                </p>
-                <ul className="space-y-2">
-                  {homedepotProblem.map((p, i) => (
-                    <li key={i} className="flex gap-2 text-xs text-muted-foreground">
-                      <span className="text-[#ED1C24] shrink-0 mt-0.5">✗</span>{p}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-auto p-2 bg-[#ED1C24]/10 rounded-lg text-xs text-center">
-                  <span className="font-bold text-[#ED1C24]">{t('homedepot.problemCostLabel')}</span> <span className="text-muted-foreground">{t('homedepot.problemCostBody')}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Solution */}
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <div className="size-7 rounded-lg bg-[#6366f1] flex items-center justify-center text-white text-xs font-black shrink-0">02</div>
-                <div className="text-xs font-bold text-[#6366f1] uppercase tracking-widest">{t('common.theSolution')}</div>
-              </div>
-              <div className="flex-1 p-4 bg-gradient-to-br from-[#6366f1]/10 to-transparent border border-[#6366f1]/30 rounded-xl flex flex-col gap-3">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t('homedepot.solutionBodyA')}<span className="text-foreground font-semibold">{t('homedepot.solutionBodyStrong')}</span>{t('homedepot.solutionBodyB')}
-                </p>
-                <ul className="space-y-2">
-                  {homedepotSolution.map((s, i) => (
-                    <li key={i} className="flex gap-2 text-xs text-muted-foreground">
-                      <span className="text-[#6366f1] shrink-0 mt-0.5">›</span>{s}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-auto p-2 bg-[#6366f1]/10 rounded-lg text-xs text-center font-mono">
-                  {t('homedepot.solutionFlow')}
-                </div>
-              </div>
-            </div>
-
-            {/* Results */}
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <div className="size-7 rounded-lg bg-[#39B54A] flex items-center justify-center text-white text-xs font-black shrink-0">03</div>
-                <div className="text-xs font-bold text-[#39B54A] uppercase tracking-widest">{t('common.theResults')}</div>
-              </div>
-              <div className="flex-1 p-4 bg-gradient-to-br from-[#39B54A]/10 to-transparent border border-[#39B54A]/30 rounded-xl flex flex-col gap-3">
-                <div className="grid grid-cols-1 gap-3">
-                  {homedepotResults.map((r, i) => (
-                    <div key={i} className="p-3 bg-card border border-border rounded-xl">
-                      <div className="font-black text-sm" style={{ color: homedepotResultColors[i] }}>{r.metric}</div>
-                      <div className="text-xs text-muted-foreground">{r.label}</div>
+          <div className="flex-1 min-h-0 grid grid-cols-5 gap-3">
+            {cases.map((c, i) => {
+              const m = CASE_META[i];
+              return (
+                <div key={c.name} className="flex flex-col rounded-2xl border-2 bg-card overflow-hidden min-h-0" style={{ borderColor: m.color + '50' }}>
+                  <div className="h-1.5 shrink-0" style={{ backgroundColor: m.color }} />
+                  <div className="flex-1 min-h-0 flex flex-col gap-2 p-3 overflow-y-auto">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xl">{m.emoji}</span>
+                      <div className="min-w-0">
+                        <div className="text-[9px] font-bold uppercase tracking-widest" style={{ color: m.color }}>{c.industry}</div>
+                        <div className="font-black text-sm text-foreground leading-tight">{c.name}</div>
+                      </div>
                     </div>
-                  ))}
-                </div>
-                <div className="mt-auto p-2 bg-[#39B54A]/10 rounded-lg">
-                  <div className="text-xs text-muted-foreground">
-                    <span className="font-semibold text-foreground">{t('homedepot.platformLabel')}</span>{t('homedepot.platformBody')}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        {/* ═══════ CASE STUDY 2 — PROPY ═══════ */}
-        <div id="s3-realestate" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-1">
-            <div className="text-xs font-bold text-[#8b5cf6] uppercase tracking-widest mb-1">{t('propy.kicker')}</div>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('propy.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('propy.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4 content-center mt-4">
-
-            {/* Problem */}
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <div className="size-7 rounded-lg bg-[#ED1C24] flex items-center justify-center text-white text-xs font-black shrink-0">01</div>
-                <div className="text-xs font-bold text-[#ED1C24] uppercase tracking-widest">{t('common.theProblem')}</div>
-              </div>
-              <div className="flex-1 p-4 bg-gradient-to-br from-[#ED1C24]/10 to-transparent border border-[#ED1C24]/30 rounded-xl flex flex-col gap-3">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t('propy.problemBodyA')}<span className="text-foreground font-semibold">{t('propy.problemBodyStrong')}</span>{t('propy.problemBodyB')}
-                </p>
-                <ul className="space-y-2">
-                  {propyProblem.map((p, i) => (
-                    <li key={i} className="flex gap-2 text-xs text-muted-foreground">
-                      <span className="text-[#ED1C24] shrink-0 mt-0.5">✗</span>{p}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-auto p-2 bg-[#ED1C24]/10 rounded-lg text-xs text-center">
-                  <span className="font-bold text-[#ED1C24]">{t('propy.problemCostLabel')}</span> <span className="text-muted-foreground">{t('propy.problemCostBody')}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Solution */}
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <div className="size-7 rounded-lg bg-[#8b5cf6] flex items-center justify-center text-white text-xs font-black shrink-0">02</div>
-                <div className="text-xs font-bold text-[#8b5cf6] uppercase tracking-widest">{t('common.theSolution')}</div>
-              </div>
-              <div className="flex-1 p-4 bg-gradient-to-br from-[#8b5cf6]/10 to-transparent border border-[#8b5cf6]/30 rounded-xl flex flex-col gap-3">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t('propy.solutionBodyA')}<span className="text-foreground font-semibold">{t('propy.solutionBodyStrong')}</span>{t('propy.solutionBodyB')}
-                </p>
-                <ul className="space-y-2">
-                  {propySolution.map((s, i) => (
-                    <li key={i} className="flex gap-2 text-xs text-muted-foreground">
-                      <span className="text-[#8b5cf6] shrink-0 mt-0.5">›</span>{s}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-auto p-2 bg-[#8b5cf6]/10 rounded-lg text-xs text-center font-mono">
-                  {t('propy.solutionFlow')}
-                </div>
-              </div>
-            </div>
-
-            {/* Results */}
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <div className="size-7 rounded-lg bg-[#39B54A] flex items-center justify-center text-white text-xs font-black shrink-0">03</div>
-                <div className="text-xs font-bold text-[#39B54A] uppercase tracking-widest">{t('common.theResults')}</div>
-              </div>
-              <div className="flex-1 p-4 bg-gradient-to-br from-[#39B54A]/10 to-transparent border border-[#39B54A]/30 rounded-xl flex flex-col gap-3">
-                <div className="grid grid-cols-1 gap-3">
-                  {propyResults.map((r, i) => (
-                    <div key={i} className="p-3 bg-card border border-border rounded-xl">
-                      <div className="font-black text-sm" style={{ color: propyResultColors[i] }}>{r.metric}</div>
-                      <div className="text-xs text-muted-foreground">{r.label}</div>
+                    <div>
+                      <div className="text-[9px] font-bold uppercase tracking-widest text-[#ED1C24]">{t('caseGallery.problemLabel')}</div>
+                      <p className="text-xs text-muted-foreground leading-snug">{c.problem}</p>
                     </div>
-                  ))}
-                </div>
-                <div className="mt-auto p-2 bg-[#39B54A]/10 rounded-lg text-xs text-muted-foreground">
-                  <span className="font-semibold text-foreground">{t('propy.caveatLabel')}</span>{t('propy.caveatBody')}
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        {/* ═══════ CASE STUDY 3 — CALIFORNIA DMV ═══════ */}
-        <div id="s3-dmv" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-1">
-            <div className="text-xs font-bold text-[#22d3ee] uppercase tracking-widest mb-1">{t('dmv.kicker')}</div>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('dmv.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('dmv.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4 content-center mt-4">
-
-            {/* Problem */}
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <div className="size-7 rounded-lg bg-[#ED1C24] flex items-center justify-center text-white text-xs font-black shrink-0">01</div>
-                <div className="text-xs font-bold text-[#ED1C24] uppercase tracking-widest">{t('common.theProblem')}</div>
-              </div>
-              <div className="flex-1 p-4 bg-gradient-to-br from-[#ED1C24]/10 to-transparent border border-[#ED1C24]/30 rounded-xl flex flex-col gap-3">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t('dmv.problemBodyA')}<span className="text-foreground font-semibold">{t('dmv.problemBodyStrong')}</span>{t('dmv.problemBodyB')}
-                </p>
-                <ul className="space-y-2">
-                  {dmvProblem.map((p, i) => (
-                    <li key={i} className="flex gap-2 text-xs text-muted-foreground">
-                      <span className="text-[#ED1C24] shrink-0 mt-0.5">✗</span>{p}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-auto p-2 bg-[#ED1C24]/10 rounded-lg text-xs text-center">
-                  <span className="font-bold text-[#ED1C24]">{t('dmv.problemScaleLabel')}</span> <span className="text-muted-foreground">{t('dmv.problemScaleBody')}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Solution */}
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <div className="size-7 rounded-lg bg-[#22d3ee] flex items-center justify-center text-white text-xs font-black shrink-0">02</div>
-                <div className="text-xs font-bold text-[#22d3ee] uppercase tracking-widest">{t('common.theSolution')}</div>
-              </div>
-              <div className="flex-1 p-4 bg-gradient-to-br from-[#22d3ee]/10 to-transparent border border-[#22d3ee]/30 rounded-xl flex flex-col gap-3">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t('dmv.solutionBodyA')}<span className="text-foreground font-semibold">{t('dmv.solutionBodyStrong1')}</span>{t('dmv.solutionBodyB')}<span className="text-foreground font-semibold">{t('dmv.solutionBodyStrong2')}</span>{t('dmv.solutionBodyC')}
-                </p>
-                <ul className="space-y-2">
-                  {dmvSolution.map((s, i) => (
-                    <li key={i} className="flex gap-2 text-xs text-muted-foreground">
-                      <span className="text-[#22d3ee] shrink-0 mt-0.5">›</span>{s}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-auto p-2 bg-[#22d3ee]/10 rounded-lg text-xs text-center font-mono">
-                  {t('dmv.solutionFlow')}
-                </div>
-              </div>
-            </div>
-
-            {/* Results */}
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <div className="size-7 rounded-lg bg-[#39B54A] flex items-center justify-center text-white text-xs font-black shrink-0">03</div>
-                <div className="text-xs font-bold text-[#39B54A] uppercase tracking-widest">{t('common.theResults')}</div>
-              </div>
-              <div className="flex-1 p-4 bg-gradient-to-br from-[#39B54A]/10 to-transparent border border-[#39B54A]/30 rounded-xl flex flex-col gap-3">
-                <div className="grid grid-cols-1 gap-3">
-                  {dmvResults.map((r, i) => (
-                    <div key={i} className="p-3 bg-card border border-border rounded-xl">
-                      <div className="font-black text-sm" style={{ color: dmvResultColors[i] }}>{r.metric}</div>
-                      <div className="text-xs text-muted-foreground">{r.label}</div>
+                    <div>
+                      <div className="text-[9px] font-bold uppercase tracking-widest text-[#6366f1]">{t('caseGallery.solutionLabel')}</div>
+                      <p className="text-xs text-foreground/90 leading-snug">{c.solution}</p>
                     </div>
-                  ))}
-                </div>
-                <div className="mt-auto p-2 bg-[#39B54A]/10 rounded-lg">
-                  <div className="text-xs text-muted-foreground">
-                    <span className="font-semibold text-foreground">{t('dmv.takeawayLabel')}</span>{t('dmv.takeawayBody')}
+                    <div className="mt-auto p-2 rounded-lg" style={{ backgroundColor: m.color + '14' }}>
+                      <div className="font-mono font-black text-sm leading-tight" style={{ color: m.color }}>{c.metric}</div>
+                      <div className="text-[10px] text-muted-foreground leading-snug">{c.metricLabel}</div>
+                    </div>
+                    <div className="text-[10px] text-muted-foreground leading-snug"><span className="font-semibold text-foreground">{t('caseGallery.platformLabel')}: </span>{c.platform}</div>
                   </div>
                 </div>
-              </div>
-            </div>
-
+              );
+            })}
           </div>
+          <KeyPointBar text={kp('s3-case-gallery')} className="mt-3" />
         </div>
 
-        {/* ═══════ CASE STUDY — WALMART FOOD TRUST ═══════ */}
-        <div id="s3-walmart" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-1 flex items-start gap-4">
-            <img src={imgWalmart} alt={t('walmart.imgAlt')} className="hidden lg:block h-24 rounded-lg object-cover shrink-0" />
-            <div>
-              <div className="text-xs font-bold text-[#39B54A] uppercase tracking-widest mb-1">{t('walmart.kicker')}</div>
-              <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('walmart.heading')}</h2>
-              <p className="text-muted-foreground text-sm mt-1">{t('walmart.subtitle')}</p>
-            </div>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4 content-center mt-4">
-            <div className="p-4 bg-gradient-to-br from-[#ED1C24]/10 to-transparent border border-[#ED1C24]/30 rounded-xl flex flex-col gap-2">
-              <div className="text-xs font-bold text-[#ED1C24] uppercase tracking-widest">{t('walmart.problemTitle')}</div>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                {t('walmart.problemBodyA')}<span className="font-semibold text-foreground">{t('walmart.problemBodyStrong')}</span>{t('walmart.problemBodyB')}
-              </p>
-              <ul className="text-xs text-muted-foreground space-y-1.5 mt-1">
-                {walmartProblem.map((item, i) => (
-                  <li key={i} className="flex gap-1.5"><span className="text-[#ED1C24]">›</span>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="p-4 bg-gradient-to-br from-[#6366f1]/10 to-transparent border border-[#6366f1]/30 rounded-xl flex flex-col gap-2">
-              <div className="text-xs font-bold text-[#6366f1] uppercase tracking-widest">{t('walmart.solutionTitle')}</div>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                <span className="font-semibold text-foreground">{t('walmart.solutionBodyStrong1')}</span>{t('walmart.solutionBodyMid')}<span className="font-semibold text-foreground">{t('walmart.solutionBodyStrong2')}</span>{t('walmart.solutionBodyEnd')}
-              </p>
-              <ul className="text-xs text-muted-foreground space-y-1.5 mt-1">
-                {walmartSolution.map((item, i) => (
-                  <li key={i} className="flex gap-1.5"><span className="text-[#6366f1]">›</span>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="p-4 bg-gradient-to-br from-[#39B54A]/10 to-transparent border border-[#39B54A]/30 rounded-xl flex flex-col gap-2">
-              <div className="text-xs font-bold text-[#39B54A] uppercase tracking-widest">{t('walmart.resultsTitle')}</div>
-              <div className="grid grid-cols-1 gap-2">
-                {walmartResults.map((r, i) => (
-                  <div key={i} className="p-2 bg-card border border-border rounded-lg">
-                    <div className="font-mono font-black text-base text-[#39B54A]">{r.metric}</div>
-                    <div className="text-[10px] text-muted-foreground">{r.label}</div>
-                  </div>
-                ))}
-              </div>
-              <div className="text-xs text-muted-foreground p-2 bg-[#39B54A]/10 rounded-lg mt-auto">
-                <span className="font-semibold text-foreground">{t('walmart.whyLabel')}</span>{t('walmart.whyBody')}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ═══════ CASE STUDY — SANTANDER BOND ═══════ */}
-        <div id="s3-santander" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-1 flex items-start gap-4">
-            <img src={imgSantander} alt={t('santander.imgAlt')} className="hidden lg:block h-24 rounded-lg object-cover shrink-0" />
-            <div>
-              <div className="text-xs font-bold text-[#6366f1] uppercase tracking-widest mb-1">{t('santander.kicker')}</div>
-              <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('santander.heading')}</h2>
-              <p className="text-muted-foreground text-sm mt-1">{t('santander.subtitle')}</p>
-            </div>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4 content-center mt-4">
-            <div className="p-4 bg-gradient-to-br from-[#6366f1]/10 to-transparent border border-[#6366f1]/30 rounded-xl flex flex-col gap-2">
-              <div className="text-xs font-bold text-[#6366f1] uppercase tracking-widest">{t('santander.backgroundTitle')}</div>
-              <ul className="text-xs text-muted-foreground space-y-1.5">
-                {santanderBackground.map((p, i) => (
-                  <li key={i} className="flex gap-1.5"><span className="text-[#6366f1]">›</span>{p.a}{p.strong && <span className="font-semibold text-foreground">{p.strong}</span>}{p.b}</li>
-                ))}
-              </ul>
-              <p className="text-xs text-muted-foreground italic border-l-2 border-[#6366f1] pl-2 mt-1">
-                {t('santander.backgroundQuote')}
-              </p>
-            </div>
-            <div className="p-4 bg-gradient-to-br from-[#8b5cf6]/10 to-transparent border border-[#8b5cf6]/30 rounded-xl flex flex-col gap-2">
-              <div className="text-xs font-bold text-[#8b5cf6] uppercase tracking-widest">{t('santander.whyTitle')}</div>
-              <ul className="text-xs text-muted-foreground space-y-1.5">
-                {santanderWhy.map((item, i) => (
-                  <li key={i} className="flex gap-1.5"><span className="text-[#8b5cf6]">›</span>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="p-4 bg-gradient-to-br from-[#39B54A]/10 to-transparent border border-[#39B54A]/30 rounded-xl flex flex-col gap-2">
-              <div className="text-xs font-bold text-[#39B54A] uppercase tracking-widest">{t('santander.benefitsTitle')}</div>
-              <div className="grid grid-cols-1 gap-2">
-                {santanderBenefits.map((r, i) => (
-                  <div key={i} className="p-2 bg-card border border-border rounded-lg">
-                    <div className="font-mono font-black text-base text-[#39B54A]">{r.metric}</div>
-                    <div className="text-[10px] text-muted-foreground">{r.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ═══════ CASE STUDY — TRADELENS (SHUT DOWN) ═══════ */}
         <div id="s3-tradelens" className="h-full"><TradeLensCase /></div>
 
-        {/* ═══════ EXERCISE: DESIGN YOUR OWN ═══════ */}
-        <div id="s3-exercise" className="h-full">
-          <DesignYourOwnExercise />
-        </div>
+        {/* ═══════ WRAP UP ═══════ */}
+        <div id="s3-exercise" className="h-full"><DesignYourOwnExercise /></div>
 
-        {/* ═══════ QUIZ ═══════ */}
         <div id="s3-quiz" className="h-full">
           <QuizSlide
             question={t('quiz.question')}
@@ -2459,13 +1376,9 @@ export function SC_Section3() {
         </div>
 
         <div id="s3-takeaways" className="h-full">
-          <TakeawaySlide
-            title={t('takeaways.title')}
-            takeaways={takeawayItems}
-          />
+          <TakeawaySlide title={t('takeaways.title')} takeaways={takeawayItems} />
         </div>
 
-        {/* ═══════ SUMMARY ═══════ */}
         <div id="s3-summary" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-5">
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('summary.heading')}</h2>

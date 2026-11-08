@@ -7,6 +7,7 @@ import { QuizSlide } from '../../components/templates/QuizSlide';
 import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
 import { UnderTheHood } from '../../components/shared/UnderTheHood';
+import { KeyPointBar } from '../../components/shared/KeyPointBar';
 import { ShieldAlert } from 'lucide-react';
 
 // Language-neutral shape — only IDs. Labels come from t() at render time.
@@ -312,6 +313,7 @@ export function SC_Section5() {
             </div>
           </div>
           <UnderTheHood terms={['data feed', 'TWAP', 'signed report', 'VRF (randomness)']} className="shrink-0 mt-3" />
+          <KeyPointBar text={t('keyPoints.s5-oracle')} className="mt-3" />
         </div>
 
         {/* ═══════ CHALLENGES & LIMITATIONS ═══════ */}
@@ -354,6 +356,7 @@ export function SC_Section5() {
               );
             })}
           </div>
+          <KeyPointBar text={t('keyPoints.s5-challenges')} className="mt-3" />
         </div>
 
         {/* ═══════ TECHNICAL CHALLENGES ═══════ */}
@@ -396,11 +399,15 @@ export function SC_Section5() {
               );
             })}
           </div>
+          <KeyPointBar text={t('keyPoints.s5-technical')} className="mt-3" />
         </div>
 
         {/* ═══════ EXERCISE: ORACLE ATTACK ═══════ */}
-        <div id="s5-ex-oracle" className="h-full">
-          <OracleAttackExercise />
+        <div id="s5-ex-oracle" className="h-full flex flex-col">
+          <div className="flex-1 min-h-0">
+            <OracleAttackExercise />
+          </div>
+          <KeyPointBar text={t('keyPoints.s5-ex-oracle')} className="mx-6 lg:mx-8 mb-6 -mt-3" />
         </div>
 
         {/* ═══════ SECURITY RISKS ═══════ */}
@@ -437,6 +444,7 @@ export function SC_Section5() {
               );
             })}
           </div>
+          <KeyPointBar text={t('keyPoints.s5-risks-security')} className="mt-3" />
         </div>
 
         {/* ═══════ FAILURES GALLERY ═══════ */}
@@ -483,6 +491,7 @@ export function SC_Section5() {
             <p className="text-xs text-muted-foreground italic flex-1">{t('failures.footer')}</p>
             <UnderTheHood terms={['validator keys', 'flash loan', 'oracle manipulation', 'selfdestruct', 'reflexivity']} />
           </div>
+          <KeyPointBar text={t('keyPoints.s5-failures')} className="mt-3" />
         </div>
 
         {/* ═══════ COST RISKS ═══════ */}
@@ -524,6 +533,7 @@ export function SC_Section5() {
               );
             })}
           </div>
+          <KeyPointBar text={t('keyPoints.s5-risks-cost')} className="mt-3" />
         </div>
 
         {/* ═══════ REGULATORY RISKS ═══════ */}
@@ -559,6 +569,7 @@ export function SC_Section5() {
               );
             })}
           </div>
+          <KeyPointBar text={t('keyPoints.s5-risks-regulatory')} className="mt-3" />
         </div>
 
         {/* ═══════ QUIZ ═══════ */}

@@ -7,6 +7,7 @@ import { QuizSlide } from '../../components/templates/QuizSlide';
 import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
 import { UnderTheHood } from '../../components/shared/UnderTheHood';
+import { KeyPointBar } from '../../components/shared/KeyPointBar';
 import { DeepDiveBadge } from '../../components/shared/DeepDiveBadge';
 import { Cog, Check, X } from 'lucide-react';
 
@@ -578,6 +579,7 @@ export function SC_Section2() {
             </div>
 
           </div>
+          <KeyPointBar text={t('keyPoints.s2-web3')} className="mt-3" />
         </div>
 
         {/* ═══════ dAPPS ═══════ */}
@@ -624,11 +626,15 @@ export function SC_Section2() {
             </div>
 
           </div>
+          <KeyPointBar text={t('keyPoints.s2-dapp')} className="mt-3" />
         </div>
 
         {/* ═══════ EXERCISE: dAPP STACK ═══════ */}
-        <div id="s2-ex-stack" className="h-full">
-          <DAppStackExercise />
+        <div id="s2-ex-stack" className="h-full flex flex-col">
+          <div className="flex-1 min-h-0">
+            <DAppStackExercise />
+          </div>
+          <KeyPointBar text={t('keyPoints.s2-ex-stack')} className="mx-6 lg:mx-8 mb-6 -mt-3" />
         </div>
 
         {/* ═══════ WEB2 vs WEB3 — APP INFRASTRUCTURE ═══════ */}
@@ -663,6 +669,7 @@ export function SC_Section2() {
             <span className="font-bold text-[#39B54A]">{t('vsApp.takeawayLabel')}</span>
             <span className="text-muted-foreground">{t('vsApp.takeaway')}</span>
           </div>
+          <KeyPointBar text={t('keyPoints.s2-vs')} className="mt-3" />
         </div>
 
         {/* ═══════ TRADITIONAL vs SMART CONTRACTS ═══════ */}
@@ -697,6 +704,7 @@ export function SC_Section2() {
             <span className="font-bold text-[#6366f1]">{t('vsContract.takeawayLabel')}</span>
             <span className="text-muted-foreground">{t('vsContract.takeaway')}</span>
           </div>
+          <KeyPointBar text={t('keyPoints.s2-vs-2')} className="mt-3" />
         </div>
 
         {/* ═══════ TOKEN STANDARDS ═══════ */}
@@ -803,6 +811,7 @@ export function SC_Section2() {
             <span className="font-bold text-[#6366f1]">{t('standards.footerLabel')}</span>
             <span className="text-muted-foreground">{t('standards.footerA')}<em>{t('standards.footerEm')}</em>{t('standards.footerB')}</span>
           </div>
+          <KeyPointBar text={t('keyPoints.s2-standards')} className="mt-3" />
         </div>
 
         {/* ═══════ ANATOMY ═══════ */}
@@ -877,6 +886,7 @@ export function SC_Section2() {
             </div>
 
           </div>
+          <KeyPointBar text={t('keyPoints.s2-components')} className="mt-3" />
         </div>
 
         {/* ═══════ WORKFLOW ═══════ */}
@@ -939,6 +949,7 @@ export function SC_Section2() {
               </div>
             </div>
           </div>
+          <KeyPointBar text={t('keyPoints.s2-workflow')} className="mt-3" />
         </div>
 
         {/* ═══════ READING SOLIDITY ═══════ */}
@@ -1009,6 +1020,7 @@ export function SC_Section2() {
               ))}
             </div>
           </div>
+          <KeyPointBar text={t('keyPoints.s2-solidity')} className="mt-3" />
         </div>
 
         {/* ═══════ EXECUTION ENVIRONMENT ═══════ */}
@@ -1094,6 +1106,7 @@ export function SC_Section2() {
             </div>
 
           </div>
+          <KeyPointBar text={t('keyPoints.s2-execution')} className="mt-3" />
         </div>
 
         {/* ═══════ NEW CAPABILITIES ═══════ */}
@@ -1126,6 +1139,7 @@ export function SC_Section2() {
               </motion.div>
             ))}
           </div>
+          <KeyPointBar text={t('keyPoints.s2-capabilities')} className="mt-3" />
         </div>
 
         {/* ═══════ WHY BUILD WITH SMART CONTRACTS? ═══════ */}
@@ -1166,6 +1180,7 @@ export function SC_Section2() {
             </div>
 
           </div>
+          <KeyPointBar text={t('keyPoints.s2-why')} className="mt-3" />
         </div>
 
         {/* ═══════ GAS FUNDAMENTALS ═══════ */}
@@ -1233,11 +1248,15 @@ export function SC_Section2() {
             </div>
 
           </div>
+          <KeyPointBar text={t('keyPoints.s2-gas')} className="mt-3" />
         </div>
 
         {/* ═══════ EXERCISE: GAS RANKING ═══════ */}
-        <div id="s2-ex-gas" className="h-full">
-          <GasRankingExercise />
+        <div id="s2-ex-gas" className="h-full flex flex-col">
+          <div className="flex-1 min-h-0">
+            <GasRankingExercise />
+          </div>
+          <KeyPointBar text={t('keyPoints.s2-ex-gas')} className="mx-6 lg:mx-8 mb-6 -mt-3" />
         </div>
 
         {/* ═══════ RESHAPE BUSINESS ═══════ */}
@@ -1266,6 +1285,7 @@ export function SC_Section2() {
           <div className="shrink-0 mt-4 p-3 rounded-xl border border-border bg-muted/30 text-xs text-muted-foreground">
             <span className="font-semibold text-foreground">{t('reshape.patternLabel')}</span>{t('reshape.patternBody')}
           </div>
+          <KeyPointBar text={t('keyPoints.s2-reshape')} className="mt-3" />
         </div>
 
         {/* Quiz 1: Workflow */}
