@@ -10,6 +10,7 @@ import { SiteFooter } from '../../components/shared/SiteFooter';
 import { QuizSlide } from '../../components/templates/QuizSlide';
 import { UnderTheHood } from '../../components/shared/UnderTheHood';
 import { RecapHandoff } from '../../components/shared/RecapHandoff';
+import { KeyPointBar } from '../../components/shared/KeyPointBar';
 import { Network } from 'lucide-react';
 
 // Language-neutral shape — IDs + kind only. Labels resolved via t() at render time.
@@ -18,6 +19,7 @@ const chapterShape = [
   { id: 's4-interop' },
   { id: 's4-usecases' },
   { id: 's4-interop-compare' },
+  { id: 's4-chooser' },
 
   { kind: 'group' as const, id: 'g-s4-bridges' },
   { id: 's4-bridges' },
@@ -469,6 +471,97 @@ function XrplAxelarFlow() {
   );
 }
 
+/* ───────────── "How should these two chains talk?" — tiny chooser ─────────────
+   Pick a scenario, pick a route (bridge / IBC / Layer 0), get fit + main risk. */
+type RouteId = 'bridge' | 'ibc' | 'l0';
+type Verdict = 'best' | 'ok' | 'poor';
+const CHOOSER_ROUTES: { id: RouteId; color: string; emoji: string }[] = [
+  { id: 'bridge', color: '#f59e0b', emoji: '🌉' },
+  { id: 'ibc',    color: '#22d3ee', emoji: '🔁' },
+  { id: 'l0',     color: '#6366f1', emoji: '🏛️' },
+];
+const CHOOSER_VERDICT: Record<Verdict, { color: string; emoji: string }> = {
+  best: { color: '#39B54A', emoji: '✅' },
+  ok:   { color: '#f59e0b', emoji: '🟡' },
+  poor: { color: '#ef4444', emoji: '❌' },
+};
+
+function InteropChooser() {
+  const { t } = useTranslation('blockchain-platforms/section-4');
+  const [scenario, setScenario] = useState(0);
+  const [route, setRoute] = useState<RouteId | null>(null);
+  const scenarios = t('chooser.scenarios', { returnObjects: true }) as { title: string; desc: string }[];
+  const options = t('chooser.options', { returnObjects: true }) as Record<RouteId, { label: string; sub: string }>;
+  const fb = route ? (t(`chooser.feedback.s${scenario}.${route}`, { returnObjects: true }) as { verdict: Verdict; text: string; risk: string }) : null;
+  const v = fb ? CHOOSER_VERDICT[fb.verdict] : null;
+
+  return (
+    <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
+      {/* 1 — scenario */}
+      <div className="flex flex-col gap-2 min-h-0">
+        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground shrink-0">{t('chooser.scenarioLabel')}</p>
+        {scenarios.map((sc, i) => {
+          const active = scenario === i;
+          return (
+            <button
+              key={sc.title}
+              onClick={() => { setScenario(i); setRoute(null); }}
+              className={`text-left rounded-xl border-2 p-3 transition-all hover:-translate-y-0.5 flex-1 min-h-0 ${active ? 'shadow-md' : ''}`}
+              style={{ borderColor: active ? '#22d3ee' : '#22d3ee40', backgroundColor: active ? '#22d3ee12' : 'hsl(var(--card))' }}
+            >
+              <p className="text-sm font-bold text-foreground leading-tight">{sc.title}</p>
+              <p className="text-xs text-muted-foreground leading-snug mt-1">{sc.desc}</p>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* 2 — route */}
+      <div className="flex flex-col gap-2 min-h-0">
+        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground shrink-0">{t('chooser.optionLabel')}</p>
+        {CHOOSER_ROUTES.map((r) => {
+          const active = route === r.id;
+          return (
+            <button
+              key={r.id}
+              onClick={() => setRoute(r.id)}
+              className={`text-left rounded-xl border-2 p-3 transition-all hover:-translate-y-0.5 flex-1 min-h-0 flex items-center gap-3 ${active ? 'shadow-md' : ''}`}
+              style={{ borderColor: active ? r.color : r.color + '55', backgroundColor: active ? r.color + '14' : 'hsl(var(--card))' }}
+            >
+              <span className="text-2xl leading-none">{r.emoji}</span>
+              <div className="min-w-0">
+                <p className="text-sm font-bold leading-tight" style={{ color: r.color }}>{options[r.id].label}</p>
+                <p className="text-xs text-muted-foreground leading-snug mt-0.5">{options[r.id].sub}</p>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* 3 — feedback */}
+      <div className="flex flex-col gap-2 min-h-0">
+        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground shrink-0">{t('chooser.feedbackLabel')}</p>
+        <div className="flex-1 min-h-0 rounded-xl border-2 p-4 flex flex-col gap-3 transition-colors" style={{ borderColor: (v?.color ?? '#6b7280') + '66', backgroundColor: (v?.color ?? '#6b7280') + '0a' }}>
+          {!fb || !v ? (
+            <p className="text-sm text-muted-foreground italic">{t('chooser.idle')}</p>
+          ) : (
+            <motion.div key={`${scenario}-${route}`} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-3 min-h-0">
+              <div className="inline-flex items-center gap-2 self-start rounded-lg border-2 px-3 py-1.5 text-sm font-black" style={{ borderColor: v.color, backgroundColor: v.color + '14', color: v.color }}>
+                <span>{v.emoji}</span>{t(`chooser.verdicts.${fb.verdict}`)}
+              </div>
+              <p className="text-sm text-foreground leading-snug">{fb.text}</p>
+              <div className="rounded-lg border p-2.5 mt-auto" style={{ borderColor: '#ef444450', backgroundColor: '#ef44440a' }}>
+                <p className="text-[9px] font-black uppercase tracking-widest text-[#ef4444]">⚠️ {t('chooser.riskLabel')}</p>
+                <p className="text-xs text-foreground leading-snug mt-0.5">{fb.risk}</p>
+              </div>
+            </motion.div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 interface CardItem { emoji: string; title: string; desc: string; }
 interface IconCard { icon: string; title: string; desc: string; }
 interface TitledCard { title: string; desc: string; }
@@ -506,6 +599,8 @@ export function BP_Section4() {
   const useCases = t('usecases.items', { returnObjects: true }) as UseCaseItem[];
   const hoodLabel = t('ui.hood');
   const recapLabel = t('ui.recap');
+  const keyLabel = t('ui.keyPoint');
+  const kp = (id: string) => <KeyPointBar label={keyLabel} text={t(`keyPoints.${id}`)} color="#22d3ee" className="mt-3" />;
 
   const layer0Provides = t('layer0.provides', { returnObjects: true }) as IconCard[];
   const layer0Platforms = t('layer02.platforms', { returnObjects: true }) as PlatformItem[];
@@ -661,6 +756,7 @@ export function BP_Section4() {
               <UnderTheHood label={hoodLabel} terms={['consensus', 'state', 'wrapped token', 'light client']} className="self-start" />
             </div>
           </div>
+          {kp('s4-interop')}
         </div>
 
         {/* ═══════ S4-USECASES — real-world situations ═══════ */}
@@ -697,11 +793,7 @@ export function BP_Section4() {
             })}
           </div>
 
-          <div className="shrink-0 mt-4 rounded-xl border p-3" style={{ borderColor: '#22d3ee55', backgroundColor: '#22d3ee0d' }}>
-            <p className="text-sm text-foreground leading-snug">
-              <span className="font-bold text-[#22d3ee]">{t('usecases.footerStrong')}</span>{t('usecases.footer')}
-            </p>
-          </div>
+          {kp('s4-usecases')}
         </div>
 
         {/* ═══════ S4-INTEROP-COMPARE ═══════ */}
@@ -762,9 +854,21 @@ export function BP_Section4() {
             })}
 
           </div>
-          <div className="shrink-0 mt-3">
+          {kp('s4-interop-compare')}
+          <div className="shrink-0 mt-2">
             <UnderTheHood label={hoodLabel} terms={['lock-and-mint', 'multisig', 'light client', 'relayer', 'shared validator set']} />
           </div>
+        </div>
+
+        {/* ═══════ S4-CHOOSER — interactive: how should these two chains talk? ═══════ */}
+        <div id="s4-chooser" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-4">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#22d3ee]/15 border border-[#22d3ee]/40 text-[#22d3ee] text-xs font-bold">{t('chooser.badge')}</span>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('chooser.heading')}</h2>
+            <p className="text-sm text-muted-foreground mt-1 max-w-4xl">{t('chooser.subtitle')}</p>
+          </div>
+          <InteropChooser />
+          {kp('s4-chooser')}
         </div>
 
         {/* ═══════ BRIDGE SECURITY ═══════ */}
@@ -861,6 +965,7 @@ export function BP_Section4() {
               </div>
             </div>
           </div>
+          {kp('s4-bridges')}
         </div>
 
         {/* ═══════ S4-COSMOS ═══════ */}
@@ -1014,16 +1119,8 @@ export function BP_Section4() {
                 ))}
               </div>
 
-              {/* Two side-by-side panels: ATOM economics + IBC reach */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 shrink-0">
-                <div className="p-2.5 bg-[#22d3ee]/5 rounded-lg border border-[#22d3ee]/30">
-                  <p className="text-[11px] font-bold text-[#22d3ee] mb-1 flex items-center gap-1.5">
-                    <span>💎</span> {t('cosmos.atomTitle')}
-                  </p>
-                  <p className="text-[10px] text-muted-foreground leading-relaxed">
-                    {t('cosmos.atomBody')}
-                  </p>
-                </div>
+              {/* IBC reach beyond Cosmos */}
+              <div className="shrink-0">
                 <div className="p-2.5 bg-[#6366f1]/5 rounded-lg border border-[#6366f1]/30">
                   <p className="text-[11px] font-bold text-[#6366f1] mb-1 flex items-center gap-1.5">
                     <span>🔗</span> {t('cosmos.beyondTitle')}
@@ -1035,6 +1132,7 @@ export function BP_Section4() {
               </div>
             </div>
           </div>
+          {kp('s4-cosmos')}
         </div>
 
         {/* ═══════ COSMOS APPS — ecosystem ═══════ */}
@@ -1097,6 +1195,7 @@ export function BP_Section4() {
               <span className="font-medium text-foreground">{t('cosmosEco.footerA')}</span>{t('cosmosEco.footerAtext')}<span className="font-medium text-foreground">{t('cosmosEco.footerB')}</span>{t('cosmosEco.footerBtext')}<span className="font-medium text-foreground">{t('cosmosEco.footerC')}</span>{t('cosmosEco.footerCtext')}<span className="font-medium text-foreground">{t('cosmosEco.footerD')}</span>{t('cosmosEco.footerDtext')}<span className="font-medium text-foreground">{t('cosmosEco.footerE')}</span>{t('cosmosEco.footerEtext')}<span className="font-medium text-foreground">{t('cosmosEco.footerF')}</span>{t('cosmosEco.footerFtext')}<span className="font-medium text-foreground">{t('cosmosEco.footerG')}</span>{t('cosmosEco.footerGtext')}
             </p>
           </div>
+          {kp('s4-cosmos-eco')}
         </div>
 
         {/* ═══════ S4-LAYER0 (1/2) — Animated Concept ═══════ */}
@@ -1139,6 +1238,7 @@ export function BP_Section4() {
               </div>
             </div>
           </div>
+          {kp('s4-layer0')}
         </div>
 
         {/* ═══════ S4-LAYER0 (2/2) — Platforms & Trade-off vs Cosmos ═══════ */}
@@ -1196,6 +1296,7 @@ export function BP_Section4() {
               </div>
             </div>
           </div>
+          {kp('s4-layer0-2')}
         </div>
 
         {/* ═══════ S4-XRP — XRP Ledger (focused, one takeaway) ═══════ */}
@@ -1203,12 +1304,6 @@ export function BP_Section4() {
           <div className="shrink-0 mb-3">
             <span className="px-2.5 py-0.5 rounded-full bg-[#06b6d4]/15 border border-[#06b6d4]/40 text-[#06b6d4] text-xs font-bold">{t('xrp.badgePartner')}</span>
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('xrp.heading')}</h2>
-          </div>
-
-          {/* The one takeaway — anchors the whole sub-section */}
-          <div className="shrink-0 mb-3 rounded-xl border-2 p-3" style={{ borderColor: '#06b6d480', backgroundColor: '#06b6d412' }}>
-            <div className="text-[10px] font-black uppercase tracking-widest text-[#06b6d4] mb-0.5">💡 {t('xrp.takeawayLabel')}</div>
-            <p className="text-sm lg:text-base font-semibold text-foreground leading-snug">{t('xrp.takeaway')}</p>
           </div>
 
           {/* Three pillars */}
@@ -1251,6 +1346,7 @@ export function BP_Section4() {
             </div>
             <UnderTheHood label={hoodLabel} terms={['UNL', 'federated BFT', 'Trust Lines', 'XLS-30 AMM', 'Hooks']} className="self-start lg:self-center" />
           </div>
+          {kp('s4-xrp')}
         </div>
 
         {/* ═══════ XRPL ↔ AXELAR — dedicated animation slide ═══════ */}
@@ -1265,6 +1361,7 @@ export function BP_Section4() {
           <div className="flex-1 min-h-0">
             <XrplAxelarFlow />
           </div>
+          {kp('s4-xrp-anim')}
         </div>
 
         {/* ═══════ QUIZ ═══════ */}

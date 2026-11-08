@@ -6,8 +6,8 @@ import { TakeawaySlide } from '../../components/templates/TakeawaySlide';
 import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
 import { QuizSlide } from '../../components/templates/QuizSlide';
-import { Zap } from 'lucide-react';
-import { TeamCheckpoint } from '../../components/TeamCheckpoint';
+import { MessageCircle, Zap } from 'lucide-react';
+import { KeyPointBar } from '../../components/shared/KeyPointBar';
 import { UnderTheHood } from '../../components/shared/UnderTheHood';
 import { RecapHandoff } from '../../components/shared/RecapHandoff';
 
@@ -315,6 +315,60 @@ function PlatformRecommender() {
           </div>
         )}
       </div>
+      <KeyPointBar label={t('ui.keyPoint')} text={t('keyPoints.s5-decision')} color="#6366f1" className="mt-3" />
+    </div>
+  );
+}
+
+/* ──────────── Platform snapshot — one compact slide per platform ────────────
+   What it is · what it's good at · one real app · one caveat. Text from t(). */
+type SnapshotId = 'starknet' | 'polkadot' | 'avalanche';
+const SNAPSHOT_CARD_META = [
+  { icon: '🧭', color: '#6366f1' },
+  { icon: '💪', color: '#39B54A' },
+  { icon: '🚀', color: '#8b5cf6' },
+  { icon: '⚠️', color: '#f59e0b' },
+];
+
+function PlatformSnapshot({ id, color, emoji, hood, recapTo }: { id: SnapshotId; color: string; emoji: string; hood: string[]; recapTo?: string }) {
+  const { t } = useTranslation('blockchain-platforms/section-5');
+  const cards = t(`snapshot.${id}.cards`, { returnObjects: true }) as { label: string; title: string; body: string }[];
+  return (
+    <div id={`s5-${id}`} className="h-full flex flex-col p-6 lg:p-10">
+      <div className="shrink-0 mb-4">
+        <span className="px-2.5 py-0.5 rounded-full text-xs font-bold border" style={{ color, borderColor: color + '66', backgroundColor: color + '14' }}>{t('snapshot.badge')}</span>
+        <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1"><span className="mr-2">{emoji}</span>{t(`snapshot.${id}.heading`)}</h2>
+        <p className="text-sm text-muted-foreground mt-1 max-w-4xl">{t(`snapshot.${id}.subtitle`)}</p>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {recapTo && <RecapHandoff label={t('ui.recap')} text={t(`snapshot.${id}.recap`)} to={recapTo} color="#39B54A" />}
+          <UnderTheHood label={t('ui.hood')} terms={hood} />
+        </div>
+      </div>
+
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {cards.map((c, i) => {
+          const m = SNAPSHOT_CARD_META[i % SNAPSHOT_CARD_META.length];
+          return (
+            <motion.div
+              key={c.label}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: i * 0.05 }}
+              className="rounded-xl border-2 p-4 lg:p-5 flex flex-col gap-2 min-h-0"
+              style={{ borderColor: m.color + '55', backgroundColor: m.color + '08' }}
+            >
+              <div className="flex items-center gap-2.5 shrink-0">
+                <span className="text-2xl leading-none">{m.icon}</span>
+                <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: m.color }}>{c.label}</span>
+              </div>
+              <p className="text-base lg:text-lg font-bold text-foreground leading-tight shrink-0">{c.title}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{c.body}</p>
+            </motion.div>
+          );
+        })}
+      </div>
+      <KeyPointBar label={t('ui.keyPoint')} text={t(`keyPoints.s5-${id}`)} color={color} className="mt-3" />
     </div>
   );
 }
@@ -332,17 +386,10 @@ const chapterShape = [
   { id: 's5-layer2' },
   { id: 's5-l2apps' },
 
-  { kind: 'group' as const, id: 'g-s5-stark' },
+  { kind: 'group' as const, id: 'g-s5-platforms' },
   { id: 's5-starknet' },
-  { id: 's5-starknet-eco' },
-
-  { kind: 'group' as const, id: 'g-s5-polka' },
   { id: 's5-polkadot' },
-  { id: 's5-polkadot-eco' },
-
-  { kind: 'group' as const, id: 'g-s5-ava' },
   { id: 's5-avalanche' },
-  { id: 's5-avalanche-eco' },
 
   { kind: 'group' as const, id: 'g-s5-priv' },
   { id: 's5-privacy' },
@@ -362,14 +409,10 @@ const chapterShape = [
   { id: 's5-quiz' },
   { id: 's5-quiz-2' },
   { id: 's5-takeaways' },
-  { id: 's5-team-checkpoint' },
+  { id: 's5-discussion' },
 ];
 
 interface AppItem { name: string; kind: string }
-interface EcoCard { name: string; category: string; tag: string; stats: string; apps: AppItem[] }
-interface ArchCard { title: string; desc: string }
-interface MetricItem { metric: string; label: string }
-interface DevItem { strong: string; rest: string }
 interface CompareRow { label: string; value: string }
 interface EvalAxis { title: string; green: string[]; red: string[] }
 
@@ -393,30 +436,21 @@ export function BP_Section5() {
   const zkAppItems = t('zkApps.items', { returnObjects: true }) as { name: string; who: string; does: string; since: string }[];
   const zkIdFlow = t('zkIdentity.flow', { returnObjects: true }) as { node: string; holds: string }[];
   const zkIdBusiness = t('zkIdentity.business', { returnObjects: true }) as string[];
-  const starknetCards = t('starknet.cards', { returnObjects: true }) as { title: string; desc: string }[];
-  const starknetNews = t('starknet.news', { returnObjects: true }) as { label: string; sub: string }[];
   const kycSteps = t('starknetCompare.kycSteps', { returnObjects: true }) as { label: string; desc: string }[];
-  const starknetEcoCards = t('starknetEco.cards', { returnObjects: true }) as EcoCard[];
   const l2WhySteps = t('l2Why.steps', { returnObjects: true }) as { title: string; text: string }[];
   const l2WhyMetrics = t('l2Why.metrics', { returnObjects: true }) as { k: string; l1: string; l2: string }[];
   const triCorners = t('l2Why.triangle.corners', { returnObjects: true }) as { name: string; biz: string }[];
   const hoodLabel = t('ui.hood');
   const recapLabel = t('ui.recap');
+  const keyLabel = t('ui.keyPoint');
+  const kp = (id: string, color = '#8b5cf6') => <KeyPointBar label={keyLabel} text={t(`keyPoints.${id}`)} color={color} className="mt-3" />;
+  const discussionScenarios = t('discussion.scenarios', { returnObjects: true }) as { title: string; desc: string }[];
+  const discussionQuestions = t('discussion.questions', { returnObjects: true }) as string[];
   const layer2OpRows = t('layer2.op.rows', { returnObjects: true }) as CompareRow[];
   const layer2ZkRows = t('layer2.zk.rows', { returnObjects: true }) as CompareRow[];
   const layer2Shared = t('layer2.shared', { returnObjects: true }) as string[];
   const layer2Choose = t('layer2.choose', { returnObjects: true }) as { strong: string; rest: string }[];
   const l2appsRollups = t('l2apps.rollups', { returnObjects: true }) as { name: string; type: string; culture: string; tvl: string; apps: AppItem[] }[];
-  const polkadotArch = t('polkadot.architecture', { returnObjects: true }) as ArchCard[];
-  const polkadotMetrics = t('polkadot.metrics', { returnObjects: true }) as MetricItem[];
-  const polkadotEconomics = t('polkadot.economics', { returnObjects: true }) as string[];
-  const polkadotDevs = t('polkadot.developments', { returnObjects: true }) as DevItem[];
-  const polkadotEcoCards = t('polkadotEco.cards', { returnObjects: true }) as EcoCard[];
-  const avalancheArch = t('avalanche.architecture', { returnObjects: true }) as ArchCard[];
-  const avalancheMetrics = t('avalanche.metrics', { returnObjects: true }) as MetricItem[];
-  const avalancheEconomics = t('avalanche.economics', { returnObjects: true }) as string[];
-  const avalancheDevs = t('avalanche.developments', { returnObjects: true }) as DevItem[];
-  const avalancheEcoCards = t('avalancheEco.cards', { returnObjects: true }) as EcoCard[];
   const privacyApproaches = t('privacyApproaches.items', { returnObjects: true }) as { name: string; sub: string; mech: string; trade: string }[];
   const privacyTrace = t('privacy.trace', { returnObjects: true }) as { who: string; note: string }[];
   const privacyBusiness = t('privacy.business', { returnObjects: true }) as string[];
@@ -459,12 +493,6 @@ export function BP_Section5() {
   ];
   const privacyTraceMeta = ['🏦', '👛', '🏠', '❤️'];
   const privacyStoryColors = ['#6366f1', '#ef4444', '#f59e0b', '#39B54A', '#8b5cf6'];
-  const starknetCardMeta = [
-    { emoji: '⚡', color: '#8b5cf6' },
-    { emoji: '💸', color: '#39B54A' },
-    { emoji: '🔒', color: '#22d3ee' },
-    { emoji: '🛡️', color: '#ec4899' },
-  ];
   const layer2OpColors = ['#f97316', '#ef4444', '#39B54A', '#39B54A', '#f97316', '#f97316', '#6366f1'];
   const layer2ZkColors = ['#6366f1', '#39B54A', '#ef4444', '#f97316', '#39B54A', '#6366f1', '#6366f1'];
   const l2WhyStepMeta = ['⚡', '📦', '⚖️'];
@@ -474,38 +502,10 @@ export function BP_Section5() {
     { emoji: '🔵', typeColor: '#f97316', color: '#0052FF' },
     { emoji: '🟪', typeColor: '#8b5cf6', color: '#EC796B' },
   ];
-  const starknetEcoMeta = [
-    { emoji: '💧', color: '#8b5cf6' },
-    { emoji: '🎮', color: '#ec4899' },
-    { emoji: '🏦', color: '#10b981' },
-    { emoji: '👛', color: '#f59e0b' },
-    { emoji: '🤖', color: '#06b6d4' },
-  ];
-  const polkadotArchMeta = [
-    { icon: '🔗', color: '#e6007a' },
-    { icon: '🧩', color: '#8b5cf6' },
-    { icon: '📨', color: '#10b981' },
-    { icon: '🌉', color: '#f59e0b' },
-  ];
-  const polkadotEcoMeta = [
-    { emoji: '🌕', color: '#53cbc8' },
-    { emoji: '🏦', color: '#e6007a' },
-    { emoji: '⭐', color: '#1b6dc1' },
-    { emoji: '💧', color: '#00bcd4' },
-    { emoji: '₿', color: '#f7931a' },
-  ];
-  const avalancheArchMeta = [
-    { icon: '🔺', color: '#e84142' },
-    { icon: '🏔️', color: '#f97316' },
-    { icon: '⚡', color: '#f59e0b' },
-    { icon: '📡', color: '#10b981' },
-  ];
-  const avalancheEcoMeta = [
-    { emoji: '🍵', color: '#f59e0b' },
-    { emoji: '🏦', color: '#10b981' },
-    { emoji: '🏟️', color: '#ec4899' },
-    { emoji: '🎮', color: '#8b5cf6' },
-    { emoji: '🏢', color: '#6366f1' },
+  const discussionMeta = [
+    { icon: '🏦', color: '#6366f1' },
+    { icon: '🎮', color: '#ec4899' },
+    { icon: '🌍', color: '#39B54A' },
   ];
   const privacyApproachMeta = [
     { icon: '🛡️', color: '#f59e0b' },
@@ -589,11 +589,9 @@ export function BP_Section5() {
                 ))}
               </div>
             </div>
-            <div className="flex flex-col justify-between gap-2 lg:items-end">
-              <UnderTheHood label={hoodLabel} terms={['prover', 'verifier', 'statement', 'witness']} />
-              <span className="text-xs text-muted-foreground italic">{t('zkp.next')}</span>
-            </div>
+            <UnderTheHood label={hoodLabel} terms={['prover', 'verifier', 'statement', 'witness']} className="self-start lg:self-center" />
           </div>
+          {kp('s5-zkp')}
         </div>
 
         {/* ═══════ S5-ZKP-CAVE — Where's Waldo ═══════ */}
@@ -636,6 +634,7 @@ export function BP_Section5() {
           <div className="shrink-0 mt-3">
             <UnderTheHood label={hoodLabel} terms={['interactive proof', 'soundness', 'repeated rounds', 'Fiat–Shamir']} />
           </div>
+          {kp('s5-zkp-cave', '#22d3ee')}
         </div>
 
         {/* ═══════ S5-ZK-APPS — real, live ZK products ═══════ */}
@@ -693,6 +692,7 @@ export function BP_Section5() {
             </p>
             <UnderTheHood label={hoodLabel} terms={['SNARK', 'STARK', 'trusted setup', 'circuit', 'prover cost']} className="self-start" />
           </div>
+          {kp('s5-zk-apps')}
         </div>
 
         {/* ═══════ S5-ZK-IDENTITY — KYC walkthrough ═══════ */}
@@ -762,6 +762,7 @@ export function BP_Section5() {
               <UnderTheHood label={hoodLabel} terms={['verifiable credential', 'selective disclosure', 'nullifier', 'issuer signature']} className="self-start" />
             </div>
           </div>
+          {kp('s5-zk-identity')}
         </div>
 
         {/* ═══════ S5-L2-WHY — what an L2 is & why we need it ═══════ */}
@@ -849,6 +850,7 @@ export function BP_Section5() {
               </div>
             ))}
           </div>
+          {kp('s5-l2-why', '#39B54A')}
         </div>
 
         {/* ═══════ LAYER 2: OPTIMISTIC VS ZK ═══════ */}
@@ -922,6 +924,7 @@ export function BP_Section5() {
               </div>
             </div>
           </div>
+          {kp('s5-layer2', '#39B54A')}
         </div>
 
         {/* ═══════ L2 APPS — what runs on each rollup ═══════ */}
@@ -975,374 +978,13 @@ export function BP_Section5() {
               {t('l2apps.chooseBody')}
             </p>
           </div>
+          {kp('s5-l2apps', '#39B54A')}
         </div>
 
-        {/* ═══════ S5-STARKNET ═══════ */}
-        <div id="s5-starknet" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-3">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">
-              {t('starknet.heading')}
-            </h2>
-            <p className="text-sm text-muted-foreground mt-1">
-              {t('starknet.subtitle')}
-            </p>
-          </div>
-
-          {/* Where Starknet fits + the public-by-default caveat */}
-          <div className="shrink-0 mb-3 rounded-xl border p-3" style={{ borderColor: '#8b5cf655', backgroundColor: '#8b5cf60d' }}>
-            <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#8b5cf6' }}>
-              {t('starknet.whyLabel')}
-            </p>
-            <p className="text-sm text-foreground mt-0.5 leading-snug">
-              {t('starknet.whyBodyA')}<span className="font-semibold">{t('starknet.whyBodyStrong1')}</span>{t('starknet.whyBodyB')}<span className="font-semibold">{t('starknet.whyBodyStrong2')}</span>{t('starknet.whyBodyC')}<span className="font-semibold">{t('starknet.whyBodyStrong3')}</span>{t('starknet.whyBodyD')}<span className="italic">{t('starknet.whyBodyItalic')}</span>{t('starknet.whyBodyE')}
-            </p>
-            <div className="mt-2 flex flex-wrap gap-2">
-              <RecapHandoff label={recapLabel} text={t('starknet.recap')} to="/blockchain-platforms/section-2" color="#39B54A" />
-              <UnderTheHood label={hoodLabel} terms={['Cairo', 'STARK', 'sequencer', 'prover', 'state diff']} />
-            </div>
-          </div>
-
-          {/* 4 core properties — 2×2 */}
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-4 mb-4">
-            {starknetCards.map((card, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -16 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3 }}
-                className="flex gap-4 p-4 bg-card rounded-xl border"
-                style={{ borderColor: starknetCardMeta[i].color + '40' }}
-              >
-                <span className="text-3xl shrink-0 leading-none mt-0.5">{starknetCardMeta[i].emoji}</span>
-                <div>
-                  <p className="font-bold text-lg mb-1.5" style={{ color: starknetCardMeta[i].color }}>{card.title}</p>
-                  <p className="text-sm text-muted-foreground leading-snug">{card.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* 2024–2025 news */}
-          <div className="shrink-0 p-3 bg-[#8b5cf6]/5 rounded-xl border border-[#8b5cf6]/20">
-            <p className="text-xs font-semibold text-[#8b5cf6] mb-2">{t('starknet.newsTitle')}</p>
-            <div className="grid grid-cols-4 gap-2">
-              {starknetNews.map((item, i) => (
-                <div key={i} className="p-2 bg-card rounded-lg border border-border">
-                  <p className="text-xs font-semibold text-foreground">{item.label}</p>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">{item.sub}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* ═══════ STARKNET APPS — ecosystem ═══════ */}
-        <div id="s5-starknet-eco" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-3">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('starknetEco.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('starknetEco.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-4 gap-3">
-            {starknetEcoCards.map((app, i) => {
-              const color = starknetEcoMeta[i].color;
-              return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="flex flex-col gap-1.5 p-2.5 rounded-xl border-2 min-h-0"
-                style={{ borderColor: color + '55', backgroundColor: color + '0a' }}
-              >
-                <div className="shrink-0">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-base shrink-0 leading-none">{starknetEcoMeta[i].emoji}</span>
-                    <div className="font-black text-[12px] leading-tight" style={{ color }}>{app.name}</div>
-                  </div>
-                  <span
-                    className="inline-block text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded mt-1"
-                    style={{ backgroundColor: color + '20', color, border: `1px solid ${color}40` }}
-                  >
-                    {app.category}
-                  </span>
-                </div>
-
-                <div className="shrink-0">
-                  <div className="text-[10px] text-foreground font-medium leading-tight">{app.tag}</div>
-                  <div className="text-[9px] text-muted-foreground italic leading-snug mt-0.5">{app.stats}</div>
-                </div>
-
-                <div className="flex-1 min-h-0 flex flex-col gap-1">
-                  {app.apps.slice(0, 3).map((item, j) => (
-                    <div
-                      key={j}
-                      className="rounded-md border bg-card/60 px-1.5 py-1 min-h-0"
-                      style={{ borderColor: color + '35' }}
-                    >
-                      <div className="text-[10px] font-bold leading-tight" style={{ color }}>{item.name}</div>
-                      <div className="text-[9px] text-muted-foreground leading-snug mt-0.5">{item.kind}</div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            );})}
-          </div>
-
-          <div className="shrink-0 mt-3 rounded-xl border p-2.5" style={{ borderColor: '#8b5cf655', backgroundColor: '#8b5cf60d' }}>
-            <p className="text-[11px] text-muted-foreground leading-snug">
-              <span className="font-bold" style={{ color: '#8b5cf6' }}>{t('starknetEco.alsoLabel')}</span>
-              <Trans
-                t={t}
-                i18nKey="starknetEco.alsoBody"
-                components={Array.from({ length: 10 }, (_, k) => <span key={k} className="font-medium text-foreground" />)}
-              />
-            </p>
-          </div>
-        </div>
-
-        {/* ═══════ S5-POLKADOT ═══════ */}
-        <div id="s5-polkadot" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-3">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('polkadot.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('polkadot.subtitle')}</p>
-            <div className="mt-2 flex flex-wrap gap-2">
-              <RecapHandoff label={recapLabel} text="Section 04 · Layer 0" to="/blockchain-platforms/section-4" color="#39B54A" />
-              <UnderTheHood label={hoodLabel} terms={['BABE', 'GRANDPA', 'XCM', 'Coretime', 'JAM']} />
-            </div>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-5">
-            {/* Left — Architecture cards */}
-            <div className="flex flex-col gap-2 min-h-0">
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider shrink-0">{t('polkadot.architectureLabel')}</p>
-              <div className="flex-1 min-h-0 grid auto-rows-fr gap-2">
-                {polkadotArch.map((c, i) => {
-                  const { icon, color } = polkadotArchMeta[i];
-                  return (
-                  <div key={i} className="rounded-xl border bg-card p-2.5 flex items-start gap-2.5 min-h-0" style={{ borderColor: color + '40' }}>
-                    <span className="text-base shrink-0 leading-none mt-0.5">{icon}</span>
-                    <div className="min-w-0">
-                      <p className="text-xs font-bold leading-tight" style={{ color }}>{c.title}</p>
-                      <p className="text-[10px] text-muted-foreground leading-snug mt-0.5">{c.desc}</p>
-                    </div>
-                  </div>
-                );})}
-              </div>
-            </div>
-
-            {/* Right — Key metrics + DOT economics + 2024 */}
-            <div className="flex flex-col gap-3 min-h-0">
-              <div className="grid grid-cols-3 gap-2 shrink-0">
-                {polkadotMetrics.map((s, i) => (
-                  <div key={i} className="px-2 py-1.5 rounded-lg border border-[#e6007a]/30 bg-[#e6007a]/05 text-center">
-                    <div className="text-xs font-black text-[#e6007a] leading-none">{s.metric}</div>
-                    <div className="text-[9px] text-muted-foreground mt-0.5 uppercase tracking-wider leading-snug">{s.label}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="shrink-0 p-3 rounded-xl border" style={{ borderColor: '#e6007a40', backgroundColor: '#e6007a08' }}>
-                <p className="text-[10px] font-bold text-[#e6007a] mb-1.5 flex items-center gap-1.5"><span>💎</span> {t('polkadot.economicsTitle')}</p>
-                <ul className="space-y-1 text-[11px] text-muted-foreground leading-snug">
-                  {polkadotEconomics.map((e, i) => (
-                    <li key={i}>· {e}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="flex-1 min-h-0 p-3 rounded-xl border" style={{ borderColor: '#8b5cf640', backgroundColor: '#8b5cf608' }}>
-                <p className="text-[10px] font-bold text-[#8b5cf6] mb-1.5">{t('polkadot.developmentsTitle')}</p>
-                <ul className="space-y-1.5 text-[11px] text-muted-foreground leading-snug">
-                  {polkadotDevs.map((d, i) => (
-                    <li key={i}>· <span className="font-medium text-foreground">{d.strong}</span>{d.rest}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ═══════ S5-POLKADOT-ECO ═══════ */}
-        <div id="s5-polkadot-eco" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-3">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('polkadotEco.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('polkadotEco.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-5 gap-2.5">
-            {polkadotEcoCards.map((app, i) => {
-              const { emoji, color } = polkadotEcoMeta[i];
-              return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="flex flex-col gap-1.5 p-2.5 rounded-xl border-2 min-h-0"
-                style={{ borderColor: color + '55', backgroundColor: color + '0a' }}
-              >
-                <div className="shrink-0">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-base shrink-0 leading-none">{emoji}</span>
-                    <div className="font-black text-[12px] leading-tight" style={{ color }}>{app.name}</div>
-                  </div>
-                  <span
-                    className="inline-block text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded mt-1"
-                    style={{ backgroundColor: color + '20', color, border: `1px solid ${color}40` }}
-                  >
-                    {app.category}
-                  </span>
-                </div>
-                <div className="shrink-0">
-                  <div className="text-[10px] text-foreground font-medium leading-tight">{app.tag}</div>
-                  <div className="text-[9px] text-muted-foreground italic leading-snug mt-0.5">{app.stats}</div>
-                </div>
-                <div className="flex-1 min-h-0 flex flex-col gap-1">
-                  {app.apps.slice(0, 3).map((item, j) => (
-                    <div key={j} className="rounded-md border bg-card/60 px-1.5 py-1 min-h-0" style={{ borderColor: color + '35' }}>
-                      <div className="text-[10px] font-bold leading-tight" style={{ color }}>{item.name}</div>
-                      <div className="text-[9px] text-muted-foreground leading-snug mt-0.5">{item.kind}</div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            );})}
-          </div>
-
-          <div className="shrink-0 mt-3 rounded-xl border p-2.5" style={{ borderColor: '#e6007a55', backgroundColor: '#e6007a0d' }}>
-            <p className="text-[11px] text-muted-foreground leading-snug">
-              <span className="font-bold" style={{ color: '#e6007a' }}>{t('polkadotEco.alsoLabel')}</span>
-              <Trans
-                t={t}
-                i18nKey="polkadotEco.alsoBody"
-                components={Array.from({ length: 6 }, (_, k) => <span key={k} className="font-medium text-foreground" />)}
-              />
-            </p>
-          </div>
-        </div>
-
-        {/* ═══════ S5-AVALANCHE ═══════ */}
-        <div id="s5-avalanche" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-3">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('avalanche.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('avalanche.subtitle')}</p>
-            <div className="mt-2 flex flex-wrap gap-2">
-              <RecapHandoff label={recapLabel} text="Section 04 · Layer 0" to="/blockchain-platforms/section-4" color="#39B54A" />
-              <UnderTheHood label={hoodLabel} terms={['Snowman', 'P-Chain', 'Warp messaging', 'ACP-77']} />
-            </div>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-5">
-            {/* Left — Architecture cards */}
-            <div className="flex flex-col gap-2 min-h-0">
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider shrink-0">{t('avalanche.architectureLabel')}</p>
-              <div className="flex-1 min-h-0 grid auto-rows-fr gap-2">
-                {avalancheArch.map((c, i) => {
-                  const { icon, color } = avalancheArchMeta[i];
-                  return (
-                  <div key={i} className="rounded-xl border bg-card p-2.5 flex items-start gap-2.5 min-h-0" style={{ borderColor: color + '40' }}>
-                    <span className="text-base shrink-0 leading-none mt-0.5">{icon}</span>
-                    <div className="min-w-0">
-                      <p className="text-xs font-bold leading-tight" style={{ color }}>{c.title}</p>
-                      <p className="text-[10px] text-muted-foreground leading-snug mt-0.5">{c.desc}</p>
-                    </div>
-                  </div>
-                );})}
-              </div>
-            </div>
-
-            {/* Right — Key metrics + AVAX economics + 2024 */}
-            <div className="flex flex-col gap-3 min-h-0">
-              <div className="grid grid-cols-3 gap-2 shrink-0">
-                {avalancheMetrics.map((s, i) => (
-                  <div key={i} className="px-2 py-1.5 rounded-lg border border-[#e84142]/30 bg-[#e84142]/05 text-center">
-                    <div className="text-xs font-black text-[#e84142] leading-none">{s.metric}</div>
-                    <div className="text-[9px] text-muted-foreground mt-0.5 uppercase tracking-wider leading-snug">{s.label}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="shrink-0 p-3 rounded-xl border" style={{ borderColor: '#e8414240', backgroundColor: '#e8414208' }}>
-                <p className="text-[10px] font-bold text-[#e84142] mb-1.5 flex items-center gap-1.5"><span>💎</span> {t('avalanche.economicsTitle')}</p>
-                <ul className="space-y-1 text-[11px] text-muted-foreground leading-snug">
-                  {avalancheEconomics.map((e, i) => (
-                    <li key={i}>· {e}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="flex-1 min-h-0 p-3 rounded-xl border" style={{ borderColor: '#f9731640', backgroundColor: '#f9731608' }}>
-                <p className="text-[10px] font-bold text-[#f97316] mb-1.5">{t('avalanche.developmentsTitle')}</p>
-                <ul className="space-y-1.5 text-[11px] text-muted-foreground leading-snug">
-                  {avalancheDevs.map((d, i) => (
-                    <li key={i}>· <span className="font-medium text-foreground">{d.strong}</span>{d.rest}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ═══════ S5-AVALANCHE-ECO ═══════ */}
-        <div id="s5-avalanche-eco" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-3">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('avalancheEco.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('avalancheEco.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-5 gap-2.5">
-            {avalancheEcoCards.map((app, i) => {
-              const { emoji, color } = avalancheEcoMeta[i];
-              return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="flex flex-col gap-1.5 p-2.5 rounded-xl border-2 min-h-0"
-                style={{ borderColor: color + '55', backgroundColor: color + '0a' }}
-              >
-                <div className="shrink-0">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-base shrink-0 leading-none">{emoji}</span>
-                    <div className="font-black text-[12px] leading-tight" style={{ color }}>{app.name}</div>
-                  </div>
-                  <span
-                    className="inline-block text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded mt-1"
-                    style={{ backgroundColor: color + '20', color, border: `1px solid ${color}40` }}
-                  >
-                    {app.category}
-                  </span>
-                </div>
-                <div className="shrink-0">
-                  <div className="text-[10px] text-foreground font-medium leading-tight">{app.tag}</div>
-                  <div className="text-[9px] text-muted-foreground italic leading-snug mt-0.5">{app.stats}</div>
-                </div>
-                <div className="flex-1 min-h-0 flex flex-col gap-1">
-                  {app.apps.slice(0, 3).map((item, j) => (
-                    <div key={j} className="rounded-md border bg-card/60 px-1.5 py-1 min-h-0" style={{ borderColor: color + '35' }}>
-                      <div className="text-[10px] font-bold leading-tight" style={{ color }}>{item.name}</div>
-                      <div className="text-[9px] text-muted-foreground leading-snug mt-0.5">{item.kind}</div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            );})}
-          </div>
-
-          <div className="shrink-0 mt-3 rounded-xl border p-2.5" style={{ borderColor: '#e8414255', backgroundColor: '#e841420d' }}>
-            <p className="text-[11px] text-muted-foreground leading-snug">
-              <span className="font-bold" style={{ color: '#e84142' }}>{t('avalancheEco.alsoLabel')}</span>
-              <Trans
-                t={t}
-                i18nKey="avalancheEco.alsoBody"
-                components={Array.from({ length: 6 }, (_, k) => <span key={k} className="font-medium text-foreground" />)}
-              />
-            </p>
-          </div>
-        </div>
+        {/* ═══════ PLATFORM SNAPSHOTS — one slide each ═══════ */}
+        <PlatformSnapshot id="starknet" color="#EC796B" emoji="⭑" hood={['Cairo', 'STARK', 'sequencer', 'prover', 'account abstraction']} recapTo="/blockchain-platforms/section-2" />
+        <PlatformSnapshot id="polkadot" color="#e6007a" emoji="🔴" hood={['Relay Chain', 'parachain', 'XCM', 'Coretime', 'GRANDPA']} recapTo="/blockchain-platforms/section-4" />
+        <PlatformSnapshot id="avalanche" color="#e84142" emoji="🔺" hood={['Snowman', 'P-Chain', 'Avalanche L1', 'Warp messaging', 'ACP-77']} recapTo="/blockchain-platforms/section-4" />
 
         {/* ═══════ PRIVACY PRIMITIVES ═══════ */}
         {/* ═══════ S5-PRIVACY — why it is hard ═══════ */}
@@ -1421,6 +1063,7 @@ export function BP_Section5() {
               <p className="text-xs text-muted-foreground mt-1">{t('privacy.trickCaption')}</p>
             </div>
           </div>
+          {kp('s5-privacy')}
         </div>
 
         {/* ═══════ S5-PRIVACY-APPROACHES — the four families ═══════ */}
@@ -1459,6 +1102,7 @@ export function BP_Section5() {
           <div className="shrink-0 mt-3">
             <UnderTheHood label={hoodLabel} terms={['zk-SNARK', 'ring signature', 'stealth address', 'nullifier', 'anonymity set']} />
           </div>
+          {kp('s5-privacy-approaches')}
         </div>
 
         {/* ═══════ S5-PRIVACY-REGULATION — the contested frontier ═══════ */}
@@ -1467,6 +1111,9 @@ export function BP_Section5() {
             <span className="text-xs font-black uppercase tracking-widest text-[#f59e0b]">{t('privacyRegulation.eyebrow')}</span>
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('privacyRegulation.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1">{t('privacyRegulation.subtitle')}</p>
+            <div className="mt-2">
+              <RecapHandoff label={recapLabel} text={t('privacyRegulation.recapFreedom')} to="/blockchain-fundamentals/prologue" color="#ED1C24" />
+            </div>
           </div>
 
           {/* Timeline — five beats */}
@@ -1512,6 +1159,7 @@ export function BP_Section5() {
               {t('privacyRegulation.guidanceA')}<span className="font-semibold">{t('privacyRegulation.guidanceStrong1')}</span>{t('privacyRegulation.guidanceB')}<span className="font-semibold">{t('privacyRegulation.guidanceStrong2')}</span>{t('privacyRegulation.guidanceC')}
             </p>
           </div>
+          {kp('s5-privacy-regulation', '#f59e0b')}
         </div>
 
         {/* ═══════ S5-PRIVACY-FUTURE — the upside of ZK privacy ═══════ */}
@@ -1549,6 +1197,7 @@ export function BP_Section5() {
               {t('privacyFuture.bannerA')}<span className="font-semibold">{t('privacyFuture.bannerStrong1')}</span>{t('privacyFuture.bannerB')}<span className="font-semibold text-[#8b5cf6]">{t('privacyFuture.bannerStrong2')}</span>{t('privacyFuture.bannerC')}
             </p>
           </div>
+          {kp('s5-privacy-future')}
         </div>
 
         {/* ═══════ EVALUATE A PROJECT — part 1 ═══════ */}
@@ -1580,7 +1229,7 @@ export function BP_Section5() {
               </motion.div>
             );})}
           </div>
-          <div className="shrink-0 mt-4 text-center text-sm text-muted-foreground italic">{t('evaluate.next')}</div>
+          {kp('s5-evaluate', '#06b6d4')}
         </div>
 
         {/* ═══════ EVALUATE A PROJECT — part 2 ═══════ */}
@@ -1623,6 +1272,7 @@ export function BP_Section5() {
               />
             </p>
           </div>
+          {kp('s5-evaluate-2', '#06b6d4')}
         </div>
 
         {/* ═══════ DECISION FRAMEWORK — Interactive wizard ═══════ */}
@@ -1652,6 +1302,7 @@ export function BP_Section5() {
               </div>
             );})}
           </div>
+          {kp('s5-decision-examples', '#6366f1')}
         </div>
 
         {/* ═══════ QUIZ — Optimistic vs ZK withdrawal latency ═══════ */}
@@ -1680,49 +1331,52 @@ export function BP_Section5() {
           />
         </div>
 
-        {/* ═══════ TEAM CHECKPOINT — DAY 2 WRAP ═══════ */}
-        <div id="s5-team-checkpoint" className="h-full">
-          <TeamCheckpoint
-            contextLabel={t('teamCheckpoint.contextLabel')}
-            title={t('teamCheckpoint.title')}
-            subtitle={t('teamCheckpoint.subtitle')}
-            duration={t('teamCheckpoint.duration')}
-            sections={[
-              {
-                label: t('teamCheckpoint.haveLabel'),
-                color: '#22d3ee',
-                items: [
-                  <>{t('teamCheckpoint.have.item1A')}<strong>{t('teamCheckpoint.have.item1Strong')}</strong>{t('teamCheckpoint.have.item1B')}</>,
-                  <>{t('teamCheckpoint.have.item2')}</>,
-                  <>{t('teamCheckpoint.have.item3')}</>,
-                ],
-              },
-              {
-                label: t('teamCheckpoint.doLabel'),
-                color: '#39B54A',
-                items: [
-                  <>{t('teamCheckpoint.do.item1')}</>,
-                  <>{t('teamCheckpoint.do.item2A')}<strong>{t('teamCheckpoint.do.item2Strong')}</strong>{t('teamCheckpoint.do.item2B')}</>,
-                  <>{t('teamCheckpoint.do.item3A')}<em>{t('teamCheckpoint.do.item3Italic')}</em></>,
-                  <>{t('teamCheckpoint.do.item4')}</>,
-                ],
-              },
-              {
-                label: t('teamCheckpoint.bringLabel'),
-                color: '#8b5cf6',
-                items: [
-                  <>{t('teamCheckpoint.bring.item1')}</>,
-                  <>{t('teamCheckpoint.bring.item2')}</>,
-                  <>{t('teamCheckpoint.bring.item3')}</>,
-                ],
-              },
-            ]}
-            footnote={
-              <span className="text-muted-foreground">
-                <strong className="text-foreground">{t('teamCheckpoint.footnoteStrong')}</strong>{t('teamCheckpoint.footnoteRest')}
-              </span>
-            }
-          />
+        {/* ═══════ DISCUSSION — in-class, no deliverable ═══════ */}
+        <div id="s5-discussion" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-4 flex items-start gap-4">
+            <div className="size-12 lg:size-14 shrink-0 rounded-full bg-gradient-to-br from-[#8b5cf6] to-[#ec4899] flex items-center justify-center shadow-lg shadow-[#8b5cf6]/30">
+              <MessageCircle className="size-6 lg:size-7 text-white" strokeWidth={2} />
+            </div>
+            <div>
+              <span className="text-xs font-black uppercase tracking-widest text-[#8b5cf6]">{t('discussion.eyebrow')}</span>
+              <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('discussion.prompt')}</h2>
+              <p className="text-sm text-muted-foreground mt-1 max-w-4xl">{t('discussion.subtitle')}</p>
+            </div>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {discussionScenarios.map((sc, i) => {
+              const { icon, color } = discussionMeta[i % discussionMeta.length];
+              return (
+                <motion.div
+                  key={sc.title}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: i * 0.06 }}
+                  className="rounded-xl border-2 p-5 flex flex-col gap-3 justify-center min-h-0"
+                  style={{ borderColor: color + '55', backgroundColor: color + '0a' }}
+                >
+                  <span className="text-4xl leading-none">{icon}</span>
+                  <p className="text-[10px] font-black uppercase tracking-widest" style={{ color }}>{t('discussion.scenarioLabel', { n: i + 1 })}</p>
+                  <p className="text-lg font-bold text-foreground leading-tight">{sc.title}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{sc.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <div className="shrink-0 mt-4 rounded-xl border border-border bg-card p-4">
+            <p className="text-[10px] font-black uppercase tracking-widest text-[#39B54A] mb-2">💡 {t('discussion.thinkLabel')}</p>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+              {discussionQuestions.map((q, i) => (
+                <div key={q} className="flex items-start gap-2.5">
+                  <div className="size-6 rounded-full bg-[#8b5cf6]/15 flex items-center justify-center shrink-0 mt-0.5"><span className="text-xs text-[#8b5cf6] font-black">{i + 1}</span></div>
+                  <p className="text-sm text-foreground leading-snug">{q}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         </div>

@@ -1,23 +1,4 @@
 {
-  "usecases": {
-    "heading": "Where this shows up in real life",
-    "subtitle": "Interoperability sounds abstract until you see who needs it. Six everyday situations — and how value crosses today.",
-    "howLabel": "How it crosses",
-    "items": [
-      { "title": "Moving to a cheaper lane", "scenario": "You hold ETH on Ethereum, but a swap costs $20 in fees. You move it to Arbitrum or Base, where the same swap costs cents.", "how": "Canonical rollup bridge (Section 02)" },
-      { "title": "Using Bitcoin in DeFi", "scenario": "You want to earn yield on BTC inside an Ethereum lending app. A custodian holds the BTC and issues WBTC you can use.", "how": "Wrapped token · custodian risk" },
-      { "title": "One stablecoin, many chains", "scenario": "USDC lives natively on a dozen-plus chains; Circle's CCTP burns it on one chain and mints it on another. RLUSD settles on XRPL and Ethereum.", "how": "Native multi-chain issuance" },
-      { "title": "Game items that travel", "scenario": "A game runs on its own chain for speed (Ronin, Immutable), but players want to sell items on an Ethereum marketplace.", "how": "Bridge · wrapped NFT" },
-      { "title": "Private data, public settlement", "scenario": "A consortium keeps supplier data on a private Fabric network but wants final settlement or tokens on a public chain for liquidity.", "how": "Anchoring · messaging layer" },
-      { "title": "Cross-border payment routes", "scenario": "A payment starts as a stablecoin on one chain and must arrive as a local-currency token on another — in one trip, not three hops.", "how": "Message + value routing (Axelar, IBC)" }
-    ],
-    "footerStrong": "Notice the pattern: ",
-    "footer": "in every case somebody has to hold the asset or verify the other chain. Who that is — an operator, the maths, or a shared validator set — is the whole design question. Next slide."
-  },
-  "ui": {
-    "hood": "under the hood →",
-    "recap": "Already covered"
-  },
   "groups": {
     "g-s4-problem": "🌉 O Problema",
     "g-s4-l0": "🏛️ Layer 0",
@@ -30,6 +11,7 @@
     "s4-usecases": "Real-World Use Cases",
     "s4-interop": "Interoperabilidade",
     "s4-interop-compare": "Abordagens Comparadas",
+    "s4-chooser": "🧩 Which Connection?",
     "s4-layer0": "🧩 Layer 0: Conceito",
     "s4-layer0-2": "Layer 0: Plataformas",
     "s4-bridges": "Segurança das Bridges",
@@ -39,6 +21,24 @@
     "s4-xrp-anim": "🧩 XRPL ↔ Axelar",
     "s4-quiz": "Quiz",
     "s4-takeaways": "Conclusões"
+  },
+  "usecases": {
+    "heading": "Where this shows up in real life",
+    "subtitle": "Interoperability sounds abstract until you see who needs it. Six everyday situations — and how value crosses today.",
+    "howLabel": "How it crosses",
+    "items": [
+      { "title": "Moving to a cheaper lane", "scenario": "You hold ETH on Ethereum, but a swap costs $20 in fees. You move it to Arbitrum or Base, where the same swap costs cents.", "how": "Canonical rollup bridge (Section 02)" },
+      { "title": "Using Bitcoin in DeFi", "scenario": "You want to earn yield on BTC inside an Ethereum lending app. A custodian holds the BTC and issues WBTC you can use.", "how": "Wrapped token · custodian risk" },
+      { "title": "One stablecoin, many chains", "scenario": "USDC lives natively on a dozen-plus chains; Circle's CCTP burns it on one chain and mints it on another. RLUSD settles on XRPL and Ethereum.", "how": "Native multi-chain issuance" },
+      { "title": "Game items that travel", "scenario": "A game runs on its own chain for speed (Ronin, Immutable), but players want to sell items on an Ethereum marketplace.", "how": "Bridge · wrapped NFT" },
+      { "title": "Private data, public settlement", "scenario": "A consortium keeps supplier data on a private Fabric network but wants final settlement or tokens on a public chain for liquidity.", "how": "Anchoring · messaging layer" },
+      { "title": "Cross-border payment routes", "scenario": "A payment starts as a stablecoin on one chain and must arrive as a local-currency token on another — in one trip, not three hops.", "how": "Message + value routing (Axelar, IBC)" }
+    ]
+  },
+  "ui": {
+    "hood": "under the hood →",
+    "recap": "Already covered",
+    "keyPoint": "Key point"
   },
   "title": {
     "sectionNumber": "SECÇÃO 04",
@@ -308,8 +308,6 @@
       { "emoji": "⚛️", "title": "CometBFT (ex-Tendermint)", "desc": "Motor BFT renomeado em 2023. Finalidade instantânea, blocos de ~1 segundo, sem forks. Conjunto de validadores conhecido por zona — seguro desde que < 1/3 sejam bizantinos." },
       { "emoji": "⚡", "title": "Soberania Específica de Aplicação", "desc": "Cada chain afina o gas, a governação e as atualizações ao seu próprio caso de uso — sem competição por espaço de bloco partilhado, sem necessidade de encaixar na VM de outrem." }
     ],
-    "atomTitle": "Economia do ATOM",
-    "atomBody": "Segurança do Hub via staking · votos de governação · a Interchain Security permite que chains aderentes aluguem o conjunto de validadores do Hub em vez de arrancarem o seu.",
     "beyondTitle": "Para Além da Cosmos",
     "beyondBodyA": "O IBC ",
     "beyondBodyStrong": "Eureka",
@@ -404,8 +402,6 @@
   "xrp": {
     "badgePartner": "🧩 Plataforma parceira",
     "heading": "XRP Ledger — um rail de liquidação feito à medida",
-    "takeawayLabel": "A única coisa a reter",
-    "takeaway": "A XRPL é um rail feito à medida para pagamentos, FX e ativos do mundo real tokenizados — rápida e barata por desenho. Não é uma plataforma de smart contracts de uso geral, e essa troca é deliberada.",
     "pillars": [
       { "label": "Operações nativas", "title": "DEX & pagamentos são de primeira classe", "body": "O DEX de order-book está no protocolo desde 2012 (sem smart contract); o AMM nativo (XLS-30) juntou-se em 2024. Otimizada para estas tarefas — mas o conjunto de regras é fixo." },
       { "label": "Validação federada", "title": "UNL — os operadores escolhem os validadores", "body": "Qualquer pessoa pode ler e usar a chain, mas cada nó confia numa Unique Node List de validadores (Federated Byzantine Agreement, ≥ 80% concorda por ronda). Sem permissão para usar, federada para validar." },
@@ -442,7 +438,117 @@
       "As ilhas blockchain não conseguem transferir ativos ou dados nativamente — a interoperabilidade é uma área ativa de engenharia",
       "As bridges concentram ativos bloqueados num único contrato, tornando-as alvos de ataque de elevado valor (Ronin 625 M$, Wormhole 320 M$)",
       "O Cosmos IBC consegue comunicação cross-chain com confiança minimizada sem um contrato de bridge centralizado",
-      "A XRP Ledger é otimizada para pagamentos, com um DEX nativo, Trust Lines e suporte de sidechain federada"
+      "A XRP Ledger é otimizada para pagamentos, com um DEX nativo, Trust Lines e suporte de sidechain federada",
+      "XRP Ledger is a payments rail that reaches other chains through Axelar rather than a bespoke bridge per pair"
     ]
+  },
+  "keyPoints": {
+    "s4-interop": "Every chain is an island by design — value only moves if someone builds a route, and someone has to be trusted to run it.",
+    "s4-usecases": "In every real case somebody holds the asset or verifies the other chain — who that is, is the whole design question.",
+    "s4-interop-compare": "Three routes, one question: do you trust an operator, the maths, or a shared validator set?",
+    "s4-chooser": "Match the route to the trust you can afford — the safest connection is the one with the fewest people to trust.",
+    "s4-bridges": "Bridges are where most of the money has been stolen — the weakest link between chains.",
+    "s4-cosmos": "Cosmos trades shared security for sovereignty — every chain runs its own show, and IBC lets them verify each other without a middleman.",
+    "s4-cosmos-eco": "An app gets its own chain when it is big enough to justify one — dYdX left Ethereum for exactly that reason.",
+    "s4-layer0": "A Layer 0 is a security team for hire — new chains inherit protection on day one instead of recruiting validators.",
+    "s4-layer0-2": "Shared security or full sovereignty — you rent one or build the other; nobody gets both for free.",
+    "s4-xrp": "XRPL is a payments rail, not an app platform — fast and cheap because it deliberately does less.",
+    "s4-xrp-anim": "One message-passing hub replaces a bespoke bridge per pair — but now you trust that hub's validators."
+  },
+  "chooser": {
+    "badge": "🧩 Try it",
+    "heading": "How should these two chains talk?",
+    "subtitle": "Pick a situation, then pick a route. You get the fit — and the main thing that can go wrong.",
+    "scenarioLabel": "1 · The situation",
+    "optionLabel": "2 · Your route",
+    "feedbackLabel": "3 · Fit & main risk",
+    "idle": "Pick a situation on the left and a route in the middle…",
+    "riskLabel": "Main risk",
+    "verdicts": {
+      "best": "Best fit",
+      "ok": "Workable",
+      "poor": "Poor fit"
+    },
+    "scenarios": [
+      {
+        "title": "Move stablecoins to an L2",
+        "desc": "You hold USDC on Ethereum and want to use it on Arbitrum or Base, where fees are cents."
+      },
+      {
+        "title": "One app, two chains, shared state",
+        "desc": "A lending app runs on two independent chains and needs balances and prices to stay in sync."
+      },
+      {
+        "title": "Bank consortium meets a public chain",
+        "desc": "Banks run a private settlement chain but want tokens and final settlement on a public network."
+      }
+    ],
+    "options": {
+      "bridge": {
+        "label": "Bridge",
+        "sub": "Lock here, mint a copy there — an operator in the middle"
+      },
+      "ibc": {
+        "label": "IBC-style messaging",
+        "sub": "Both chains verify each other's proofs directly"
+      },
+      "l0": {
+        "label": "Layer 0",
+        "sub": "Both chains sit under one shared validator set"
+      }
+    },
+    "feedback": {
+      "s0": {
+        "bridge": {
+          "verdict": "best",
+          "text": "Use the rollup's own (canonical) bridge. It is secured by the rollup's proof system, not by a separate group of signers — and it is exactly what L2s were built for.",
+          "risk": "Going back to L1 is slow: hours on a ZK rollup, about 7 days on an optimistic one. 'Fast' third-party bridges fix that by adding an operator you must trust."
+        },
+        "ibc": {
+          "verdict": "poor",
+          "text": "Ethereum and its rollups do not speak IBC to each other — and they don't need to. The rollup already has a native, proof-secured route to L1.",
+          "risk": "You would be building a second, less-tested path next to one that already exists."
+        },
+        "l0": {
+          "verdict": "poor",
+          "text": "Arbitrum and Base are not parachains — there is no Layer 0 here. Ethereum itself is the shared security the rollups borrow.",
+          "risk": "Adding a Layer 0 means adding a validator set and a token you don't need for this job."
+        }
+      },
+      "s1": {
+        "bridge": {
+          "verdict": "ok",
+          "text": "General message bridges (Axelar, LayerZero, Wormhole) can carry state updates between almost any two chains today — the widest reach.",
+          "risk": "Your app's state now depends on the bridge's signer set. If it is compromised, both deployments can be corrupted at once — the honeypot problem."
+        },
+        "ibc": {
+          "verdict": "best",
+          "text": "If both chains speak IBC (Cosmos zones, or Ethereum via IBC Eureka), each verifies the other's proofs directly — messages travel without a middleman or a giant vault.",
+          "risk": "Only as strong as the weaker chain, and both must implement the standard — reach is limited to the IBC ecosystem today."
+        },
+        "l0": {
+          "verdict": "ok",
+          "text": "If both chains live inside the same Layer 0 (two parachains, two Avalanche L1s), messaging is native — XCM or Warp — and verified by the shared validators.",
+          "risk": "Only works inside the club. The moment one chain is outside, you are back to a bridge."
+        }
+      },
+      "s2": {
+        "bridge": {
+          "verdict": "ok",
+          "text": "Anchor the private chain's state, or settle tokens, through a bridge the consortium controls. Simple and chain-agnostic — this is how most pilots start.",
+          "risk": "The bridge operator is a single point of failure, and the regulator will ask who holds the keys. Governing that bridge becomes the real project."
+        },
+        "ibc": {
+          "verdict": "poor",
+          "text": "A Fabric or Besu consortium chain does not speak IBC. You would have to rebuild it on an IBC-capable stack first — a migration, not an integration.",
+          "risk": "A large rebuild for a standard the public chain you target may not support either."
+        },
+        "l0": {
+          "verdict": "best",
+          "text": "Run the consortium chain as a permissioned L1 inside a Layer 0 (an Avalanche L1 or a parachain). You keep your own validators and rules, yet messaging to the public network is native — the model JP Morgan piloted on Avalanche.",
+          "risk": "You are bound to that Layer 0's rules, token and validator security — and reaching chains outside it still needs a bridge."
+        }
+      }
+    }
   }
 }
