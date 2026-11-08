@@ -1,30 +1,30 @@
-import { useTranslation } from 'react-i18next';
 import { Wrench } from 'lucide-react';
 
 interface UnderTheHoodProps {
-  /** Short technical keywords — the terms a curious student can look up later. */
-  items: string[];
+  /** Technical keywords a curious student can look up later — a quiet hint, not teaching content. */
+  terms?: string[];
+  /** Alias of `terms` (kept so every course section can use either name). */
+  items?: string[];
+  label?: string;
   className?: string;
 }
 
-/**
- * "under the hood →" keyword hint pills. Used on business-facing slides to
- * name the technical mechanism without explaining it on the slide itself.
- */
-export function UnderTheHood({ items, className = '' }: UnderTheHoodProps) {
-  const { t } = useTranslation('common');
+/** Shared "under the hood →" keyword-pill row used across all courses. Literal label on purpose: slides are English-only until the pt pass. */
+export function UnderTheHood({ terms, items, label = 'under the hood →', className = '' }: UnderTheHoodProps) {
+  const list = terms ?? items ?? [];
+  if (list.length === 0) return null;
   return (
-    <div className={`flex flex-wrap items-center gap-1.5 ${className}`}>
+    <div className={`inline-flex flex-wrap items-center gap-1.5 ${className}`}>
       <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-        <Wrench className="size-3" />
-        {t('common.underTheHood')}
+        <Wrench className="size-3 shrink-0" />
+        {label}
       </span>
-      {items.map((item) => (
+      {list.map((term) => (
         <span
-          key={item}
-          className="px-2 py-0.5 rounded-full border border-border bg-card text-[10px] font-mono text-muted-foreground"
+          key={term}
+          className="px-2 py-0.5 rounded-full border border-border bg-card text-[10px] font-mono text-muted-foreground leading-none"
         >
-          {item}
+          {term}
         </span>
       ))}
     </div>
