@@ -19,7 +19,8 @@
     "s1-worstfits": "🚫 Piores Encaixes",
     "s1-quiz": "Questionário",
     "s1-takeaways": "Conclusões",
-    "s1-summary": "Resumo"
+    "s1-summary": "Resumo",
+    "s1-handoff": "↩ Handoff"
   },
   "title": {
     "sectionNumber": "SECÇÃO 01",
@@ -200,7 +201,26 @@
       { "label": "Sem saldo global", "desc": "Sem um estado de conta mutável único — reduz a contenção" },
       { "label": "Validação sem estado", "desc": "Cada UTXO pode ser verificado de forma independente" },
       { "label": "Processamento paralelo", "desc": "UTXOs não sobrepostos podem ser validados em simultâneo" }
-    ]
+    ],
+    "businessTitle": "What the UTXO model means for a business",
+    "business": [
+      {
+        "emoji": "💵",
+        "title": "Cash-like, not account-like",
+        "desc": "You spend whole \"notes\" and receive change. Wallets hide this — but treasury software must track many UTXOs, not one balance."
+      },
+      {
+        "emoji": "🧾",
+        "title": "Fees price bytes, not value",
+        "desc": "A €50 and a €50M payment can cost the same fee. Many small inputs make a transaction bigger — and pricier — to send."
+      },
+      {
+        "emoji": "🔍",
+        "title": "Every coin has a history",
+        "desc": "Each UTXO traces back to the block it was mined in. Auditors and compliance teams can follow provenance — Bitcoin is pseudonymous, not anonymous."
+      }
+    ],
+    "hood": ["txid", "vout", "scriptSig", "scriptPubKey", "locktime"]
   },
   "utxoExercise": {
     "heading": "Exercício: Construir uma Transação Bitcoin",
@@ -282,7 +302,17 @@
         "title": "Porque Funciona: Custo de um Ataque de 51%",
         "body": "Para reescrever a história, um atacante precisa de >50% do hashrate global. Com a dificuldade atual isso custaria milhares de milhões em hardware ASIC + eletricidade, e qualquer ataque bem-sucedido destruiria o valor das moedas roubadas — tornando a honestidade a estratégia dominante."
       }
-    }
+    },
+    "stepsTitle": "How a block gets made — in four moves",
+    "steps": [
+      { "emoji": "📥", "label": "Collect", "desc": "A miner gathers waiting transactions into a candidate block." },
+      { "emoji": "🎲", "label": "Guess", "desc": "It changes one number (the nonce) and hashes the block — trillions of times per second." },
+      { "emoji": "🎯", "label": "Hit the target", "desc": "If the hash lands below the network's target, the block is valid — and anyone can verify that in a millisecond." },
+      { "emoji": "💰", "label": "Get paid", "desc": "The winner broadcasts the block and earns the block reward plus fees. The race restarts immediately." }
+    ],
+    "buyLabel": "What a business is buying",
+    "buyBody": "Rewriting history means redoing all that work faster than the rest of the world combined. PoW turns electricity into a cost of attack — and that cost is the security.",
+    "hood": ["block header", "nonce", "target", "SHA-256d", "2,016-block retarget"]
   },
   "trilemma": {
     "heading": "O Trilema da Blockchain",
@@ -325,7 +355,10 @@
         ],
         "detail": "Os elevados requisitos de hardware concentram o conjunto de validadores. A rede já sofreu várias interrupções."
       }
-    }
+    },
+    "businessLabel": "For a business decision",
+    "businessBody": "Pick the platform whose sacrifice you can live with. Bitcoin gives up on-chain speed — so it suits high-value settlement and reserves, not coffee at the till.",
+    "hood": ["Nakamoto consensus", "block size", "validator count", "Layer 2"]
   },
   "apps": {
     "heading": "Para além dos pagamentos — a camada de apps da Bitcoin",
@@ -481,7 +514,8 @@
       "A sua arquitetura combina transações UTXO, árvores de Merkle e cabeçalhos de bloco encadeados",
       "A Proof of Work torna os ataques proibitivamente caros — segurança através do custo energético do mundo real",
       "O Trilema da Blockchain: descentralização, segurança e escalabilidade não podem ser todas maximizadas em simultâneo",
-      "A Bitcoin prioriza a segurança e a descentralização — a escalabilidade é tratada pela Layer 2 (Lightning)"
+      "A Bitcoin prioriza a segurança e a descentralização — a escalabilidade é tratada pela Layer 2 (Lightning)",
+      "Right tool, right job: Bitcoin for value storage and neutral settlement — not for programmable business logic"
     ]
   },
   "summary": {
@@ -496,5 +530,45 @@
       { "icon": "⚖️", "title": "Compromisso do Trilema", "summary": "Bitcoin: Segurança + Descentralização · Escalabilidade tratada pela Lightning Network (Layer 2) com pagamentos off-chain" }
     ],
     "footer": "Avança para a Secção 2 para explorar a Ethereum e as blockchains programáveis →"
+  },
+  "handoff": {
+    "badge": "↩ Recap handoff · Blockchain Fundamentals",
+    "heading": "You already know how Bitcoin works — now look at it as a platform",
+    "lead": "In Blockchain Fundamentals you learned the mechanics. This section asks the platform question instead: what did Bitcoin's designers optimise for, what did they give up, and what is it actually good for in business?",
+    "coveredLabel": "Already covered — we won't re-teach it",
+    "covered": [
+      "Hashing & SHA-256",
+      "Blocks, chains & Merkle trees",
+      "Wallets, keys & signatures",
+      "Mining & Proof of Work basics",
+      "UTXOs & change"
+    ],
+    "lensLabel": "Today's lens",
+    "lens": [
+      {
+        "emoji": "🏗️",
+        "title": "Architecture",
+        "desc": "Four layers — and what each one buys a business: reach, auditability, finality.",
+        "question": "Which of the four layers does your business actually touch?",
+        "where": "→ Architecture · Transaction"
+      },
+      {
+        "emoji": "⛏️",
+        "title": "Proof of Work as a cost",
+        "desc": "What you pay for security, who pays it, and why the size of the bill is the point.",
+        "question": "Who pays for Bitcoin's security — and what would an attack cost?",
+        "where": "→ Proof of Work"
+      },
+      {
+        "emoji": "⚖️",
+        "title": "The Trilemma",
+        "desc": "No platform gets everything. Bitcoin chose security and decentralization — and lives with the consequences.",
+        "question": "Which corner of the triangle can your use case afford to lose?",
+        "where": "→ Trilemma · Best & Worst Fits"
+      }
+    ],
+    "questionLabel": "The question we'll answer",
+    "refresher": "Need the mechanics again? The 🧩 interactive slides (Tx Lifecycle, UTXO Exercise, Lightning) are there for exactly that.",
+    "hood": ["SHA-256", "UTXO", "nonce", "difficulty", "longest chain"]
   }
 }

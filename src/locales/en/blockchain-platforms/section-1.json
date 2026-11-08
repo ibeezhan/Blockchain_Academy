@@ -7,6 +7,7 @@
     "g-s1-wrap": "✅ Wrap Up"
   },
   "chapters": {
+    "s1-handoff": "↩ Handoff",
     "s1-architecture": "Architecture",
     "s1-transaction": "Transaction",
     "s1-tx-lifecycle": "🧩 Tx Lifecycle",
@@ -18,8 +19,7 @@
     "s1-bestfits": "🎯 Best Fits",
     "s1-worstfits": "🚫 Worst Fits",
     "s1-quiz": "Quiz",
-    "s1-takeaways": "Takeaways",
-    "s1-summary": "Summary"
+    "s1-takeaways": "Takeaways"
   },
   "title": {
     "sectionNumber": "SECTION 01",
@@ -108,6 +108,22 @@
       "confValue": "~1 h ≈ settled"
     }
   },
+  "handoff": {
+    "badge": "↩ Recap handoff · Blockchain Fundamentals",
+    "heading": "You already know how Bitcoin works — now look at it as a platform",
+    "lead": "In Blockchain Fundamentals you learned the mechanics. This section asks the platform question instead: what did Bitcoin's designers optimise for, what did they give up, and what is it actually good for in business?",
+    "coveredLabel": "Already covered — we won't re-teach it",
+    "covered": ["Hashing & SHA-256", "Blocks, chains & Merkle trees", "Wallets, keys & signatures", "Mining & Proof of Work basics", "UTXOs & change"],
+    "lensLabel": "Today's lens",
+    "lens": [
+      { "emoji": "🏗️", "title": "Architecture", "desc": "Four layers — and what each one buys a business: reach, auditability, finality.", "question": "Which of the four layers does your business actually touch?", "where": "→ Architecture · Transaction" },
+      { "emoji": "⛏️", "title": "Proof of Work as a cost", "desc": "What you pay for security, who pays it, and why the size of the bill is the point.", "question": "Who pays for Bitcoin's security — and what would an attack cost?", "where": "→ Proof of Work" },
+      { "emoji": "⚖️", "title": "The Trilemma", "desc": "No platform gets everything. Bitcoin chose security and decentralization — and lives with the consequences.", "question": "Which corner of the triangle can your use case afford to lose?", "where": "→ Trilemma · Best & Worst Fits" }
+    ],
+    "questionLabel": "The question we'll answer",
+    "refresher": "Need the mechanics again? The 🧩 interactive slides (Tx Lifecycle, UTXO Exercise, Lightning) are there for exactly that.",
+    "hood": ["SHA-256", "UTXO", "nonce", "difficulty", "longest chain"]
+  },
   "architecture": {
     "heading": "Bitcoin Architecture",
     "subtitle": "Four layers power the Bitcoin network — click any layer to explore it in detail.",
@@ -188,19 +204,13 @@
     "bobNewUtxo": "Bob (new UTXO)",
     "aliceChange": "Alice (change)",
     "equation": "Inputs (0.8 BTC) = Outputs (0.7 BTC) + Fee (0.1 BTC)",
-    "anatomyTitle": "Anatomy of a Bitcoin Transaction",
-    "anatomy": [
-      { "field": "Version",     "desc": "Protocol version — determines which rules apply (e.g. SegWit support)." },
-      { "field": "Inputs [ ]",  "desc": "Array of references to previous UTXOs being consumed. scriptSig (or witness) proves ownership." },
-      { "field": "Outputs [ ]", "desc": "Array of new UTXOs created. scriptPubKey locks the coins to the recipient's address." },
-      { "field": "Locktime",    "desc": "Earliest time/block the transaction can be mined. 0 means no delay." }
+    "businessTitle": "What the UTXO model means for a business",
+    "business": [
+      { "emoji": "💵", "title": "Cash-like, not account-like", "desc": "You spend whole \"notes\" and receive change. Wallets hide this — but treasury software must track many UTXOs, not one balance." },
+      { "emoji": "🧾", "title": "Fees price bytes, not value", "desc": "A €50 and a €50M payment can cost the same fee. Many small inputs make a transaction bigger — and pricier — to send." },
+      { "emoji": "🔍", "title": "Every coin has a history", "desc": "Each UTXO traces back to the block it was mined in. Auditors and compliance teams can follow provenance — Bitcoin is pseudonymous, not anonymous." }
     ],
-    "whyTitle": "Why UTXO?",
-    "whyBenefits": [
-      { "label": "No global balance", "desc": "No single mutable account state — reduces contention" },
-      { "label": "Stateless validation", "desc": "Each UTXO can be verified independently" },
-      { "label": "Parallel processing", "desc": "Non-overlapping UTXOs can be validated concurrently" }
-    ]
+    "hood": ["txid", "vout", "scriptSig", "scriptPubKey", "locktime"]
   },
   "utxoExercise": {
     "heading": "Exercise: Build a Bitcoin Transaction",
@@ -249,18 +259,20 @@
   },
   "pow": {
     "heading": "Proof of Work",
-    "subtitle": "The cryptographic puzzle that makes Bitcoin's consensus tamper-proof.",
-    "puzzleLabel": "The Hash Puzzle",
-    "puzzleA": "Bitcoin uses ",
-    "puzzleSha": "SHA-256",
-    "puzzleB": " (applied twice) to produce a 256-bit digest. Miners must find a ",
-    "puzzleNonce": "nonce",
-    "puzzleC": " such that the resulting block hash is below the current target — meaning it starts with enough leading zeros. This requires brute-force trial and error.",
-    "headerTitle": "Block Header Fields",
-    "hashLabel": "SHA256(SHA256(header)) =",
+    "subtitle": "The mechanism that turns electricity into trust — and what that costs.",
+    "stepsTitle": "How a block gets made — in four moves",
+    "steps": [
+      { "emoji": "📥", "label": "Collect", "desc": "A miner gathers waiting transactions into a candidate block." },
+      { "emoji": "🎲", "label": "Guess", "desc": "It changes one number (the nonce) and hashes the block — trillions of times per second." },
+      { "emoji": "🎯", "label": "Hit the target", "desc": "If the hash lands below the network's target, the block is valid — and anyone can verify that in a millisecond." },
+      { "emoji": "💰", "label": "Get paid", "desc": "The winner broadcasts the block and earns the block reward plus fees. The race restarts immediately." }
+    ],
+    "buyLabel": "What a business is buying",
+    "buyBody": "Rewriting history means redoing all that work faster than the rest of the world combined. PoW turns electricity into a cost of attack — and that cost is the security.",
+    "hood": ["block header", "nonce", "target", "SHA-256d", "2,016-block retarget"],
     "difficultyA": "Difficulty adjusts every ",
     "difficultyStrong": "2,016 blocks (~2 weeks)",
-    "difficultyB": " to maintain ~10 min block time.",
+    "difficultyB": " to keep blocks arriving every ~10 minutes.",
     "cards": {
       "hardware": {
         "title": "Mining Hardware Evolution",
@@ -286,12 +298,15 @@
   },
   "trilemma": {
     "heading": "The Blockchain Trilemma",
-    "subtitle": "A blockchain can excel at any two of these — the third becomes a trade-off.",
+    "subtitle": "Every platform optimises for two of these three and pays for it on the third. Hover a platform to see what it chose.",
     "chooseLabel": "CHOOSE",
     "chooseTwo": "TWO",
     "tradedOff": "↓ traded off",
     "hoverHint": "Hover a platform to compare ↓",
     "pickPrefix": "✓ ",
+    "businessLabel": "For a business decision",
+    "businessBody": "Pick the platform whose sacrifice you can live with. Bitcoin gives up on-chain speed — so it suits high-value settlement and reserves, not coffee at the till.",
+    "hood": ["Nakamoto consensus", "block size", "validator count", "Layer 2"],
     "vertices": {
       "security":         { "name": "Security",         "desc": "Resistant to attacks" },
       "decentralization": { "name": "Decentralization", "desc": "No single point of control" },
@@ -346,71 +361,34 @@
       {
         "title": "Lightning Network",
         "sub": "L2 payment channels · 2018+",
-        "what": "A network of payment channels. Two parties open a channel on-chain once, then exchange thousands of off-chain transactions instantly and almost free. Channels close on-chain to settle the final balance.",
-        "adoption": "Apps: Strike · Cash App (US Bitcoin) · Phoenix · Wallet of Satoshi · Cashu · Public capacity ~5,000 BTC · ~15,000 routing nodes.",
-        "limit": "Liquidity must be pre-allocated · routing failures common at the edge · custodial wallets dominate retail UX, eroding the self-sovereignty argument."
+        "what": "Two parties lock funds on-chain once, then pay each other instantly and almost free off-chain. Only opening and closing touch Bitcoin.",
+        "adoption": "Strike · Cash App · Phoenix · Wallet of Satoshi · public capacity ~5,000 BTC · ~15,000 routing nodes.",
+        "limit": "Liquidity must be pre-allocated · payments can fail to route · most retail users rely on custodial wallets."
       },
       {
         "title": "Ordinals · BRC-20 · Runes",
         "sub": "Inscriptions on satoshis · 2023+",
-        "what": "Casey Rodarmor's Ordinals (Jan 2023) numbers each satoshi and lets you \"inscribe\" arbitrary data onto it — images, JSON, code. BRC-20 reused this for fungible tokens; Runes (April 2024) added a more efficient native-token system.",
-        "adoption": "~$4B+ Ordinals secondary market · BRC-20 momentum cooled in 2024 · Runes inherited the use case after the Halving.",
-        "limit": "Highly contested: bloats blockchain data, raises base-chain fees during inscription waves. Many node operators and core devs oppose it philosophically — \"Bitcoin is for money\"."
+        "what": "Ordinals (2023) number every satoshi and let you attach data to it — images, text, tokens. BRC-20 and Runes (2024) built token systems on top.",
+        "adoption": "Multi-billion-dollar secondary market in 2023–24 · activity cooled after the 2024 Halving.",
+        "limit": "Contested: bloats the chain and spikes fees. Many node operators argue \"Bitcoin is for money\"."
       },
       {
         "title": "Bitcoin sidechains & rollups",
         "sub": "Stacks · Liquid · Rootstock · 2018+",
-        "what": "Programmable layers pegged to BTC. Stacks (Clarity language, settles via \"Proof of Transfer\"); Liquid (federation, fast confidential txs); Rootstock (EVM-compatible, merge-mined). New entrants 2024-25: BitVM-style rollups, BOB, Bitlayer.",
-        "adoption": "Stacks ~$1B TVL · Liquid powers confidential txs for major exchanges · Rootstock has steady DeFi activity.",
-        "limit": "Trust models vary widely: Liquid is federated (trust the signer set); Stacks settles to BTC but security remains debated; Rootstock pegs use merge-mining. None inherits Bitcoin's security as natively as ETH rollups inherit L1."
+        "what": "Separate programmable chains pegged to BTC: Stacks (own language), Liquid (federation of exchanges), Rootstock (Ethereum-compatible).",
+        "adoption": "Stacks ~$1B TVL · Liquid moves funds between major exchanges · Rootstock hosts steady DeFi activity.",
+        "limit": "Each has its own trust model (federations, merge-mining). None inherits Bitcoin's security the way Ethereum rollups inherit Ethereum's."
       },
       {
         "title": "Bitcoin staking — Babylon",
-        "sub": "Native BTC restaking · 2024+",
-        "what": "Babylon lets BTC holders stake their coins to provide economic security to PoS chains — without bridging or wrapping. If a validator equivocates, their staked BTC is slashed via a Bitcoin-native script.",
-        "adoption": "~$5B+ BTC staked by late 2024 · backed by multiple PoS chains seeking shared security · mainnet launched 2024.",
-        "limit": "New and unproven at scale · introduces complex Bitcoin script · creates BTC-denominated yield, breaking with the long-held \"Bitcoin doesn't pay yield\" tradition."
+        "sub": "Native BTC staking · 2024+",
+        "what": "BTC holders lock coins to secure other proof-of-stake networks and earn yield — without wrapping or moving the BTC off Bitcoin.",
+        "adoption": "~$5B+ BTC staked by late 2024 · mainnet live · multiple PoS chains buying shared security.",
+        "limit": "New and unproven at scale · breaks the long-held \"Bitcoin doesn't pay yield\" tradition."
       }
     ],
     "caveatLabel": "Pedagogical caveat — ",
     "caveatBody": "Bitcoin's app layer is debated within the Bitcoin community. Purists want the base chain minimal (\"digital gold\"); builders push to use it as a settlement layer for richer apps. Be skeptical of hype on either side — both camps have legitimate concerns."
-  },
-  "lightningWhy": {
-    "heading": "Lightning Network — Why It Matters",
-    "subtitle": "Bitcoin's base layer processes ~7 transactions per second and takes ~10 minutes to confirm. Lightning solves this without changing Bitcoin itself.",
-    "stats": {
-      "settlement": { "value": "~1ms", "label": "Settlement", "sub": "vs ~10 min on-chain" },
-      "fee": { "value": "<$0.001", "label": "Fee per payment", "sub": "vs $1–$50 on-chain" },
-      "tps": { "value": "∞", "label": "Theoretical TPS", "sub": "limited only by nodes" }
-    },
-    "adoption": {
-      "title": "🌍 Real-World Adoption",
-      "items": [
-        { "strong": "El Salvador", "text": " — national Bitcoin wallet (Chivo) runs on Lightning" },
-        { "strong": "Strike & Cash App", "text": " — millions of users send Lightning payments" },
-        { "strong": "Remittances", "text": " — <0.1% fee vs 10–15% via Western Union" }
-      ]
-    },
-    "useCases": {
-      "title": "⚡ New Use Cases",
-      "items": [
-        { "strong": "Streaming money", "text": " — pay per second for content or services" },
-        { "strong": "Micropayments", "text": " — tip 1 sat for an article or a tweet" },
-        { "strong": "Machine payments", "text": " — IoT devices paying each other autonomously" }
-      ]
-    },
-    "security": {
-      "title": "🔐 Security Guarantees",
-      "items": [
-        { "preA": "Channels are enforced by ", "strong": "Bitcoin smart contracts", "preB": " — no middleman" },
-        { "preA": "A party trying to cheat with an old state gets their funds ", "strong": "penalized", "preB": "" },
-        { "preA": "HTLCs ensure intermediaries can route but ", "strong": "never steal", "preB": "" }
-      ]
-    },
-    "callout": {
-      "title": "Key Insight",
-      "body": "Lightning doesn't replace Bitcoin — it sits on top of it. The base layer provides the trust; Lightning provides the speed. Same model as the internet: TCP/IP underneath, HTTP on top."
-    }
   },
   "bestFits": {
     "badge": "🎯 Best Fits",
@@ -477,24 +455,12 @@
   "takeaways": {
     "title": "Section 01 — Key Takeaways",
     "items": [
-      "Bitcoin is a permissionless, public blockchain — anyone can participate",
-      "Its architecture combines UTXO transactions, Merkle trees, and linked block headers",
-      "Proof of Work makes attacks prohibitively expensive — security through real-world energy cost",
-      "The Blockchain Trilemma: decentralization, security, and scalability cannot all be maximised simultaneously",
-      "Bitcoin prioritises security and decentralization — scalability is handled by Layer 2 (Lightning)"
+      "Bitcoin is a permissionless, public platform — anyone can join, and no one can be excluded",
+      "Its four layers (apps, network, consensus, data) each buy a business something: reach, auditability, finality",
+      "Proof of Work turns electricity into a cost of attack — the energy bill is the security budget",
+      "The Trilemma: no platform maximises decentralization, security and scalability at once — every choice has a price",
+      "Bitcoin chose security and decentralization; speed lives on Layer 2 (Lightning) or on another platform entirely",
+      "Right tool, right job: Bitcoin for value storage and neutral settlement — not for programmable business logic"
     ]
-  },
-  "summary": {
-    "heading": "Section Summary",
-    "subtitle": "Everything covered in this section — at a glance",
-    "cards": [
-      { "icon": "💼", "title": "Application Layer", "summary": "Wallets, exchanges, block explorers — communicate with the network via RPC calls to full nodes on port 8332" },
-      { "icon": "🌐", "title": "P2P Network", "summary": "~50k reachable nodes · Gossip protocol · Mempool holds unconfirmed txs · TCP port 8333" },
-      { "icon": "⛏️", "title": "Proof of Work", "summary": "SHA-256 hash puzzle · 2016-block difficulty adjustment · 10-minute block target · First to find nonce wins" },
-      { "icon": "🗄️", "title": "UTXO Model", "summary": "Inputs reference past UTXOs · Outputs create new UTXOs · No global balance · Change is a new output" },
-      { "icon": "📊", "title": "Halving Schedule", "summary": "50 → 25 → 12.5 → 6.25 BTC per block · Max supply 21M · Next halving ~2028 · Last coin mined ~2140" },
-      { "icon": "⚖️", "title": "Trilemma Trade-off", "summary": "Bitcoin: Security + Decentralization · Scalability handled by Lightning Network (Layer 2) off-chain payments" }
-    ],
-    "footer": "Proceed to Section 2 to explore Ethereum and programmable blockchains →"
   }
 }

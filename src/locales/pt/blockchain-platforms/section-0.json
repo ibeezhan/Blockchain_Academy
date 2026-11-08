@@ -6,7 +6,8 @@
     "s0-comparison":      "Comparação",
     "s0-usecases":        "Uso da Blockchain",
     "s0-takeaways":       "Conclusões",
-    "s0-team-reminder":   "🤝 Lembrete de Equipa"
+    "s0-team-reminder":   "🤝 Lembrete de Equipa",
+    "s0-spectrum": "The Spectrum"
   },
   "title": {
     "sectionNumber": "SECÇÃO 00",
@@ -42,7 +43,8 @@
         "Sem necessidade de confiança — o consenso substitui a autoridade. As regras estão no código.",
         "Exemplos: Bitcoin, Ethereum, IPFS, Tor"
       ]
-    }
+    },
+    "hood": ["Paul Baran (1964)", "network topology", "single point of failure", "consensus"]
   },
   "types": {
     "title": "Tipos de Blockchain",
@@ -80,6 +82,13 @@
         "option1": "Bitcoin, Ethereum, Solana",
         "option2": "Quorum (JPMorgan), R3 Corda",
         "option3": "Hyperledger Fabric, chains privadas"
+      },
+      { "feature": "🤝 Trust comes from", "option1": "Maths + economics (PoW / PoS)", "option2": "Known identities + consortium rules", "option3": "The owning organisation" },
+      {
+        "feature": "📌 Examples",
+        "option1": "Bitcoin, Ethereum, Solana",
+        "option2": "Quorum (JPMorgan), R3 Corda, Fabric multi-org",
+        "option3": "Hyperledger Fabric (single org), private chains"
       }
     ]
   },
@@ -219,5 +228,49 @@
       "label": "Ligação de hoje",
       "body": "À medida que vires Bitcoin / Ethereum / Hyperledger / etc — pensa qual delas encaixaria num problema que já tenhas vivido."
     }
+  },
+  "recapBadge": "↩ Recap · from Blockchain Fundamentals",
+  "spectrum": {
+    "heading": "Permissionless ↔ Permissioned: one spectrum, not two camps",
+    "subtitle": "Every platform in this course sits somewhere on this line. Placing a project on it starts with two business questions: who is allowed in, and who needs to see what?",
+    "leftLabel": "Permissionless",
+    "leftSub": "anyone can join, read and validate",
+    "rightLabel": "Permissioned",
+    "rightSub": "known, vetted organisations only",
+    "markers": [
+      "Bitcoin",
+      "Ethereum",
+      "Solana",
+      "Consortium chains — Quorum, Corda, Fabric (multi-org)",
+      "Private chain — Fabric (single org)"
+    ],
+    "gainRight": {
+      "title": "Move right and you gain",
+      "items": [
+        "Privacy — competitors don't see your volumes or prices",
+        "Speed — thousands of transactions per second, no mining",
+        "Compliance — known identities, auditable roles (KYC, GDPR)",
+        "Control — members agree the rules and can correct mistakes"
+      ]
+    },
+    "gainLeft": {
+      "title": "Move left and you gain",
+      "items": [
+        "Open access — no gatekeeper; anyone can join or build",
+        "Neutrality — no member can be frozen out or removed",
+        "Censorship resistance — rules enforced by code and economics",
+        "Network effects — shared users, liquidity and tooling"
+      ]
+    },
+    "decision": {
+      "title": "Three questions to place your project",
+      "items": [
+        { "q": "Do you know — and can you legally hold accountable — every participant?", "lean": "yes → lean permissioned" },
+        { "q": "Must some data stay hidden from some participants?", "lean": "yes → lean permissioned" },
+        { "q": "Does the value depend on anyone in the world being able to join?", "lean": "yes → lean permissionless" }
+      ]
+    },
+    "footer": "Neither end is \"more blockchain\". They solve different problems — the rest of this course is about matching the problem to the platform.",
+    "hood": ["PoW / PoS", "BFT / Raft", "MSP identity", "channels"]
   }
 }

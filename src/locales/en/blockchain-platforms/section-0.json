@@ -2,8 +2,7 @@
   "chapters": {
     "s0-centralization":  "Centralization",
     "s0-types":           "Blockchain Types",
-    "s0-permissioned":    "Permissioned",
-    "s0-comparison":      "Comparison",
+    "s0-spectrum":        "The Spectrum",
     "s0-usecases":        "Use of Blockchain",
     "s0-takeaways":       "Takeaways",
     "s0-team-reminder":   "🤝 Team Reminder"
@@ -13,33 +12,35 @@
     "title": "Recap",
     "subtitle": "Centralization, blockchain types, and the permissioned vs permissionless spectrum"
   },
+  "recapBadge": "↩ Recap · from Blockchain Fundamentals",
   "centralization": {
     "heading": "Centralized vs Decentralized vs Distributed",
-    "subtitle": "Three network topologies — first described by Paul Baran (1964). Blockchain sits at the distributed end of the spectrum.",
+    "subtitle": "Three ways to wire a network (Paul Baran, 1964). The question for a business: where does control sit, and what happens when that point fails?",
+    "hood": ["Paul Baran (1964)", "network topology", "single point of failure", "consensus"],
     "centralized": {
       "title": "Centralized",
       "points": [
-        "Single authority controls everything — one hub, many spokes",
-        "Single point of failure — compromise the center and the whole system falls",
-        "Efficient and easy to govern, but requires full trust in the authority",
+        "One authority controls everything — one hub, many spokes",
+        "Single point of failure — take out the centre and the whole system stops",
+        "Efficient and easy to govern, but you must trust the authority fully",
         "Examples: Visa, central banks, AWS, Facebook"
       ]
     },
     "decentralized": {
       "title": "Decentralized",
       "points": [
-        "Multiple control centers — each manages its own cluster of nodes",
-        "More resilient than centralized — but each sub-center is still a point of failure",
-        "Governance is federated — rules negotiated between centers",
-        "Examples: Internet DNS, Consortium blockchains, banking networks"
+        "Several control centres — each runs its own cluster",
+        "More resilient — but each centre is still a point of failure",
+        "Governance is federated — the rules are negotiated between centres",
+        "Examples: Internet DNS, consortium blockchains, banking networks"
       ]
     },
     "distributed": {
       "title": "Distributed",
       "points": [
-        "No center — every node is equal and connects directly to peers",
-        "No single point of failure — removing any node doesn't break the network",
-        "Trustless — consensus replaces authority. The rules are in the code.",
+        "No centre — every node is equal and talks directly to its peers",
+        "No single point of failure — remove any node and the network carries on",
+        "Trustless — consensus replaces authority; the rules live in the code",
         "Examples: Bitcoin, Ethereum, IPFS, Tor"
       ]
     }
@@ -76,81 +77,61 @@
         "option3": "Minimal — internal only"
       },
       {
+        "feature": "⚡ Speed",
+        "option1": "~7–30 tx/s on the base layer",
+        "option2": "1,000s of tx/s — no mining",
+        "option3": "Database-like performance"
+      },
+      {
+        "feature": "🤝 Trust comes from",
+        "option1": "Maths + economics (PoW / PoS)",
+        "option2": "Known identities + consortium rules",
+        "option3": "The owning organisation"
+      },
+      {
         "feature": "📌 Examples",
         "option1": "Bitcoin, Ethereum, Solana",
-        "option2": "Quorum (JPMorgan), R3 Corda",
-        "option3": "Hyperledger Fabric, private chains"
+        "option2": "Quorum (JPMorgan), R3 Corda, Fabric multi-org",
+        "option3": "Hyperledger Fabric (single org), private chains"
       }
     ]
   },
-  "permissioned": {
-    "title": "Permissioned Blockchains",
-    "description": "Private and consortium blockchains are designed for trust within known participant sets — not trustlessness at global scale.",
-    "cards": {
-      "what": {
-        "title": "🔐 What makes them permissioned?",
-        "body": "Participants are known and identity-verified before joining. Access control defines who can read, write, or validate. Consensus is faster (BFT variants) — no mining needed. Governance is agreed off-chain by the consortium."
-      },
-      "private": {
-        "title": "🏢 Private Blockchains",
-        "body": "Controlled by a single organisation — internal use only. Highest performance, lowest decentralisation. Used for internal audit trails and cross-department data sharing. Example: Hyperledger Fabric in single-org mode."
-      },
-      "consortium": {
-        "title": "🤝 Consortium Blockchains",
-        "body": "Governed by a group of organisations with shared interests. Each member runs nodes — shared validation. Used for trade finance, healthcare data, and supply chains. Examples: R3 Corda, TradeLens (Maersk + IBM)."
-      },
-      "tradeoff": {
-        "title": "⚖️ The Trade-off vs Public Chains",
-        "gainLabel": "Gain:",
-        "gain": " privacy, performance, and regulatory compliance. ",
-        "loseLabel": "Lose:",
-        "lose": " censorship resistance, open access, and trustlessness. Neither is better — they solve different problems."
-      }
+  "spectrum": {
+    "heading": "Permissionless ↔ Permissioned: one spectrum, not two camps",
+    "subtitle": "Every platform in this course sits somewhere on this line. Placing a project on it starts with two business questions: who is allowed in, and who needs to see what?",
+    "leftLabel": "Permissionless",
+    "leftSub": "anyone can join, read and validate",
+    "rightLabel": "Permissioned",
+    "rightSub": "known, vetted organisations only",
+    "markers": ["Bitcoin", "Ethereum", "Solana", "Consortium chains — Quorum, Corda, Fabric (multi-org)", "Private chain — Fabric (single org)"],
+    "gainRight": {
+      "title": "Move right and you gain",
+      "items": [
+        "Privacy — competitors don't see your volumes or prices",
+        "Speed — thousands of transactions per second, no mining",
+        "Compliance — known identities, auditable roles (KYC, GDPR)",
+        "Control — members agree the rules and can correct mistakes"
+      ]
     },
-    "keyPoints": [
-      "Participants are known — identity replaces economic incentives as the trust mechanism",
-      "BFT consensus is orders of magnitude faster than PoW/PoS — no energy waste",
-      "Private chains maximise performance; consortium chains balance privacy with shared governance",
-      "Permissioned blockchains are not \"less blockchain\" — they are optimised for different constraints"
-    ]
-  },
-  "comparison": {
-    "title": "Permissionless vs Permissioned",
-    "featureLabel": "Property",
-    "option1Label": "Permissionless",
-    "option2Label": "Permissioned",
-    "items": [
-      {
-        "feature": "🔓 Access",
-        "option1": "Open to anyone — no identity required",
-        "option2": "Restricted — participants are vetted and known"
-      },
-      {
-        "feature": "⚙️ Consensus",
-        "option1": "PoW / PoS — open competition",
-        "option2": "BFT variants — pre-selected validators, much faster"
-      },
-      {
-        "feature": "🚀 Throughput",
-        "option1": "7–30 TPS (Bitcoin/Ethereum L1)",
-        "option2": "1,000–10,000+ TPS depending on setup"
-      },
-      {
-        "feature": "🔍 Transparency",
-        "option1": "Full — anyone can audit every transaction",
-        "option2": "Selective — visibility is role-based"
-      },
-      {
-        "feature": "🛡️ Trust Model",
-        "option1": "Trustless — math and economics enforce rules",
-        "option2": "Trust in consortium governance and identity"
-      },
-      {
-        "feature": "📌 Use Case",
-        "option1": "Public finance, censorship resistance, open dApps",
-        "option2": "Enterprise supply chains, regulated finance, healthcare"
-      }
-    ]
+    "gainLeft": {
+      "title": "Move left and you gain",
+      "items": [
+        "Open access — no gatekeeper; anyone can join or build",
+        "Neutrality — no member can be frozen out or removed",
+        "Censorship resistance — rules enforced by code and economics",
+        "Network effects — shared users, liquidity and tooling"
+      ]
+    },
+    "decision": {
+      "title": "Three questions to place your project",
+      "items": [
+        { "q": "Do you know — and can you legally hold accountable — every participant?", "lean": "yes → lean permissioned" },
+        { "q": "Must some data stay hidden from some participants?", "lean": "yes → lean permissioned" },
+        { "q": "Does the value depend on anyone in the world being able to join?", "lean": "yes → lean permissionless" }
+      ]
+    },
+    "footer": "Neither end is \"more blockchain\". They solve different problems — the rest of this course is about matching the problem to the platform.",
+    "hood": ["PoW / PoS", "BFT / Raft", "MSP identity", "channels"]
   },
   "usecases": {
     "heading": "The Use of Blockchain",
@@ -189,12 +170,12 @@
   "takeaways": {
     "title": "Section 00 — Key Takeaways",
     "items": [
-      "Centralization offers efficiency; decentralization offers resilience and trustlessness",
-      "Blockchain exists on a spectrum — from fully public/permissionless to fully private/permissioned",
-      "Blockchain adds value when multiple untrusting parties share data, or when intermediaries can be replaced by code",
-      "Permissioned blockchains trade censorship resistance for privacy, performance, and compliance",
-      "Consortium blockchains allow competing organizations to collaborate on shared infrastructure",
-      "There is no universally best blockchain — each is optimised for different constraints"
+      "Centralization buys efficiency; decentralization buys resilience and removes the need to trust one party",
+      "Blockchains sit on a spectrum — from fully public and permissionless to fully private and permissioned",
+      "Blockchain adds value when several parties that don't trust each other must share one record, or when code can replace an intermediary",
+      "Moving towards permissioned trades open access and censorship resistance for privacy, speed and compliance",
+      "Consortium chains let competing organisations run shared infrastructure without handing control to any one of them",
+      "There is no universally best blockchain — the rest of this course matches problems to platforms"
     ]
   },
   "teamReminder": {

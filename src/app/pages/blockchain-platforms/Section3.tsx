@@ -9,11 +9,14 @@ import { ComparisonSlide } from '../../components/templates/ComparisonSlide';
 import { ConceptSlide } from '../../components/templates/ConceptSlide';
 import { QuizSlide } from '../../components/templates/QuizSlide';
 import { Building2 } from 'lucide-react';
+import { UnderTheHood } from '../../components/shared/UnderTheHood';
 
 // Language-neutral shape — only IDs + kind. Labels come from t() at render time.
 const chapterShape = [
   { kind: 'group' as const, id: 'g-s3-why' },
   { id: 's3-why' },
+  { id: 's3-tradeoffs' },
+  { id: 's3-usecases' },
   { id: 's3-supplychains' },
 
   { kind: 'group' as const, id: 'g-s3-arch' },
@@ -56,7 +59,7 @@ function WhyPermissionedSlide() {
   const { t } = useTranslation('blockchain-platforms/section-3');
   const problems = t('why.problems', { returnObjects: true }) as { emoji: string; label: string; desc: string }[];
   const solutions = t('why.solutions', { returnObjects: true }) as { label: string; desc: string }[];
-  const adopters = ['Walmart', 'Maersk', 'HSBC', 'IBM Food Trust', 'TradeLens'];
+  const adopters = ['Walmart', 'Carrefour', 'IBM Food Trust', 'DL Freight (Walmart Canada)', 'EU EBSI', 'we.trade (2018–22)'];
 
   return (
     <div className="h-full flex flex-col p-6 lg:p-10">
@@ -137,25 +140,167 @@ function WhyPermissionedSlide() {
           </motion.div>
         </div>
       </div>
+      <UnderTheHood items={t('why.hood', { returnObjects: true }) as string[]} className="shrink-0 mt-3" />
+    </div>
+  );
+}
+
+// ─── s3-tradeoffs ─────────────────────────────────────────────────────────────
+
+interface TradeoffItem { emoji: string; label: string; desc: string; example: string; }
+
+function TradeoffsSlide() {
+  const { t } = useTranslation('blockchain-platforms/section-3');
+  const gains = t('tradeoffs.gains', { returnObjects: true }) as TradeoffItem[];
+  const losses = t('tradeoffs.losses', { returnObjects: true }) as TradeoffItem[];
+  const hood = t('tradeoffs.hood', { returnObjects: true }) as string[];
+
+  const column = (title: string, items: TradeoffItem[], color: string, sign: string) => (
+    <div className="flex flex-col gap-2 min-h-0">
+      <div className="shrink-0 flex items-center gap-2">
+        <span className="size-6 rounded-full flex items-center justify-center text-white text-sm font-black" style={{ backgroundColor: color }}>{sign}</span>
+        <h3 className="text-base font-bold text-foreground">{title}</h3>
+      </div>
+      <div className="flex-1 min-h-0 grid auto-rows-fr gap-2">
+        {items.map((item, i) => (
+          <motion.div
+            key={item.label}
+            initial={{ opacity: 0, x: sign === '+' ? -20 : 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: i * 0.08, duration: 0.3 }}
+            className="rounded-xl border p-3 flex items-start gap-3 min-h-0"
+            style={{ borderColor: color + '50', backgroundColor: color + '0a' }}
+          >
+            <span className="text-xl shrink-0 leading-none mt-0.5">{item.emoji}</span>
+            <div className="min-w-0">
+              <div className="font-bold text-sm text-foreground leading-tight">{item.label}</div>
+              <div className="text-xs text-muted-foreground leading-snug mt-0.5">{item.desc}</div>
+              <div className="text-[11px] mt-1 leading-snug" style={{ color }}>
+                <span className="font-bold uppercase tracking-wider text-[9px] mr-1">{t('tradeoffs.exampleLabel')}</span>{item.example}
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="h-full flex flex-col p-6 lg:p-10">
+      <div className="shrink-0 mb-4">
+        <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('tradeoffs.heading')}</h2>
+        <p className="text-sm text-muted-foreground mt-1">{t('tradeoffs.subtitle')}</p>
+      </div>
+
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-5">
+        {column(t('tradeoffs.gainTitle'), gains, '#39B54A', '+')}
+        {column(t('tradeoffs.loseTitle'), losses, '#ED1C24', '−')}
+      </div>
+
+      <div className="shrink-0 mt-3 flex flex-col gap-2 lg:pr-20">
+        <div className="rounded-xl border p-3" style={{ borderColor: '#6366f155', backgroundColor: '#6366f10d' }}>
+          <p className="text-xs text-foreground leading-snug">{t('tradeoffs.rule')}</p>
+        </div>
+        <UnderTheHood items={hood} />
+      </div>
+    </div>
+  );
+}
+
+// ─── s3-usecases ──────────────────────────────────────────────────────────────
+
+interface UseCaseExample { name: string; status: string; note: string; }
+interface UseCaseText { emoji: string; title: string; pain: string; change: string; examples: UseCaseExample[]; consortium: string; }
+
+const USECASE_COLORS = ['#39B54A', '#6366f1', '#f59e0b'];
+
+function statusColor(status: string) {
+  if (status.startsWith('live')) return '#39B54A';
+  if (status.startsWith('closed')) return '#ED1C24';
+  return '#f59e0b';
+}
+
+function UseCasesSlide() {
+  const { t } = useTranslation('blockchain-platforms/section-3');
+  const cases = t('usecases.cases', { returnObjects: true }) as UseCaseText[];
+  const hood = t('usecases.hood', { returnObjects: true }) as string[];
+
+  return (
+    <div className="h-full flex flex-col p-6 lg:p-10">
+      <div className="shrink-0 mb-4">
+        <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('usecases.heading')}</h2>
+        <p className="text-sm text-muted-foreground mt-1">{t('usecases.subtitle')}</p>
+      </div>
+
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {cases.map((c, i) => {
+          const color = USECASE_COLORS[i];
+          return (
+            <motion.div
+              key={c.title}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1, duration: 0.3 }}
+              className="rounded-2xl border-2 p-4 flex flex-col gap-3 min-h-0"
+              style={{ borderColor: color + '55', backgroundColor: color + '08' }}
+            >
+              <div className="shrink-0 flex items-center gap-2.5">
+                <span className="text-3xl leading-none">{c.emoji}</span>
+                <div className="font-black text-base text-foreground leading-tight">{c.title}</div>
+              </div>
+
+              <div className="shrink-0">
+                <div className="text-[9px] font-black uppercase tracking-widest text-[#ED1C24]">{t('usecases.painLabel')}</div>
+                <p className="text-xs text-muted-foreground leading-snug mt-0.5">{c.pain}</p>
+              </div>
+
+              <div className="shrink-0">
+                <div className="text-[9px] font-black uppercase tracking-widest" style={{ color }}>{t('usecases.changeLabel')}</div>
+                <p className="text-xs text-foreground leading-snug mt-0.5">{c.change}</p>
+              </div>
+
+              <div className="flex-1 min-h-0 flex flex-col gap-1.5">
+                <div className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">{t('usecases.examplesLabel')}</div>
+                {c.examples.map(ex => (
+                  <div key={ex.name} className="rounded-lg border bg-card/60 px-2.5 py-1.5" style={{ borderColor: color + '30' }}>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-xs font-bold text-foreground">{ex.name}</span>
+                      <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full shrink-0" style={{ color: statusColor(ex.status), backgroundColor: statusColor(ex.status) + '18' }}>{ex.status}</span>
+                    </div>
+                    <div className="text-[11px] text-muted-foreground leading-snug mt-0.5">{ex.note}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="shrink-0 rounded-lg px-2.5 py-1.5 border-l-2" style={{ borderColor: color, backgroundColor: color + '12' }}>
+                <div className="text-[9px] font-black uppercase tracking-widest" style={{ color }}>{t('usecases.consortiumLabel')}</div>
+                <div className="text-[11px] text-muted-foreground leading-snug mt-0.5">{c.consortium}</div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      <div className="shrink-0 mt-3 flex flex-col gap-2 lg:pr-20">
+        <div className="rounded-xl border p-3" style={{ borderColor: '#39B54A55', backgroundColor: '#39B54A0d' }}>
+          <p className="text-xs text-foreground leading-snug">{t('usecases.pattern')}</p>
+        </div>
+        <UnderTheHood items={hood} />
+      </div>
     </div>
   );
 }
 
 // ─── s3-supplychains ──────────────────────────────────────────────────────────
 
-// Language-neutral: icons + code (chaincode fn/args are code identifiers, not translated).
-const SUPPLY_STEP_DATA = [
-  { icon: '🌾', post: { fn: 'recordHarvest',   args: 'batch=B1, gps=37.4°N, date=2026-04-01' } },
-  { icon: '🏭', post: { fn: 'recordProcess',   args: 'batch=B1 → lotId=L42, temp=4°C' } },
-  { icon: '🚛', post: { fn: 'recordTransport', args: 'lot=L42, route=Farm→Hub→Store, temp log' } },
-  { icon: '🏪', post: { fn: 'recordReceipt',   args: 'lot=L42 ↔ sku=A123, store=NYC-12' } },
-  { icon: '👤', post: { fn: 'queryProvenance', args: 'sku=A123 → full audit trail (2.2s)' } },
-];
+// Language-neutral: step icons only. Labels + ledger writes resolved via t().
+const SUPPLY_STEP_ICONS = ['🌾', '🏭', '🚛', '🏪', '👤'];
 
 function SupplyChainsSlide() {
   const { t } = useTranslation('blockchain-platforms/section-3');
   const stepText = t('supplychains.steps', { returnObjects: true }) as { label: string; preTool: string; preIssue: string }[];
-  const steps = SUPPLY_STEP_DATA.map((s, i) => ({ ...s, ...stepText[i] }));
+  const writes = t('supplychains.writes', { returnObjects: true }) as string[];
+  const steps = SUPPLY_STEP_ICONS.map((icon, i) => ({ icon, write: writes[i], ...stepText[i] }));
   const deployments = t('supplychains.deployments', { returnObjects: true }) as { label: string; detail: string }[];
   const results = t('supplychains.results', { returnObjects: true }) as { metric: string; label: string }[];
 
@@ -235,14 +380,9 @@ function SupplyChainsSlide() {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-baseline justify-between gap-2 flex-wrap">
                     <span className="font-bold text-sm text-foreground">{step.label}</span>
-                    <span className="text-[10px] font-medium" style={{ color: '#39B54A' }}>{t('supplychains.chaincodeInvoke')}</span>
+                    <span className="text-[10px] font-medium" style={{ color: '#39B54A' }}>{t('supplychains.writeLabel')}</span>
                   </div>
-                  <div className="text-[11px] font-mono leading-snug mt-0.5 truncate">
-                    <span style={{ color: '#39B54A' }}>{step.post.fn}</span>
-                    <span className="text-muted-foreground">(</span>
-                    <span className="text-foreground">{step.post.args}</span>
-                    <span className="text-muted-foreground">)</span>
-                  </div>
+                  <div className="text-[11px] leading-snug mt-0.5 text-foreground">{step.write}</div>
                 </div>
               </div>
             ))}
@@ -257,6 +397,7 @@ function SupplyChainsSlide() {
           </div>
         </div>
       </div>
+      <UnderTheHood items={t('supplychains.hood', { returnObjects: true }) as string[]} className="shrink-0 mt-3" />
     </div>
   );
 }
@@ -753,6 +894,7 @@ function ChannelsSlide() {
         <p className="text-sm text-muted-foreground mt-1">
           {t('channels.subtitle')}
         </p>
+        <UnderTheHood items={t('channels.hood', { returnObjects: true }) as string[]} className="mt-2" />
       </div>
 
       <div className="flex-1 min-h-0 flex flex-col gap-4">
@@ -871,19 +1013,25 @@ function ChannelsSlide() {
 
 // ─── s3-txflow ────────────────────────────────────────────────────────────────
 
-// Language-neutral: num/emoji/color. label/desc resolved via t().
-const TX_STEP_STYLE = [
-  { num: 1, emoji: '📝', color: '#6366f1' },
-  { num: 2, emoji: '✅', color: '#39B54A' },
-  { num: 3, emoji: '📦', color: '#f59e0b' },
-  { num: 4, emoji: '🔗', color: '#ED1C24' },
-  { num: 5, emoji: '📢', color: '#22d3ee' },
+// Language-neutral: emoji/colour per stage. label/who/what/analogy resolved via t().
+const TX_STAGE_STYLE = [
+  { emoji: '📝', color: '#6366f1' },
+  { emoji: '✍️', color: '#39B54A' },
+  { emoji: '📮', color: '#f59e0b' },
+  { emoji: '✅', color: '#ED1C24' },
+  { emoji: '📢', color: '#22d3ee' },
 ];
+
+interface TxStageText { label: string; who: string; what: string; analogy: string; why: string; }
 
 function TxFlowSlide() {
   const { t } = useTranslation('blockchain-platforms/section-3');
-  const stepText = t('txflow.steps', { returnObjects: true }) as { label: string; desc: string }[];
-  const steps = TX_STEP_STYLE.map((s, i) => ({ ...s, ...stepText[i] }));
+  const stageText = t('txflow.stages', { returnObjects: true }) as TxStageText[];
+  const stages = TX_STAGE_STYLE.map((s, i) => ({ ...s, ...stageText[i] }));
+  const [active, setActive] = useState(0);
+  const stage = stages[active];
+  const isLast = active === stages.length - 1;
+  const trackPos = (i: number) => `${(i / (stages.length - 1)) * 100}%`;
 
   return (
     <div className="h-full flex flex-col p-6 lg:p-10">
@@ -892,73 +1040,121 @@ function TxFlowSlide() {
         <p className="text-sm text-muted-foreground mt-1">{t('txflow.subtitle')}</p>
       </div>
 
-      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Steps — takes 2 cols */}
-        <div className="lg:col-span-2 flex flex-col justify-center gap-1">
-          {steps.map((step, i) => (
-            <div key={step.num} className="flex flex-col">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1, duration: 0.35 }}
-                className="flex items-start gap-3 p-3 rounded-xl border"
-                style={{ borderColor: step.color + '40', backgroundColor: step.color + '0d' }}
+      {/* Horizontal track */}
+      <div className="shrink-0 rounded-2xl border border-border bg-card/50 px-8 pt-6 pb-4 mb-4">
+        <div className="relative h-1.5 rounded-full bg-border mx-6">
+          <motion.div
+            className="absolute left-0 top-0 h-full rounded-full"
+            style={{ background: 'linear-gradient(90deg, #6366f1, #39B54A, #f59e0b, #ED1C24, #22d3ee)' }}
+            initial={false}
+            animate={{ width: trackPos(active) }}
+            transition={{ duration: 0.4, ease: 'easeInOut' }}
+          />
+          <motion.div
+            className="absolute top-1/2 size-5 rounded-full border-2 border-background shadow-lg -translate-y-1/2 -translate-x-1/2 z-10"
+            style={{ backgroundColor: stage.color }}
+            initial={false}
+            animate={{ left: trackPos(active) }}
+            transition={{ duration: 0.4, ease: 'easeInOut' }}
+          />
+          {stages.map((st, i) => (
+            <button
+              key={st.label}
+              type="button"
+              onClick={() => setActive(i)}
+              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer group"
+              style={{ left: trackPos(i) }}
+            >
+              <span
+                className="size-10 rounded-full border-2 flex items-center justify-center text-lg transition-all bg-card"
+                style={{
+                  borderColor: i <= active ? st.color : 'var(--border)',
+                  backgroundColor: i === active ? st.color + '20' : undefined,
+                  opacity: i <= active ? 1 : 0.55,
+                  transform: i === active ? 'scale(1.15)' : undefined,
+                }}
               >
-                {/* Number badge */}
-                <div
-                  className="size-7 rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0 mt-0.5"
-                  style={{ backgroundColor: step.color }}
-                >
-                  {step.num}
-                </div>
-                <div className="flex items-center gap-2 flex-1">
-                  <span className="text-lg">{step.emoji}</span>
-                  <div>
-                    <div className="font-bold text-sm text-foreground">{step.label}</div>
-                    <div className="text-xs text-muted-foreground">{step.desc}</div>
-                  </div>
-                </div>
-              </motion.div>
-              {/* Connector */}
-              {i < steps.length - 1 && (
-                <div className="ml-[22px] flex items-center">
-                  <div className="w-0.5 h-3 bg-border" />
-                  <svg className="size-2 -ml-0.5 text-muted-foreground" viewBox="0 0 8 8" fill="currentColor">
-                    <path d="M4 8L0 0h8z" />
-                  </svg>
-                </div>
-              )}
-            </div>
+                {st.emoji}
+              </span>
+              <span className="text-[11px] font-bold whitespace-nowrap" style={{ color: i === active ? st.color : 'var(--muted-foreground)' }}>
+                {i + 1}. {st.label}
+              </span>
+            </button>
           ))}
         </div>
+        <div className="h-12" />
+      </div>
 
-        {/* Side note */}
-        <div className="flex flex-col gap-4 justify-center">
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-5">
+        {/* Active stage detail */}
+        <motion.div
+          key={stage.label}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.25 }}
+          className="lg:col-span-2 rounded-2xl border-2 p-5 flex flex-col gap-4"
+          style={{ borderColor: stage.color + '60', backgroundColor: stage.color + '0a' }}
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-4xl leading-none">{stage.emoji}</span>
+            <h3 className="text-xl font-black text-foreground">{active + 1}. {stage.label}</h3>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1">
+            <div>
+              <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{t('txflow.whoLabel')}</div>
+              <p className="text-sm font-semibold text-foreground mt-1">{stage.who}</p>
+              <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mt-4">{t('txflow.whatLabel')}</div>
+              <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{stage.what}</p>
+            </div>
+            <div className="flex flex-col gap-3">
+              <div className="rounded-xl border p-4 bg-card" style={{ borderColor: stage.color + '40' }}>
+                <div className="text-[10px] font-black uppercase tracking-widest" style={{ color: stage.color }}>{t('txflow.analogyLabel')}</div>
+                <p className="text-sm text-foreground mt-2 leading-relaxed italic">“{stage.analogy}”</p>
+              </div>
+              <div className="rounded-xl border p-4 flex-1" style={{ borderColor: stage.color + '40', backgroundColor: stage.color + '10' }}>
+                <div className="text-[10px] font-black uppercase tracking-widest" style={{ color: stage.color }}>{t('txflow.whyLabel')}</div>
+                <p className="text-sm text-foreground mt-2 leading-relaxed">{stage.why}</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => setActive(isLast ? 0 : active + 1)}
+              className="px-4 py-2 rounded-xl text-sm font-bold text-white cursor-pointer"
+              style={{ backgroundColor: stage.color }}
+            >
+              {isLast ? t('txflow.restart') : t('txflow.next')}
+            </button>
+          </div>
+        </motion.div>
+
+        {/* Side notes */}
+        <div className="flex flex-col gap-3 min-h-0">
           <div className="p-4 rounded-xl border border-[#39B54A]/40" style={{ backgroundColor: '#39B54A0d' }}>
-            <div className="font-bold text-sm text-foreground mb-2">{t('txflow.eovTitle')}</div>
+            <div className="font-bold text-sm text-foreground mb-1">{t('txflow.policyTitle')}</div>
+            <div className="text-xs text-muted-foreground leading-relaxed">{t('txflow.policyBody')}</div>
+          </div>
+          <div className="p-4 rounded-xl border border-border bg-card">
+            <div className="font-bold text-sm text-foreground mb-1">{t('txflow.eovTitle')}</div>
             <div className="text-xs text-muted-foreground leading-relaxed">
               {t('txflow.eovBodyA')}<strong>{t('txflow.eovBefore')}</strong>{t('txflow.eovBodyB')}
             </div>
           </div>
-
-          <div className="p-4 rounded-xl border border-border bg-card">
-            <div className="font-bold text-sm text-foreground mb-2">{t('txflow.oeTitle')}</div>
-            <div className="text-xs text-muted-foreground leading-relaxed">
-              {t('txflow.oeBody')}
-            </div>
-          </div>
-
           <div className="p-3 rounded-xl border border-[#6366f1]/40" style={{ backgroundColor: '#6366f10d' }}>
             <div className="text-xs text-muted-foreground">
               <span className="font-bold text-foreground">{t('txflow.resultLabel')}</span>
               {t('txflow.resultBody')}
             </div>
           </div>
+          <UnderTheHood items={t('txflow.hood', { returnObjects: true }) as string[]} className="mt-auto" />
         </div>
       </div>
     </div>
   );
 }
+
+// ─── s3-consensus-evo ─────────────────────────────────────────────────────────
 
 // ─── s3-consensus-evo ─────────────────────────────────────────────────────────
 
@@ -1657,6 +1853,16 @@ export function BP_Section3() {
         {/* ═══════ WHY PERMISSIONED ═══════ */}
         <div id="s3-why" className="h-full">
           <WhyPermissionedSlide />
+        </div>
+
+        {/* ═══════ PUBLIC VS PERMISSIONED TRADE-OFFS ═══════ */}
+        <div id="s3-tradeoffs" className="h-full">
+          <TradeoffsSlide />
+        </div>
+
+        {/* ═══════ ENTERPRISE USE CASES ═══════ */}
+        <div id="s3-usecases" className="h-full">
+          <UseCasesSlide />
         </div>
 
         {/* ═══════ SUPPLY CHAINS ═══════ */}
