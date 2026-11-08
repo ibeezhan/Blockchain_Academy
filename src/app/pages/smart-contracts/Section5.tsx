@@ -6,6 +6,7 @@ import { TakeawaySlide } from '../../components/templates/TakeawaySlide';
 import { QuizSlide } from '../../components/templates/QuizSlide';
 import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
+import { UnderTheHood } from '../../components/shared/UnderTheHood';
 import { ShieldAlert } from 'lucide-react';
 
 // Language-neutral shape — only IDs. Labels come from t() at render time.
@@ -15,6 +16,7 @@ const chapterIds = [
   's5-technical',
   's5-ex-oracle',
   's5-risks-security',
+  's5-failures',
   's5-risks-cost',
   's5-risks-regulatory',
   's5-quiz',
@@ -67,6 +69,24 @@ interface SummaryCard {
   title: string;
   summary: string;
 }
+
+interface FailureItem {
+  name: string;
+  date: string;
+  loss: string;
+  category: string;
+  what: string;
+  lesson: string;
+}
+
+const FAILURE_META = [
+  { emoji: '🔑', color: '#ED1C24' },
+  { emoji: '🗳️', color: '#8b5cf6' },
+  { emoji: '📡', color: '#f59e0b' },
+  { emoji: '🐛', color: '#6366f1' },
+  { emoji: '🧊', color: '#22d3ee' },
+  { emoji: '📉', color: '#7c2d12' },
+];
 
 function OracleAttackExercise() {
   const { t } = useTranslation('smart-contracts/section-5');
@@ -196,6 +216,8 @@ export function SC_Section5() {
     { emoji: '💸', color: '#ED1C24' },
   ];
 
+  const failureItems = t('failures.items', { returnObjects: true }) as FailureItem[];
+
   const costItems = t('cost.items', { returnObjects: true }) as WhyFixItem[];
   const costMeta = [
     { emoji: '🧱', color: '#ED1C24' },
@@ -289,6 +311,7 @@ export function SC_Section5() {
               </div>
             </div>
           </div>
+          <UnderTheHood terms={['data feed', 'TWAP', 'signed report', 'VRF (randomness)']} className="shrink-0 mt-3" />
         </div>
 
         {/* ═══════ CHALLENGES & LIMITATIONS ═══════ */}
@@ -413,6 +436,52 @@ export function SC_Section5() {
               </motion.div>
               );
             })}
+          </div>
+        </div>
+
+        {/* ═══════ FAILURES GALLERY ═══════ */}
+        <div id="s5-failures" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('failures.heading')}</h2>
+            <p className="text-muted-foreground text-sm mt-1">{t('failures.subtitle')}</p>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-3 grid-rows-2 gap-3">
+            {failureItems.map((f, i) => {
+              const m = FAILURE_META[i];
+              return (
+                <motion.div
+                  key={f.name}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.25, delay: i * 0.04 }}
+                  className="flex flex-col gap-2 rounded-xl border-2 p-3.5 min-h-0"
+                  style={{ borderColor: m.color + '50', backgroundColor: m.color + '08' }}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="text-xl shrink-0">{m.emoji}</span>
+                      <div className="min-w-0">
+                        <div className="font-black text-sm text-foreground leading-tight">{f.name}</div>
+                        <div className="text-[10px] text-muted-foreground font-mono">{f.date}</div>
+                      </div>
+                    </div>
+                    <div className="font-mono font-black text-sm shrink-0" style={{ color: m.color }}>{f.loss}</div>
+                  </div>
+                  <span className="self-start text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded" style={{ backgroundColor: m.color + '18', color: m.color }}>{f.category}</span>
+                  <p className="text-xs text-foreground/90 leading-snug flex-1">{f.what}</p>
+                  <div className="text-[11px] text-muted-foreground p-2 rounded-lg border-l-2" style={{ borderColor: m.color, backgroundColor: m.color + '10' }}>
+                    <span className="font-bold" style={{ color: m.color }}>{t('failures.lessonLabel')}</span>{f.lesson}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <div className="shrink-0 mt-3 flex items-center justify-between gap-4 flex-wrap pr-16">
+            <p className="text-xs text-muted-foreground italic flex-1">{t('failures.footer')}</p>
+            <UnderTheHood terms={['validator keys', 'flash loan', 'oracle manipulation', 'selfdestruct', 'reflexivity']} />
           </div>
         </div>
 

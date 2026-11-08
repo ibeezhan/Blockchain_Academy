@@ -42,7 +42,17 @@
     "s3-exercise": "🧩 Cria o Teu",
     "s3-quiz": "Quiz",
     "s3-takeaways": "Conclusões",
-    "s3-summary": "Resumo"
+    "s3-summary": "Resumo",
+    "s3-nft-utility": "NFTs Beyond Art",
+    "s3-nft-gate": "🧩 Token Gate",
+    "s3-nft-honest": "The Honest NFT Story",
+    "s3-dao-intro": "What is a DAO?",
+    "s3-dao-structures": "🧩 Governance Blocks",
+    "s3-dao-vote": "🧩 Who Holds Power?",
+    "s3-dao-examples": "Real DAOs",
+    "s3-dao-prosCons": "DAO Pros & Cons",
+    "s3-tradelens": "TradeLens ✗",
+    "s3-apps-intro": "Intro"
   },
   "groups": {
     "g-defi": "💸 DeFi",
@@ -51,7 +61,8 @@
     "g-sc": "🚚 Cadeia de Abastecimento",
     "g-cert": "📜 Certificação",
     "g-cases": "📁 Estudos de Caso",
-    "g-close": "✅ Conclusão"
+    "g-close": "✅ Conclusão",
+    "g-apps": "🏛 NFT Utility & DAOs"
   },
   "title": {
     "sectionNumber": "SECÇÃO 03",
@@ -193,7 +204,9 @@
     "tradWeb2": "Web2 Tradicional",
     "tradWeb2Desc": "o criador não ganha nada nas revendas",
     "withErc2981": "Com ERC-2981",
-    "withErc2981Desc": "pago automaticamente pelo smart contract"
+    "withErc2981Desc": "pago automaticamente pelo smart contract",
+    "caveatLabel": "Caveat:",
+    "caveatBody": " ERC-2981 only tells a marketplace what the royalty should be — paying it is voluntary, and since 2023 most marketplaces don't. See \"The Honest NFT Story\"."
   },
   "provenance": {
     "title": "Faz scan a um Frango BIO da Carrefour",
@@ -840,7 +853,8 @@
   "common": {
     "theProblem": "O Problema",
     "theSolution": "A Solução",
-    "theResults": "Os Resultados"
+    "theResults": "Os Resultados",
+    "whatHappened": "What Happened"
   },
   "homedepot": {
     "kicker": "Estudo de Caso 01 — Cadeia de Abastecimento",
@@ -1021,31 +1035,399 @@
   "takeaways": {
     "title": "Secção 03 — Conclusões-Chave",
     "items": [
-      "Cinco verticais de indústria — DeFi, Jogos/NFTs, RWA, Cadeia de Abastecimento, Certificação Digital — mostram todas smart contracts em produção atualmente",
-      "DeFi: AMMs, stablecoins e transferências sem fronteiras reformulam os carris financeiros (Uniswap $1,5 mil M/dia, Shopify USDC)",
-      "Os NFTs entregam posse digital real e royalties incorporados para criadores — o Champions Tactics da Ubisoft é convencional",
-      "A tokenização de RWA abrange o espetro desde a dívida soberana (BlackRock BUIDL) até ao imobiliário (Suécia, Brickblock, Zurique)",
-      "A cadeia de abastecimento vence quando várias partes precisam de uma verdade partilhada — o Walmart Food Trust rastreia de dias para segundos",
-      "A certificação digital funciona à escala — diplomas MIT Blockcerts (2017+), autenticação de luxo LVMH",
-      "O fio condutor do sucesso: muitas partes, sem autoridade de confiança, valor a partir da automação e da verdade partilhada",
-      "A seguir na Secção 4 — três lições do terreno: quando a blockchain vence (Estónia), quando se vira contra (The DAO), quando não deveria ter sido escolhida (ASX)"
+      "Five industry verticals — DeFi, Gaming/NFTs, RWA, Supply Chain, Digital Cert — all show smart contracts in production today",
+      "DeFi: AMMs, stablecoins and borderless transfers reshape financial rails — and each stablecoin design has its own failure mode",
+      "NFTs work best as keys, not pictures: tickets, memberships, credentials, provenance twins. Royalties were never enforced by the chain",
+      "DAOs can mimic a company transparently or build structures no charter allows — token votes, nested multisigs, quadratic funding, timelocks, rage-quit",
+      "DAO reality check: low turnout, whale power, legal exposure, governance attacks (Beanstalk) — and ConstitutionDAO's $47M lesson in planning for failure",
+      "RWA tokenization spans the spectrum from sovereign debt (BlackRock BUIDL) to real estate (Sweden, Brickblock, Zurich)",
+      "Supply chain wins when rivals agree to share truth — Walmart and GSBN run; Maersk's TradeLens shut down because competitors would not join",
+      "The common thread for success: many parties, no trusted authority, value from automation and shared truth — and an owner everyone can accept",
+      "Coming up in Section 4 — three lessons from the field: when blockchain wins (Estonia), when it backfires (The DAO), when it should never have been picked (ASX)"
     ]
   },
   "summary": {
     "heading": "Resumo da Secção",
     "subtitle": "Indústrias e estudos de caso abordados — num relance",
     "cards": [
-      { "title": "DeFi", "summary": "AMMs (Uniswap, CoW Swap) · stablecoins (Shopify/USDC) · transferências sem fronteiras (USDC em L2)" },
-      { "title": "Jogos e NFTs", "summary": "Posse real · P2E (Ubisoft Champions Tactics) · empréstimos com garantia em NFT" },
-      { "title": "Tokenização de RWA", "summary": "BlackRock BUIDL · registo predial da Suécia · Bahnhofstrasse de Zurique · quadro MiCA" },
-      { "title": "Cadeia de Abastecimento", "summary": "LVMH Aura · Carrefour BIO · Rede eBL GSBN (2M+ contentores)" },
-      { "title": "Certificação Digital", "summary": "Estónia KSI · MIT Blockcerts · autenticação de luxo LVMH AURA" },
-      { "title": "Home Depot", "summary": "Disputas com fornecedores de semanas → horas com Hyperledger Fabric" },
-      { "title": "Propy", "summary": "Escrituras imobiliárias em NFT — primeira venda de imóvel nos EUA on-chain" },
-      { "title": "DMV da Califórnia", "summary": "42M de títulos de veículos na Avalanche — primeiro estado dos EUA à escala" },
-      { "title": "Walmart", "summary": "Rastreio de alimentos de 7 dias → 2,2 segundos via IBM Food Trust" },
-      { "title": "Santander", "summary": "Obrigação de $20M na Ethereum de ponta a ponta — primeiro grande banco, T+2 → mesmo dia" }
+      {
+        "title": "DeFi",
+        "summary": "AMMs (Uniswap, CoW Swap) · stablecoins (Shopify/USDC) · borderless transfers (USDC on L2)"
+      },
+      {
+        "title": "Gaming & NFTs",
+        "summary": "True ownership · P2E (Ubisoft Champions Tactics) · NFT collateral lending"
+      },
+      {
+        "title": "NFT Utility & DAOs",
+        "summary": "Token-gating · tickets · POAPs · DAO building blocks (multisig, quadratic, timelock) · MakerDAO, Uniswap, Gitcoin, ConstitutionDAO"
+      },
+      {
+        "title": "RWA Tokenization",
+        "summary": "BlackRock BUIDL · Sweden land registry · Zurich Bahnhofstrasse · MiCA framework"
+      },
+      {
+        "title": "Supply Chain",
+        "summary": "LVMH Aura · Carrefour BIO · GSBN eBL Network (2M+ containers)"
+      },
+      {
+        "title": "Digital Cert",
+        "summary": "Estonia KSI · MIT Blockcerts · LVMH AURA luxury authentication"
+      },
+      {
+        "title": "Home Depot",
+        "summary": "Supplier disputes weeks → hours with Hyperledger Fabric"
+      },
+      {
+        "title": "Propy",
+        "summary": "NFT real-estate deeds — first US property sale on-chain"
+      },
+      {
+        "title": "CA DMV",
+        "summary": "42M vehicle titles on Avalanche — first US state at scale"
+      },
+      {
+        "title": "Walmart",
+        "summary": "Food trace from 7 days → 2.2 seconds via IBM Food Trust"
+      },
+      { "title": "Santander", "summary": "$20M end-to-end Ethereum bond — first major bank, T+2 → same-day" },
+      { "title": "TradeLens ✗", "summary": "Maersk × IBM shipping ledger shut down 2023 — rivals would not join a competitor-owned platform" }
     ],
     "footer": "Continua para a Secção 4 — Pensamento Crítico: quando usar um smart contract → e quando não →"
+  },
+  "appsDivider": {
+    "title": "NFT Utility & DAOs",
+    "subtitle": "Two applications that only exist because contracts can hold rights and run rules: tokens as keys, and organisations whose bylaws are code. Deeper than the Fundamentals teaser — including what failed."
+  },
+  "nftUtility": {
+    "heading": "NFTs Beyond Art: the Token as a Key",
+    "subtitle": "Forget the JPEG. An NFT is a transferable, verifiable record that this wallet holds this right — and rights are what businesses actually sell.",
+    "replacesLabel": "Replaces:",
+    "endedTag": "Pilot ended",
+    "cards": [
+      {
+        "title": "Membership & clubs",
+        "how": "The NFT is the membership card. Resell it and the membership moves with it — the club earns on every resale.",
+        "example": "Flyfish Club: a New York restaurant whose membership is an NFT · VeeFriends conference access",
+        "replaces": "Membership databases, plastic cards",
+        "ended": false
+      },
+      {
+        "title": "Gated content, shops & communities",
+        "how": "Prove you hold the token → unlock a Discord channel, a product drop, a file. Nothing to sign up for; the wallet is the login.",
+        "example": "Shopify tokengated commerce · Collab.Land Discord gating",
+        "replaces": "Logins, passwords, allow-lists",
+        "ended": false
+      },
+      {
+        "title": "Tickets",
+        "how": "Each ticket is unique and verifiable at the door, with resale rules written into the contract — price caps, identity binding, a cut to the artist.",
+        "example": "GET Protocol (millions of NFT tickets issued) · Ticketmaster token-gated sales (2023)",
+        "replaces": "Barcodes, scalper-friendly resale",
+        "ended": false
+      },
+      {
+        "title": "Credentials & attendance",
+        "how": "Proof you were there or earned it — a badge nobody can forge or quietly revoke. Non-transferable (\"soulbound\") versions suit diplomas and KYC.",
+        "example": "POAP (millions of attendance badges since 2019) · soulbound tokens",
+        "replaces": "Certificates, LinkedIn claims",
+        "ended": false
+      },
+      {
+        "title": "Digital twins for physical goods",
+        "how": "A watch, sneaker or handbag gets a token that travels with it through resale — warranty, service history and authenticity in one record.",
+        "example": "Breitling digital passports (Arianee) · LVMH Aura (see Supply Chain)",
+        "replaces": "Paper certificates, warranty cards",
+        "ended": false
+      },
+      {
+        "title": "Loyalty & brand engagement",
+        "how": "Points become collectibles fans can trade; brands reach customers' wallets directly. Big names tried it — and most pilots have since closed.",
+        "example": "Starbucks Odyssey (Dec 2022 → closed Mar 2024) · Nike .SWOOSH / RTFKT (wound down 2024)",
+        "replaces": "Points programmes",
+        "ended": true
+      }
+    ],
+    "patternLabel": "The pattern:",
+    "patternBody": " the NFT is rarely the product. It is the key that unlocks one — and keys are portable, verifiable and resellable in a way logins and paper never were."
+  },
+  "nftGate": {
+    "title": "Token-gated access · Try it",
+    "subtitle": "Pick a wallet and try to enter the members-only area. The gate never asks who you are — only what you hold.",
+    "walletsLabel": "Choose a wallet",
+    "wallets": {
+      "member": { "name": "Wallet A", "holds": "Holds Membership NFT #0421" },
+      "wrong": { "name": "Wallet B", "holds": "Holds an NFT — from a different collection" },
+      "empty": { "name": "Wallet C", "holds": "Holds nothing" }
+    },
+    "enter": "Connect & enter →",
+    "tryAnother": "↺ Try another wallet",
+    "stepsLabel": "What the gate does",
+    "steps": [
+      { "label": "Prove control", "desc": "The wallet signs a one-time message. No password, no account — the signature proves you hold the key." },
+      { "label": "Read the chain", "desc": "The gate asks the membership contract: how many tokens does this address hold? A free read — no transaction, no gas." },
+      { "label": "Decide", "desc": "Balance ≥ 1 → the door opens. Otherwise → denied. The content itself stays on an ordinary server." }
+    ],
+    "granted": "✓ Access granted — welcome, member",
+    "deniedWrong": "✗ Denied — that token is from another collection",
+    "deniedEmpty": "✗ Denied — no membership token in this wallet",
+    "idle": "Choose a wallet and click enter",
+    "noteLabel": "Why businesses like it:",
+    "noteBody": " no customer database to breach, membership that customers can resell, and one key that works across every partner who reads the same contract."
+  },
+  "nftHonest": {
+    "heading": "The Honest NFT Story",
+    "subtitle": "The 2021 boom promised perpetual royalties and a new creator economy. Here is what actually happened — and what survived.",
+    "lessonLabel": "Lesson: ",
+    "cards": [
+      {
+        "title": "Royalties were never enforced by the chain",
+        "body": "ERC-2981 only declares a royalty; the marketplace decides whether to pay it. When Blur competed on zero royalties (2022), OpenSea made them optional (2023). Creator royalty income fell by more than 90% from its early-2022 peak.",
+        "lesson": "A business model that depends on marketplaces volunteering to pay is not enforced by code."
+      },
+      {
+        "title": "Volume was inflated by wash trading",
+        "body": "Selling a token to yourself from a second wallet pumps \"floor prices\" and farms marketplace token rewards. Analysts estimate tens of billions of dollars of 2022 reported NFT volume was wash trades.",
+        "lesson": "On-chain data is transparent — but transparent is not the same as true. Read volume like any unaudited number."
+      },
+      {
+        "title": "Most of the asset isn't on-chain",
+        "body": "The token is on-chain; the image or file usually sits on a server or IPFS, referenced by a link. If the host disappears, the token points at nothing.",
+        "lesson": "Ask what the token actually controls: a right, an access, a record — or a URL."
+      },
+      {
+        "title": "What survived",
+        "body": "Ticketing, provenance twins, credentials and token-gating — uses where the token is a key, not a speculation. Quiet, unglamorous, and still running.",
+        "lesson": "Utility that does not depend on the price going up is the utility that lasts."
+      }
+    ],
+    "stats": [
+      { "value": "~$25B → a fraction", "label": "NFT trading volume, 2021 peak vs 2023" },
+      { "value": "−90%+", "label": "Creator royalty payouts from the 2022 peak" },
+      { "value": "15 months", "label": "Starbucks Odyssey: launch to shutdown" }
+    ]
+  },
+  "daoIntro": {
+    "heading": "What is a DAO?",
+    "subtitle": "An organisation whose rulebook is a smart contract: members propose and vote, and the treasury acts on the result — no CEO signs off.",
+    "tradLabel": "Traditional company",
+    "tradChain": [
+      { "label": "Shareholders", "sub": "own, vote once a year" },
+      { "label": "Board", "sub": "oversees" },
+      { "label": "Executives", "sub": "decide & sign" },
+      { "label": "Bank & lawyers", "sub": "execute & enforce" }
+    ],
+    "tradEnforced": "Enforced by bylaws, courts and HR — mostly behind closed doors.",
+    "daoLabel": "DAO",
+    "daoChain": [
+      { "label": "Token holders", "sub": "anyone with the token" },
+      { "label": "Proposal", "sub": "\"Pay 50k to project X\"" },
+      { "label": "On-chain vote", "sub": "counted by the contract" },
+      { "label": "Treasury contract", "sub": "pays automatically" }
+    ],
+    "daoEnforced": "Enforced by code — every vote, payment and rule change is public forever.",
+    "twoLabel": "Two things a DAO can do",
+    "mimicTitle": "Mimic a real organisation — transparently",
+    "mimicBody": "Shareholder votes, committees, spending limits, dual signatures: the familiar structures, but with no backdated minutes, no quiet transfers, and an audit trail nobody can edit. Harder to cheat; easier to hold to account.",
+    "newTitle": "Build structures no charter allows",
+    "newBody": "Votes that cost more the more you cast, committees that are themselves contracts, mandatory delays that let members exit before a rule bites, instant withdrawal of your share. New organisational designs — with new failure modes.",
+    "defLabel": "DAO = Decentralised Autonomous Organisation.",
+    "defBody": " \"Autonomous\" is generous: people still write proposals, debate on forums and vote. What is automatic is the execution — the money moves because the vote passed, not because someone approved it."
+  },
+  "daoStructures": {
+    "title": "Governance building blocks · Explore",
+    "subtitle": "Click a block. Some copy structures every company has; others are only possible in code. Real DAOs combine four or five of them.",
+    "mimicTag": "Mimics the real world",
+    "newTag": "Only possible in code",
+    "analogyLabel": "Real-world equivalent",
+    "howLabel": "How it works",
+    "exampleLabel": "Seen in",
+    "riskLabel": "Watch out",
+    "blocks": {
+      "tokenVote": {
+        "name": "Token-weighted voting",
+        "analogy": "One share, one vote at the AGM",
+        "how": "Each governance token is one vote. A proposal passes when it clears a quorum and a majority — counted by the contract, not a registrar.",
+        "example": "Uniswap: UNI holders vote; 40M UNI quorum",
+        "risk": "Whales dominate, and turnout is often under 10% of tokens."
+      },
+      "multisig": {
+        "name": "Multisig wallet",
+        "analogy": "A bank account needing 3 of 5 directors' signatures",
+        "how": "Funds move only when M of N named keys approve. Used for treasuries, emergency powers and admin keys.",
+        "example": "Most DAO treasuries sit in a Safe multisig",
+        "risk": "Signers are identifiable people — pressure, lost keys, collusion."
+      },
+      "nested": {
+        "name": "Nested multisigs & sub-DAOs",
+        "analogy": "A holding company with subsidiaries — but every layer is code",
+        "how": "A signer on the main multisig can itself be a multisig or a sub-DAO with its own vote. Budgets flow down; accountability flows up — all on-chain.",
+        "example": "MakerDAO Core Units & SubDAOs · Arbitrum Security Council (9 of 12)",
+        "risk": "Complexity hides power; few members can map who controls what."
+      },
+      "quadratic": {
+        "name": "Quadratic voting & funding",
+        "analogy": "None — 10 votes cost 100 credits",
+        "how": "Casting n votes costs n² tokens, so 10,000 tokens buy only 100 votes. Dampens plutocracy — if every voter is one real person.",
+        "example": "Gitcoin Grants matches small donations quadratically",
+        "risk": "Sybil attacks: split one wallet into 100 to look like 100 people. Needs identity (Gitcoin Passport)."
+      },
+      "timelock": {
+        "name": "Timelock",
+        "analogy": "A 30-day notice period before a rule change",
+        "how": "An approved proposal executes only after a fixed delay, often 24–72 hours. Dissenters can exit; attackers cannot drain a treasury instantly.",
+        "example": "Compound & Uniswap: 2-day Timelock · MakerDAO's GSM pause",
+        "risk": "Slows emergency response — which is why many DAOs add a guardian multisig."
+      },
+      "roles": {
+        "name": "Roles, councils & guardians",
+        "analogy": "A board that can act between AGMs; a CEO's emergency veto",
+        "how": "Elected councils hold scoped powers — pause, grants, upgrades — under rules set by the token vote. The contracts' access control enforces who may do what.",
+        "example": "Optimism Token House + Citizens' House · Aave Guardian",
+        "risk": "Recreates the hierarchy the DAO promised to remove — the question is whether it is transparent."
+      },
+      "ragequit": {
+        "name": "Rage-quit (exit rights)",
+        "analogy": "Closest: redeeming a fund share — at the speed of code",
+        "how": "A member who loses a vote can burn their shares and withdraw their proportional slice of the treasury before the decision executes.",
+        "example": "Moloch DAO (2019) and its many forks",
+        "risk": "The treasury can shrink suddenly; works best for small, aligned groups."
+      }
+    }
+  },
+  "daoVote": {
+    "title": "Who really holds the power?",
+    "subtitle": "Five members vote on the same proposal. Change the counting rule — and watch who wins.",
+    "proposal": "Proposal: spend 10% of the treasury on a marketing campaign",
+    "modeLabel": "Counting rule",
+    "modes": {
+      "token": { "name": "1 token = 1 vote", "lesson": "Capital decides. Defensible when the vote is about money at risk — but one whale outvotes four members." },
+      "quadratic": {
+        "name": "Quadratic (√ tokens)",
+        "lesson": "Dampens the whale — but only if every wallet is a distinct person. Split the whale into 100 wallets and it wins again (the Sybil problem)."
+      },
+      "person": { "name": "1 person = 1 vote", "lesson": "Egalitarian — but needs proof of personhood, and a member holding 50 tokens outweighs one holding 5,000." }
+    },
+    "voters": [
+      { "name": "Whale", "role": "early investor" },
+      { "name": "Fund", "role": "VC delegate" },
+      { "name": "Member C", "role": "active contributor" },
+      { "name": "Member D", "role": "user" },
+      { "name": "Member E", "role": "new joiner" }
+    ],
+    "tokensLabel": "{{count}} tokens",
+    "yes": "Yes",
+    "no": "No",
+    "resultLabel": "Result",
+    "passes": "✓ Passes",
+    "fails": "✗ Fails",
+    "votesFor": "for",
+    "votesAgainst": "against",
+    "clickHint": "Click a member to flip their vote",
+    "lessonLabel": "Lesson"
+  },
+  "daoExamples": {
+    "heading": "Real DAOs: what works, what broke",
+    "subtitle": "Five organisations, five structures, five lessons. Note how much governance happens on forums and in multisigs — not just in the vote.",
+    "whatLabel": "What it does",
+    "structureLabel": "How it's structured",
+    "lessonLabel": "Lesson",
+    "items": [
+      {
+        "name": "MakerDAO → Sky",
+        "tag": "✅ Running since 2017",
+        "stat": "DAI stablecoin",
+        "what": "Issues the DAI stablecoin (and now USDS); token holders set collateral rules and interest rates.",
+        "structure": "Token vote → executive \"spell\" → GSM timelock. Core Units and SubDAOs run operations; an Emergency Shutdown exists as a last resort.",
+        "lesson": "The longest-running DeFi DAO shows governance can work — and that it drifts toward professional delegates and complex structures."
+      },
+      {
+        "name": "Uniswap DAO",
+        "tag": "✅ Slow but alive",
+        "stat": "UNI · 2020",
+        "what": "Governs the Uniswap protocol and a multi-billion-dollar UNI treasury.",
+        "structure": "Snapshot temperature check → on-chain vote (40M UNI quorum) → 2-day Timelock. Most UNI is delegated to a few dozen delegates.",
+        "lesson": "Years of debate over switching on a protocol \"fee switch\" show how slow and political token governance can be."
+      },
+      {
+        "name": "Gitcoin",
+        "tag": "✅ New mechanism at work",
+        "stat": "Grants since 2019",
+        "what": "Funds open-source and public-goods projects through community rounds — tens of millions of dollars distributed.",
+        "structure": "Quadratic funding: many small donations attract more matching than one big cheque. Gitcoin Passport fights fake identities.",
+        "lesson": "A funding rule that is impossible to run without code — and a live, ongoing fight against Sybil attacks."
+      },
+      {
+        "name": "ConstitutionDAO",
+        "tag": "⚠️ Coordination win, governance gap",
+        "stat": "~$47M in a week",
+        "what": "In Nov 2021, 17,000+ people pooled ~$47M in ETH in under a week to bid on a rare copy of the US Constitution at Sotheby's.",
+        "structure": "A multisig held the funds; contributors got PEOPLE tokens. No plan for custody of the document — or for losing.",
+        "lesson": "Outbid by a single billionaire. Refunds cost small donors more in gas than they had given. Coordination worked; governance and operations did not."
+      },
+      {
+        "name": "The DAO (2016)",
+        "tag": "❌ The original failure",
+        "stat": "$150M → $60M drained",
+        "what": "A crowd-funded venture fund run entirely by contract — the largest crowdfund of its time.",
+        "structure": "Token vote on investments; a \"split\" function with a reentrancy bug and no pause button.",
+        "lesson": "Drained of $60M; Ethereum hard-forked to undo it. Full story in Section 4 — Three Lessons."
+      }
+    ],
+    "legalLabel": "Legal status is unsettled:",
+    "legalBody": " Wyoming recognises DAO LLCs (2021), but a US court treated Ooki DAO's token voters as members of an unincorporated association — personally exposed to its liabilities (2022–23). Most serious DAOs now pair the contracts with a legal wrapper."
+  },
+  "daoProsCons": {
+    "title": "DAOs · Pros & Cons",
+    "pros": [
+      { "label": "Transparency by default", "desc": "Every vote, payment and rule change is public and permanent — no backdated minutes." },
+      { "label": "Global membership", "desc": "Anyone with a wallet can join, contribute and vote — no incorporation, no bank account." },
+      { "label": "Programmable treasury", "desc": "Budgets, vesting and payouts execute from the vote — no finance department in the loop." },
+      { "label": "Hard to cheat", "desc": "Spending limits and signature rules are enforced by code, not by whoever holds the chequebook." },
+      { "label": "Minority protection", "desc": "Timelocks and rage-quit let dissenters exit before a decision bites — rare in company law." },
+      { "label": "New coordination tools", "desc": "Quadratic funding, nested sub-DAOs, instant pooled capital — structures a charter cannot express." }
+    ],
+    "cons": [
+      { "label": "Voter apathy", "desc": "Turnout is often under 10% of tokens; a few dozen delegates decide most votes." },
+      { "label": "Plutocracy", "desc": "Token-weighted means money-weighted. Whales and VCs can carry any vote they care about." },
+      { "label": "Legal exposure", "desc": "Unincorporated DAOs may leave members personally liable (Ooki DAO). Wrappers add back lawyers and jurisdictions." },
+      { "label": "Slow in a crisis", "desc": "Timelocks protect members but tie hands. The DAO had 27 days' warning and still could not act." },
+      { "label": "Governance attacks", "desc": "Beanstalk (2022): an attacker flash-loaned 67% of the votes, passed a proposal and drained $182M in one transaction." },
+      { "label": "Off-chain reality", "desc": "Forums, Discord, lawyers and core teams do the real work. The chain records the decision; people make it." }
+    ]
+  },
+  "tradelens": {
+    "kicker": "Case Study 06 — Shipping · ❌ Shut down",
+    "heading": "TradeLens: Maersk × IBM",
+    "subtitle": "A global shipping-data platform with blue-chip backers — discontinued in 2023 after five years. The technology worked; the business model didn't.",
+    "problemBodyA": "Moving one container involves ",
+    "problemBodyStrong": "dozens of organisations",
+    "problemBodyB": " and a paper trail that has barely changed in decades:",
+    "problemPoints": [
+      "Bills of lading, certificates and customs forms couriered or e-mailed between carriers, ports, forwarders and banks",
+      "No shared view of where the cargo or its documents are",
+      "Discrepancies take days of phone calls to reconcile",
+      "Fraud and lost documents are routine"
+    ],
+    "problemCostLabel": "Stakes:",
+    "problemCostBody": "Documentation estimated at up to a fifth of the cost of moving goods",
+    "solutionBodyA": "In 2018 Maersk and IBM launched ",
+    "solutionBodyStrong": "TradeLens",
+    "solutionBodyB": " on Hyperledger Fabric — a permissioned ledger shared by the whole trade ecosystem:",
+    "solutionPoints": [
+      "Shipping events and documents published once, visible to every authorised party",
+      "Electronic bills of lading and customs filings on the same platform",
+      "100+ organisations joined, including several of the world's largest carriers",
+      "Technically sound, well funded, live in production"
+    ],
+    "solutionFlow": "Event logged once → shared with all parties → documents follow the cargo",
+    "happenedPoints": [
+      "Nov 2022: Maersk and IBM announce discontinuation; the platform is wound down by early 2023",
+      "Official reason: it \"did not reach the level of commercial viability necessary\"",
+      "Rival carriers were reluctant to feed data into a platform owned by their biggest competitor",
+      "Value required near-universal participation — a network-effect and ownership problem, not a technology problem"
+    ],
+    "lessonLabel": "The lesson:",
+    "lessonBody": " a consortium chain is only as useful as the rivals willing to join it. Who owns the platform decides who adopts it — compare GSBN, owned jointly by several carriers, which is still running."
   }
 }

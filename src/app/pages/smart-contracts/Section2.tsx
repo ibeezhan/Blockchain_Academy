@@ -6,6 +6,8 @@ import { TakeawaySlide } from '../../components/templates/TakeawaySlide';
 import { QuizSlide } from '../../components/templates/QuizSlide';
 import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
+import { UnderTheHood } from '../../components/shared/UnderTheHood';
+import { DeepDiveBadge } from '../../components/shared/DeepDiveBadge';
 import { Cog, Check, X } from 'lucide-react';
 
 import imgDisintermediation from '../../../assets/sc/disintermediation.png';
@@ -572,6 +574,7 @@ export function SC_Section2() {
                   </div>
                 ))}
               </div>
+              <UnderTheHood terms={['node', 'RPC', 'wallet signature', 'oracle']} className="mt-3" />
             </div>
 
           </div>
@@ -617,6 +620,7 @@ export function SC_Section2() {
               <div className="shrink-0 p-2.5 bg-[#6366f1]/10 border border-[#6366f1]/25 rounded-lg text-xs text-muted-foreground">
                 <span className="font-semibold text-foreground">{t('dapp.insightLabel')}</span>{t('dapp.insightBody')}
               </div>
+              <UnderTheHood terms={['RPC (Infura / Alchemy)', 'IPFS', 'indexer (The Graph)']} className="shrink-0" />
             </div>
 
           </div>
@@ -727,15 +731,8 @@ export function SC_Section2() {
                   ))}
                 </div>
                 <p className="text-xs text-muted-foreground">{t('standards.erc20.desc')}</p>
-                <div className="rounded-lg bg-[#0d1117] p-2.5 flex-1 min-h-0">
-                  <div className="text-[9px] font-black uppercase tracking-widest text-muted-foreground mb-1">{t('standards.coreFunctions')}</div>
-                  <div className="font-mono text-[10px] leading-relaxed space-y-0.5" style={{ color: '#6366f1' }}>
-                    <div>transfer(to, amount)</div>
-                    <div>approve(spender, amount)</div>
-                    <div>transferFrom(from, to, amount)</div>
-                    <div>balanceOf(account)</div>
-                    <div>totalSupply()</div>
-                  </div>
+                <div className="flex-1 min-h-0 flex items-end">
+                  <UnderTheHood terms={['transfer()', 'approve()', 'balanceOf()', 'totalSupply()']} />
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {['USDC','DAI','UNI','WETH'].map(t => <span key={t} className="text-[11px] font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: '#6366f115', color: '#6366f1' }}>{t}</span>)}
@@ -763,15 +760,8 @@ export function SC_Section2() {
                   ))}
                 </div>
                 <p className="text-xs text-muted-foreground">{t('standards.erc721.desc')}</p>
-                <div className="rounded-lg bg-[#0d1117] p-2.5 flex-1 min-h-0">
-                  <div className="text-[9px] font-black uppercase tracking-widest text-muted-foreground mb-1">{t('standards.coreFunctions')}</div>
-                  <div className="font-mono text-[10px] leading-relaxed space-y-0.5" style={{ color: '#f97316' }}>
-                    <div>ownerOf(tokenId)</div>
-                    <div>transferFrom(from, to, tokenId)</div>
-                    <div>approve(to, tokenId)</div>
-                    <div>setApprovalForAll(op, bool)</div>
-                    <div>tokenURI(tokenId)</div>
-                  </div>
+                <div className="flex-1 min-h-0 flex items-end">
+                  <UnderTheHood terms={['ownerOf()', 'transferFrom()', 'tokenURI()']} />
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {['CryptoPunks','ENS',t('standards.erc721.tagTitleDeeds')].map(tag => <span key={tag} className="text-[11px] font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: '#f9731615', color: '#f97316' }}>{tag}</span>)}
@@ -798,15 +788,8 @@ export function SC_Section2() {
                   <div className="size-9 rounded-lg bg-[#f97316] text-white text-sm font-black flex items-center justify-center">★</div>
                 </div>
                 <p className="text-xs text-muted-foreground">{t('standards.erc1155.descA')}<em>{t('standards.erc1155.descEm')}</em>{t('standards.erc1155.descB')}</p>
-                <div className="rounded-lg bg-[#0d1117] p-2.5 flex-1 min-h-0">
-                  <div className="text-[9px] font-black uppercase tracking-widest text-muted-foreground mb-1">{t('standards.coreFunctions')}</div>
-                  <div className="font-mono text-[10px] leading-relaxed space-y-0.5" style={{ color: '#39B54A' }}>
-                    <div>balanceOf(account, id)</div>
-                    <div>balanceOfBatch(accounts, ids)</div>
-                    <div>safeTransferFrom(from, to, id, amt)</div>
-                    <div>safeBatchTransferFrom(…)</div>
-                    <div>setApprovalForAll(op, bool)</div>
-                  </div>
+                <div className="flex-1 min-h-0 flex items-end">
+                  <UnderTheHood terms={['balanceOfBatch()', 'safeBatchTransferFrom()']} />
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {[t('standards.erc1155.tagGameItems'),t('standards.erc1155.tagTickets'),t('standards.erc1155.tagEditions')].map(tag => <span key={tag} className="text-[11px] font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: '#39B54A15', color: '#39B54A' }}>{tag}</span>)}
@@ -890,6 +873,7 @@ export function SC_Section2() {
               <div className="p-3 bg-[#6366f1]/10 border border-[#6366f1]/30 rounded-xl text-xs text-muted-foreground">
                 <span className="font-semibold text-foreground">{t('components.platformLabel')}</span>{t('components.platformBody')}
               </div>
+              <UnderTheHood terms={['mapping', 'require()', 'emit', 'msg.sender', 'ABI']} />
             </div>
 
           </div>
@@ -926,6 +910,8 @@ export function SC_Section2() {
                 ))}
               </div>
 
+              <UnderTheHood terms={['bytecode', 'contract address', 'ABI', 'event log']} className="mb-3" />
+
               {/* Code illustration */}
               <div className="p-4 bg-card border border-border rounded-xl font-mono text-xs">
                 <div className="flex items-center gap-2 mb-3">
@@ -958,7 +944,10 @@ export function SC_Section2() {
         {/* ═══════ READING SOLIDITY ═══════ */}
         <div id="s2-solidity" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-4">
-            <span className="text-xs font-black uppercase tracking-widest text-[#6366f1]">{t('solidity.kicker')}</span>
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="text-xs font-black uppercase tracking-widest text-[#6366f1]">{t('solidity.kicker')}</span>
+              <DeepDiveBadge label={t('optionalAdvanced', { ns: 'common' })} />
+            </div>
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1 mb-1">{t('solidity.heading')}</h2>
             <p className="text-sm text-muted-foreground">{t('solidity.subtitle')}</p>
           </div>
@@ -1101,6 +1090,7 @@ export function SC_Section2() {
                   <span className="font-semibold text-foreground">{t('execution.deployLabel')}</span>{t('execution.deployBody')}
                 </div>
               </div>
+              <UnderTheHood terms={['EVM opcode', 'bytecode', 'finality', 'validator attestation']} />
             </div>
 
           </div>
@@ -1209,6 +1199,7 @@ export function SC_Section2() {
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">{t('gas.formulaExample')}</div>
               </div>
+              <UnderTheHood terms={['gwei', 'base fee', 'priority tip', 'EIP-1559', 'L2 rollup']} />
             </div>
 
             {/* Right: why gas + economics */}

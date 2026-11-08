@@ -6,6 +6,7 @@ import { TakeawaySlide } from '../../components/templates/TakeawaySlide';
 import { QuizSlide } from '../../components/templates/QuizSlide';
 import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
+import { UnderTheHood } from '../../components/shared/UnderTheHood';
 import { FileCode2, Check, X } from 'lucide-react';
 
 import imgSzaboVending from '../../../assets/sc/szabo-vending-machine.png';
@@ -15,6 +16,7 @@ const chapterIds = [
   's1-warmup',
   's1-recap',
   's1-what',
+  's1-hype',
   's1-szabo',
   's1-history',
   's1-exercise',
@@ -263,6 +265,14 @@ interface WhyPoint { a: string; strong: string; b: string; }
 interface SzaboStep { label: string; detail: string; }
 interface HistoryEvent { year: string; tag: string; title: string; desc: string; }
 interface SummaryCard { title: string; summary: string; }
+interface HypeCard { title: string; body: string; }
+
+const HYPE_META = [
+  { emoji: '⚖️', color: '#ED1C24' },
+  { emoji: '🤖', color: '#f59e0b' },
+  { emoji: '⛽', color: '#8b5cf6' },
+  { emoji: '🔌', color: '#6366f1' },
+];
 
 export function SC_Section1() {
   const { t } = useTranslation('smart-contracts/section-1');
@@ -303,6 +313,9 @@ export function SC_Section1() {
   const summaryIcons = ['📜', '⛓️', '🌐', '✅', '⚠️', '🎯'];
   const summaryText = t('summary.cards', { returnObjects: true }) as SummaryCard[];
   const summaryCards = summaryText.map((c, i) => ({ ...c, icon: summaryIcons[i] }));
+
+  const hypeCards = t('hype.cards', { returnObjects: true }) as HypeCard[];
+  const hypeValue = t('hype.value', { returnObjects: true }) as string[];
 
   return (
     <div className="h-full w-full flex overflow-hidden">
@@ -358,6 +371,7 @@ export function SC_Section1() {
             <span className="font-bold text-[#6366f1]">{t('recap.footerLabel')}</span>
             <span className="text-muted-foreground">{t('recap.footerA')}<em>{t('recap.footerEm')}</em>{t('recap.footerB')}</span>
           </div>
+          <UnderTheHood terms={['EOA vs contract account', 'EVM', 'gas · gwei', 'nonce', 'state']} className="shrink-0 mt-2 justify-center" />
         </div>
 
         {/* ═══════ 1. WHAT IS A SMART CONTRACT ═══════ */}
@@ -392,6 +406,7 @@ export function SC_Section1() {
                   ))}
                 </div>
               </div>
+              <UnderTheHood terms={['Solidity', 'bytecode', 'deterministic', 'immutable address']} />
             </div>
 
             {/* Right: key properties */}
@@ -408,6 +423,51 @@ export function SC_Section1() {
               ))}
             </div>
 
+          </div>
+        </div>
+
+        {/* ═══════ 1b. HYPE vs VALUE ═══════ */}
+        <div id="s1-hype" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-5">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('hype.heading')}</h2>
+            <p className="text-muted-foreground text-sm mt-1">{t('hype.subtitle')}</p>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-[1.5fr_1fr] gap-5">
+            <div className="grid grid-cols-2 gap-3 content-center">
+              {hypeCards.map((c, i) => {
+                const m = HYPE_META[i];
+                return (
+                  <motion.div
+                    key={c.title}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.07 }}
+                    className="p-4 rounded-xl border-2 flex flex-col gap-2"
+                    style={{ borderColor: m.color + '50', backgroundColor: m.color + '08' }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl">{m.emoji}</span>
+                      <div className="font-black text-base text-foreground">{c.title}</div>
+                    </div>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{c.body}</p>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            <div className="flex flex-col gap-3 justify-center">
+              <div className="flex-1 p-5 rounded-2xl border-2 border-[#39B54A]/50 bg-gradient-to-br from-[#39B54A]/12 to-transparent flex flex-col gap-3">
+                <div className="font-black text-base text-[#39B54A]">{t('hype.valueLabel')}</div>
+                <ul className="space-y-2.5 text-sm text-foreground/90 flex-1">
+                  {hypeValue.map((v, i) => (
+                    <li key={i} className="flex gap-2 leading-snug"><span className="text-[#39B54A] shrink-0 font-black">{i + 1}</span><span>{v}</span></li>
+                  ))}
+                </ul>
+                <div className="text-xs text-muted-foreground italic border-t border-[#39B54A]/30 pt-2">{t('hype.footer')}</div>
+              </div>
+              <UnderTheHood terms={['legal wrapper', 'oracle', 'admin key', 'front-end vs contract']} />
+            </div>
           </div>
         </div>
 
@@ -501,6 +561,7 @@ export function SC_Section1() {
               </motion.div>
             ))}
           </div>
+          <UnderTheHood terms={['Bitcoin Script', 'EVM', 'ERC-20', 'ERC-721', 'reentrancy']} className="shrink-0 mt-3" />
         </div>
 
         {/* ═══════ EXERCISE ═══════ */}

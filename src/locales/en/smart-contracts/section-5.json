@@ -9,7 +9,8 @@
     "s5-risks-regulatory": "Regulatory Risks",
     "s5-quiz":             "Quiz",
     "s5-takeaways":        "Takeaways",
-    "s5-summary":          "Summary"
+    "s5-summary":          "Summary",
+    "s5-failures": "When It Went Wrong"
   },
   "title": {
     "sectionNumber": "SECTION 05",
@@ -303,6 +304,7 @@
       "\"Code is law\" means users have no recourse when code behaves correctly but harmfully",
       "Gas costs make complex on-chain logic economically impractical for many use cases",
       "Smart contracts are not always the answer — a database is faster, cheaper, and easier in many contexts",
+      "Keys, votes, oracles and economic design fail as often as code — Ronin, Beanstalk, Mango and Terra lost ~$41B between them without a single \"hack\" of the contract logic",
       "Security audits are not optional — $6B+ lost since 2016; treat smart contract security as a discipline",
       "Regulatory uncertainty: laws move in years, contracts move in months — privacy, enforceability, and jurisdiction all matter"
     ]
@@ -317,6 +319,62 @@
       { "title": "Legal & Regulatory", "summary": "Enforceability uncertain · GDPR conflicts · jurisdictional differences · \"code is law\" rejected by courts" },
       { "title": "Cost Realities", "summary": "Audit costs · gas optimisation discipline · maintenance is expensive · migrations are projects" },
       { "title": "Mitigations", "summary": "Audits + formal verification · multi-oracle design · timelocks · upgrade proxy patterns · bug bounties" }
+    ]
+  },
+  "failures": {
+    "heading": "When it went wrong — six real incidents",
+    "subtitle": "Each maps to one risk from the previous slides. Notice how often the contract did exactly what it was told.",
+    "lessonLabel": "Lesson: ",
+    "footer": "Pattern: keys, votes, data feeds and economic design fail at least as often as the code itself. Security is a property of the whole system — not of the contract alone.",
+    "items": [
+      {
+        "name": "Ronin Bridge (Axie Infinity)",
+        "date": "March 2022",
+        "loss": "$625M",
+        "category": "Key compromise",
+        "what": "The bridge needed 5 of 9 validator signatures. Attackers obtained five keys through social engineering — four run by one company — and withdrew everything.",
+        "lesson": "A multisig is only as decentralised as the people holding the keys."
+      },
+      {
+        "name": "Beanstalk",
+        "date": "April 2022",
+        "loss": "$182M",
+        "category": "Governance attack",
+        "what": "An attacker flash-loaned enough tokens to hold 67% of the votes, passed a proposal that sent the treasury to themselves, and repaid the loan — in one transaction.",
+        "lesson": "On-chain voting without a timelock turns governance itself into an attack surface."
+      },
+      {
+        "name": "Mango Markets",
+        "date": "October 2022",
+        "loss": "$114M",
+        "category": "Oracle manipulation",
+        "what": "The attacker pumped the thinly traded MNGO token on the exchange that fed Mango's price oracle, then borrowed against the inflated collateral and left.",
+        "lesson": "If your price comes from one shallow market, the oracle is the vault door."
+      },
+      {
+        "name": "Euler Finance",
+        "date": "March 2023",
+        "loss": "$197M",
+        "category": "Logic bug",
+        "what": "A single missing health check in a donate function let a flash-loan attacker create bad debt and liquidate it for profit. Audited — the bug slipped through. Most funds were later returned.",
+        "lesson": "Audits reduce risk; they do not remove it. Plan for the incident, not just the prevention."
+      },
+      {
+        "name": "Parity multisig wallet",
+        "date": "November 2017",
+        "loss": "~$150M frozen",
+        "category": "Access control + immutability",
+        "what": "A user accidentally took ownership of a shared library contract and then destroyed it. Every wallet built on it froze — permanently. The funds are still there, unreachable.",
+        "lesson": "Immutability means a mistake is forever. Who can call what must be designed, not assumed."
+      },
+      {
+        "name": "Terra / UST",
+        "date": "May 2022",
+        "loss": "~$40B",
+        "category": "Economic design",
+        "what": "The algorithmic stablecoin held its peg only while people believed it would. A large sell-off broke the peg; the sister token minted to defend it collapsed to zero within days.",
+        "lesson": "The code worked as designed. The design was the flaw — a risk no audit can catch."
+      }
     ]
   }
 }

@@ -8,7 +8,8 @@
     "s1-exercise": "🧩 Exercício",
     "s1-quiz": "Quiz",
     "s1-takeaways": "Conclusões",
-    "s1-summary": "Resumo"
+    "s1-summary": "Resumo",
+    "s1-hype": "Hype vs Value"
   },
   "title": {
     "sectionNumber": "SECÇÃO 01",
@@ -194,5 +195,34 @@
       { "title": "Quando Usar", "summary": "Várias partes que não confiam entre si + lógica condicional + sem intermediário de confiança = território de smart contract" }
     ],
     "footer": "Avança para a Secção 2 para explorar o ecossistema de Smart Contracts →"
+  },
+  "hype": {
+    "heading": "Hype vs value: four things a smart contract is not",
+    "subtitle": "The name oversells it. Clearing these up now makes every case study later easier to judge.",
+    "cards": [
+      {
+        "title": "Not a legal contract",
+        "body": "It is code that moves assets when conditions are met. Whether a court recognises it is a separate question — most real deployments pair the code with a normal legal agreement."
+      },
+      {
+        "title": "Not smart",
+        "body": "It does exactly what is written — no judgement, no exceptions, no \"obviously that's not what we meant\". A bug executes as faithfully as a feature."
+      },
+      {
+        "title": "Not free",
+        "body": "Every step costs a network fee and on-chain storage is extraordinarily expensive. Storing one megabyte on Ethereum costs more than a laptop."
+      },
+      {
+        "title": "Not unstoppable",
+        "body": "The contract may be, but its website, data feeds and admin keys are ordinary points of control. Tornado Cash's front-end went dark in 2022 while the contract kept running."
+      }
+    ],
+    "valueLabel": "So where is the value?",
+    "value": [
+      "Removing a middleman that many parties would otherwise have to trust — and pay",
+      "Making a rule impossible to bend after the fact — for everyone, including the operator",
+      "Settling across borders in seconds, around the clock, with a public audit trail"
+    ],
+    "footer": "Keep this lens for the rest of the course: does this use case need one of these three things? If not, a database will usually win."
   }
 }

@@ -6,10 +6,10 @@
     "tagline": "From theory to industry disruption — understand what smart contracts can and cannot do for your business.",
     "badges": {
       "sections": "7 Sections",
-      "slides": "90+ Slides",
+      "slides": "100+ Slides",
       "verticals": "5 Industry Verticals",
-      "cases": "8 Case Studies",
-      "demos": "7 Interactive Demos"
+      "cases": "9 Case Studies",
+      "demos": "12 Interactive Demos"
     },
     "startLearning": "Start Learning"
   },
@@ -20,15 +20,15 @@
   "sections": {
     "section1": {
       "title": "Introduction to Smart Contracts",
-      "description": "What smart contracts are, the Nick Szabo vending machine model, and the historical evolution from 1994 to today."
+      "description": "What smart contracts are in business terms, Nick Szabo's vending machine, the history — and an honest hype-vs-value check."
     },
     "section2": {
       "title": "How Smart Contracts Work",
-      "description": "Workflow, core components, execution environment, the Web3 landscape, dApps, gas economics, and why you should build with smart contracts."
+      "description": "What happens when a contract runs — Web3 stack, dApps, token standards and gas — told for decision-makers, with the code kept optional."
     },
     "section3": {
       "title": "Industries & Case Studies",
-      "description": "Five industry verticals (DeFi, Gaming/NFTs, RWA, Supply Chain, Digital Cert) plus eight flagship cases including Walmart, Santander, Estonia, The DAO, and ASX."
+      "description": "Five industry verticals, a deep block on NFT utility and DAO governance structures, and six flagship cases including Walmart, Santander, the CA DMV and the TradeLens shutdown."
     },
     "section4": {
       "title": "Critical Thinking",
@@ -36,15 +36,15 @@
     },
     "section5": {
       "title": "Limitations & Risks",
-      "description": "Oracle problem, blockchain trilemma, security risks (reentrancy, flash loans, MEV), cost realities, and regulatory uncertainty."
+      "description": "Oracle problem, blockchain trilemma, security risks, a gallery of six real failures (Ronin, Beanstalk, Terra…), cost realities and regulatory uncertainty."
     },
     "section6": {
       "title": "Build & Integration",
-      "description": "ERC standards, EIP process, frameworks (Hardhat / Foundry), 17-platform comparison, integration patterns, and AI-driven development."
+      "description": "Optional, developer-oriented: ERC standards, EIP process, frameworks, platform comparison and integration patterns. Skipped in lecture."
     },
     "section7": {
-      "title": "Team Project",
-      "description": "Design a smart contract business application, map stakeholders, identify risks, and present your case to the class."
+      "title": "In-class Assignment",
+      "description": "In small groups: pick a real-world problem, discuss it, and submit a one-page report — problem, proposed solution, and the pros & cons of using a blockchain."
     },
     "conclusion": {
       "title": "Conclusion",

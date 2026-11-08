@@ -8,12 +8,13 @@
     "s1-exercise": "🧩 Exercise",
     "s1-quiz": "Quiz",
     "s1-takeaways": "Takeaways",
-    "s1-summary": "Summary"
+    "s1-summary": "Summary",
+    "s1-hype": "Hype vs Value"
   },
   "title": {
     "sectionNumber": "SECTION 01",
     "title": "Introduction to Smart Contracts",
-    "subtitle": "Fundamentals, history, and the essential blockchain knowledge you need"
+    "subtitle": "What a smart contract is in business terms, where the idea came from, and an honest first look at what it can and cannot do"
   },
   "warmup": {
     "badge": "🧩 Warm-up · from Course 02",
@@ -44,27 +45,27 @@
     "heading": "Quick Recap — Ethereum, the World Computer",
     "leadA": "You met all of this in ",
     "leadStrong": "Course 02 → Ethereum",
-    "leadB": ". A 60-second refresher before we go deeper into the contracts themselves.",
+    "leadB": ". A 60-second refresher in plain language before we look at the contracts themselves — the technical names are in the pills if you want them.",
     "cards": [
       {
-        "title": "Accounts",
-        "desc": "Two kinds: EOAs controlled by a private key (people), and contract accounts controlled by their code.",
-        "tag": "EOA vs Contract"
+        "title": "Addresses",
+        "desc": "Two kinds of account: people, controlled by a private key, and programs, controlled by their own code. A smart contract is the second kind.",
+        "tag": "People vs programs"
       },
       {
-        "title": "The EVM",
-        "desc": "Every node runs the same Ethereum Virtual Machine, so a program produces the same result everywhere.",
-        "tag": "Deterministic"
+        "title": "One shared computer",
+        "desc": "Thousands of independent machines run the same program and must agree on the result. That agreement is what makes the outcome trustworthy.",
+        "tag": "Same result everywhere"
       },
       {
-        "title": "Gas",
-        "desc": "You pay for computation. Gas prices each step and guarantees programs always halt — no infinite loops.",
-        "tag": "Pay per step"
+        "title": "Every action has a price",
+        "desc": "You pay a small fee for each step the network performs. That stops spam and runaway programs — and makes on-chain storage expensive.",
+        "tag": "Pay per action"
       },
       {
-        "title": "Transactions",
-        "desc": "Signed messages that change global state. Only an EOA can start one; it can call a contract.",
-        "tag": "State change"
+        "title": "Signed instructions",
+        "desc": "A transaction is a signed instruction that changes the shared record. Only a person's key can start one; it can call a program.",
+        "tag": "Who moves first"
       }
     ],
     "footerLabel": "Where this course picks up: ",
@@ -74,7 +75,7 @@
   },
   "what": {
     "heading": "What is a Smart Contract?",
-    "subtitle": "A program that lives on a blockchain — and runs exactly as written, every time.",
+    "subtitle": "A program that lives on a blockchain — and runs exactly as written, every time. Think of it as an agreement that enforces itself.",
     "definitionLabel": "Definition",
     "defLeadA": "A ",
     "defTerm": "smart contract",
@@ -82,11 +83,26 @@
     "defBody": "When predefined conditions are met, the contract executes automatically. No intermediary. No manual trigger. No possibility of censorship or tampering.",
     "compareLabel": "Traditional contract vs Smart contract",
     "compareRows": [
-      { "trad": "Written in legal language", "smart": "Written in code (Solidity, Rust…)" },
-      { "trad": "Enforced by courts & lawyers", "smart": "Enforced by the blockchain protocol" },
-      { "trad": "Requires trust between parties", "smart": "Trustless — math enforces terms" },
-      { "trad": "Can be misinterpreted", "smart": "Deterministic — one execution path" },
-      { "trad": "Paper trail, slow disputes", "smart": "On-chain, instant, irreversible" }
+      {
+        "trad": "Written in legal language",
+        "smart": "Written as code"
+      },
+      {
+        "trad": "Enforced by courts & lawyers",
+        "smart": "Enforced by the network running it"
+      },
+      {
+        "trad": "Requires trust between parties",
+        "smart": "Requires trust in the code only"
+      },
+      {
+        "trad": "Can be interpreted — and argued over",
+        "smart": "One meaning, one outcome"
+      },
+      {
+        "trad": "Paper trail, slow disputes",
+        "smart": "Public record, instant, irreversible"
+      }
     ],
     "propsLabel": "Key properties",
     "props": [
@@ -126,14 +142,19 @@
   "history": {
     "badge": "Section 01",
     "heading": "Historical Evolution of Smart Contracts",
-    "subtitle": "From an idea with no computer to run it, to $100B+ in live contracts.",
+    "subtitle": "From an idea with no computer to run it, to $100B+ in live contracts — and the first expensive lessons.",
     "events": [
       { "year": "1994", "tag": "The idea", "title": "Szabo coins \"smart contract\"", "desc": "Promises enforced by code — the vending-machine analogy, 15 years before any chain could run it." },
       { "year": "2009", "tag": "First chain", "title": "Bitcoin — first on-chain contracts", "desc": "Script does conditional spending (multisig, timelocks) — deliberately non-Turing-complete." },
       { "year": "2015", "tag": "Breakthrough", "title": "Ethereum + Solidity", "desc": "The Turing-complete EVM ships: deploy arbitrary contract logic to a shared, trustless computer." },
       { "year": "2016", "tag": "Crisis", "title": "The DAO — first contract crisis", "desc": "A reentrancy bug drains $60M; Ethereum forks (ETH/ETC). Security becomes a discipline." },
       { "year": "2017", "tag": "Standards", "title": "ERC-20 — token contracts", "desc": "A shared token interface every wallet & exchange understands. The ICO boom follows." },
-      { "year": "2018", "tag": "Standards", "title": "ERC-721 — NFT contracts", "desc": "A standard for unique, owned tokens — assets plus automatic on-transfer royalties." },
+      {
+        "year": "2018",
+        "tag": "Standards",
+        "title": "ERC-721 — NFT contracts",
+        "desc": "A standard for unique, owned tokens — the basis of NFTs, digital deeds and tickets."
+      },
       { "year": "2020", "tag": "Composability", "title": "DeFi Summer", "desc": "Contracts calling contracts — \"money legos.\" Lending, trading & yield, no intermediary." },
       { "year": "Today", "tag": "Maturity", "title": "Audited, multi-chain, high-stakes", "desc": "$100B+ in contracts across chains; audits mandatory — $6B+ lost to exploits since 2016." }
     ]
@@ -152,7 +173,11 @@
       { "title": "Vending Machine", "desc": "Insert coins → get snack automatically", "reason": "Self-executing logic with automatic conditional payout — the original analogy Szabo used." },
       { "title": "Airbnb Escrow", "desc": "Platform holds payment until host confirms check-in", "reason": "Conditional fund release based on a confirmed event — a textbook smart contract use case." },
       { "title": "Hospital Records", "desc": "Store & share medical history across doctors", "reason": "Data is private, frequently updated, and legally sensitive. On-chain storage is 50,000× more expensive than a database." },
-      { "title": "Concert Ticket Resale", "desc": "NFT tickets — artist royalty enforced on every resale", "reason": "Automatic royalty on every transfer is impossible in traditional ticketing — smart contracts enforce it natively." },
+      {
+        "title": "Concert Ticket Resale",
+        "desc": "NFT tickets — resale rules (price cap, artist cut) applied by the ticket contract",
+        "reason": "When resale happens through the ticket contract, caps and artist royalties apply automatically — something paper and barcode tickets cannot enforce."
+      },
       { "title": "Company Expenses", "desc": "Submit receipts for manager approval", "reason": "Internal process, single trusted party. No decentralisation needed — a simple approval workflow is cheaper and faster." },
       { "title": "Crop Insurance", "desc": "Auto-payout when rainfall falls below threshold", "reason": "Parametric insurance: oracle provides data, contract executes payout. No claims adjuster, no delay." },
       { "title": "Social Media Likes", "desc": "Track likes and followers in real-time", "reason": "Millisecond updates + massive data volume. Gas costs alone would make each like cost dollars." },
@@ -174,12 +199,12 @@
   "takeaways": {
     "title": "Section 01 — Key Takeaways",
     "items": [
-      "A smart contract is self-executing code on a blockchain — no intermediary can stop or alter it",
+      "A smart contract is self-executing code on a blockchain — once deployed, no single party can stop or alter it",
       "Nick Szabo described the concept in 1994; Bitcoin (2009) and Ethereum (2015) made it real",
       "Key properties: autonomous, immutable, transparent, deterministic, trustless",
       "The vending machine model: conditions → automatic execution, no human judgment needed",
-      "DeFi, NFTs, and DAOs are all smart contracts at different scales",
-      "$6B+ lost to exploits — the power of smart contracts comes with serious security responsibility"
+      "It is not a legal contract, not smart, not free and not unstoppable — the value is in removing trusted middlemen, locking rules and settling fast",
+      "DeFi, NFTs and DAOs are all smart contracts at different scales — $6B+ lost to exploits shows the power cuts both ways"
     ]
   },
   "summary": {
@@ -194,5 +219,34 @@
       { "title": "When to Use", "summary": "Multiple untrusting parties + conditional logic + no trusted intermediary = smart contract territory" }
     ],
     "footer": "Proceed to Section 2 to explore the Smart Contract ecosystem →"
+  },
+  "hype": {
+    "heading": "Hype vs value: four things a smart contract is not",
+    "subtitle": "The name oversells it. Clearing these up now makes every case study later easier to judge.",
+    "cards": [
+      {
+        "title": "Not a legal contract",
+        "body": "It is code that moves assets when conditions are met. Whether a court recognises it is a separate question — most real deployments pair the code with a normal legal agreement."
+      },
+      {
+        "title": "Not smart",
+        "body": "It does exactly what is written — no judgement, no exceptions, no \"obviously that's not what we meant\". A bug executes as faithfully as a feature."
+      },
+      {
+        "title": "Not free",
+        "body": "Every step costs a network fee and on-chain storage is extraordinarily expensive. Storing one megabyte on Ethereum costs more than a laptop."
+      },
+      {
+        "title": "Not unstoppable",
+        "body": "The contract may be, but its website, data feeds and admin keys are ordinary points of control. Tornado Cash's front-end went dark in 2022 while the contract kept running."
+      }
+    ],
+    "valueLabel": "So where is the value?",
+    "value": [
+      "Removing a middleman that many parties would otherwise have to trust — and pay",
+      "Making a rule impossible to bend after the fact — for everyone, including the operator",
+      "Settling across borders in seconds, around the clock, with a public audit trail"
+    ],
+    "footer": "Keep this lens for the rest of the course: does this use case need one of these three things? If not, a database will usually win."
   }
 }

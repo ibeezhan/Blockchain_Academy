@@ -8,7 +8,7 @@
     "s2-standards":    "Token Standards",
     "s2-components":   "Core Components",
     "s2-workflow":     "Workflow",
-    "s2-solidity":     "Reading Solidity",
+    "s2-solidity":     "Reading Solidity · optional",
     "s2-execution":    "Execution Environment",
     "s2-capabilities": "New Capabilities",
     "s2-why":          "Why Build with SC?",
@@ -22,7 +22,7 @@
   "title": {
     "sectionNumber": "SECTION 02",
     "title": "How Smart Contracts Work",
-    "subtitle": "Workflow, EVM, Web3 landscape, gas economics, and why you should build with them"
+    "subtitle": "What actually happens when a smart contract runs — the Web3 stack, gas, token standards — told for decision-makers, with the code kept optional"
   },
   "gasExercise": {
     "badge": "🧩 Exercise",
@@ -197,8 +197,7 @@
     "heading": "Token Standards",
     "subtitleA": "A standard is just a ",
     "subtitleStrong": "shared interface",
-    "subtitleB": " — an agreed set of functions a token promises to have, so any wallet, exchange or app can use it with zero custom code.",
-    "coreFunctions": "Core functions",
+    "subtitleB": " — an agreed set of behaviours every token of that type promises, so any wallet, exchange or app can handle it with zero custom work. For business: standards are why a token launched today works in millions of wallets tomorrow.",
     "erc20": {
       "title": "Fungible — every unit identical",
       "desc": "Money-like tokens. 1 unit = 1 unit — always interchangeable."
@@ -224,7 +223,7 @@
   },
   "components": {
     "heading": "Anatomy of a Smart Contract",
-    "subtitle": "Every smart contract is made of five building blocks — understanding them is understanding the language of Web3.",
+    "subtitle": "Every smart contract is made of five building blocks. You don't need to read the code — the five words on the left are the vocabulary you need in meetings.",
     "cards": [
       { "title": "Code",                "desc": "The business logic and conditional statements. Written in Solidity (Ethereum), Rust (Solana), or Vyper. Once deployed, the code is immutable." },
       { "title": "State",               "desc": "Stored data that the contract maintains and modifies over time. Examples: token balances, ownership records, vote counts. Persisted on-chain." },
@@ -266,7 +265,7 @@
   "solidity": {
     "kicker": "Section 02",
     "heading": "Reading a Smart Contract",
-    "subtitle": "You don't need to write Solidity — but every PM, auditor, and analyst must be able to read it. Here is a minimal ERC-20 token contract, fully annotated.",
+    "subtitle": "Optional for this course. You will never write Solidity here — but seeing one annotated contract demystifies every slide that follows. Skim it; come back if you are curious.",
     "annotations": [
       { "title": "Contract Declaration",       "desc": "Like a class in OOP. All state and functions live inside. Once deployed, this code is immutable at its address on the blockchain." },
       { "title": "State Variables",            "desc": "Stored permanently on-chain. public creates a getter function automatically. Every write costs gas — reads are free." },
@@ -280,7 +279,7 @@
   },
   "execution": {
     "heading": "Execution Environment",
-    "subtitle": "Why smart contracts run the same way, everywhere, every time.",
+    "subtitle": "Why smart contracts run the same way, everywhere, every time — and why that forces some surprising constraints.",
     "properties": [
       {
         "title": "Virtual Machines",

@@ -50,13 +50,14 @@
     },
     "smartContracts": {
       "title": "Business Applications for Smart Contracts",
-      "description": "From theory to industry disruption — understand what smart contracts can and cannot do for your business, with real case studies and a team project.",
+      "description": "From theory to industry disruption — understand what smart contracts can and cannot do for your business, with real case studies, DAO & NFT applications, and an in-class assignment.",
       "topics": [
         "Smart Contract Fundamentals",
         "EVM & Web3 Landscape",
         "Case Studies",
+        "DAOs & NFTs",
         "Oracle Problem",
-        "Team Project"
+        "In-class Assignment"
       ]
     },
     "projectManagement": {
@@ -85,13 +86,13 @@
     "criticalThinking": "Critical Thinking",
     "limitations": "Limitations",
     "build": "Build",
-    "teamProject": "Team Project",
     "conclusion": "Conclusion",
     "recap": "Recap",
     "ethereum": "Ethereum",
     "hyperledger": "Hyperledger",
     "interoperability": "Interoperability",
-    "newTrends": "New Trends"
+    "newTrends": "New Trends",
+    "inClassAssignment": "In-class Assignment"
   },
   "instructors": {
     "helder": {
@@ -129,5 +130,7 @@
         "Designed the Blockchain Academy programme and its project-management training materials under the Ripple Impact Fund"
       ]
     }
-  }
+  },
+  "underTheHood": "under the hood →",
+  "optionalAdvanced": "Optional · Developer-oriented"
 }

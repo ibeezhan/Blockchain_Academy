@@ -198,7 +198,6 @@
     "subtitleA": "Uma norma é apenas uma ",
     "subtitleStrong": "interface partilhada",
     "subtitleB": " — um conjunto acordado de funções que um token promete ter, para que qualquer carteira, exchange ou app o possa usar sem código personalizado.",
-    "coreFunctions": "Funções principais",
     "erc20": {
       "title": "Fungível — cada unidade idêntica",
       "desc": "Tokens semelhantes a dinheiro. 1 unidade = 1 unidade — sempre intermutáveis."

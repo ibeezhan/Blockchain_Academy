@@ -100,7 +100,7 @@
   "teamFramework": {
     "contextLabel": "Day 3 · after the Decision Flow",
     "title": "Run your problem through the framework",
-    "subtitle": "Take the problem statement you brought from Day 2 and answer the 8 questions on the previous slide — together, as a team. Treat this as a real go/no-go gate for your project.",
+    "subtitle": "Take the problem your group is considering for the in-class assignment and answer the 8 questions on the previous slide — together. Treat this as a real go/no-go gate.",
     "duration": "15 min",
     "methodLabel": "Method",
     "method": [
@@ -112,19 +112,29 @@
     "discuss": [
       { "a": "If ", "strong": "✅ Smart Contract", "b": ": great — continue with conviction. Note ", "em": "why", "c": " (multi-party? trust gap? automation?)." },
       { "a": "If ", "strong": "⚠️ Hybrid", "b": ": figure out what part is on-chain vs off-chain. Most real-world deployments live here." },
-      { "a": "If ", "strong": "❌ Database", "b": ": that's a perfectly valid project too. Your deliverable becomes ", "em": "\"we investigated X and concluded blockchain isn't the right tool because Y, Z\"", "c": " — backed by the analysis. The rubric rewards critical thinking, not blockchain enthusiasm." }
+      {
+        "a": "If ",
+        "strong": "❌ Database",
+        "b": ": that's a perfectly valid outcome. Your report becomes ",
+        "em": "\"we investigated X and concluded blockchain isn't the right tool because Y, Z\"",
+        "c": " — backed by the analysis. The rubric rewards critical thinking, not blockchain enthusiasm."
+      }
     ],
     "captureLabel": "Capture",
     "capture": [
       { "a": "Your verdict + a 2-sentence justification." },
       { "a": "One specific risk the framework surfaced (privacy concern? flexibility need? single trusted party lurking?)." },
-      { "a": "This goes into ", "strong": "Part 1 of the project deliverable", "b": " — keep your notes." }
+      {
+        "a": "This goes straight into ",
+        "strong": "Part 3 of your 1-page report",
+        "b": " (Section 7) — keep your notes."
+      }
     ],
     "footnote": {
       "strong": "A useful rule:",
       "a": " if your team can't convince a sceptical reviewer in two sentences ",
       "em": "why",
-      "b": " blockchain is the right tool, the verdict probably isn't ✅ — and that's fine. A clear-eyed \"no, here's why\" earns the same Problem-Solution-fit points as a strong \"yes\". The Three Lessons coming up (Estonia / The DAO / ASX) make all three outcomes concrete."
+      "b": " blockchain is the right tool, the verdict probably isn't ✅ — and that's fine. A clear-eyed \"no, here's why\" scores as well as a strong \"yes\" in the in-class assignment. The Three Lessons coming up (Estonia / The DAO / ASX) make all three outcomes concrete."
     }
   },
   "decisionYes": {

@@ -25,7 +25,7 @@
   "title": {
     "sectionNumber": "SECTION 06",
     "title": "Build & Integration",
-    "subtitle": "Standards, frameworks, platforms, and integration patterns for taking smart contracts to production"
+    "subtitle": "Optional, developer-oriented material: standards, frameworks, platforms and integration patterns. Skipped in lecture — here for the curious and for your technical teammates."
   },
   "ercData": {
     "erc-20": {
@@ -430,5 +430,9 @@
       "Cardano — formal verification focus, Plutus/Marlowe for finance."
     ],
     "explanation": "The use case has 4 specific constraints: full ERC support (rules out non-EVM Solana, Cardano, Hyperledger Fabric), low gas (rules out Ethereum L1 mainnet for frequent distributions), OpenZeppelin compatibility (favors EVM), and EU regulatory fit (favors public chains with MiCA-compliant pathways). Polygon, Arbitrum, and Base all check every box. Hyperledger Fabric is great for enterprise but has zero ERC support and would force you to rebuild every standard. Solana is fast but requires Rust + custom token standards. Cardano's tooling is less mature for tokenized real-estate. The answer is an EVM-compatible L2."
+  },
+  "optionalNote": {
+    "label": "Optional section.",
+    "body": " Nothing here is required for the in-class assignment. Skim the Platform Checklist and the On vs Off-Chain slide if you want the two most useful pieces for a business reader."
   }
 }

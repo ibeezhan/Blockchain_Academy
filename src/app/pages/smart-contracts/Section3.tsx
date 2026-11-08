@@ -8,6 +8,12 @@ import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
 import { Building2 } from 'lucide-react';
 import { TeamCheckpoint } from '../../components/TeamCheckpoint';
+import { UnderTheHood } from '../../components/shared/UnderTheHood';
+import {
+  NftUtilitySlide, TokenGateDemo, NftHonestSlide,
+  DaoIntroSlide, GovernanceBlocksExplorer, VotingPowerSim, DaoExamplesSlide,
+  TradeLensCase,
+} from './Section3Extras';
 
 import imgDefiIntro      from '../../../assets/sc/defi-intro.png';
 import imgDefiBorderless from '../../../assets/sc/defi-borderless.png';
@@ -43,6 +49,17 @@ const chapterShape = [
   { id: 's3-nft-finance' },
   { id: 's3-nft-prosCons' },
 
+  { kind: 'group' as const, id: 'g-apps' },
+  { id: 's3-apps-intro' },
+  { id: 's3-nft-utility' },
+  { id: 's3-nft-gate' },
+  { id: 's3-nft-honest' },
+  { id: 's3-dao-intro' },
+  { id: 's3-dao-structures' },
+  { id: 's3-dao-vote' },
+  { id: 's3-dao-examples' },
+  { id: 's3-dao-prosCons' },
+
   { kind: 'group' as const, id: 'g-rwa' },
   { id: 's3-rwa-intro' },
   { id: 's3-rwa-spectrum' },
@@ -74,6 +91,7 @@ const chapterShape = [
   { id: 's3-dmv' },
   { id: 's3-walmart' },
   { id: 's3-santander' },
+  { id: 's3-tradelens' },
 
   { kind: 'group' as const, id: 'g-close' },
   { id: 's3-exercise' },
@@ -193,6 +211,7 @@ function InteractiveAMM() {
         <span className="px-2.5 py-0.5 rounded-full bg-[#6366f1]/15 border border-[#6366f1]/40 text-[#6366f1] text-xs font-bold">{t('interactiveBadge')}</span>
         <h2 className="text-2xl font-bold text-foreground mt-1">{t('amm.title')}<code className="text-[#6366f1]">x · y = k</code></h2>
         <p className="text-muted-foreground text-sm">{t('amm.subtitle')}</p>
+        <UnderTheHood terms={['constant product', 'liquidity pool', 'slippage', 'LP fee']} className="mt-1.5" />
       </div>
 
       <div className="flex-1 min-h-0 grid grid-cols-2 gap-5">
@@ -826,6 +845,9 @@ function RoyaltyCalculator() {
               <div className="text-[10px] text-muted-foreground">{t('royalty.withErc2981Desc')}</div>
             </div>
           </div>
+          <div className="p-2 rounded-lg border border-[#f59e0b]/40 text-[11px] text-muted-foreground" style={{ backgroundColor: '#f59e0b0f' }}>
+            <span className="font-bold text-[#f59e0b]">{t('royalty.caveatLabel')}</span>{t('royalty.caveatBody')}
+          </div>
         </div>
 
       </div>
@@ -1117,6 +1139,8 @@ export function SC_Section3() {
   const scCons = t('scProsCons.cons', { returnObjects: true }) as ProsConsItem[];
   const certPros = t('certProsCons.pros', { returnObjects: true }) as ProsConsItem[];
   const certCons = t('certProsCons.cons', { returnObjects: true }) as ProsConsItem[];
+  const daoPros = t('daoProsCons.pros', { returnObjects: true }) as ProsConsItem[];
+  const daoCons = t('daoProsCons.cons', { returnObjects: true }) as ProsConsItem[];
 
   // Bullet/array content
   const industryVerticals = [
@@ -1190,6 +1214,7 @@ export function SC_Section3() {
   const summaryMeta = [
     { icon: '💸', color: '#6366f1' },
     { icon: '🎮', color: '#8b5cf6' },
+    { icon: '🏛', color: '#a855f7' },
     { icon: '🏢', color: '#39B54A' },
     { icon: '🚚', color: '#f59e0b' },
     { icon: '📜', color: '#22d3ee' },
@@ -1198,6 +1223,7 @@ export function SC_Section3() {
     { icon: '🚗', color: '#22d3ee' },
     { icon: '🥬', color: '#39B54A' },
     { icon: '💼', color: '#6366f1' },
+    { icon: '🚢', color: '#ED1C24' },
   ];
 
   return (
@@ -1416,6 +1442,7 @@ export function SC_Section3() {
             <span className="font-bold text-[#6366f1]">{t('stablecoinsIntro.nextLabel')}</span>
             <span className="text-muted-foreground">{t('stablecoinsIntro.nextBody')}</span>
           </div>
+          <UnderTheHood terms={['collateral ratio', 'liquidation', 'redemption', 'reserve attestation']} className="shrink-0 mt-2 justify-center w-full" />
         </div>
 
         {/* DeFi: Stablecoins */}
@@ -1509,6 +1536,7 @@ export function SC_Section3() {
                   <div className="font-mono font-black text-base text-[#8b5cf6]">ERC-1155</div>
                 </div>
               </div>
+              <UnderTheHood terms={['tokenId', 'tokenURI', 'metadata', 'IPFS']} />
             </div>
             <div className="p-5 bg-card border border-[#6366f1]/30 rounded-xl flex flex-col gap-3 justify-center">
               <div className="font-bold text-base text-[#6366f1]">{t('nftIntro.gamingTitle')}</div>
@@ -1638,6 +1666,35 @@ export function SC_Section3() {
         </div>
 
         {/* ═══════════════════════════════════════════════════════════ */}
+        {/* NFT Utility & DAOs — applications block                     */}
+        {/* ═══════════════════════════════════════════════════════════ */}
+
+        <div id="s3-apps-intro" className="h-full">
+          <VerticalDivider
+            emoji="🏛"
+            title={t('appsDivider.title')}
+            subtitle={t('appsDivider.subtitle')}
+            color="#a855f7"
+          />
+        </div>
+
+        <div id="s3-nft-utility" className="h-full"><NftUtilitySlide /></div>
+        <div id="s3-nft-gate" className="h-full"><TokenGateDemo /></div>
+        <div id="s3-nft-honest" className="h-full"><NftHonestSlide /></div>
+        <div id="s3-dao-intro" className="h-full"><DaoIntroSlide /></div>
+        <div id="s3-dao-structures" className="h-full"><GovernanceBlocksExplorer /></div>
+        <div id="s3-dao-vote" className="h-full"><VotingPowerSim /></div>
+        <div id="s3-dao-examples" className="h-full"><DaoExamplesSlide /></div>
+        <div id="s3-dao-prosCons" className="h-full">
+          <ProsConsSlide
+            title={t('daoProsCons.title')}
+            accent="#a855f7"
+            pros={daoPros}
+            cons={daoCons}
+          />
+        </div>
+
+        {/* ═══════════════════════════════════════════════════════════ */}
         {/* Real Asset Tokenization vertical                            */}
         {/* ═══════════════════════════════════════════════════════════ */}
 
@@ -1673,6 +1730,7 @@ export function SC_Section3() {
               <div className="p-2 bg-[#39B54A]/10 rounded-lg text-sm">
                 <span className="font-semibold text-foreground">{t('rwaSecuritize.regulatoryLabel')}</span> <span className="text-muted-foreground">{t('rwaSecuritize.regulatoryBody')}</span>
               </div>
+              <UnderTheHood terms={['transfer restrictions', 'whitelist', 'ERC-1400 / ERC-3643', 'on-chain KYC']} />
             </div>
             <div className="flex flex-col gap-3 justify-center">
               <div className="text-sm font-bold text-[#39B54A] uppercase tracking-widest">{t('rwaSecuritize.deploymentsLabel')}</div>
@@ -1853,6 +1911,7 @@ export function SC_Section3() {
               </div>
             </div>
           </div>
+          <UnderTheHood terms={['permissioned ledger', 'hash anchoring', 'IoT oracle', 'NFC / QR']} className="shrink-0 mt-3" />
         </div>
 
         {/* Supply Chain: Shipping */}
@@ -1947,6 +2006,7 @@ export function SC_Section3() {
               </div>
             </div>
           </div>
+          <UnderTheHood terms={['hash chain', 'KSI', 'Merkle tree', 'timestamping']} className="shrink-0 mt-3" />
         </div>
 
         {/* Cert: Education */}
@@ -2380,6 +2440,9 @@ export function SC_Section3() {
             </div>
           </div>
         </div>
+
+        {/* ═══════ CASE STUDY — TRADELENS (SHUT DOWN) ═══════ */}
+        <div id="s3-tradelens" className="h-full"><TradeLensCase /></div>
 
         {/* ═══════ EXERCISE: DESIGN YOUR OWN ═══════ */}
         <div id="s3-exercise" className="h-full">

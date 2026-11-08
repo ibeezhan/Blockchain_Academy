@@ -8,6 +8,7 @@ import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
 import { Brain } from 'lucide-react';
 import { TeamCheckpoint } from '../../components/TeamCheckpoint';
+import { UnderTheHood } from '../../components/shared/UnderTheHood';
 
 import imgDaoTimeline   from '../../../assets/sc/dao-timeline.png';
 import imgAsxAsic       from '../../../assets/sc/asx-asic.jpg';
@@ -347,6 +348,7 @@ export function SC_Section4() {
               <div className="mt-auto p-2 bg-[#6366f1]/10 border border-[#6366f1]/30 rounded-lg text-[11px] text-muted-foreground">
                 <span className="font-semibold text-foreground">{t('decisionChart.pointLabel')}</span>{t('decisionChart.pointBody')}
               </div>
+              <UnderTheHood terms={['permissioned vs public', 'access control', 'Bitcoin-like ledger']} />
             </div>
           </div>
         </div>
@@ -675,6 +677,7 @@ export function SC_Section4() {
               );
             })}
           </div>
+          <UnderTheHood terms={['RPC node', 'indexer', 'HSM / multisig', 'IPFS + encryption']} className="shrink-0 mt-3" />
         </div>
 
         {/* ═══════ LEGAL & REGULATORY ═══════ */}
@@ -731,6 +734,7 @@ export function SC_Section4() {
               );
             })}
           </div>
+          <UnderTheHood terms={['audit', 'formal verification', 'proxy upgrade', 'timelock', 'bug bounty']} className="shrink-0 mt-3" />
         </div>
 
         {/* ═══════ FINANCIAL PLANNING ═══════ */}

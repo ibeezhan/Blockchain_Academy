@@ -17,7 +17,7 @@
     },
     "industries": {
       "title": "Industries & Case Studies",
-      "description": "Tour five industry verticals (DeFi, Gaming/NFTs, RWA, Supply Chain, Digital Cert) plus eight case studies including Walmart, Santander, Estonia, The DAO hack, and the ASX failure."
+      "description": "Tour five industry verticals (DeFi, Gaming/NFTs, RWA, Supply Chain, Digital Cert), understand how DAOs are structured and where NFTs create real utility, and learn from six cases — including TradeLens, which shut down."
     },
     "criticalThinking": {
       "title": "Critical Thinking & Adoption",
@@ -29,11 +29,11 @@
     },
     "build": {
       "title": "Build & Integration",
-      "description": "Navigate ERC standards, the EIP process, frameworks (Hardhat / Foundry), 17-platform comparison, integration patterns, and where AI tools belong in smart-contract development."
+      "description": "(Optional) Navigate ERC standards, the EIP process, frameworks, platform comparison and integration patterns — the developer-oriented material your technical teammates will own."
     },
     "design": {
-      "title": "Business Application Design",
-      "description": "Apply course knowledge to design a smart contract solution: map stakeholders, identify use cases, weigh trade-offs, and present a business case to the class."
+      "title": "Business Judgement (in-class assignment)",
+      "description": "In a small group, take a real problem through the course's critical lens and argue in one page whether it deserves a blockchain — problem, proposed solution, pros & cons."
     }
   }
 }
