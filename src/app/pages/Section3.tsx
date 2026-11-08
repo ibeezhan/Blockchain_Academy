@@ -1,10 +1,11 @@
-import { useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link, useParams } from 'react-router';
 import { TitleSlide } from '../components/templates/TitleSlide';
 import { DiscussionSlide } from '../components/templates/DiscussionSlide';
 import { TakeawaySlide } from '../components/templates/TakeawaySlide';
 import { QuizSlide } from '../components/templates/QuizSlide';
-import { Rocket, ExternalLink, Telescope, Landmark, Image as ImageIcon, Vote, Lightbulb, Server, Database, ServerCrash, Ban, Coins, Music } from 'lucide-react';
+import { Rocket, ExternalLink, Telescope, Cpu, Landmark, Image as ImageIcon, Vote, Lightbulb, Server, Database, ServerCrash, Ban, Coins, Music } from 'lucide-react';
 import { SectionNav } from '../components/navigation/SectionNav';
 import { SiteFooter } from '../components/shared/SiteFooter';
 import ethereumLogo from '../../ethereum-eth-logo.svg';
@@ -25,11 +26,13 @@ const NS = 'blockchain-fundamentals/section-3';
 const section3ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
   { kind: 'group', id: 'g-s3-eth' },
   { id: 's3-ethereum' },
+  { id: 's3-smartcontract' },
   { id: 's3-accounts' },
   { id: 's3-gas' },
   { id: 's3-defi' },
   { id: 's3-nfts' },
   { id: 's3-daos' },
+  { id: 's3-tokens' },
 
   { kind: 'group', id: 'g-s3-world' },
   { id: 's3-usecases-trust' },
@@ -65,6 +68,24 @@ function PeekFooter({ body }: { body: string }) {
       <Telescope className="size-3.5 shrink-0" style={{ color: PEEK }} />
       <strong style={{ color: PEEK }}>{t('peek.label')}</strong> {body}
     </div>
+  );
+}
+
+const HOOD = '#8b5cf6';
+
+/** "Under the hood →" pill: names the deep topic and links to Blockchain Platforms §2, where it is taught properly. */
+function TechHint({ body, className = '' }: { body: string; className?: string }) {
+  const { t } = useTranslation(NS);
+  const { lang = 'en' } = useParams<{ lang?: string }>();
+  return (
+    <Link to={`/${lang}/blockchain-platforms/section-2`} title={t('techHint.title')}
+      className={`inline-flex items-center gap-1.5 shrink-0 whitespace-nowrap px-2.5 py-1 rounded-full border text-[10px] leading-tight text-muted-foreground hover:bg-[#8b5cf6]/15 transition-colors ${className}`}
+      style={{ borderColor: HOOD + '66', backgroundColor: HOOD + '0f' }}>
+      <Cpu className="size-3 shrink-0" style={{ color: HOOD }} />
+      <strong className="shrink-0" style={{ color: HOOD }}>{t('techHint.label')}</strong>
+      <span>{body}</span>
+      <span className="font-bold" style={{ color: HOOD }}>· {t('techHint.target')}</span>
+    </Link>
   );
 }
 
@@ -126,6 +147,235 @@ function AccountsArrow() {
         <line x1="2" y1="10" x2="112" y2="10" stroke={C} strokeWidth="3" strokeLinecap="round" markerEnd="url(#acc-arrow)" />
       </svg>
       <p className="text-[11px] text-muted-foreground leading-snug">{t('ethAccounts.arrowSub')}</p>
+    </div>
+  );
+}
+
+// ─── Interactive: a smart contract as a vending machine ─────────────────────
+
+type VendStep = 'idle' | 'short' | 'checking' | 'done';
+const VEND_PRICE = 2;
+
+interface VendCopy {
+  badge: string; hint: string; machineTitle: string; priceLabel: string; balanceLabel: string;
+  insert: string; undo: string; reset: string; dispensed: string;
+  display: Record<VendStep, string>;
+  trace: {
+    inputLabel: string; inputIdle: string; inputCoin: string; ruleLabel: string; rule: string; rulePass: string; ruleFail: string;
+    outcomeLabel: string; outcomeIdle: string; outcomeShort: string; outcomeDone: string;
+  };
+  undoMsg: string; escrowNote: string;
+}
+
+function TraceRow({ n, label, body, detail, color }: { n: number; label: string; body: string; detail?: string; color: string }) {
+  return (
+    <div className="flex-1 min-h-0 rounded-xl border bg-card px-3 py-2 flex items-center gap-3" style={{ borderColor: color + '55' }}>
+      <span className="size-6 rounded-full flex items-center justify-center text-[11px] font-black text-white shrink-0" style={{ backgroundColor: color }}>{n}</span>
+      <div className="min-w-0">
+        <div className="text-[10px] font-black uppercase tracking-widest" style={{ color }}>{label}</div>
+        <div className="text-sm text-foreground leading-snug">{body}</div>
+        {detail && <div className="text-xs font-bold leading-snug" style={{ color }}>{detail}</div>}
+      </div>
+    </div>
+  );
+}
+
+/** Insert a coin → the rule checks itself → dispense or refund. The "undo" button exists only to prove it does nothing. */
+function VendingMachineDemo() {
+  const { t } = useTranslation(NS);
+  const d = t('smartContract.demo', { returnObjects: true }) as VendCopy;
+  const [step, setStep] = useState<VendStep>('idle');
+  const [coin, setCoin] = useState(0);
+  const [undoTried, setUndoTried] = useState(false);
+  useEffect(() => {
+    if (step !== 'checking') return;
+    const id = setTimeout(() => setStep('done'), 900);
+    return () => clearTimeout(id);
+  }, [step]);
+  const insert = (amount: number) => { setCoin(amount); setUndoTried(false); setStep(amount >= VEND_PRICE ? 'checking' : 'short'); };
+  const reset = () => { setStep('idle'); setCoin(0); setUndoTried(false); };
+
+  const OK = '#39B54A', AMBER = '#f59e0b', RED = '#ef4444', GRAY = '#9ca3af';
+  const fmt = (n: number) => `€${n}`;
+  const held = step === 'checking' || step === 'done' ? coin : 0;
+  const ruleColor = step === 'idle' ? GRAY : step === 'short' ? RED : OK;
+  const outcome = step === 'done' ? d.trace.outcomeDone : step === 'short' ? d.trace.outcomeShort : d.trace.outcomeIdle;
+
+  return (
+    <div className="h-full min-h-0 flex flex-col gap-3">
+      <div className="flex items-center justify-between gap-3 shrink-0">
+        <span className="px-2 py-0.5 rounded-full bg-[#f59e0b]/15 border border-[#f59e0b]/40 text-[#f59e0b] text-[10px] font-bold">{d.badge}</span>
+        <span className="text-[11px] text-muted-foreground">{d.hint}</span>
+      </div>
+
+      <div className="flex-1 min-h-0 grid grid-cols-[auto_1fr] gap-4">
+        {/* The machine */}
+        <div className="w-44 lg:w-52 rounded-2xl border-2 p-3 flex flex-col gap-2" style={{ borderColor: OK + '66', background: `linear-gradient(to bottom, ${OK}1f, var(--card))` }}>
+          <div className="text-center text-[10px] font-black tracking-[0.3em]" style={{ color: OK }}>{d.machineTitle}</div>
+          <div className="flex-1 min-h-0 rounded-xl bg-background/70 border border-border flex items-center justify-center text-5xl relative overflow-hidden">
+            <span className={`transition-opacity duration-500 ${step === 'done' ? 'opacity-20' : ''}`}>🥤</span>
+            {step === 'done' && <span className="absolute inset-x-0 bottom-2 text-center text-[10px] font-bold" style={{ color: OK }}>↓ {d.dispensed}</span>}
+          </div>
+          <div className="rounded-md px-2 py-1.5 font-mono text-[11px] font-bold text-center bg-[#0f172a]" style={{ color: step === 'short' ? RED : OK }}>{d.display[step]}</div>
+          <div className="grid grid-cols-2 gap-1.5 text-[10px]">
+            <div className="rounded-md border border-border bg-card px-2 py-1 text-center">
+              <div className="text-muted-foreground">{d.priceLabel}</div><div className="font-mono font-black text-foreground">{fmt(VEND_PRICE)}</div>
+            </div>
+            <div className="rounded-md border bg-card px-2 py-1 text-center" style={{ borderColor: AMBER + '66' }}>
+              <div className="text-muted-foreground">{d.balanceLabel}</div><div className="font-mono font-black" style={{ color: AMBER }}>{fmt(held)}</div>
+            </div>
+          </div>
+          <div className="h-9 rounded-lg border border-border bg-muted/40 flex items-center justify-center text-xl" aria-live="polite">
+            {step === 'done' ? '🥤' : step === 'short' ? '🪙' : ''}
+          </div>
+        </div>
+
+        {/* Rule trace + controls */}
+        <div className="min-w-0 flex flex-col gap-2">
+          <TraceRow n={1} color={step === 'idle' ? GRAY : AMBER} label={d.trace.inputLabel}
+            body={step === 'idle' ? d.trace.inputIdle : t('smartContract.demo.trace.inputCoin', { amount: fmt(coin) })} />
+          <TraceRow n={2} color={ruleColor} label={d.trace.ruleLabel}
+            body={t('smartContract.demo.trace.rule', { price: fmt(VEND_PRICE) })}
+            detail={step === 'idle' ? undefined : step === 'short' ? d.trace.ruleFail : d.trace.rulePass} />
+          <TraceRow n={3} color={step === 'done' ? OK : step === 'short' ? RED : GRAY} label={d.trace.outcomeLabel} body={outcome} />
+
+          <div className="shrink-0 flex flex-wrap items-center gap-2 pt-1">
+            {step !== 'done' && [1, 2].map(a => (
+              <button key={a} type="button" disabled={step === 'checking'} onClick={() => insert(a)}
+                className="px-3 py-1.5 rounded-lg border text-sm font-bold transition-all hover:-translate-y-0.5 disabled:opacity-50"
+                style={{ borderColor: AMBER + '80', backgroundColor: AMBER + '1a', color: AMBER }}>
+                🪙 {t('smartContract.demo.insert', { amount: fmt(a) })}
+              </button>
+            ))}
+            {step === 'done' && !undoTried && (
+              <button type="button" onClick={() => setUndoTried(true)}
+                className="px-3 py-1.5 rounded-lg border text-sm font-bold transition-all hover:-translate-y-0.5"
+                style={{ borderColor: RED + '80', backgroundColor: RED + '14', color: RED }}>{d.undo}</button>
+            )}
+            {step !== 'idle' && (
+              <button type="button" onClick={reset} className="px-3 py-1.5 rounded-lg border border-border bg-card text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors">{d.reset}</button>
+            )}
+          </div>
+          {undoTried && (
+            <div className="shrink-0 px-3 py-2 rounded-lg border text-xs font-semibold leading-snug" style={{ borderColor: RED + '66', backgroundColor: RED + '12', color: RED }}>🔒 {d.undoMsg}</div>
+          )}
+          <p className="shrink-0 text-[11px] text-muted-foreground italic">{d.escrowNote}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Keystone slide: what is a smart contract? ──────────────────────────────
+
+function SmartContractSlide() {
+  const { t } = useTranslation(NS);
+  const principles = t('smartContract.principles', { returnObjects: true }) as Array<{ emoji: string; title: string; body: string }>;
+  const COLORS = ['#f59e0b', '#627EEA', '#ef4444'];
+  return (
+    <div id="s3-smartcontract" className="h-full flex flex-col p-5 lg:p-8">
+      <div className="shrink-0 mb-3">
+        <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
+          <span className="px-1.5 py-0.5 rounded bg-[#39B54A]/15 text-[#39B54A] font-bold shrink-0 whitespace-nowrap">{t('smartContract.kicker')}</span>
+          <span className="truncate">{t('smartContract.kickerBody')}</span>
+          <TechHint body={t('smartContract.hood')} className="ml-auto" />
+        </div>
+        <div className="flex items-center gap-3 mb-1">
+          <span className="text-2xl">🤖</span>
+          <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('smartContract.heading')}</h2>
+        </div>
+        <p className="text-base text-foreground font-medium max-w-4xl">{t('smartContract.lead')}</p>
+      </div>
+
+      <div className="flex-1 min-h-0 grid grid-cols-5 gap-4">
+        <div className="col-span-3 min-h-0"><VendingMachineDemo /></div>
+        <div className="col-span-2 min-h-0 flex flex-col gap-3">
+          {principles.map((p, i) => (
+            <div key={i} className="flex-1 min-h-0 rounded-2xl border-2 bg-card p-4 flex items-center gap-4" style={{ borderColor: COLORS[i] + '40' }}>
+              <div className="size-14 rounded-2xl text-3xl flex items-center justify-center shrink-0" style={{ backgroundColor: COLORS[i] + '1a' }}>{p.emoji}</div>
+              <div className="min-w-0">
+                <div className="font-black text-lg text-foreground leading-tight">{p.title}</div>
+                <p className="text-sm text-muted-foreground mt-1 leading-snug">{p.body}</p>
+              </div>
+            </div>
+          ))}
+          <div className="shrink-0 p-3 rounded-xl bg-[#39B54A]/10 border border-[#39B54A]/30 text-xs text-muted-foreground">
+            <span className="font-bold text-[#39B54A]">{t('smartContract.business.strong')}</span> {t('smartContract.business.body')}
+          </div>
+        </div>
+      </div>
+      <PeekFooter body={t('smartContract.peek')} />
+    </div>
+  );
+}
+
+// ─── Tokens: the business primitive ─────────────────────────────────────────
+
+interface TokenKindCopy { standard: string; title: string; sub: string; examples: string[]; verb: string }
+
+function TokensSlide() {
+  const { t } = useTranslation(NS);
+  const kinds = [
+    { key: 'fungible', color: '#627EEA', glyph: '=' },
+    { key: 'unique', color: '#f97316', glyph: '≠' },
+  ] as const;
+  const TINTS = ['#8b5cf6', '#22d3ee', '#ED1C24'];
+  return (
+    <div id="s3-tokens" className="h-full flex flex-col p-5 lg:p-8">
+      <div className="shrink-0 mb-3">
+        <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
+          <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] font-bold shrink-0 whitespace-nowrap">{t('tokens.kicker')}</span>
+          <span className="truncate">{t('tokens.kickerBody')}</span>
+          <TechHint body={t('tokens.hood')} className="ml-auto" />
+        </div>
+        <div className="flex items-center gap-3 mb-1">
+          <span className="text-2xl">🪙</span>
+          <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('tokens.heading')}</h2>
+        </div>
+        <p className="text-sm text-muted-foreground max-w-4xl">{t('tokens.lead')}</p>
+      </div>
+
+      <div className="flex-1 min-h-0 grid grid-cols-2 gap-4">
+        {kinds.map(k => {
+          const c = t(`tokens.${k.key}`, { returnObjects: true }) as TokenKindCopy;
+          const unique = k.key === 'unique';
+          return (
+            <div key={k.key} className="min-h-0 rounded-2xl border-2 bg-card flex flex-col overflow-hidden" style={{ borderColor: k.color + '66' }}>
+              <div className="px-4 py-3 flex items-center gap-3 shrink-0" style={{ background: `linear-gradient(to right, ${k.color}2e, transparent)` }}>
+                <span className="px-2 py-0.5 rounded-md font-mono text-[11px] font-black text-white shrink-0" style={{ backgroundColor: k.color }}>{c.standard}</span>
+                <div className="min-w-0">
+                  <div className="font-bold text-foreground text-base lg:text-lg leading-tight">{c.title}</div>
+                  <div className="text-xs text-muted-foreground">{c.sub}</div>
+                </div>
+              </div>
+              {/* Visual: three identical coins vs three distinct tickets */}
+              <div className="flex-1 min-h-0 flex items-center justify-center gap-3 px-4">
+                {[0, 1, 2].map(i => (
+                  <div key={i} className="flex items-center gap-3">
+                    <div className="size-24 lg:size-32 rounded-2xl border-2 flex flex-col items-center justify-center text-5xl lg:text-6xl gap-1"
+                      style={{ borderColor: unique ? TINTS[i] : k.color, backgroundColor: (unique ? TINTS[i] : k.color) + '1a' }}>
+                      {unique ? '🎟️' : '🪙'}
+                      {unique && <span className="font-mono text-xs font-bold" style={{ color: TINTS[i] }}>#00{i + 1}</span>}
+                    </div>
+                    {i < 2 && <span className="text-4xl font-black" style={{ color: k.color }}>{k.glyph}</span>}
+                  </div>
+                ))}
+              </div>
+              <div className="shrink-0 px-4 pb-3 flex flex-wrap items-center gap-2">
+                {c.examples.map((ex, i) => (
+                  <span key={i} className="px-2.5 py-1 rounded-full border text-xs font-semibold text-foreground" style={{ borderColor: k.color + '55', backgroundColor: k.color + '10' }}>{ex}</span>
+                ))}
+                <span className="ml-auto text-sm font-black" style={{ color: k.color }}>{c.verb}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="shrink-0 mt-3 p-3 bg-[#f59e0b]/10 border border-[#f59e0b]/30 rounded-lg text-xs text-muted-foreground">
+        <span className="font-bold text-[#f59e0b]">{t('tokens.business.strong')}</span> {t('tokens.business.body')}
+      </div>
+      <PeekFooter body={t('tokens.peek')} />
     </div>
   );
 }
@@ -457,7 +707,7 @@ function DaoIllustration({ v }: { v: Record<string, string> }) {
 
 interface AppPeek {
   title: string; subtitle: string; replaces: string; tease: string; description: string;
-  examples?: Array<{ name: string; desc: string }>; risk: string; stat: string; later: string;
+  examples?: Array<{ name: string; desc: string }>; risk: string; hype: string; stat: string; later: string; hood: string;
   visual: Record<string, string>;
 }
 
@@ -471,8 +721,9 @@ function SneakPeekSlide({ id, index, color, icon, illustration }: {
     <div id={id} className="h-full flex flex-col p-5 lg:p-8">
       <div className="shrink-0 mb-3">
         <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
-          <span className="px-1.5 py-0.5 rounded font-bold" style={{ color: PEEK, backgroundColor: PEEK + '26' }}>{t('ethApps.peekBadge')}</span>
-          <span>{app.tease}</span>
+          <span className="px-1.5 py-0.5 rounded font-bold shrink-0 whitespace-nowrap" style={{ color: PEEK, backgroundColor: PEEK + '26' }}>{t('ethApps.peekBadge')}</span>
+          <span className="truncate">{app.tease}</span>
+          <TechHint body={app.hood} className="ml-auto" />
         </div>
         <div className="flex items-center gap-3 mb-1">
           <div className="size-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: color + '26', color }}>{icon}</div>
@@ -499,12 +750,15 @@ function SneakPeekSlide({ id, index, color, icon, illustration }: {
         </div>
       )}
 
-      <div className="shrink-0 mt-3 grid grid-cols-[auto_1fr] gap-3">
+      <div className="shrink-0 mt-3 grid grid-cols-[auto_1fr_1fr] gap-3">
         <div className="px-4 py-2 rounded-xl border flex items-center" style={{ borderColor: color + '55', background: `linear-gradient(to right, ${color}26, transparent)` }}>
           <div className="text-sm font-black" style={{ color }}>{app.stat}</div>
         </div>
         <div className="px-3 py-2 rounded-xl bg-[#ef4444]/8 border border-[#ef4444]/30 text-xs text-muted-foreground flex items-center">
-          <span className="font-bold text-[#ef4444] mr-1">{t('ethApps.riskLabel')}</span>{app.risk}
+          <span className="font-bold text-[#ef4444] mr-1 shrink-0">{t('ethApps.riskLabel')}</span><span>{app.risk}</span>
+        </div>
+        <div className="px-3 py-2 rounded-xl bg-[#f59e0b]/8 border border-[#f59e0b]/30 text-xs text-muted-foreground flex items-center">
+          <span className="font-bold text-[#f59e0b] mr-1 shrink-0">{t('ethApps.hypeLabel')}</span><span>{app.hype}</span>
         </div>
       </div>
 
@@ -865,103 +1119,87 @@ export function Section3() {
           />
         </div>
 
-        {/* ═══════ 1. ETHEREUM & VITALIK BUTERIN ═══════ */}
+        {/* ═══════ 1. ETHEREUM — THE WORLD COMPUTER ═══════ */}
         <div id="s3-ethereum" className="h-full flex flex-col p-5 lg:p-8">
 
           <div className="shrink-0 mb-4">
             <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
-              <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] font-bold">{t('ethereum.recapBadge')}</span>
-              <span>{t('ethereum.recapA')} <strong className="text-foreground">{t('ethereum.recapStrong')}</strong>{t('ethereum.recapTail')}</span>
+              <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] font-bold shrink-0 whitespace-nowrap">{t('ethereum.recapBadge')}</span>
+              <span className="truncate">{t('ethereum.recapA')} <strong className="text-foreground">{t('ethereum.recapStrong')}</strong>{t('ethereum.recapTail')}</span>
+              <TechHint body={t('ethereum.hood')} className="ml-auto" />
             </div>
             <div className="flex items-center gap-3 mb-1">
               <img src={ethereumLogo} alt="Ethereum" className="h-8 object-contain" />
               <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('ethereum.heading')}</h2>
             </div>
-            <p className="text-sm text-muted-foreground">{t('ethereum.lead')}</p>
+            <p className="text-base lg:text-lg text-foreground font-semibold">{t('ethereum.lead')}</p>
           </div>
 
           <div className="flex-1 min-h-0 grid grid-cols-3 gap-4">
 
-            {/* Vitalik card */}
-            <div className="bg-card border border-border rounded-xl overflow-hidden flex flex-col">
+            {/* Vitalik card + one-line origin */}
+            <div className="bg-card border border-border rounded-xl overflow-hidden flex flex-col min-h-0">
               <img src={vitalikPhoto} alt={t('ethereum.vitalikName')} className="w-full object-cover object-top flex-1 min-h-0" />
               <div className="p-4 shrink-0">
                 <div className="font-black text-foreground text-lg leading-tight">{t('ethereum.vitalikName')}</div>
                 <div className="text-xs text-[#627EEA] font-medium mt-0.5">{t('ethereum.vitalikRole')}</div>
-                <div className="text-xs text-muted-foreground mt-2">{t('ethereum.vitalikBio')} <span className="text-foreground font-bold">{t('ethereum.vitalikAge')}</span>.</div>
+                <div className="text-xs text-muted-foreground mt-2">{t('ethereum.vitalikBio')} <span className="text-foreground font-bold">{t('ethereum.vitalikAge')}</span>. {t('ethereum.originLine')}</div>
               </div>
             </div>
 
-            {/* Timeline + why */}
             <div className="col-span-2 flex flex-col gap-3 min-h-0">
-
-              <div className="bg-card border border-border rounded-xl p-4 flex flex-col gap-3">
-                <h3 className="font-bold text-foreground text-sm">{t('ethereum.whyTitle')}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {t('ethereum.whyP1A')} <span className="text-foreground font-medium">{t('ethereum.whyP1Strong')}</span> {t('ethereum.whyP1Tail')}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {t('ethereum.whyP2A')} <span className="text-foreground font-medium">{t('ethereum.whyP2Strong1')}</span> {t('ethereum.whyP2Mid')} <span className="text-foreground font-medium">{t('ethereum.whyP2Strong2')}</span>{t('ethereum.whyP2Tail')}
-                </p>
+              {/* World-computer framing */}
+              <div className="shrink-0 rounded-xl border p-4 flex items-center gap-4" style={{ borderColor: '#627EEA55', background: 'linear-gradient(to right, #627EEA26, transparent)' }}>
+                <div className="size-14 rounded-2xl bg-[#627EEA]/15 flex items-center justify-center text-3xl shrink-0">🌍</div>
+                <div className="min-w-0">
+                  <h3 className="font-black text-foreground text-base leading-tight">{t('ethereum.worldTitle')}</h3>
+                  <p className="text-sm text-muted-foreground mt-1 leading-snug">{t('ethereum.worldBody')}</p>
+                </div>
               </div>
 
-              <div className="flex gap-3 flex-1 min-h-0">
-
-                <div className="flex flex-col gap-2 flex-1">
-                  {(['#627EEA','#627EEA','#39B54A','#ED1C24','#8b5cf6','#8b5cf6','#22d3ee']).map((color, i) => {
-                    const events = t('ethereum.events', { returnObjects: true }) as Array<{ year: string; label: string }>;
-                    const ev = events[i];
-                    const soon = i === 6;
-                    return (
-                      <div key={i} className={`flex items-center gap-3 rounded-lg px-3 py-2 ${soon ? 'bg-[#22d3ee]/10 border border-dashed border-[#22d3ee]/50' : 'bg-card border border-border'}`}>
-                        <span className="font-black text-sm shrink-0" style={{ color }}>{ev.year}</span>
-                        <span className="text-sm text-muted-foreground flex-1">{ev.label}</span>
-                        {soon && (
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#22d3ee]/20 text-[#22d3ee] shrink-0">{t('ethereum.soonBadge')}</span>
-                        )}
-                      </div>
-                    );
-                  })}
-                  <a
-                    href="https://rabby.io"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 px-3 py-2.5 bg-[#7084ff]/10 border border-[#7084ff]/40 rounded-lg hover:bg-[#7084ff]/20 hover:border-[#7084ff]/70 transition-all group mt-1"
-                  >
-                    <span className="text-xl shrink-0">🐰</span>
-                    <div className="flex-1">
-                      <div className="text-sm font-bold text-[#7084ff]">{t('ethereum.walletCta')}</div>
-                      <div className="text-xs text-muted-foreground">rabby.io</div>
+              {/* Three milestones */}
+              <div className="flex-1 min-h-0 grid grid-cols-3 gap-3">
+                {(t('ethereum.milestones', { returnObjects: true }) as Array<{ emoji: string; year: string; label: string; note: string }>).map((m, i) => {
+                  const color = ['#627EEA', '#39B54A', PEEK][i];
+                  return (
+                    <div key={i} className="min-h-0 rounded-xl border-2 bg-card p-4 flex flex-col items-center text-center justify-center gap-1.5" style={{ borderColor: color + '55', background: `linear-gradient(to bottom, ${color}14, var(--card) 60%)` }}>
+                      <span className="size-16 rounded-full flex items-center justify-center text-4xl mb-1" style={{ backgroundColor: color + '1f' }}>{m.emoji}</span>
+                      <span className="font-black text-2xl leading-none" style={{ color }}>{m.year}</span>
+                      <span className="font-bold text-sm text-foreground leading-tight">{m.label}</span>
+                      <span className="text-xs text-muted-foreground leading-snug">{m.note}</span>
                     </div>
-                    <ExternalLink className="size-4 text-[#7084ff]/60 group-hover:text-[#7084ff] transition-colors shrink-0" />
-                  </a>
-                </div>
-
-                <div className="w-40 shrink-0 flex flex-col gap-2">
-                  <div className="bg-gradient-to-br from-[#627EEA]/20 to-transparent border border-[#627EEA]/40 rounded-xl p-3 flex flex-col items-center text-center flex-1">
-                    <img src={ethereumLogo} alt="ETH" className="h-10 object-contain mb-2" />
-                    <div className="text-xl font-black text-[#627EEA]">{t('ethereum.rank')}</div>
-                    <div className="text-xs text-muted-foreground mt-1">{t('ethereum.rankNote')}</div>
-                  </div>
-                  <div className="bg-card border border-border rounded-xl p-3 text-center">
-                    <div className="text-lg font-black text-foreground">{t('ethereum.dappCount')}</div>
-                    <div className="text-xs text-muted-foreground">{t('ethereum.dappCountNote')}</div>
-                  </div>
-                </div>
-
+                  );
+                })}
               </div>
 
+              <a
+                href="https://rabby.io"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 flex items-center gap-3 px-3 py-2.5 bg-[#7084ff]/10 border border-[#7084ff]/40 rounded-lg hover:bg-[#7084ff]/20 hover:border-[#7084ff]/70 transition-all group"
+              >
+                <span className="text-xl shrink-0">🐰</span>
+                <div className="flex-1">
+                  <div className="text-sm font-bold text-[#7084ff]">{t('ethereum.walletCta')}</div>
+                  <div className="text-xs text-muted-foreground">rabby.io</div>
+                </div>
+                <ExternalLink className="size-4 text-[#7084ff]/60 group-hover:text-[#7084ff] transition-colors shrink-0" />
+              </a>
             </div>
 
           </div>
         </div>
 
+        {/* ═══════ KEYSTONE: WHAT IS A SMART CONTRACT? ═══════ */}
+        <SmartContractSlide />
+
         {/* ═══════ ETH ACCOUNTS — EOA vs CONTRACT ═══════ */}
         <div id="s3-accounts" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-4">
             <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
-              <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] font-bold">{t('ethAccounts.recapBadge')}</span>
-              <span>{t('ethAccounts.recapA')} <strong className="text-foreground">{t('ethAccounts.recapStrong')}</strong> {t('ethAccounts.recapTail')}</span>
+              <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] font-bold shrink-0 whitespace-nowrap">{t('ethAccounts.recapBadge')}</span>
+              <span className="truncate">{t('ethAccounts.recapA')} <strong className="text-foreground">{t('ethAccounts.recapStrong')}</strong> {t('ethAccounts.recapTail')}</span>
+              <TechHint body={t('ethAccounts.hood')} className="ml-auto" />
             </div>
             <div className="flex items-center gap-3 mb-1">
               <img src={ethereumLogo} alt="Ethereum" className="h-7 object-contain" />
@@ -984,8 +1222,9 @@ export function Section3() {
         <div id="s3-gas" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-3">
             <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
-              <span className="px-1.5 py-0.5 rounded bg-[#627EEA]/15 text-[#627EEA] font-bold">{t('ethGas.recapBadge')}</span>
-              <span>{t('ethGas.recapBody')}</span>
+              <span className="px-1.5 py-0.5 rounded bg-[#627EEA]/15 text-[#627EEA] font-bold shrink-0 whitespace-nowrap">{t('ethGas.recapBadge')}</span>
+              <span className="truncate">{t('ethGas.recapBody')}</span>
+              <TechHint body={t('ethGas.hood')} className="ml-auto" />
             </div>
             <div className="flex items-center gap-3 mb-1">
               <span className="text-2xl">⛽</span>
@@ -997,7 +1236,14 @@ export function Section3() {
             <div className="col-span-3 min-h-0"><GasFeeDemo /></div>
             <div className="col-span-2 min-h-0 flex flex-col gap-3">
               <FuelAnalogy />
-              <div className="shrink-0 p-2.5 bg-muted/40 border border-border rounded-lg text-[11px] text-muted-foreground leading-snug">{t('ethGas.eipNote')}</div>
+              {/* Surge-pricing analogy for the gas-price slider */}
+              <div className="shrink-0 p-3 rounded-xl border flex items-center gap-3" style={{ borderColor: '#f59e0b55', backgroundColor: '#f59e0b10' }}>
+                <span className="text-2xl shrink-0">🚕</span>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-foreground">{t('ethGas.surge.title')}</div>
+                  <div className="text-[11px] text-muted-foreground leading-snug">{t('ethGas.surge.body')}</div>
+                </div>
+              </div>
             </div>
           </div>
           <PeekFooter body={t('ethGas.peek')} />
@@ -1007,6 +1253,9 @@ export function Section3() {
         <SneakPeekSlide id="s3-defi" index={0} color="#39B54A" icon={<Landmark className="size-6" />} illustration={v => <DefiIllustration v={v} />} />
         <SneakPeekSlide id="s3-nfts" index={1} color="#f97316" icon={<ImageIcon className="size-6" />} illustration={v => <NftIllustration v={v} />} />
         <SneakPeekSlide id="s3-daos" index={2} color="#6366f1" icon={<Vote className="size-6" />} illustration={v => <DaoIllustration v={v} />} />
+
+        {/* ═══════ TOKENS — THE BUSINESS PRIMITIVE ═══════ */}
+        <TokensSlide />
 
         {/* ═══════ 2. BLOCKCHAIN USE CASES — ONE SLIDE PER PATTERN ═══════ */}
         <UseCasePatternSlide id="s3-usecases-trust" index={0} />
