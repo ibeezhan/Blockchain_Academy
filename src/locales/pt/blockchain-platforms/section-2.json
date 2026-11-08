@@ -20,6 +20,8 @@
     "s2-eip1559": "🧩 EIP-1559",
     "s2-smartcontracts": "Smart Contracts",
     "s2-consensus": "PoW → PoS",
+    "s2-staking": "🧩 Staking",
+    "s2-issuance": "🧩 ETH Issuance",
     "s2-evmecosystem": "EVM em Todo o Lado",
     "s2-rollups": "Rollups e L2s",
     "s2-rollups-anim": "🧩 Fluxo L1 ↔ L2",
@@ -72,6 +74,28 @@
     "sectionNumber": "SECÇÃO 02",
     "title": "Ethereum: Do Dinheiro à Blockchain Programável",
     "subtitle": "Contas, EVM, smart contracts, evolução do consenso e o ecossistema EVM"
+  },
+  "recap": {
+    "badge": "↩ recap from Fundamentals",
+    "linkLabel": "open the intro ↗",
+    "why": "The intro covered the “why” — Bitcoin's limits and Vitalik's insight. Here's how the idea actually works.",
+    "accounts": "You already met the two account types. Now the architecture: who initiates, who responds, who pays.",
+    "gas": "Gas as “fuel” was the intro. Now the mechanics: how it's measured, priced, and why it halts runaway code.",
+    "smartContracts": "You know a smart contract is code-as-agreement. Now the lifecycle: Solidity → bytecode → on-chain (Course 2 goes deeper).",
+    "defi": "DeFi was introduced as “finance without middlemen”. Here it is systematised as three primitives."
+  },
+  "hood": {
+    "label": "under the hood →",
+    "why": "state machine · Turing-completeness · world state · EVM bytecode",
+    "accounts": "ECDSA key pairs · nonce · code hash · storage root · msg.sender",
+    "gas": "opcode gas table · gasLimit vs gasUsed · revert · block gas limit (~30M)",
+    "smartContracts": "Solidity → bytecode · ABI · CREATE / CREATE2 · immutability vs proxies",
+    "consensus": "beacon chain · RANDAO · attestations · Casper FFG finality · LMD-GHOST",
+    "staking": "validator keys · withdrawal credentials · slashing conditions · churn limit · stETH / rETH",
+    "issuance": "EIP-1559 base-fee burn · PoS issuance curve (∝ √ staked ETH) · ultrasound.money",
+    "defi": "x·y=k · collateral ratio · liquidation bots · LP tokens · composability",
+    "stablecoins": "ERC-20 mint/redeem · proof of reserves · liquidation ratio · delta-neutral hedge",
+    "apps": "ERC-20 · ERC-721 · ERC-1155 · tokenURI · governor contracts · ENS · SIWE"
   },
   "why": {
     "heading": "Porquê Ethereum?",
@@ -324,10 +348,66 @@
       { "value": "~28% do total", "label": "ETH em stake (~34M ETH)" },
       { "value": "−99,95%", "label": "energia vs PoW" }
     ],
-    "slashingTitle": "Slashing",
-    "slashingBody": "Assinatura dupla ou voto envolvente (surround voting) desencadeia uma queima imediata (mínimo de 1 ETH) mais uma penalização de correlação proporcional a outros slashings próximos — tornando ataques coordenados economicamente catastróficos.",
-    "liquidTitle": "Liquid Staking",
-    "liquidBody": "A Lido (stETH), a Rocket Pool (rETH) e outras permitem fazer stake de qualquer quantia de ETH através de tokens derivados. Só a Lido garante ~30% de todo o ETH em stake — aumentando o acesso ao custo da concentração do conjunto de validadores."
+    "nextLabel": "Next two slides:",
+    "nextBody": " what staking means for the people who put up the 32 ETH — and what the switch did to ETH's supply."
+  },
+  "staking": {
+    "badge": "🧩 Staking",
+    "heading": "Staking — ETH's Interest Rate",
+    "subtitle": "Lock ETH to help secure the network and earn a yield. It behaves almost like a yield instrument — but with a twist: you can't get in or out instantly.",
+    "whatLabel": "What staking is",
+    "whatBodyA": "You deposit ETH as collateral and your validator proposes and attests to blocks. In return the protocol pays you new ETH plus tips. ",
+    "whatBodyStrong": "~3–4% a year",
+    "whatBodyB": " — often called ETH's native interest rate. Misbehave (double-sign) and you get ",
+    "whatBodySlash": "slashed",
+    "whatBodyC": ": part of your stake is burned and you're ejected.",
+    "pathsLabel": "Three ways in",
+    "paths": [
+      { "title": "Solo validator", "req": "32 ETH + run a node 24/7", "get": "Full rewards, full control", "risk": "You own the uptime and slashing risk" },
+      { "title": "Liquid staking", "req": "Any amount — Lido, Rocket Pool", "get": "A liquid token back (stETH, rETH) that keeps earning and can be traded or used in DeFi", "risk": "Protocol fee (~10–15%) · smart-contract risk · Lido alone ≈ 25–30% of all staked ETH" },
+      { "title": "Institutional & ETFs", "req": "Custodians (Coinbase, Figment…) or a staked-ETH ETF", "get": "Staked-ETH yield inside a brokerage account — US spot-ETH ETFs were cleared to stake in 2025", "risk": "Counterparty + regulatory risk; the fund holds the keys, not you" }
+    ],
+    "instructorLabel": "From the instructor:",
+    "instructorBody": " Ether Capital (Toronto, publicly listed) was one of the first public companies to run its own ETH staking operation — turning validator yield into a line item a listed company reports.",
+    "queueLabel": "The entry / exit queue",
+    "queueIntro": "Unlike a savings account, the protocol admits and releases validators at a fixed rate so the validator set never changes too fast. That rate limit becomes a queue.",
+    "queue": [
+      { "label": "Deposit", "wait": "≈ 12 h processing", "detail": "32 ETH sent to the deposit contract" },
+      { "label": "Activation queue", "wait": "hours → weeks", "detail": "Rate-limited entry · 45+ days at the 2023 peak" },
+      { "label": "Active", "wait": "earning", "detail": "Proposing · attesting · ~3–4%" },
+      { "label": "Exit queue", "wait": "hours → weeks", "detail": "Rate-limited exit · >1 month in late 2025" },
+      { "label": "Withdrawal", "wait": "≥ ~27 h + sweep", "detail": "ETH lands back in your wallet" }
+    ],
+    "soWhatLabel": "So what?",
+    "soWhatBody": "The yield comes with a liquidity/redemption delay. Liquid staking tokens trade that queue for a market price — which can slip below 1:1 when many people want out at once (stETH traded at ~0.94 in June 2022)."
+  },
+  "issuance": {
+    "badge": "🧩 Monetary policy",
+    "heading": "ETH Issuance — No Hard Cap, Yet Nearly Flat",
+    "subtitle": "Bitcoin's supply is fixed by schedule. Ethereum's is a balance between what the protocol prints and what it burns.",
+    "facts": [
+      { "title": "No hard cap", "detail": "Nothing in the protocol limits total ETH. Supply is a policy outcome, not a constant — and it has changed by upgrade." },
+      { "title": "The Merge cut issuance ~88%", "detail": "PoW paid miners ~13,000 ETH/day. PoS pays validators far less — and the amount scales with the square root of ETH staked, not with hardware." },
+      { "title": "EIP-1559 burns the base fee", "detail": "Every transaction destroys its base fee. Busy network → more burned than issued → net supply shrinks. The community calls it “ultrasound money”." }
+    ],
+    "visualLabel": "Issuance vs burn → net supply (illustrative daily figures)",
+    "scenarioLabel": "Network activity:",
+    "scenarios": [
+      { "label": "Quiet", "issued": 2600, "burned": 300, "note": "Low fees — supply grows slowly" },
+      { "label": "Normal", "issued": 2600, "burned": 1500, "note": "Burn offsets most issuance" },
+      { "label": "Busy", "issued": 2600, "burned": 4500, "note": "Burn > issuance — supply shrinks (deflationary)" }
+    ],
+    "issuedLabel": "Issued to validators",
+    "burnedLabel": "Burned (base fee)",
+    "netLabel": "Net change",
+    "perDay": "ETH / day",
+    "perYear": "≈ {{pct}}% per year on ~120M ETH",
+    "btcLabel": "₿ Bitcoin (for contrast)",
+    "btcBody": "Fixed 21M · ~450 BTC/day today, halving every ~4 years · nothing is burned · last coin ≈ 2140. Predictable, always mildly inflationary until then.",
+    "ethLabel": "Ξ Ethereum",
+    "ethBody": "~120M ETH, roughly flat since the Merge (Sep 2022). Can inflate or deflate depending on demand for block space.",
+    "soWhatLabel": "Business read:",
+    "soWhatBody": " Bitcoin sells scarcity by rule; Ethereum sells scarcity by usage. The more the network is used, the scarcer ETH gets — which ties the asset's value to the platform's activity."
   },
   "evmEcosystem": {
     "heading": "EVM em Todo o Lado",
@@ -491,7 +571,12 @@
     "scaleBodyStrong": "~200 mil M$",
     "scaleBodyB": " · o volume diário de liquidação rivaliza com a Visa · só o USDT liquida, em alguns dias, mais volume on-chain do que o Bitcoin. As stablecoins são a dApp mais usada por número de transações.",
     "regLabel": "Regulação a apertar",
-    "regBody": "A MiCA da UE (em vigor desde 2024) restringe stablecoins algorítmicas não denominadas em euros · enquadramentos dos EUA em debate no Congresso · sandbox de Hong Kong ativa. Transparência do emissor, auditorias de reservas e licenciamento são a nova base."
+    "regBody": "A MiCA da UE (em vigor desde 2024) restringe stablecoins algorítmicas não denominadas em euros · enquadramentos dos EUA em debate no Congresso · sandbox de Hong Kong ativa. Transparência do emissor, auditorias de reservas e licenciamento são a nova base.",
+    "stats": [
+      { "value": "~$300B", "label": "total stablecoin supply" },
+      { "value": "Visa-scale", "label": "annual on-chain settlement" },
+      { "value": "MiCA · GENIUS Act", "label": "EU (2024) · US (2025) stablecoin laws" }
+    ]
   },
   "apps1": {
     "heading": "Além do DeFi — o que mais corre na Ethereum",
@@ -664,6 +749,8 @@
       "Dois tipos de contas: Externally Owned Accounts (EOAs) e Contas de Contrato",
       "Os smart contracts são programas guardados on-chain que executam de forma determinística quando acionados",
       "The Merge (2022) substituiu o Proof of Work por Proof of Stake — reduzindo o consumo de energia em 99,95%",
+      "Staking is ETH's interest rate (~3–4%) — solo, liquid (stETH/rETH) or via ETFs — but entry and exit go through rate-limited queues",
+      "ETH has no hard cap: PoS issuance minus the EIP-1559 burn keeps supply roughly flat, and busy periods make it deflationary",
       "A EVM tornou-se um padrão da indústria — Polygon, Arbitrum, Base, Optimism e outras são compatíveis com EVM",
       "O Bitcoin é dinheiro digital; a Ethereum é uma camada de liquidação programável"
     ]

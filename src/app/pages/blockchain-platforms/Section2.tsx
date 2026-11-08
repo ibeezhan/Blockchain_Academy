@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router';
 import anime from 'animejs';
 import { motion } from 'motion/react';
+import { useLocalizedPath } from '../../../i18n/useLang';
 import { TitleSlide } from '../../components/templates/TitleSlide';
 import { TakeawaySlide } from '../../components/templates/TakeawaySlide';
 import { ComparisonSlide } from '../../components/templates/ComparisonSlide';
@@ -30,9 +32,11 @@ const chapterShape = [
 
   { kind: 'group' as const, id: 'g-s2-consensus' },
   { id: 's2-consensus' },
-  { id: 's2-evmecosystem' },
+  { id: 's2-staking' },
+  { id: 's2-issuance' },
 
   { kind: 'group' as const, id: 'g-s2-scaling' },
+  { id: 's2-evmecosystem' },
   { id: 's2-rollups' },
   { id: 's2-rollups-anim' },
 
@@ -52,11 +56,109 @@ const chapterShape = [
   { kind: 'group' as const, id: 'g-s2-wrap' },
   { id: 's2-quiz' },
   { id: 's2-takeaways' },
-  { id: 's2-summary' },
 ] as const;
 
 // Language-neutral colors for the Rollups L1↔L2 animation steps (parallel to t('rollupsAnim.steps')).
 const ROLLUP_STEP_COLORS = ['#8b5cf6', '#f59e0b', '#06b6d4', '#3b82f6', '#10b981'] as const;
+
+const FUNDAMENTALS_INTRO_PATH = '/blockchain-fundamentals/section-3';
+
+/* One-line handoff: "this was introduced in Fundamentals — here we go deeper". Links to the intro section. */
+function RecapBadge({ topic }: { topic: 'why' | 'accounts' | 'gas' | 'smartContracts' | 'defi' }) {
+  const { t } = useTranslation('blockchain-platforms/section-2');
+  const localized = useLocalizedPath();
+  return (
+    <div className="flex flex-wrap items-center gap-2 mb-1.5 text-[11px] text-muted-foreground">
+      <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] font-bold whitespace-nowrap">{t('recap.badge')}</span>
+      <span className="leading-snug">{t(`recap.${topic}`)}</span>
+      <Link to={localized(FUNDAMENTALS_INTRO_PATH)} className="font-semibold text-[#627EEA] hover:underline whitespace-nowrap">{t('recap.linkLabel')}</Link>
+    </div>
+  );
+}
+
+/* Keyword trail for students who want the tech underneath — never required reading. */
+function HoodHint({ topic, className = '' }: { topic: string; className?: string }) {
+  const { t } = useTranslation('blockchain-platforms/section-2');
+  return (
+    <div className={`shrink-0 flex items-baseline gap-2 text-[10px] text-muted-foreground ${className}`}>
+      <span className="font-black uppercase tracking-widest text-[#627EEA] whitespace-nowrap">🔧 {t('hood.label')}</span>
+      <span className="font-mono truncate">{t(`hood.${topic}`)}</span>
+    </div>
+  );
+}
+
+const ISSUANCE_BAR_MAX = 5000;
+
+/* Issuance vs burn → net supply. Scenario chips swap the burn figure; bars + net animate. */
+function IssuanceBalance() {
+  const { t } = useTranslation('blockchain-platforms/section-2');
+  const scenarios = t('issuance.scenarios', { returnObjects: true }) as IssuanceScenario[];
+  const [idx, setIdx] = useState(1);
+  const s = scenarios[idx];
+  const net = s.issued - s.burned;
+  const netColor = net > 0 ? '#f59e0b' : '#10b981';
+  const pctPerYear = ((net * 365) / 120_000_000 * 100).toFixed(2);
+
+  return (
+    <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4 h-full min-h-0">
+      <div className="text-[10px] font-black uppercase tracking-widest text-[#627EEA]">{t('issuance.visualLabel')}</div>
+
+      <div className="flex items-center gap-2 flex-wrap">
+        <span className="text-xs text-muted-foreground">{t('issuance.scenarioLabel')}</span>
+        {scenarios.map((sc, i) => (
+          <button
+            key={i}
+            onClick={() => setIdx(i)}
+            className="text-xs px-3 py-1 rounded-full border font-semibold transition-colors"
+            style={i === idx
+              ? { backgroundColor: '#627EEA', borderColor: '#627EEA', color: '#fff' }
+              : { borderColor: 'var(--border)', color: 'var(--muted-foreground)' }}
+          >{sc.label}</button>
+        ))}
+      </div>
+
+      <div className="flex-1 min-h-0 flex flex-col justify-center gap-5">
+        {[
+          { label: t('issuance.issuedLabel'), value: s.issued, color: '#627EEA', sign: '+' },
+          { label: t('issuance.burnedLabel'), value: s.burned, color: '#f97316', sign: '−' },
+        ].map((row) => (
+          <div key={row.label}>
+            <div className="flex justify-between text-sm mb-1.5">
+              <span className="font-semibold text-foreground">{row.label}</span>
+              <span className="font-mono font-bold" style={{ color: row.color }}>{row.sign}{row.value.toLocaleString()} {t('issuance.perDay')}</span>
+            </div>
+            <div className="h-6 rounded-full bg-muted overflow-hidden">
+              <motion.div
+                animate={{ width: `${Math.min(100, (row.value / ISSUANCE_BAR_MAX) * 100)}%` }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
+                className="h-full rounded-full"
+                style={{ backgroundColor: row.color }}
+              />
+            </div>
+          </div>
+        ))}
+
+        <motion.div
+          key={idx}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="rounded-xl border-2 px-4 py-4 flex items-center justify-between gap-3"
+          style={{ borderColor: netColor + '60', backgroundColor: netColor + '12' }}
+        >
+          <div>
+            <div className="text-[10px] font-black uppercase tracking-widest" style={{ color: netColor }}>{t('issuance.netLabel')}</div>
+            <div className="text-sm text-foreground font-semibold mt-0.5">{s.note}</div>
+            <div className="text-xs text-muted-foreground mt-0.5">{t('issuance.perYear', { pct: (net > 0 ? '+' : '') + pctPerYear })}</div>
+          </div>
+          <div className="text-right shrink-0">
+            <div className="font-mono text-3xl font-black" style={{ color: netColor }}>{net > 0 ? '+' : ''}{net.toLocaleString()}</div>
+            <div className="text-[10px] text-muted-foreground">{t('issuance.perDay')}</div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
 
 /* ──────────────────── Rollups L1 ↔ L2 — animated flow ─────────────────────
    Visualises what happens between Layer 1 and a Layer 2 rollup:
@@ -288,10 +390,14 @@ interface RollupStep { label: string; detail: string; }
 interface RollupBullet { strong?: string; rest?: string; pre?: string; code?: string; post?: string; text?: string; }
 interface RollupMetric { label: string; l1: string; l2: string; }
 interface StablecoinLogo { sym: string; tag: string; }
-interface StablecoinCard { title: string; sub: string; mechanism: string; examples: string; logos: StablecoinLogo[]; risk: string; }
+interface StablecoinCard { title: string; sub: string; mechanism: string; logos: StablecoinLogo[]; risk: string; }
 interface AppProject { sym: string; tag: string; }
-interface AppCard { title: string; sub: string; what: string; examples: string; projects: AppProject[]; limit: string; }
+interface AppCard { title: string; sub: string; what: string; projects: AppProject[]; limit: string; }
 interface FitItem { name: string; why: string; example?: string; alt?: string; }
+interface StakingPath { title: string; req: string; get: string; risk: string; }
+interface QueueStage { label: string; wait: string; detail: string; }
+interface IssuanceFact { title: string; detail: string; }
+interface IssuanceScenario { label: string; issued: number; burned: number; note: string; }
 
 export function BP_Section2() {
   const { t } = useTranslation('blockchain-platforms/section-2');
@@ -347,6 +453,22 @@ export function BP_Section2() {
   const consensusStepColors = ['#627EEA', '#8b5cf6', '#3b82f6', '#10b981'];
   const consensusStats = t('consensus.stats', { returnObjects: true }) as ConsensusStat[];
 
+  const stakingPaths = t('staking.paths', { returnObjects: true }) as StakingPath[];
+  const stakingPathMeta = [
+    { icon: '🖥️', color: '#627EEA' },
+    { icon: '💧', color: '#06b6d4' },
+    { icon: '🏦', color: '#8b5cf6' },
+  ];
+  const stakingQueue = t('staking.queue', { returnObjects: true }) as QueueStage[];
+  const stakingQueueColors = ['#627EEA', '#f59e0b', '#10b981', '#f59e0b', '#627EEA'];
+
+  const issuanceFacts = t('issuance.facts', { returnObjects: true }) as IssuanceFact[];
+  const issuanceFactMeta = [
+    { icon: '♾️', color: '#627EEA' },
+    { icon: '✂️', color: '#10b981' },
+    { icon: '🔥', color: '#f97316' },
+  ];
+
   const evmReasons = t('evmEcosystem.reasons', { returnObjects: true }) as LabelDetail[];
   const evmReasonMeta = [
     { icon: '🌐', color: '#627EEA' },
@@ -378,8 +500,9 @@ export function BP_Section2() {
   const stablecoinCardMeta = [
     { icon: '🏦', color: '#3b82f6', logoColors: ['#26A17B', '#2775CA', '#00AAE4', '#003087'] },
     { icon: '⚖️', color: '#8b5cf6', logoColors: ['#F4B731', '#B6509E', '#745DDF', '#40649F'] },
-    { icon: '⚙️', color: '#ED1C24', logoColors: ['#172852', '#000000', '#0E1313'] },
+    { icon: '⚙️', color: '#ED1C24', logoColors: ['#5493F7', '#6B7280', '#94A3B8'] },
   ];
+  const stablecoinStats = t('stablecoins.stats', { returnObjects: true }) as ConsensusStat[];
 
   const apps1Cards = t('apps1.cards', { returnObjects: true }) as AppCard[];
   const apps1CardMeta = [
@@ -425,6 +548,7 @@ export function BP_Section2() {
         {/* ═══════ S2-WHY ═══════ */}
         <div id="s2-why" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-5">
+            <RecapBadge topic="why" />
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('why.heading')}</h2>
             <p className="text-muted-foreground text-sm mt-1">{t('why.subtitle')}</p>
           </div>
@@ -551,11 +675,13 @@ export function BP_Section2() {
               <span className="font-mono font-bold text-foreground">{t('why.posValueA')}<span className="text-[#10b981]">{t('why.posValueHighlight')}</span></span>
             </div>
           </motion.div>
+          <HoodHint topic="why" className="mt-2" />
         </div>
 
         {/* ═══════ S2-ACCOUNTS-VISUAL ═══════ */}
         <div id="s2-accounts-visual" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-5">
+            <RecapBadge topic="accounts" />
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('accountsVisual.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1">{t('accountsVisual.subtitle')}</p>
           </div>
@@ -658,6 +784,7 @@ export function BP_Section2() {
               ))}
             </div>
           </motion.div>
+          <HoodHint topic="accounts" className="mt-2" />
         </div>
 
         {/* ═══════ S2-ACCOUNTS ═══════ */}
@@ -855,6 +982,7 @@ export function BP_Section2() {
         {/* ═══════ S2-GAS ═══════ */}
         <div id="s2-gas" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-4">
+            <RecapBadge topic="gas" />
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('gas.heading')}</h2>
             <p className="text-muted-foreground text-sm mt-1">{t('gas.subtitle')}</p>
           </div>
@@ -936,6 +1064,7 @@ export function BP_Section2() {
             </div>
 
           </div>
+          <HoodHint topic="gas" className="mt-2" />
         </div>
 
         {/* ═══════ S2-EIP1559 ═══════ */}
@@ -1037,6 +1166,7 @@ export function BP_Section2() {
         {/* ═══════ S2-SMARTCONTRACTS ═══════ */}
         <div id="s2-smartcontracts" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-5">
+            <RecapBadge topic="smartContracts" />
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('smartContracts.heading')}</h2>
             <p className="text-muted-foreground text-sm mt-1">{t('smartContracts.subtitle')}</p>
           </div>
@@ -1127,6 +1257,7 @@ export function BP_Section2() {
             </div>
 
           </div>
+          <HoodHint topic="smartContracts" className="mt-2" />
         </div>
 
         {/* ═══════ S2-CONSENSUS ═══════ */}
@@ -1211,38 +1342,204 @@ export function BP_Section2() {
                 ))}
               </motion.div>
 
-              {/* Slashing + Liquid Staking */}
-              <div className="shrink-0 grid grid-cols-1 lg:grid-cols-2 gap-3">
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.75 }}
-                  className="rounded-xl p-3 text-xs leading-relaxed flex items-start gap-2.5"
-                  style={{ backgroundColor: '#ef444412', border: '1px solid #ef444440' }}
-                >
-                  <span className="text-xl shrink-0 leading-none">⚔️</span>
-                  <div>
-                    <div className="font-bold mb-0.5" style={{ color: '#ef4444' }}>{t('consensus.slashingTitle')}</div>
-                    <div className="text-muted-foreground">{t('consensus.slashingBody')}</div>
-                  </div>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.85 }}
-                  className="rounded-xl p-3 text-xs leading-relaxed flex items-start gap-2.5"
-                  style={{ backgroundColor: '#06b6d412', border: '1px solid #06b6d440' }}
-                >
-                  <span className="text-xl shrink-0 leading-none">💧</span>
-                  <div>
-                    <div className="font-bold mb-0.5" style={{ color: '#06b6d4' }}>{t('consensus.liquidTitle')}</div>
-                    <div className="text-muted-foreground">{t('consensus.liquidBody')}</div>
-                  </div>
-                </motion.div>
-              </div>
+              {/* Handoff to the staking + issuance slides */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.75 }}
+                className="shrink-0 rounded-xl px-3 py-2 text-xs leading-relaxed"
+                style={{ backgroundColor: '#627EEA12', border: '1px solid #627EEA40', color: 'var(--muted-foreground)' }}
+              >
+                <span className="font-bold" style={{ color: '#627EEA' }}>{t('consensus.nextLabel')}</span>{t('consensus.nextBody')}
+              </motion.div>
+              <HoodHint topic="consensus" />
             </div>
 
           </div>
+        </div>
+
+        {/* ═══════ S2-STAKING — ETH's interest rate + entry/exit queue ═══════ */}
+        <div id="s2-staking" className="h-full flex flex-col p-5 lg:p-8">
+          <div className="shrink-0 mb-3">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#10b981]/15 border border-[#10b981]/40 text-[#10b981] text-xs font-bold">{t('staking.badge')}</span>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('staking.heading')}</h2>
+            <p className="text-sm text-muted-foreground max-w-3xl">{t('staking.subtitle')}</p>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+            {/* Left — what it is + three ways in */}
+            <div className="flex flex-col gap-3 min-h-0">
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="rounded-xl border-2 p-3"
+                style={{ borderColor: '#10b98160', backgroundColor: '#10b9810d' }}
+              >
+                <div className="text-[10px] font-black uppercase tracking-widest text-[#10b981] mb-1">{t('staking.whatLabel')}</div>
+                <p className="text-sm text-foreground leading-snug">
+                  {t('staking.whatBodyA')}<span className="font-black text-[#10b981]">{t('staking.whatBodyStrong')}</span>{t('staking.whatBodyB')}<span className="font-bold text-[#ef4444]">{t('staking.whatBodySlash')}</span>{t('staking.whatBodyC')}
+                </p>
+              </motion.div>
+
+              <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t('staking.pathsLabel')}</div>
+              <div className="flex-1 min-h-0 flex flex-col gap-2">
+                {stakingPaths.map((p, i) => {
+                  const meta = stakingPathMeta[i];
+                  return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + i * 0.1 }}
+                    className="flex-1 rounded-xl border bg-card px-3 py-2 flex items-center gap-3 min-h-0"
+                    style={{ borderColor: meta.color + '50' }}
+                  >
+                    <span className="text-2xl shrink-0 leading-none">{meta.icon}</span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-baseline gap-2 flex-wrap">
+                        <span className="font-black text-sm" style={{ color: meta.color }}>{p.title}</span>
+                        <span className="text-[10px] font-mono text-muted-foreground">{p.req}</span>
+                      </div>
+                      <div className="text-xs text-foreground leading-snug">{p.get}</div>
+                      <div className="text-[10px] text-muted-foreground leading-snug">⚠ {p.risk}</div>
+                    </div>
+                  </motion.div>
+                  );
+                })}
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.45 }}
+                className="shrink-0 rounded-xl px-3 py-2 text-[11px] leading-snug"
+                style={{ backgroundColor: '#8b5cf612', border: '1px solid #8b5cf640', color: 'var(--muted-foreground)' }}
+              >
+                <span className="font-bold text-[#8b5cf6]">{t('staking.instructorLabel')}</span>{t('staking.instructorBody')}
+              </motion.div>
+            </div>
+
+            {/* Right — the entry / exit queue */}
+            <div className="flex flex-col gap-3 min-h-0">
+              <div className="rounded-xl border border-border bg-card p-4 flex-1 min-h-0 flex flex-col gap-3">
+                <div>
+                  <div className="text-[10px] font-black uppercase tracking-widest text-[#f59e0b]">{t('staking.queueLabel')}</div>
+                  <p className="text-xs text-muted-foreground leading-snug mt-1">{t('staking.queueIntro')}</p>
+                </div>
+
+                <div className="flex-1 min-h-0 flex flex-col justify-center gap-1">
+                  {stakingQueue.map((st, i) => {
+                    const color = stakingQueueColors[i];
+                    const isQueue = i === 1 || i === 3;
+                    return (
+                    <div key={i} className="flex flex-col items-center">
+                      <motion.div
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.15 + i * 0.12 }}
+                        className="w-full rounded-lg border px-3 py-1.5 flex items-center gap-3"
+                        style={{ borderColor: color + '60', backgroundColor: color + (i === 2 ? '20' : '10'), borderStyle: isQueue ? 'dashed' : 'solid' }}
+                      >
+                        <div className="size-6 rounded-full flex items-center justify-center text-white text-[10px] font-black shrink-0" style={{ backgroundColor: color }}>
+                          {isQueue ? '⏳' : i + 1}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="text-sm font-bold text-foreground leading-tight">{st.label}</div>
+                          <div className="text-[10px] text-muted-foreground leading-snug">{st.detail}</div>
+                        </div>
+                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded shrink-0" style={{ backgroundColor: color + '20', color }}>{st.wait}</span>
+                      </motion.div>
+                      {i < stakingQueue.length - 1 && <span className="text-muted-foreground text-xs leading-none py-0.5">↓</span>}
+                    </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+                className="shrink-0 rounded-xl border-2 px-3 py-2 text-xs leading-snug"
+                style={{ borderColor: '#f59e0b60', backgroundColor: '#f59e0b10', color: 'var(--muted-foreground)' }}
+              >
+                <span className="font-black text-[#f59e0b]">{t('staking.soWhatLabel')} </span>{t('staking.soWhatBody')}
+              </motion.div>
+            </div>
+
+          </div>
+          <HoodHint topic="staking" className="mt-2" />
+        </div>
+
+        {/* ═══════ S2-ISSUANCE — monetary policy: issuance vs burn ═══════ */}
+        <div id="s2-issuance" className="h-full flex flex-col p-5 lg:p-8">
+          <div className="shrink-0 mb-3">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#f97316]/15 border border-[#f97316]/40 text-[#f97316] text-xs font-bold">{t('issuance.badge')}</span>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('issuance.heading')}</h2>
+            <p className="text-sm text-muted-foreground max-w-3xl">{t('issuance.subtitle')}</p>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+            {/* Left — three facts + BTC contrast */}
+            <div className="flex flex-col gap-3 min-h-0 justify-center">
+              {issuanceFacts.map((f, i) => {
+                const meta = issuanceFactMeta[i];
+                return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="rounded-xl border bg-card p-4 flex items-start gap-3"
+                  style={{ borderColor: meta.color + '50' }}
+                >
+                  <span className="text-3xl shrink-0 leading-none">{meta.icon}</span>
+                  <div className="min-w-0">
+                    <div className="font-black text-base" style={{ color: meta.color }}>{f.title}</div>
+                    <div className="text-sm text-muted-foreground leading-snug mt-0.5">{f.detail}</div>
+                  </div>
+                </motion.div>
+                );
+              })}
+
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 }}
+                className="shrink-0 grid grid-cols-2 gap-2 mt-auto"
+              >
+                <div className="rounded-xl border-2 p-2.5" style={{ borderColor: '#f7931a60', backgroundColor: '#f7931a10' }}>
+                  <div className="text-[10px] font-black uppercase tracking-widest text-[#f7931a]">{t('issuance.btcLabel')}</div>
+                  <div className="text-[11px] text-muted-foreground leading-snug mt-0.5">{t('issuance.btcBody')}</div>
+                </div>
+                <div className="rounded-xl border-2 p-2.5" style={{ borderColor: '#627EEA60', backgroundColor: '#627EEA10' }}>
+                  <div className="text-[10px] font-black uppercase tracking-widest text-[#627EEA]">{t('issuance.ethLabel')}</div>
+                  <div className="text-[11px] text-muted-foreground leading-snug mt-0.5">{t('issuance.ethBody')}</div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Right — issuance vs burn interactive */}
+            <div className="flex flex-col gap-3 min-h-0">
+              <div className="flex-1 min-h-0">
+                <IssuanceBalance />
+              </div>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="shrink-0 rounded-xl border-2 px-3 py-2 text-xs leading-snug"
+                style={{ borderColor: '#10b98160', backgroundColor: '#10b98110', color: 'var(--muted-foreground)' }}
+              >
+                <span className="font-black text-[#10b981]">{t('issuance.soWhatLabel')}</span>{t('issuance.soWhatBody')}
+              </motion.div>
+            </div>
+
+          </div>
+          <HoodHint topic="issuance" className="mt-2" />
         </div>
 
         {/* ═══════ S2-EVMECOSYSTEM ═══════ */}
@@ -1491,8 +1788,8 @@ export function BP_Section2() {
         {/* ═══════ DEFI MECHANICS ═══════ */}
         <div id="s2-defi" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-4">
-            <span className="text-xs font-black uppercase tracking-widest text-[#627EEA]">{t('defi.sectionLabel')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1 mb-1">{t('defi.heading')}</h2>
+            <RecapBadge topic="defi" />
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{t('defi.heading')}</h2>
             <p className="text-sm text-muted-foreground">
               {t('defi.subtitleA')}
               <span className="text-[#627EEA] font-semibold">{t('defi.subtitleHighlight')}</span>
@@ -1633,23 +1930,17 @@ export function BP_Section2() {
           >
             {t('defi.hook')}
           </motion.div>
+          <HoodHint topic="defi" className="mt-2" />
         </div>
 
         {/* ═══════ STABLECOINS ═══════ */}
         <div id="s2-stablecoins" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-3">
+          <div className="shrink-0 mb-4">
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('stablecoins.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1">{t('stablecoins.subtitle')}</p>
           </div>
 
-          <div className="shrink-0 mb-4 rounded-xl border p-3" style={{ borderColor: '#10b98155', backgroundColor: '#10b9810d' }}>
-            <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#10b981' }}>{t('stablecoins.whatLabel')}</p>
-            <p className="text-sm text-foreground mt-0.5 leading-snug">
-              {t('stablecoins.whatBodyA')}<span className="font-semibold">{t('stablecoins.whatBodyStrong')}</span>{t('stablecoins.whatBodyB')}
-            </p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-3">
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
             {stablecoinCards.map((s, ci) => {
               const meta = stablecoinCardMeta[ci];
               return (
@@ -1657,194 +1948,124 @@ export function BP_Section2() {
                 key={ci}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="rounded-xl border-2 p-3 flex flex-col gap-2 min-h-0"
+                transition={{ duration: 0.3, delay: ci * 0.1 }}
+                className="rounded-xl border-2 p-4 flex flex-col gap-3 min-h-0"
                 style={{ borderColor: meta.color + '50', backgroundColor: meta.color + '08' }}
               >
-                <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-xl shrink-0 leading-none">{meta.icon}</span>
+                <div className="flex items-center gap-3 shrink-0">
+                  <span className="text-3xl shrink-0 leading-none">{meta.icon}</span>
                   <div className="min-w-0">
-                    <div className="font-black text-sm leading-tight" style={{ color: meta.color }}>{s.title}</div>
-                    <div className="text-[10px] text-muted-foreground leading-tight">{s.sub}</div>
+                    <div className="font-black text-base leading-tight" style={{ color: meta.color }}>{s.title}</div>
+                    <div className="text-[11px] text-muted-foreground leading-tight">{s.sub}</div>
                   </div>
                 </div>
-                {/* Logo strip — branded badges per token in this category */}
-                <div className="flex flex-wrap gap-1.5 shrink-0">
+                {/* Logo strip — the visual: who's in this category */}
+                <div className="flex flex-wrap gap-2 shrink-0">
                   {s.logos.map((l, li) => {
                     const logoColor = meta.logoColors[li];
                     return (
                     <div
                       key={l.sym}
-                      className="flex items-center gap-1.5 rounded-md border bg-card px-1.5 py-1"
+                      className="flex items-center gap-1.5 rounded-md border bg-card px-2 py-1"
                       style={{ borderColor: logoColor + '55' }}
-                      title={`${l.sym} · ${l.tag}`}
                     >
                       <div
-                        className="size-5 rounded-full flex items-center justify-center text-[7px] font-black text-white shrink-0"
+                        className="size-6 rounded-full flex items-center justify-center text-[8px] font-black text-white shrink-0"
                         style={{ background: logoColor }}
                       >$</div>
                       <div className="flex flex-col leading-none">
-                        <span className="text-[10px] font-black" style={{ color: logoColor }}>{l.sym}</span>
-                        <span className="text-[8px] text-muted-foreground">{l.tag}</span>
+                        <span className="text-[11px] font-black" style={{ color: logoColor }}>{l.sym}</span>
+                        <span className="text-[9px] text-muted-foreground">{l.tag}</span>
                       </div>
                     </div>
                     );
                   })}
                 </div>
-                <div className="rounded-lg border bg-card/60 px-2 py-1.5" style={{ borderColor: meta.color + '30' }}>
+                <div className="rounded-lg border bg-card/60 px-3 py-2.5" style={{ borderColor: meta.color + '30' }}>
                   <div className="text-[9px] font-bold uppercase tracking-wider" style={{ color: meta.color }}>{t('stablecoins.mechanismLabel')}</div>
-                  <div className="text-[10px] text-muted-foreground leading-snug mt-0.5">{s.mechanism}</div>
+                  <div className="text-sm text-foreground leading-snug mt-0.5">{s.mechanism}</div>
                 </div>
-                <div className="rounded-lg border bg-card/60 px-2 py-1.5 flex-1 min-h-0" style={{ borderColor: meta.color + '30' }}>
-                  <div className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground">{t('stablecoins.examplesLabel')}</div>
-                  <div className="text-[10px] text-muted-foreground leading-snug mt-0.5">{s.examples}</div>
-                </div>
-                <div className="rounded-lg p-2 border-l-2" style={{ borderColor: '#ED1C24', backgroundColor: '#ED1C2410' }}>
+                <div className="mt-auto rounded-lg p-3 border-l-2" style={{ borderColor: '#ED1C24', backgroundColor: '#ED1C2410' }}>
                   <div className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#ED1C24' }}>{t('stablecoins.breakLabel')}</div>
-                  <div className="text-[10px] text-muted-foreground leading-snug mt-0.5">{s.risk}</div>
+                  <div className="text-sm text-muted-foreground leading-snug mt-0.5">{s.risk}</div>
                 </div>
               </motion.div>
               );
             })}
           </div>
 
-          {/* Market scale + regulation strip */}
-          <div className="shrink-0 mt-3 grid grid-cols-1 lg:grid-cols-2 gap-2">
-            <div className="rounded-xl border p-2.5" style={{ borderColor: '#10b98155', backgroundColor: '#10b9810d' }}>
-              <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#10b981' }}>{t('stablecoins.scaleLabel')}</p>
-              <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">
-                {t('stablecoins.scaleBodyA')}<span className="font-semibold text-foreground">{t('stablecoins.scaleBodyStrong')}</span>{t('stablecoins.scaleBodyB')}
-              </p>
-            </div>
-            <div className="rounded-xl border p-2.5" style={{ borderColor: '#f59e0b55', backgroundColor: '#f59e0b0d' }}>
-              <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#f59e0b' }}>{t('stablecoins.regLabel')}</p>
-              <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">
-                {t('stablecoins.regBody')}
-              </p>
-            </div>
-          </div>
+          {/* Scale + regulation as three stat tiles */}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="shrink-0 mt-4 grid grid-cols-3 gap-2 rounded-xl border border-border bg-card px-3 py-2.5"
+          >
+            {stablecoinStats.map((stat, i) => (
+              <div key={i} className="flex flex-col items-center gap-0.5 text-center">
+                <div className="text-base lg:text-lg font-black text-foreground leading-none">{stat.value}</div>
+                <div className="text-[10px] text-muted-foreground uppercase tracking-wider leading-snug">{stat.label}</div>
+              </div>
+            ))}
+          </motion.div>
+          <HoodHint topic="stablecoins" className="mt-2" />
         </div>
 
         {/* ═══════ APPS — Beyond DeFi (1/2) ═══════ */}
-        <div id="s2-apps" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-3">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('apps1.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('apps1.subtitle')}</p>
-          </div>
-
-          <div className="shrink-0 mb-4 rounded-xl border p-3" style={{ borderColor: '#627EEA55', backgroundColor: '#627EEA0d' }}>
-            <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#627EEA' }}>{t('apps1.standardsLabel')}</p>
-            <p className="text-sm text-foreground mt-0.5 leading-snug">
-              {t('apps1.standardsA')}<span className="font-semibold">{t('apps1.standardsErc20')}</span>{t('apps1.standardsB')}<span className="font-semibold">{t('apps1.standardsErc721')}</span>{t('apps1.standardsC')}<span className="font-semibold">{t('apps1.standardsErc1155')}</span>{t('apps1.standardsD')}
-            </p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {apps1Cards.map((app, ci) => {
-              const meta = apps1CardMeta[ci];
-              return (
-              <motion.div
-                key={ci}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="rounded-xl border-2 p-4 flex flex-col gap-3 min-h-0"
-                style={{ borderColor: meta.color + '50', backgroundColor: meta.color + '08' }}
-              >
-                <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-2xl shrink-0 leading-none">{meta.icon}</span>
-                  <div className="min-w-0">
-                    <div className="font-black text-base leading-tight" style={{ color: meta.color }}>{app.title}</div>
-                    <div className="text-xs text-muted-foreground leading-tight">{app.sub}</div>
-                  </div>
-                </div>
-                <p className="text-sm text-muted-foreground leading-snug">{app.what}</p>
-                {/* Project badges — replace the empty visual area with real names */}
-                <div className="flex flex-wrap gap-1.5 flex-1 content-start">
-                  {app.projects.map(p => (
-                    <div
-                      key={p.sym}
-                      className="rounded-md border bg-card px-2 py-1 flex flex-col leading-tight"
-                      style={{ borderColor: meta.color + '55' }}
-                    >
-                      <span className="text-[11px] font-bold text-foreground">{p.sym}</span>
-                      <span className="text-[9px] text-muted-foreground">{p.tag}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="rounded-lg border bg-card/60 px-3 py-1.5 text-xs leading-snug" style={{ borderColor: meta.color + '40' }}>
-                  <span className="font-bold" style={{ color: meta.color }}>{t('apps1.moreExamplesLabel')}</span>
-                  <span className="text-muted-foreground">{app.examples}</span>
-                </div>
-                <div className="rounded-lg border bg-card/60 px-3 py-1.5 text-xs leading-snug" style={{ borderColor: '#ED1C2440' }}>
-                  <span className="font-bold" style={{ color: '#ED1C24' }}>{t('apps1.limitLabel')}</span>
-                  <span className="text-muted-foreground">{app.limit}</span>
-                </div>
-              </motion.div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ═══════ APPS — Beyond DeFi (2/2) ═══════ */}
-        <div id="s2-apps-2" className="h-full flex flex-col p-6 lg:p-10">
+        {[
+          { id: 's2-apps', ns: 'apps1', cards: apps1Cards, meta: apps1CardMeta },
+          { id: 's2-apps-2', ns: 'apps2', cards: apps2Cards, meta: apps2CardMeta },
+        ].map(slide => (
+        <div key={slide.id} id={slide.id} className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-4">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('apps2.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('apps2.subtitle')}</p>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t(`${slide.ns}.heading`)}</h2>
+            <p className="text-sm text-muted-foreground mt-1">{t(`${slide.ns}.subtitle`)}</p>
           </div>
 
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {apps2Cards.map((app, ci) => {
-              const meta = apps2CardMeta[ci];
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-5">
+            {slide.cards.map((app, ci) => {
+              const meta = slide.meta[ci];
               return (
               <motion.div
                 key={ci}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="rounded-xl border-2 p-4 flex flex-col gap-3 min-h-0"
+                transition={{ duration: 0.3, delay: ci * 0.1 }}
+                className="rounded-xl border-2 p-5 flex flex-col gap-4 min-h-0"
                 style={{ borderColor: meta.color + '50', backgroundColor: meta.color + '08' }}
               >
-                <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-2xl shrink-0 leading-none">{meta.icon}</span>
+                <div className="flex items-center gap-3 shrink-0">
+                  <span className="text-3xl shrink-0 leading-none">{meta.icon}</span>
                   <div className="min-w-0">
-                    <div className="font-black text-base leading-tight" style={{ color: meta.color }}>{app.title}</div>
+                    <div className="font-black text-lg leading-tight" style={{ color: meta.color }}>{app.title}</div>
                     <div className="text-xs text-muted-foreground leading-tight">{app.sub}</div>
                   </div>
                 </div>
-                <p className="text-sm text-muted-foreground leading-snug">{app.what}</p>
-                <div className="flex flex-wrap gap-1.5 flex-1 content-start">
+                <p className="text-base text-foreground leading-snug">{app.what}</p>
+                {/* Project badges — the visual: who's building here */}
+                <div className="flex flex-wrap gap-2.5 flex-1 content-start">
                   {app.projects.map(p => (
                     <div
                       key={p.sym}
-                      className="rounded-md border bg-card px-2 py-1 flex flex-col leading-tight"
+                      className="rounded-lg border bg-card px-3 py-2 flex flex-col leading-tight"
                       style={{ borderColor: meta.color + '55' }}
                     >
-                      <span className="text-[11px] font-bold text-foreground">{p.sym}</span>
-                      <span className="text-[9px] text-muted-foreground">{p.tag}</span>
+                      <span className="text-sm font-bold text-foreground">{p.sym}</span>
+                      <span className="text-[11px] text-muted-foreground">{p.tag}</span>
                     </div>
                   ))}
                 </div>
-                <div className="rounded-lg border bg-card/60 px-3 py-1.5 text-xs leading-snug" style={{ borderColor: meta.color + '40' }}>
-                  <span className="font-bold" style={{ color: meta.color }}>{t('apps2.moreExamplesLabel')}</span>
-                  <span className="text-muted-foreground">{app.examples}</span>
-                </div>
-                <div className="rounded-lg border bg-card/60 px-3 py-1.5 text-xs leading-snug" style={{ borderColor: '#ED1C2440' }}>
-                  <span className="font-bold" style={{ color: '#ED1C24' }}>{t('apps2.limitLabel')}</span>
+                <div className="rounded-lg border-l-2 px-3 py-2.5 text-sm leading-snug" style={{ borderColor: '#ED1C24', backgroundColor: '#ED1C2410' }}>
+                  <span className="font-bold" style={{ color: '#ED1C24' }}>{t(`${slide.ns}.limitLabel`)}</span>
                   <span className="text-muted-foreground">{app.limit}</span>
                 </div>
               </motion.div>
               );
             })}
           </div>
-
-          <div className="shrink-0 mt-4 rounded-xl border p-3" style={{ borderColor: '#627EEA55', backgroundColor: '#627EEA0d' }}>
-            <p className="text-sm text-muted-foreground leading-snug">
-              <span className="font-bold" style={{ color: '#627EEA' }}>{t('apps2.uriLabel')}</span>
-              {t('apps2.uriBody')}
-            </p>
-          </div>
+          <HoodHint topic="apps" className="mt-3" />
         </div>
+        ))}
 
         {/* ═══════ S2-COMPARISON ═══════ */}
         <div id="s2-comparison" className="h-full">
