@@ -5,7 +5,7 @@ import { TitleSlide } from '../components/templates/TitleSlide';
 import { DiscussionSlide } from '../components/templates/DiscussionSlide';
 import { TakeawaySlide } from '../components/templates/TakeawaySlide';
 import { QuizSlide } from '../components/templates/QuizSlide';
-import { Rocket, ExternalLink, Telescope, Cpu, Landmark, Image as ImageIcon, Vote, Lightbulb, Server, Database, ServerCrash, Ban, Coins, Music } from 'lucide-react';
+import { Rocket, ExternalLink, Telescope, Cpu, Landmark, Image as ImageIcon, Vote, Lightbulb, Server, Database, ServerCrash, Ban, Coins, Music, Users, FileText, Scale, Target } from 'lucide-react';
 import { SectionNav } from '../components/navigation/SectionNav';
 import { SiteFooter } from '../components/shared/SiteFooter';
 import ethereumLogo from '../../ethereum-eth-logo.svg';
@@ -54,7 +54,7 @@ const section3ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
   { id: 's3-quiz' },
   { id: 's3-takeaways' },
   { id: 's3-recap' },
-  { id: 's3-brainstorm' },
+  { id: 's3-assignment' },
 ];
 
 const PEEK = '#22d3ee';
@@ -1006,14 +1006,16 @@ function KnowledgeWall() {
   );
 }
 
-// ─── Brainstorm — closing in-class activity ──────────────────────────────────
+// ─── In-class Assignment #1 — closing group activity ─────────────────────────
 
-function BrainstormSlide() {
+function AssignmentSlide() {
   const { t } = useTranslation(NS);
   const COLOR = '#f59e0b';
-  const seeds = t('brainstorm.seeds', { returnObjects: true }) as Array<{ emoji: string; title: string; desc: string }>;
-  const questions = t('brainstorm.questions', { returnObjects: true }) as string[];
-  const steps = t('brainstorm.steps', { returnObjects: true }) as Array<{ time: string; label: string }>;
+  const seeds = t('assignment.seeds', { returnObjects: true }) as Array<{ emoji: string; title: string }>;
+  const parts = t('assignment.parts', { returnObjects: true }) as Array<{ title: string; desc: string }>;
+  const steps = t('assignment.steps', { returnObjects: true }) as Array<{ time: string; label: string }>;
+  const partIcons = [Target, Lightbulb, Scale];
+  const partColors = ['#ED1C24', '#6366f1', '#39B54A'];
   return (
     <div className="h-full flex flex-col p-6 lg:p-10 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none opacity-60"
@@ -1024,53 +1026,44 @@ function BrainstormSlide() {
         <div className="flex items-start gap-4">
           <div className="px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-widest text-white shadow-md shrink-0"
             style={{ background: `linear-gradient(135deg, ${COLOR}, #ED1C24)` }}>
-            {t('brainstorm.ribbon')}
+            {t('assignment.ribbon')}
           </div>
           <div>
-            <div className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">{t('brainstorm.contextLabel')}</div>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-0.5">{t('brainstorm.title')}</h2>
-            <p className="text-muted-foreground text-sm mt-1 max-w-3xl">{t('brainstorm.subtitle')}</p>
+            <div className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">{t('assignment.contextLabel')}</div>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-0.5">{t('assignment.title')}</h2>
+            <p className="text-muted-foreground text-sm mt-1 max-w-3xl">{t('assignment.subtitle')}</p>
           </div>
         </div>
-        <div className="shrink-0 px-3 py-1.5 rounded-full text-xs font-bold border-2 self-center"
-          style={{ borderColor: COLOR + '50', color: COLOR, backgroundColor: COLOR + '10' }}>
-          ⏱ {t('brainstorm.duration')}
+        <div className="shrink-0 flex items-center gap-2 self-center">
+          <div className="px-3 py-1.5 rounded-full text-xs font-bold border-2 flex items-center gap-1.5"
+            style={{ borderColor: COLOR + '50', color: COLOR, backgroundColor: COLOR + '10' }}>
+            <Users className="size-3.5" /> {t('assignment.groupSize')}
+          </div>
+          <div className="px-3 py-1.5 rounded-full text-xs font-bold border-2"
+            style={{ borderColor: COLOR + '50', color: COLOR, backgroundColor: COLOR + '10' }}>
+            ⏱ {t('assignment.duration')}
+          </div>
         </div>
       </div>
 
       {/* Panes */}
       <div className="flex-1 min-h-0 relative z-10 grid grid-cols-12 gap-4">
-        {/* Seeds */}
-        <div className="col-span-5 p-4 bg-card border-2 rounded-2xl flex flex-col gap-3 min-h-0" style={{ borderColor: COLOR + '50' }}>
-          <div className="text-[10px] font-black uppercase tracking-widest" style={{ color: COLOR }}>{t('brainstorm.seedsLabel')}</div>
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-2.5">
-            {seeds.map((s, i) => (
-              <div key={i} className="p-3 rounded-xl border border-border bg-muted/30 flex flex-col gap-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl leading-none">{s.emoji}</span>
-                  <div className="font-bold text-sm text-foreground leading-tight">{s.title}</div>
+        {/* Left: pick a problem + how it runs */}
+        <div className="col-span-4 flex flex-col gap-4 min-h-0">
+          <div className="flex-1 p-4 bg-card border-2 rounded-2xl flex flex-col gap-3 min-h-0" style={{ borderColor: COLOR + '50' }}>
+            <div className="text-[10px] font-black uppercase tracking-widest" style={{ color: COLOR }}>{t('assignment.seedsLabel')}</div>
+            <p className="text-xs text-muted-foreground leading-snug">{t('assignment.seedsIntro')}</p>
+            <div className="flex-1 min-h-0 grid grid-cols-2 gap-2">
+              {seeds.map((s, i) => (
+                <div key={i} className="px-2.5 py-2 rounded-xl border border-border bg-muted/30 flex items-center gap-2">
+                  <span className="text-xl leading-none">{s.emoji}</span>
+                  <div className="font-semibold text-xs text-foreground leading-tight">{s.title}</div>
                 </div>
-                <p className="text-xs text-muted-foreground leading-snug">{s.desc}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-        {/* Questions */}
-        <div className="col-span-4 p-4 bg-card border-2 rounded-2xl flex flex-col gap-3 min-h-0 border-[#6366f1]/50">
-          <div className="text-[10px] font-black uppercase tracking-widest text-[#6366f1]">{t('brainstorm.questionsLabel')}</div>
-          <div className="flex-1 flex flex-col justify-center gap-2.5">
-            {questions.map((q, i) => (
-              <div key={i} className="flex items-start gap-3 p-2.5 rounded-lg bg-muted/30">
-                <div className="size-6 rounded-full bg-[#6366f1]/20 flex items-center justify-center shrink-0 text-xs font-bold text-[#6366f1]">{i + 1}</div>
-                <p className="text-sm text-foreground leading-snug">{q}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* Steps */}
-        <div className="col-span-3 p-4 bg-card border-2 rounded-2xl flex flex-col gap-3 min-h-0 border-[#39B54A]/50">
-          <div className="text-[10px] font-black uppercase tracking-widest text-[#39B54A]">{t('brainstorm.stepsLabel')}</div>
-          <div className="flex-1 flex flex-col justify-center gap-3">
+          <div className="shrink-0 p-4 bg-card border-2 rounded-2xl flex flex-col gap-2.5 border-[#39B54A]/50">
+            <div className="text-[10px] font-black uppercase tracking-widest text-[#39B54A]">{t('assignment.stepsLabel')}</div>
             {steps.map((s, i) => (
               <div key={i} className="flex items-center gap-3">
                 <div className="shrink-0 px-2 py-1 rounded-md bg-[#39B54A]/15 text-[#39B54A] text-[10px] font-black font-mono">{s.time}</div>
@@ -1078,12 +1071,42 @@ function BrainstormSlide() {
               </div>
             ))}
           </div>
-          <Lightbulb className="size-10 text-[#39B54A]/40 self-center shrink-0" />
+        </div>
+
+        {/* Right: the deliverable — three-part one-pager */}
+        <div className="col-span-8 p-5 bg-card border-2 rounded-2xl flex flex-col gap-3 min-h-0 border-[#6366f1]/50">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div className="flex items-center gap-2">
+              <FileText className="size-4 text-[#6366f1]" />
+              <div className="text-[10px] font-black uppercase tracking-widest text-[#6366f1]">{t('assignment.deliverableLabel')}</div>
+            </div>
+            <div className="px-2.5 py-1 rounded-full text-[11px] font-black border-2 border-[#6366f1]/50 text-[#6366f1] bg-[#6366f1]/10">
+              {t('assignment.deliverableLimit')}
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground leading-snug">{t('assignment.deliverableIntro')}</p>
+          <div className="flex-1 min-h-0 grid grid-cols-3 gap-3">
+            {parts.map((p, i) => {
+              const Icon = partIcons[i];
+              const c = partColors[i];
+              return (
+                <div key={i} className="p-4 rounded-xl border-2 bg-muted/20 flex flex-col gap-2 min-h-0" style={{ borderColor: c + '50' }}>
+                  <div className="flex items-center gap-2">
+                    <div className="size-7 rounded-full flex items-center justify-center text-xs font-black text-white shrink-0" style={{ backgroundColor: c }}>{i + 1}</div>
+                    <Icon className="size-4 shrink-0" style={{ color: c }} />
+                  </div>
+                  <div className="font-bold text-base lg:text-lg text-foreground leading-tight">{p.title}</div>
+                  <p className="text-sm text-muted-foreground leading-snug">{p.desc}</p>
+                  <div className="mt-auto pt-2 text-[10px] font-semibold uppercase tracking-widest" style={{ color: c + 'aa' }}>{t('assignment.partHint')}</div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       <div className="shrink-0 relative z-10 mt-4 p-3 rounded-xl border-2 text-sm" style={{ borderColor: COLOR + '40', backgroundColor: COLOR + '10' }}>
-        <strong className="text-foreground">{t('brainstorm.footerStrong')}</strong> <span className="text-muted-foreground">{t('brainstorm.footerBody')}</span>
+        <strong className="text-foreground">{t('assignment.footerStrong')}</strong> <span className="text-muted-foreground">{t('assignment.footerBody')}</span>
       </div>
     </div>
   );
@@ -1601,9 +1624,9 @@ export function Section3() {
           <KnowledgeWall />
         </div>
 
-        {/* ═══════ BRAINSTORM — CLOSING ACTIVITY ═══════ */}
-        <div id="s3-brainstorm" className="h-full">
-          <BrainstormSlide />
+        {/* ═══════ IN-CLASS ASSIGNMENT #1 — CLOSING ACTIVITY ═══════ */}
+        <div id="s3-assignment" className="h-full">
+          <AssignmentSlide />
         </div>
 
       </div>

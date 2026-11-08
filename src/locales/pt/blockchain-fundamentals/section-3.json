@@ -28,7 +28,7 @@
     "s3-quiz": "Quizzes",
     "s3-takeaways": "Conclusões",
     "s3-recap": "🧱 Muro de Conhecimento",
-    "s3-brainstorm": "💡 Brainstorm"
+    "s3-assignment": "📝 Assignment"
   },
   "peek": {
     "label": "Later session →"
@@ -843,33 +843,39 @@
       }
     }
   },
-  "brainstorm": {
-    "ribbon":       "💡 Brainstorm",
-    "contextLabel": "Closing activity · small groups",
-    "title":        "Brainstorm: the next crazy thing",
-    "subtitle":     "Bitcoin is one of the simplest blockchains — and people already run it on volcanoes. In groups of 3–4, dream up what we could do with Bitcoin or blockchain decades from now. The wilder, the better.",
-    "duration":     "15 min",
-    "seedsLabel":   "Seeds to get you going",
+  "assignment": {
+    "ribbon":       "📝 In-class Assignment #1",
+    "contextLabel": "Closing activity · small groups · submitted",
+    "title":        "Could a blockchain fix this?",
+    "subtitle":     "You've seen what blockchains do well — and the course's recurring question: does this problem actually earn a blockchain? Now apply that lens to a real-world problem of your own choosing.",
+    "groupSize":    "Groups of 3–4",
+    "duration":     "20 min",
+    "seedsLabel":   "Pick a real-world problem",
+    "seedsIntro":   "Any industry, any scale. Starting points if you're stuck:",
     "seeds": [
-      { "emoji": "🌋", "title": "Volcano-powered mining",      "desc": "El Salvador mines bitcoin with geothermal energy from a volcano. What else could soak up stranded energy?" },
-      { "emoji": "♨️", "title": "Mining heat reuse",            "desc": "Miners already heat greenhouses and swimming pools with their exhaust. A whole town heated by hashes?" },
-      { "emoji": "🛰️", "title": "Bitcoin for ___",             "desc": "A satellite paying for bandwidth, a robot buying its own electricity — machine-to-machine money?" },
-      { "emoji": "🧬", "title": "Programmable money for ___",  "desc": "Aid that unlocks when the rain fails. Wages streamed by the second. Fill in the blank." }
-    ],
-    "questionsLabel": "Stress-test every idea",
-    "questions": [
-      "Is it actually possible — today, or in 2050?",
-      "What would have to be true for it to work?",
-      "Who controls it? Who could switch it off?",
-      "Would it even need a blockchain — or would a spreadsheet do?"
+      { "emoji": "🚚", "title": "Supply-chain fraud" },
+      { "emoji": "🎓", "title": "Fake diplomas" },
+      { "emoji": "💸", "title": "Slow cross-border pay" },
+      { "emoji": "🗳️", "title": "Contested votes" },
+      { "emoji": "🎟️", "title": "Ticket scalping" },
+      { "emoji": "🏠", "title": "Land registries" }
     ],
     "stepsLabel": "How it runs",
     "steps": [
-      { "time": "5 min", "label": "Form a group and pick your wildest idea" },
-      { "time": "5 min", "label": "Run it through the four questions" },
-      { "time": "5 min", "label": "Pitch it to the room in 60 seconds" }
+      { "time": "5 min",  "label": "Form a group, pick one problem" },
+      { "time": "10 min", "label": "Discuss: solution, pros, cons" },
+      { "time": "5 min",  "label": "Write it up and submit" }
     ],
-    "footerStrong": "No wrong answers.",
-    "footerBody":   "The point is to notice where a blockchain genuinely helps — and where it's just a buzzword. Both are worth spotting."
+    "deliverableLabel": "Deliverable · one report per group",
+    "deliverableLimit": "MAX 1 PAGE",
+    "partHint":         "≈ ⅓ page · one tight paragraph",
+    "deliverableIntro": "Three parts, in this order. Be concrete and honest — a well-argued \"no, a database is enough\" scores as well as a yes.",
+    "parts": [
+      { "title": "Problem statement",   "desc": "Who is affected, what goes wrong today, and why trust or coordination is at the heart of it." },
+      { "title": "Proposed solution",   "desc": "How a blockchain-based approach would work, in plain language. Who runs the network and who uses it?" },
+      { "title": "Pros & cons",         "desc": "What a blockchain genuinely adds here — and what it costs. Would a spreadsheet or a trusted middleman do the job?" }
+    ],
+    "footerStrong": "Wild ideas welcome.",
+    "footerBody":   "Creativity gets you a strong problem; critical thinking gets you a strong report. Both are graded."
   }
 }
