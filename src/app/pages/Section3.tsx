@@ -60,13 +60,39 @@ const section3ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
 const PEEK = '#22d3ee';
 
 /** Forward-pointing footer used on every "sneak peek" slide. */
-function PeekFooter({ body }: { body: string }) {
+function PeekFooter({ body, className = 'mt-3' }: { body: string; className?: string }) {
   const { t } = useTranslation(NS);
   return (
-    <div className="shrink-0 mt-3 px-3 py-2 rounded-lg border border-dashed flex items-center gap-2 text-[11px] text-muted-foreground"
+    <div className={`shrink-0 min-w-0 px-3 py-2 rounded-lg border border-dashed flex items-center gap-2 text-[11px] text-muted-foreground ${className}`}
       style={{ borderColor: PEEK + '80', backgroundColor: PEEK + '10' }}>
       <Telescope className="size-3.5 shrink-0" style={{ color: PEEK }} />
-      <strong style={{ color: PEEK }}>{t('peek.label')}</strong> {body}
+      <span><strong style={{ color: PEEK }}>{t('peek.label')}</strong> {body}</span>
+    </div>
+  );
+}
+
+const KEY = '#f59e0b';
+
+/** The one sentence to remember from a slide — rendered as a consistent bar at the bottom. */
+function KeyPoint({ body, className = 'mt-3' }: { body: string; className?: string }) {
+  const { t } = useTranslation(NS);
+  return (
+    <div className={`shrink-0 min-w-0 px-3 py-2 rounded-lg border-2 flex items-center gap-2.5 ${className}`}
+      style={{ borderColor: KEY + '80', backgroundColor: KEY + '14' }}>
+      <span className="text-base leading-none shrink-0">🔑</span>
+      <span className="text-[10px] font-black uppercase tracking-widest shrink-0" style={{ color: KEY }}>{t('keyPoint.label')}</span>
+      <span className="text-xs lg:text-sm font-semibold text-foreground leading-snug">{body}</span>
+    </div>
+  );
+}
+
+/** Bottom row shared by the Ethereum cluster: key point (wide) + "later session" peek (narrow). */
+function SlideFooter({ keyPoint, peek }: { keyPoint: string; peek?: string }) {
+  if (!peek) return <KeyPoint body={keyPoint} />;
+  return (
+    <div className="shrink-0 mt-3 grid grid-cols-[3fr_2fr] gap-3">
+      <KeyPoint body={keyPoint} className="" />
+      <PeekFooter body={peek} className="" />
     </div>
   );
 }
@@ -135,6 +161,37 @@ function AccountCard({ color, emoji, copy }: { color: string; emoji: string; cop
   );
 }
 
+/** Three "who can start this?" scenarios; tap one to reveal ✓/✗ and the one-line why. */
+function WhoStartsQuiz() {
+  const { t } = useTranslation(NS);
+  const q = t('ethAccounts.quiz', { returnObjects: true }) as { title: string; hint: string; items: Array<{ emoji: string; text: string; ok: boolean; why: string }> };
+  const [open, setOpen] = useState<Record<number, boolean>>({});
+  const OK = '#39B54A', RED = '#ef4444';
+  return (
+    <div className="shrink-0 mt-3 grid grid-cols-[auto_1fr_1fr_1fr] gap-2 items-stretch">
+      <div className="px-3 py-2 rounded-xl border flex flex-col justify-center max-w-[11rem]" style={{ borderColor: KEY + '66', backgroundColor: KEY + '12' }}>
+        <div className="text-xs font-black text-foreground leading-tight">{q.title}</div>
+        <div className="text-[10px] text-muted-foreground leading-snug mt-0.5">{q.hint}</div>
+      </div>
+      {q.items.map((it, i) => {
+        const shown = open[i];
+        const tone = it.ok ? OK : RED;
+        return (
+          <button key={i} type="button" onClick={() => setOpen(o => ({ ...o, [i]: true }))} aria-expanded={!!shown}
+            className="text-left px-3 py-2 rounded-xl border-2 bg-card flex items-center gap-2.5 transition-all hover:-translate-y-0.5 min-w-0"
+            style={{ borderColor: shown ? tone : 'var(--border)', backgroundColor: shown ? tone + '10' : undefined }}>
+            <span className="text-xl shrink-0">{it.emoji}</span>
+            <div className="min-w-0">
+              <div className="text-xs font-bold text-foreground leading-tight">{it.text}</div>
+              {shown && <div className="text-[10px] leading-snug mt-0.5 font-semibold" style={{ color: tone }}>{it.ok ? '✓' : '✗'} {it.why}</div>}
+            </div>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 /** The one arrow that matters on the accounts slide: EOA ──tx──▶ Contract. */
 function AccountsArrow() {
   const { t } = useTranslation(NS);
@@ -159,12 +216,14 @@ const VEND_PRICE = 2;
 interface VendCopy {
   badge: string; hint: string; machineTitle: string; priceLabel: string; balanceLabel: string;
   insert: string; undo: string; reset: string; dispensed: string;
-  display: Record<VendStep, string>;
+  display: Record<VendStep, string>; displayExploit: string;
   trace: {
     inputLabel: string; inputIdle: string; inputCoin: string; ruleLabel: string; rule: string; rulePass: string; ruleFail: string;
-    outcomeLabel: string; outcomeIdle: string; outcomeShort: string; outcomeDone: string;
+    ruleTypo: string; ruleTypoPass: string;
+    outcomeLabel: string; outcomeIdle: string; outcomeShort: string; outcomeDone: string; outcomeExploit: string;
   };
   undoMsg: string; escrowNote: string;
+  typo: { toggle: string; hint: string; undoMsg: string; pillsLabel: string; pills: string[] };
 }
 
 function TraceRow({ n, label, body, detail, color }: { n: number; label: string; body: string; detail?: string; color: string }) {
@@ -180,32 +239,47 @@ function TraceRow({ n, label, body, detail, color }: { n: number; label: string;
   );
 }
 
-/** Insert a coin → the rule checks itself → dispense or refund. The "undo" button exists only to prove it does nothing. */
+/** Insert a coin → the rule checks itself → dispense or refund. The "undo" button exists only to prove it does nothing.
+ *  "Rule has a typo" flips ≥ into ≤: a €1 coin now buys a €2 can — and that runs exactly as written too (The DAO, 2016). */
 function VendingMachineDemo() {
   const { t } = useTranslation(NS);
   const d = t('smartContract.demo', { returnObjects: true }) as VendCopy;
   const [step, setStep] = useState<VendStep>('idle');
   const [coin, setCoin] = useState(0);
   const [undoTried, setUndoTried] = useState(false);
+  const [typo, setTypo] = useState(false);
   useEffect(() => {
     if (step !== 'checking') return;
     const id = setTimeout(() => setStep('done'), 900);
     return () => clearTimeout(id);
   }, [step]);
-  const insert = (amount: number) => { setCoin(amount); setUndoTried(false); setStep(amount >= VEND_PRICE ? 'checking' : 'short'); };
+  const passes = (amount: number) => (typo ? amount <= VEND_PRICE : amount >= VEND_PRICE);
+  const insert = (amount: number) => { setCoin(amount); setUndoTried(false); setStep(passes(amount) ? 'checking' : 'short'); };
   const reset = () => { setStep('idle'); setCoin(0); setUndoTried(false); };
+  const toggleTypo = () => { setTypo(v => !v); reset(); };
 
-  const OK = '#39B54A', AMBER = '#f59e0b', RED = '#ef4444', GRAY = '#9ca3af';
+  const OK = '#39B54A', AMBER = '#f59e0b', RED = '#ef4444', GRAY = '#9ca3af', BUG = '#a855f7';
   const fmt = (n: number) => `€${n}`;
   const held = step === 'checking' || step === 'done' ? coin : 0;
-  const ruleColor = step === 'idle' ? GRAY : step === 'short' ? RED : OK;
-  const outcome = step === 'done' ? d.trace.outcomeDone : step === 'short' ? d.trace.outcomeShort : d.trace.outcomeIdle;
+  const exploit = typo && coin < VEND_PRICE && step !== 'idle' && step !== 'short';
+  const ruleColor = step === 'idle' ? GRAY : step === 'short' ? RED : exploit ? BUG : OK;
+  const outcome = step === 'done'
+    ? (exploit ? t('smartContract.demo.trace.outcomeExploit', { amount: fmt(coin) }) : d.trace.outcomeDone)
+    : step === 'short' ? d.trace.outcomeShort : d.trace.outcomeIdle;
+  const ruleDetail = step === 'idle' ? undefined : step === 'short' ? d.trace.ruleFail : exploit ? d.trace.ruleTypoPass : d.trace.rulePass;
+  const display = step === 'done' && exploit ? d.displayExploit : d.display[step];
 
   return (
     <div className="h-full min-h-0 flex flex-col gap-3">
-      <div className="flex items-center justify-between gap-3 shrink-0">
-        <span className="px-2 py-0.5 rounded-full bg-[#f59e0b]/15 border border-[#f59e0b]/40 text-[#f59e0b] text-[10px] font-bold">{d.badge}</span>
-        <span className="text-[11px] text-muted-foreground">{d.hint}</span>
+      <div className="flex items-center gap-3 shrink-0">
+        <span className="px-2 py-0.5 rounded-full bg-[#f59e0b]/15 border border-[#f59e0b]/40 text-[#f59e0b] text-[10px] font-bold shrink-0">{d.badge}</span>
+        <span className="text-[11px] text-muted-foreground truncate">{typo ? d.typo.hint : d.hint}</span>
+        <button type="button" onClick={toggleTypo} aria-pressed={typo}
+          className="ml-auto shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] font-bold transition-colors"
+          style={{ borderColor: BUG + (typo ? 'ff' : '66'), backgroundColor: BUG + (typo ? '26' : '0f'), color: typo ? BUG : 'var(--muted-foreground)' }}>
+          <span className={`size-3 rounded-full border transition-colors ${typo ? '' : 'bg-transparent'}`} style={{ borderColor: BUG, backgroundColor: typo ? BUG : 'transparent' }} />
+          🐛 {d.typo.toggle}
+        </button>
       </div>
 
       <div className="flex-1 min-h-0 grid grid-cols-[auto_1fr] gap-4">
@@ -216,7 +290,7 @@ function VendingMachineDemo() {
             <span className={`transition-opacity duration-500 ${step === 'done' ? 'opacity-20' : ''}`}>🥤</span>
             {step === 'done' && <span className="absolute inset-x-0 bottom-2 text-center text-[10px] font-bold" style={{ color: OK }}>↓ {d.dispensed}</span>}
           </div>
-          <div className="rounded-md px-2 py-1.5 font-mono text-[11px] font-bold text-center bg-[#0f172a]" style={{ color: step === 'short' ? RED : OK }}>{d.display[step]}</div>
+          <div className="rounded-md px-2 py-1.5 font-mono text-[11px] font-bold text-center bg-[#0f172a]" style={{ color: step === 'short' ? RED : exploit ? BUG : OK }}>{display}</div>
           <div className="grid grid-cols-2 gap-1.5 text-[10px]">
             <div className="rounded-md border border-border bg-card px-2 py-1 text-center">
               <div className="text-muted-foreground">{d.priceLabel}</div><div className="font-mono font-black text-foreground">{fmt(VEND_PRICE)}</div>
@@ -235,9 +309,9 @@ function VendingMachineDemo() {
           <TraceRow n={1} color={step === 'idle' ? GRAY : AMBER} label={d.trace.inputLabel}
             body={step === 'idle' ? d.trace.inputIdle : t('smartContract.demo.trace.inputCoin', { amount: fmt(coin) })} />
           <TraceRow n={2} color={ruleColor} label={d.trace.ruleLabel}
-            body={t('smartContract.demo.trace.rule', { price: fmt(VEND_PRICE) })}
-            detail={step === 'idle' ? undefined : step === 'short' ? d.trace.ruleFail : d.trace.rulePass} />
-          <TraceRow n={3} color={step === 'done' ? OK : step === 'short' ? RED : GRAY} label={d.trace.outcomeLabel} body={outcome} />
+            body={t(typo ? 'smartContract.demo.trace.ruleTypo' : 'smartContract.demo.trace.rule', { price: fmt(VEND_PRICE) })}
+            detail={ruleDetail} />
+          <TraceRow n={3} color={step === 'done' ? (exploit ? BUG : OK) : step === 'short' ? RED : GRAY} label={d.trace.outcomeLabel} body={outcome} />
 
           <div className="shrink-0 flex flex-wrap items-center gap-2 pt-1">
             {step !== 'done' && [1, 2].map(a => (
@@ -257,9 +331,20 @@ function VendingMachineDemo() {
             )}
           </div>
           {undoTried && (
-            <div className="shrink-0 px-3 py-2 rounded-lg border text-xs font-semibold leading-snug" style={{ borderColor: RED + '66', backgroundColor: RED + '12', color: RED }}>🔒 {d.undoMsg}</div>
+            <div className="shrink-0 px-3 py-2 rounded-lg border text-xs font-semibold leading-snug" style={{ borderColor: RED + '66', backgroundColor: RED + '12', color: RED }}>
+              🔒 {exploit ? d.typo.undoMsg : d.undoMsg}
+            </div>
           )}
-          <p className="shrink-0 text-[11px] text-muted-foreground italic">{d.escrowNote}</p>
+          {typo ? (
+            <div className="shrink-0 flex flex-wrap items-center gap-1.5 text-[10px] text-muted-foreground">
+              <span className="font-bold" style={{ color: BUG }}>{d.typo.pillsLabel}</span>
+              {d.typo.pills.map((p, i) => (
+                <span key={i} className="px-2 py-0.5 rounded-full border font-semibold text-foreground" style={{ borderColor: BUG + '66', backgroundColor: BUG + '12' }}>{p}</span>
+              ))}
+            </div>
+          ) : (
+            <p className="shrink-0 text-[11px] text-muted-foreground italic">{d.escrowNote}</p>
+          )}
         </div>
       </div>
     </div>
@@ -271,7 +356,7 @@ function VendingMachineDemo() {
 function SmartContractSlide() {
   const { t } = useTranslation(NS);
   const principles = t('smartContract.principles', { returnObjects: true }) as Array<{ emoji: string; title: string; body: string }>;
-  const COLORS = ['#f59e0b', '#627EEA', '#ef4444'];
+  const COLORS = ['#f59e0b', '#627EEA', '#8b5cf6', '#ef4444'];
   return (
     <div id="s3-smartcontract" className="h-full flex flex-col p-5 lg:p-8">
       <div className="shrink-0 mb-3">
@@ -290,21 +375,25 @@ function SmartContractSlide() {
       <div className="flex-1 min-h-0 grid grid-cols-5 gap-4">
         <div className="col-span-3 min-h-0"><VendingMachineDemo /></div>
         <div className="col-span-2 min-h-0 flex flex-col gap-3">
-          {principles.map((p, i) => (
-            <div key={i} className="flex-1 min-h-0 rounded-2xl border-2 bg-card p-4 flex items-center gap-4" style={{ borderColor: COLORS[i] + '40' }}>
-              <div className="size-14 rounded-2xl text-3xl flex items-center justify-center shrink-0" style={{ backgroundColor: COLORS[i] + '1a' }}>{p.emoji}</div>
-              <div className="min-w-0">
-                <div className="font-black text-lg text-foreground leading-tight">{p.title}</div>
-                <p className="text-sm text-muted-foreground mt-1 leading-snug">{p.body}</p>
+          {principles.map((p, i) => {
+            const last = i === principles.length - 1;
+            return (
+              <div key={i} className="flex-1 min-h-0 rounded-2xl border-2 bg-card px-4 py-3 flex items-center gap-3"
+                style={{ borderColor: COLORS[i] + (last ? '80' : '40'), backgroundColor: last ? COLORS[i] + '0d' : undefined }}>
+                <div className="size-12 rounded-2xl text-2xl flex items-center justify-center shrink-0" style={{ backgroundColor: COLORS[i] + '1a' }}>{p.emoji}</div>
+                <div className="min-w-0">
+                  <div className="font-black text-base text-foreground leading-tight" style={last ? { color: COLORS[i] } : undefined}>{p.title}</div>
+                  <p className="text-xs lg:text-sm text-muted-foreground mt-0.5 leading-snug">{p.body}</p>
+                </div>
               </div>
-            </div>
-          ))}
-          <div className="shrink-0 p-3 rounded-xl bg-[#39B54A]/10 border border-[#39B54A]/30 text-xs text-muted-foreground">
+            );
+          })}
+          <div className="shrink-0 px-3 py-2 rounded-xl bg-[#39B54A]/10 border border-[#39B54A]/30 text-[11px] text-muted-foreground">
             <span className="font-bold text-[#39B54A]">{t('smartContract.business.strong')}</span> {t('smartContract.business.body')}
           </div>
         </div>
       </div>
-      <PeekFooter body={t('smartContract.peek')} />
+      <SlideFooter keyPoint={t('smartContract.keyPoint')} peek={t('smartContract.peek')} />
     </div>
   );
 }
@@ -312,6 +401,60 @@ function SmartContractSlide() {
 // ─── Tokens: the business primitive ─────────────────────────────────────────
 
 interface TokenKindCopy { standard: string; title: string; sub: string; examples: string[]; verb: string }
+
+type TokenShape = 'fungible' | 'unique';
+interface SorterCard { emoji: string; label: string; answer: TokenShape; why: string }
+interface SorterCopy { title: string; hint: string; countBtn: string; nameBtn: string; right: string; wrong: string; score: string; cards: SorterCard[] }
+
+/** Six everyday things, two buckets. Tap "Count" (ERC-20) or "Name" (ERC-721); the card turns green or red with a one-line why. */
+function TokenSorter() {
+  const { t } = useTranslation(NS);
+  const s = t('tokens.sorter', { returnObjects: true }) as SorterCopy;
+  const [picks, setPicks] = useState<Record<number, TokenShape>>({});
+  const F = '#627EEA', U = '#f97316', OK = '#39B54A', RED = '#ef4444';
+  const done = Object.keys(picks).length;
+  const correct = s.cards.filter((c, i) => picks[i] === c.answer).length;
+  return (
+    <div className="shrink-0 rounded-xl border border-border bg-card p-3 flex flex-col gap-2">
+      <div className="flex items-center gap-3">
+        <span className="px-2 py-0.5 rounded-full bg-[#f59e0b]/15 border border-[#f59e0b]/40 text-[#f59e0b] text-[10px] font-bold shrink-0">{s.title}</span>
+        <span className="text-[11px] text-muted-foreground truncate">{s.hint}</span>
+        {done > 0 && (
+          <span className="ml-auto text-[11px] font-bold shrink-0" style={{ color: correct === done ? OK : 'var(--muted-foreground)' }}>
+            {t('tokens.sorter.score', { correct, total: done })}
+          </span>
+        )}
+      </div>
+      <div className="grid grid-cols-6 gap-2">
+        {s.cards.map((c, i) => {
+          const pick = picks[i];
+          const right = pick === c.answer;
+          const tone = pick ? (right ? OK : RED) : 'var(--border)';
+          return (
+            <div key={i} className="rounded-xl border-2 px-2 py-2 flex flex-col items-center text-center gap-1.5 transition-colors"
+              style={{ borderColor: tone, backgroundColor: pick ? tone + '12' : undefined }}>
+              <span className="text-2xl leading-none">{c.emoji}</span>
+              <span className="text-[11px] font-bold text-foreground leading-tight">{c.label}</span>
+              {pick ? (
+                <p className="text-[10px] leading-snug" style={{ color: tone }}>
+                  <strong>{right ? s.right : s.wrong}</strong> {c.why}
+                </p>
+              ) : (
+                <div className="grid grid-cols-2 gap-1 w-full mt-auto">
+                  {([['fungible', F, s.countBtn], ['unique', U, s.nameBtn]] as const).map(([shape, color, label]) => (
+                    <button key={shape} type="button" onClick={() => setPicks(p => ({ ...p, [i]: shape }))}
+                      className="px-1 py-1 rounded-md border text-[10px] font-bold transition-all hover:-translate-y-0.5"
+                      style={{ borderColor: color + '80', backgroundColor: color + '14', color }}>{label}</button>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 function TokensSlide() {
   const { t } = useTranslation(NS);
@@ -349,15 +492,15 @@ function TokensSlide() {
                 </div>
               </div>
               {/* Visual: three identical coins vs three distinct tickets */}
-              <div className="flex-1 min-h-0 flex items-center justify-center gap-3 px-4">
+              <div className="flex-1 min-h-0 flex items-center justify-center gap-3 px-4 py-2">
                 {[0, 1, 2].map(i => (
                   <div key={i} className="flex items-center gap-3">
-                    <div className="size-24 lg:size-32 rounded-2xl border-2 flex flex-col items-center justify-center text-5xl lg:text-6xl gap-1"
+                    <div className="size-20 lg:size-24 rounded-2xl border-2 flex flex-col items-center justify-center text-4xl lg:text-5xl gap-0.5"
                       style={{ borderColor: unique ? TINTS[i] : k.color, backgroundColor: (unique ? TINTS[i] : k.color) + '1a' }}>
                       {unique ? '🎟️' : '🪙'}
-                      {unique && <span className="font-mono text-xs font-bold" style={{ color: TINTS[i] }}>#00{i + 1}</span>}
+                      {unique && <span className="font-mono text-[11px] font-bold" style={{ color: TINTS[i] }}>#00{i + 1}</span>}
                     </div>
-                    {i < 2 && <span className="text-4xl font-black" style={{ color: k.color }}>{k.glyph}</span>}
+                    {i < 2 && <span className="text-3xl font-black" style={{ color: k.color }}>{k.glyph}</span>}
                   </div>
                 ))}
               </div>
@@ -372,10 +515,11 @@ function TokensSlide() {
         })}
       </div>
 
-      <div className="shrink-0 mt-3 p-3 bg-[#f59e0b]/10 border border-[#f59e0b]/30 rounded-lg text-xs text-muted-foreground">
+      <div className="shrink-0 mt-3"><TokenSorter /></div>
+      <div className="shrink-0 mt-2 px-3 py-1.5 bg-[#f59e0b]/10 border border-[#f59e0b]/30 rounded-lg text-[11px] text-muted-foreground">
         <span className="font-bold text-[#f59e0b]">{t('tokens.business.strong')}</span> {t('tokens.business.body')}
       </div>
-      <PeekFooter body={t('tokens.peek')} />
+      <SlideFooter keyPoint={t('tokens.keyPoint')} peek={t('tokens.peek')} />
     </div>
   );
 }
@@ -707,7 +851,7 @@ function DaoIllustration({ v }: { v: Record<string, string> }) {
 
 interface AppPeek {
   title: string; subtitle: string; replaces: string; tease: string; description: string;
-  examples?: Array<{ name: string; desc: string }>; risk: string; hype: string; stat: string; later: string; hood: string;
+  examples?: Array<{ name: string; desc: string }>; risk: string; hype: string; stat: string; later: string; hood: string; keyPoint: string;
   visual: Record<string, string>;
 }
 
@@ -762,7 +906,7 @@ function SneakPeekSlide({ id, index, color, icon, illustration }: {
         </div>
       </div>
 
-      <PeekFooter body={app.later} />
+      <SlideFooter keyPoint={app.keyPoint} peek={app.later} />
     </div>
   );
 }
@@ -1145,7 +1289,7 @@ export function Section3() {
         {/* ═══════ 1. ETHEREUM — THE WORLD COMPUTER ═══════ */}
         <div id="s3-ethereum" className="h-full flex flex-col p-5 lg:p-8">
 
-          <div className="shrink-0 mb-4">
+          <div className="shrink-0 mb-3">
             <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
               <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] font-bold shrink-0 whitespace-nowrap">{t('ethereum.recapBadge')}</span>
               <span className="truncate">{t('ethereum.recapA')} <strong className="text-foreground">{t('ethereum.recapStrong')}</strong>{t('ethereum.recapTail')}</span>
@@ -1211,6 +1355,7 @@ export function Section3() {
             </div>
 
           </div>
+          <KeyPoint body={t('ethereum.keyPoint')} />
         </div>
 
         {/* ═══════ KEYSTONE: WHAT IS A SMART CONTRACT? ═══════ */}
@@ -1218,7 +1363,7 @@ export function Section3() {
 
         {/* ═══════ ETH ACCOUNTS — EOA vs CONTRACT ═══════ */}
         <div id="s3-accounts" className="h-full flex flex-col p-5 lg:p-8">
-          <div className="shrink-0 mb-4">
+          <div className="shrink-0 mb-3">
             <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
               <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] font-bold shrink-0 whitespace-nowrap">{t('ethAccounts.recapBadge')}</span>
               <span className="truncate">{t('ethAccounts.recapA')} <strong className="text-foreground">{t('ethAccounts.recapStrong')}</strong> {t('ethAccounts.recapTail')}</span>
@@ -1235,10 +1380,8 @@ export function Section3() {
             <AccountsArrow />
             <AccountCard color="#39B54A" emoji="⚙️" copy={t('ethAccounts.contract', { returnObjects: true }) as AccountCopy} />
           </div>
-          <div className="shrink-0 mt-3 p-3 bg-[#f59e0b]/10 border border-[#f59e0b]/30 rounded-lg text-xs text-muted-foreground">
-            <span className="font-bold text-[#f59e0b]">{t('ethAccounts.keyRuleStrong')}</span> {t('ethAccounts.keyRuleBody')}
-          </div>
-          <PeekFooter body={t('ethAccounts.peek')} />
+          <WhoStartsQuiz />
+          <SlideFooter keyPoint={t('ethAccounts.keyPoint')} peek={t('ethAccounts.peek')} />
         </div>
 
         {/* ═══════ GAS — INTERACTIVE FEE CALCULATOR ═══════ */}
@@ -1260,16 +1403,24 @@ export function Section3() {
             <div className="col-span-2 min-h-0 flex flex-col gap-3">
               <FuelAnalogy />
               {/* Surge-pricing analogy for the gas-price slider */}
-              <div className="shrink-0 p-3 rounded-xl border flex items-center gap-3" style={{ borderColor: '#f59e0b55', backgroundColor: '#f59e0b10' }}>
+              <div className="shrink-0 px-3 py-2 rounded-xl border flex items-center gap-3" style={{ borderColor: '#f59e0b55', backgroundColor: '#f59e0b10' }}>
                 <span className="text-2xl shrink-0">🚕</span>
                 <div className="min-w-0">
                   <div className="text-xs font-bold text-foreground">{t('ethGas.surge.title')}</div>
                   <div className="text-[11px] text-muted-foreground leading-snug">{t('ethGas.surge.body')}</div>
                 </div>
               </div>
+              {/* Why a per-step fee exists at all: the brake on endless loops and spam */}
+              <div className="shrink-0 px-3 py-2 rounded-xl border flex items-center gap-3" style={{ borderColor: '#ef444455', backgroundColor: '#ef444410' }}>
+                <span className="text-2xl shrink-0">🔁</span>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-foreground">{t('ethGas.why.title')}</div>
+                  <div className="text-[11px] text-muted-foreground leading-snug">{t('ethGas.why.body')}</div>
+                </div>
+              </div>
             </div>
           </div>
-          <PeekFooter body={t('ethGas.peek')} />
+          <SlideFooter keyPoint={t('ethGas.keyPoint')} peek={t('ethGas.peek')} />
         </div>
 
         {/* ═══════ SNEAK PEEKS: DeFi · NFTs · DAOs ═══════ */}

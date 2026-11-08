@@ -33,6 +33,9 @@
   "peek": {
     "label": "Later session →"
   },
+  "keyPoint": {
+    "label": "Key point"
+  },
   "techHint": {
     "label": "Under the hood →",
     "target": "Platforms §2",
@@ -63,7 +66,8 @@
       { "emoji": "🏙️", "year": "Today", "label": "The default platform for apps", "note": "DeFi, NFTs, DAOs, tokens — most of them started here." }
     ],
     "walletCta": "Cria a tua primeira carteira",
-    "hood": "EVM & Solidity"
+    "hood": "EVM & Solidity",
+    "keyPoint": "Bitcoin stores balances; Ethereum also stores programs — and runs them for anyone who pays."
   },
   "ethAccounts": {
     "recapBadge": "↩ §2",
@@ -99,9 +103,17 @@
     },
     "arrowLabel": "action",
     "arrowSub": "Every action starts from a wallet — a contract only reacts when called.",
+    "quiz": {
+      "title": "Who can start this?",
+      "hint": "Tap each scenario.",
+      "items": [
+        { "emoji": "🔑", "text": "A wallet sends ETH", "ok": true, "why": "A key-holder signed it — that's how every action begins." },
+        { "emoji": "⏰", "text": "A contract wakes up at midnight by itself", "ok": false, "why": "Contracts have no clock and no key. Nobody poked it, so nothing happens." },
+        { "emoji": "⚙️", "text": "Contract A calls contract B", "ok": true, "why": "Only because a wallet poked A first — the chain of calls still starts with a key." }
+      ]
+    },
     "hood": "EOA vs contract, nonce & state",
-    "keyRuleStrong": "Regra-chave:",
-    "keyRuleBody": "Cada transação na Ethereum origina-se de uma EOA. Os smart contracts não conseguem atuar espontaneamente — precisam de um humano (ou de um keeper bot) para os despoletar.",
+    "keyPoint": "Every action starts with a human's key; contracts only react.",
     "peek": "You'll deploy a contract account of your own and call it from your wallet."
   },
   "ethGas": {
@@ -176,7 +188,12 @@
       "title": "Busy network = higher fee",
       "body": "Like Uber surge pricing: same ride, more people asking, higher price per unit. The gas-price slider is the surge."
     },
+    "why": {
+      "title": "Why gas exists at all",
+      "body": "Without a per-step fee, one endless loop could freeze the shared computer for everyone. Paying per instruction is the natural brake — and the spam filter."
+    },
     "hood": "gwei & the EIP-1559 fee market",
+    "keyPoint": "Gas is the price of computation AND the brake that stops anyone jamming the world computer.",
     "peek": "You'll write a contract and watch the gas meter tick as it runs."
   },
   "ethApps": {
@@ -197,6 +214,7 @@
         "stat": "40 mil milhões+ de USD em Total Value Locked em protocolos DeFi",
         "later": "You'll trace a real token swap through a smart contract, step by step.",
         "hood": "AMMs, lending, stablecoins",
+        "keyPoint": "Replace the exchange with a pool and a formula — open 24/7, but today mostly crypto trading crypto.",
         "visual": {
           "orderBookTitle": "Order book — traditional exchange",
           "orderBookSub": "a middleman matches buyers with sellers",
@@ -242,6 +260,7 @@
         "stat": "41 mil milhões de USD transacionados em NFTs em 2021 — pico. Agora focado em utilidade.",
         "later": "You'll mint a token of your own and see exactly what is — and isn't — stored on-chain.",
         "hood": "ERC-721 & off-chain metadata",
+        "keyPoint": "A unique token with a public ownership history — you own the record, not necessarily the file.",
         "visual": {
           "fungible": "Fungible",
           "fungibleSub": "every unit identical — 1 ETH = 1 ETH",
@@ -280,6 +299,7 @@
         "stat": "DAOs detêm coletivamente mais de 20 mil milhões de USD em tesourarias",
         "later": "You'll look at a real governance vote and ask who really held the power.",
         "hood": "governance contracts & treasuries",
+        "keyPoint": "Rules are code, decisions are votes — transparent by default, slow by design.",
         "visual": {
           "holders": "token holders",
           "holdersSub": "anyone holding the token",
@@ -304,7 +324,8 @@
     "principles": [
       { "emoji": "💰", "title": "Holds its own money", "body": "The machine keeps the coins. No shopkeeper, no bank account in the middle." },
       { "emoji": "📜", "title": "Runs exactly as written", "body": "Same input, same result, every time — for everyone." },
-      { "emoji": "🚫", "title": "Nobody can stop or reverse it", "body": "Once it runs, it ran. Not the owner, not a court, not the author." }
+      { "emoji": "🚫", "title": "Nobody can stop or reverse it", "body": "Once it runs, it ran. Not the owner, not a court, not the author." },
+      { "emoji": "🐛", "title": "The catch: a bug runs as written too", "body": "The DAO hack (2016): ~$60M drained by code doing precisely what it said. The fix split the chain — ETH / ETC." }
     ],
     "business": {
       "strong": "Why business cares:",
@@ -326,6 +347,7 @@
         "checking": "CHECKING RULE…",
         "done": "ENJOY 🥤"
       },
+      "displayExploit": "ENJOY 🥤 · FOR €1?!",
       "trace": {
         "inputLabel": "Input",
         "inputIdle": "waiting for a coin…",
@@ -334,15 +356,26 @@
         "rule": "if coin ≥ {{price}} → dispense · otherwise → return coin",
         "rulePass": "condition met ✓ — executes automatically",
         "ruleFail": "condition not met ✗ — nothing happens",
+        "ruleTypo": "if coin ≤ {{price}} → dispense · otherwise → return coin   🐛 typo: ≤ instead of ≥",
+        "ruleTypoPass": "condition met ✓ — the typo lets a cheap coin through, exactly as written",
         "outcomeLabel": "Outcome",
         "outcomeIdle": "—",
         "outcomeShort": "coin returned, nothing changed",
-        "outcomeDone": "can dispensed · recorded forever 🔒"
+        "outcomeDone": "can dispensed · recorded forever 🔒",
+        "outcomeExploit": "€2 can dispensed for {{amount}} · recorded forever 🔒"
       },
       "undoMsg": "There is no undo button. The rule already ran — not the owner, not a bank, not a court can take the can back.",
-      "escrowNote": "Swap the can for a house deed and the coin for the purchase price — that's escrow without a notary."
+      "escrowNote": "Swap the can for a house deed and the coin for the purchase price — that's escrow without a notary.",
+      "typo": {
+        "toggle": "Rule has a typo",
+        "hint": "Insert €1 — the typo lets it through. Then try to undo.",
+        "undoMsg": "Code is law cuts both ways. Nobody can fix it after the fact — which is why audits exist.",
+        "pillsLabel": "Keywords:",
+        "pills": ["audits", "immutability", "upgradeable proxies"]
+      }
     },
     "hood": "EVM, Solidity, bytecode",
+    "keyPoint": "An agreement that enforces itself — and a bug enforces itself too.",
     "peek": "You'll write and deploy a contract like this one yourself."
   },
   "tokens": {
@@ -364,11 +397,29 @@
       "examples": ["Property deeds", "Event tickets", "Memberships"],
       "verb": "Name them."
     },
+    "sorter": {
+      "title": "🎛️ Fungible or unique?",
+      "hint": "Sort each item: Count them (ERC-20) or Name them (ERC-721).",
+      "countBtn": "= Count",
+      "nameBtn": "≠ Name",
+      "right": "✓",
+      "wrong": "✗",
+      "score": "{{correct}} / {{total}} right",
+      "cards": [
+        { "emoji": "💶", "label": "A €10 note", "answer": "fungible", "why": "Any €10 note is as good as any other — count them." },
+        { "emoji": "✈️", "label": "Airline miles", "answer": "fungible", "why": "Points are identical units; 500 miles is 500 miles." },
+        { "emoji": "🎟️", "label": "Concert seat 12A", "answer": "unique", "why": "That seat, that night — no other ticket is the same." },
+        { "emoji": "🎓", "label": "A university diploma", "answer": "unique", "why": "Issued to one named person; swapping two makes no sense." },
+        { "emoji": "📈", "label": "One Apple share", "answer": "fungible", "why": "Every share is identical and interchangeable — count them." },
+        { "emoji": "🏠", "label": "A house deed", "answer": "unique", "why": "One deed, one specific house — name it." }
+      ]
+    },
     "business": {
       "strong": "Why it matters:",
       "body": "issuing a token is cheap and instant. The hard part is the business model and the law around it — not the technology."
     },
     "hood": "ERC-20 & ERC-721 standards",
+    "keyPoint": "Two container shapes — countable (ERC-20) or named (ERC-721) — and every app already understands both.",
     "peek": "You'll create a token of each kind and see the standard behind it."
   },
   "useCases": {
