@@ -76,7 +76,8 @@
       "offChain": "off-chain",
       "trickLabel": "The trick:",
       "trickBody": " the vault holds the funds. Every payment is a signed agreement on how the vault's contents should be split. The on-chain blockchain only ever sees TWO transactions — OPEN and CLOSE — no matter how many payments happened in between."
-    }
+    },
+    "keyPoint": "Lightning moves everyday payments off-chain and uses Bitcoin only to open and settle — speed without giving up base-layer security."
   },
   "txLifecycle": {
     "badge": "🧩 Animated",
@@ -106,12 +107,13 @@
       "blockValue": "~10 min",
       "confLabel": "6 confirmations:",
       "confValue": "~1 h ≈ settled"
-    }
+    },
+    "keyPoint": "A Bitcoin payment becomes final by probability, not by decree — wait six blocks (about an hour) before releasing high-value goods."
   },
   "handoff": {
     "badge": "↩ Recap handoff · Blockchain Fundamentals",
     "heading": "You already know how Bitcoin works — now look at it as a platform",
-    "lead": "In Blockchain Fundamentals you learned the mechanics. This section asks the platform question instead: what did Bitcoin's designers optimise for, what did they give up, and what is it actually good for in business?",
+    "lead": "You learned Bitcoin’s mechanics in Fundamentals §2 — here we look at it as a platform: what did its designers optimise for, what did they give up, and what is it actually good for in business?",
     "coveredLabel": "Already covered — we won't re-teach it",
     "covered": ["Hashing & SHA-256", "Blocks, chains & Merkle trees", "Wallets, keys & signatures", "Mining & Proof of Work basics", "UTXOs & change"],
     "lensLabel": "Today's lens",
@@ -121,8 +123,8 @@
       { "emoji": "⚖️", "title": "The Trilemma", "desc": "No platform gets everything. Bitcoin chose security and decentralization — and lives with the consequences.", "question": "Which corner of the triangle can your use case afford to lose?", "where": "→ Trilemma · Best & Worst Fits" }
     ],
     "questionLabel": "The question we'll answer",
-    "refresher": "Need the mechanics again? The 🧩 interactive slides (Tx Lifecycle, UTXO Exercise, Lightning) are there for exactly that.",
-    "hood": ["SHA-256", "UTXO", "nonce", "difficulty", "longest chain"]
+    "hood": ["SHA-256", "UTXO", "nonce", "difficulty", "longest chain"],
+    "keyPoint": "Same Bitcoin, different question: not how it works, but what it is for — and what it costs."
   },
   "architecture": {
     "heading": "Bitcoin Architecture",
@@ -183,7 +185,8 @@
         { "name": "Exchanges", "ex": "Coinbase, Kraken, Binance" }
       ],
       "caption": "Apps communicate with the network via RPC calls to Bitcoin Core nodes (port 8332)."
-    }
+    },
+    "keyPoint": "A business touches the app layer; the other three layers are what make the record trustworthy without a bank."
   },
   "transaction": {
     "heading": "Bitcoin Transaction & UTXO Model",
@@ -210,7 +213,8 @@
       { "emoji": "🧾", "title": "Fees price bytes, not value", "desc": "A €50 and a €50M payment can cost the same fee. Many small inputs make a transaction bigger — and pricier — to send." },
       { "emoji": "🔍", "title": "Every coin has a history", "desc": "Each UTXO traces back to the block it was mined in. Auditors and compliance teams can follow provenance — Bitcoin is pseudonymous, not anonymous." }
     ],
-    "hood": ["txid", "vout", "scriptSig", "scriptPubKey", "locktime"]
+    "hood": ["txid", "vout", "scriptSig", "scriptPubKey", "locktime"],
+    "keyPoint": "Bitcoin keeps cash-like notes, not account balances — fees price bytes, and every coin carries its history."
   },
   "utxoExercise": {
     "heading": "Exercise: Build a Bitcoin Transaction",
@@ -255,7 +259,8 @@
         ],
         "explanation": "UTXO A + B = 0.75 BTC. Covers 0.6 + 0.01 BTC. Change = 0.75 − 0.6 − 0.01 = 0.14 BTC back to Alice. UTXO C is not needed."
       }
-    ]
+    ],
+    "keyPoint": "Spend whole notes and take change back — wallets hide this, treasury systems cannot."
   },
   "pow": {
     "heading": "Proof of Work",
@@ -270,9 +275,6 @@
     "buyLabel": "What a business is buying",
     "buyBody": "Rewriting history means redoing all that work faster than the rest of the world combined. PoW turns electricity into a cost of attack — and that cost is the security.",
     "hood": ["block header", "nonce", "target", "SHA-256d", "2,016-block retarget"],
-    "difficultyA": "Difficulty adjusts every ",
-    "difficultyStrong": "2,016 blocks (~2 weeks)",
-    "difficultyB": " to keep blocks arriving every ~10 minutes.",
     "cards": {
       "hardware": {
         "title": "Mining Hardware Evolution",
@@ -294,7 +296,8 @@
         "title": "Why It Works: 51% Attack Cost",
         "body": "To rewrite history an attacker needs >50% of global hashrate. At current difficulty that would cost billions in ASIC hardware + electricity, and any successful attack would destroy the value of the coins being stolen — making honesty the dominant strategy."
       }
-    }
+    },
+    "keyPoint": "You are not paying miners to process payments — you are paying them to make rewriting history unaffordable."
   },
   "trilemma": {
     "heading": "The Blockchain Trilemma",
@@ -304,8 +307,6 @@
     "tradedOff": "↓ traded off",
     "hoverHint": "Hover a platform to compare ↓",
     "pickPrefix": "✓ ",
-    "businessLabel": "For a business decision",
-    "businessBody": "Pick the platform whose sacrifice you can live with. Bitcoin gives up on-chain speed — so it suits high-value settlement and reserves, not coffee at the till.",
     "hood": ["Nakamoto consensus", "block size", "validator count", "Layer 2"],
     "vertices": {
       "security":         { "name": "Security",         "desc": "Resistant to attacks" },
@@ -340,7 +341,8 @@
         ],
         "detail": "High hardware requirements concentrate the validator set. The network has experienced multiple outages."
       }
-    }
+    },
+    "keyPoint": "Bitcoin chose security and decentralisation and paid with speed — good for settling high-value transfers, not for coffee at the till."
   },
   "apps": {
     "heading": "Beyond payments — Bitcoin's app layer",
@@ -388,7 +390,8 @@
       }
     ],
     "caveatLabel": "Pedagogical caveat — ",
-    "caveatBody": "Bitcoin's app layer is debated within the Bitcoin community. Purists want the base chain minimal (\"digital gold\"); builders push to use it as a settlement layer for richer apps. Be skeptical of hype on either side — both camps have legitimate concerns."
+    "caveatBody": "Bitcoin's app layer is debated within the Bitcoin community. Purists want the base chain minimal (\"digital gold\"); builders push to use it as a settlement layer for richer apps. Be skeptical of hype on either side — both camps have legitimate concerns.",
+    "keyPoint": "Bitcoin's base layer stays deliberately simple — applications live around it, each with its own trust model and its own risks."
   },
   "bestFits": {
     "badge": "🎯 Best Fits",
@@ -403,7 +406,8 @@
       { "emoji": "🛡️", "name": "Strategic reserve asset",         "why": "Verifiable scarcity + jurisdiction-neutral + carrier-grade infrastructure → attractive as a \"neutral\" reserve.", "example": "US Strategic Bitcoin Reserve (2025) · sovereign wealth fund allocations · corporate treasury policies." }
     ],
     "notFitLabel": "Not a fit for:",
-    "notFitBody": " rich smart contracts (use Ethereum), high-throughput retail point-of-sale on the base layer (use Lightning or another chain), private enterprise consortia (use Fabric), on-chain identity / governance / DeFi composability."
+    "notFitBody": " rich smart contracts (use Ethereum), high-throughput retail point-of-sale on the base layer (use Lightning or another chain), private enterprise consortia (use Fabric), on-chain identity / governance / DeFi composability.",
+    "keyPoint": "Bitcoin wins where neutrality and scarcity matter more than features: reserves, settlement, censorship-resistant value."
   },
   "worstFits": {
     "badge": "🚫 Worst Fits",
@@ -420,7 +424,8 @@
       { "emoji": "🌾", "name": "DeFi / NFTs / DAOs", "why": "No native tokens, no on-chain identity, no programmable governance. Every \"Bitcoin DeFi\" project ends up requiring Ethereum or a federated sidechain to actually compose.", "alt": "Use Ethereum + L2s · Solana · Sui for DeFi composability and rich asset standards." }
     ],
     "rightToolLabel": "Right tool, right job:",
-    "rightToolBody": " if the answer is \"store of value\", \"neutral settlement layer\", or \"censorship resistance\" — Bitcoin wins. For literally anything programmable, pick a different chain (and that's fine)."
+    "rightToolBody": " if the answer is \"store of value\", \"neutral settlement layer\", or \"censorship resistance\" — Bitcoin wins. For literally anything programmable, pick a different chain (and that's fine).",
+    "keyPoint": "If you find yourself fighting the protocol, you have picked the wrong chain — Bitcoin is not a general-purpose computer."
   },
   "quiz": {
     "question": "Alice has two UTXOs: 0.35 BTC and 0.40 BTC. She wants to send 0.60 BTC to Bob and pay a 0.01 BTC miner fee. What must happen in this transaction?",

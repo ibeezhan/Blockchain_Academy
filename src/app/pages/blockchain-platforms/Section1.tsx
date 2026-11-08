@@ -9,6 +9,7 @@ import { SiteFooter } from '../../components/shared/SiteFooter';
 import { QuizSlide } from '../../components/templates/QuizSlide';
 import { Bitcoin, Zap } from 'lucide-react';
 import { UnderTheHood } from '../../components/shared/UnderTheHood';
+import { KeyPointBar } from '../../components/shared/KeyPointBar';
 
 // Language-neutral shape — IDs + kind only. Labels resolved via t() at render.
 const chapterShape = [
@@ -403,6 +404,7 @@ function LightningVaultDemo() {
           </div>
         </div>
       </div>
+      <KeyPointBar text={t('lightning.keyPoint')} className="shrink-0 mt-3 lg:mr-20" />
     </div>
   );
 }
@@ -593,6 +595,7 @@ function TxLifecycleAnimated() {
         <span className="text-muted-foreground">{t('txLifecycle.timing.blockLabel')} <span className="font-bold text-foreground">{t('txLifecycle.timing.blockValue')}</span></span>
         <span className="text-muted-foreground">{t('txLifecycle.timing.confLabel')} <span className="font-bold text-foreground">{t('txLifecycle.timing.confValue')}</span></span>
       </div>
+      <KeyPointBar text={t('txLifecycle.keyPoint')} className="shrink-0 mt-2 lg:mr-20" />
     </div>
   );
 }
@@ -798,6 +801,7 @@ function BitcoinArchitectureSlide() {
         </div>
 
       </div>
+      <KeyPointBar text={t('architecture.keyPoint')} className="shrink-0 mt-3 lg:mr-20" />
     </div>
   );
 }
@@ -1021,6 +1025,7 @@ function UTXOExercise() {
           )}
         </div>
       </div>
+      <KeyPointBar text={t('utxoExercise.keyPoint')} className="shrink-0 mt-3 lg:mr-20" />
     </div>
   );
 }
@@ -1298,10 +1303,7 @@ function TrilemmaSlide() {
 
       {/* Business framing + hint pills */}
       <div className="shrink-0 mt-4 flex flex-col gap-2 lg:pr-20">
-        <div className="rounded-xl border p-3" style={{ borderColor: '#f59e0b55', backgroundColor: '#f59e0b0d' }}>
-          <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#f59e0b' }}>{t('trilemma.businessLabel')}</span>
-          <p className="text-xs text-foreground leading-snug mt-0.5">{t('trilemma.businessBody')}</p>
-        </div>
+        <KeyPointBar text={t('trilemma.keyPoint')} />
         <UnderTheHood items={t('trilemma.hood', { returnObjects: true }) as string[]} />
       </div>
     </div>
@@ -1361,7 +1363,7 @@ function HandoffSlide() {
       </div>
 
       <div className="shrink-0 mt-4 flex flex-col gap-2 lg:pr-20">
-        <p className="text-xs text-muted-foreground italic">{t('handoff.refresher')}</p>
+        <KeyPointBar text={t('handoff.keyPoint')} />
         <UnderTheHood items={hood} />
       </div>
     </div>
@@ -1538,6 +1540,7 @@ export function BP_Section1() {
               <UnderTheHood items={t('transaction.hood', { returnObjects: true }) as string[]} className="shrink-0" />
             </div>
           </div>
+          <KeyPointBar text={t('transaction.keyPoint')} className="shrink-0 mt-3 lg:mr-20" />
         </div>
 
         {/* ═══════ TRANSACTION LIFECYCLE — animated walkthrough, moved here from later ═══════ */}
@@ -1587,7 +1590,6 @@ export function BP_Section1() {
                 <div className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: '#f59e0b' }}>{t('pow.buyLabel')}</div>
                 <p className="text-xs text-foreground leading-relaxed">{t('pow.buyBody')}</p>
               </div>
-              <p className="shrink-0 text-xs text-muted-foreground text-center">{t('pow.difficultyA')}<span className="font-semibold text-foreground">{t('pow.difficultyStrong')}</span>{t('pow.difficultyB')}</p>
               <UnderTheHood items={t('pow.hood', { returnObjects: true }) as string[]} className="shrink-0" />
             </div>
             {/* ── Right: 4 cards ── */}
@@ -1674,6 +1676,7 @@ export function BP_Section1() {
             </div>
 
           </div>
+          <KeyPointBar text={t('pow.keyPoint')} className="shrink-0 mt-3 lg:mr-20" />
         </div>
 
         {/* ═══════ TRILEMMA ═══════ */}
@@ -1739,6 +1742,7 @@ export function BP_Section1() {
               {t('apps.caveatBody')}
             </p>
           </div>
+          <KeyPointBar text={t('apps.keyPoint')} className="shrink-0 mt-2 lg:mr-20" />
         </div>
 
         {/* ═══════ LIGHTNING NETWORK ═══════ */}
@@ -1777,6 +1781,7 @@ export function BP_Section1() {
           <div className="shrink-0 mt-3 p-2.5 bg-[#ef4444]/08 border border-[#ef4444]/30 rounded-lg text-[11px] text-muted-foreground">
             <strong className="text-[#ef4444]">{t('bestFits.notFitLabel')}</strong>{t('bestFits.notFitBody')}
           </div>
+          <KeyPointBar text={t('bestFits.keyPoint')} className="shrink-0 mt-2 lg:mr-20" />
         </div>
 
         {/* ═══════ WORST FITS — WHERE BITCOIN IS WRONG ═══════ */}
@@ -1809,6 +1814,7 @@ export function BP_Section1() {
           <div className="shrink-0 mt-3 p-2.5 bg-[#10b981]/08 border border-[#10b981]/30 rounded-lg text-[11px] text-muted-foreground">
             <strong className="text-[#10b981]">{t('worstFits.rightToolLabel')}</strong>{t('worstFits.rightToolBody')}
           </div>
+          <KeyPointBar text={t('worstFits.keyPoint')} className="shrink-0 mt-2 lg:mr-20" />
         </div>
 
         {/* ═══════ QUIZ ═══════ */}

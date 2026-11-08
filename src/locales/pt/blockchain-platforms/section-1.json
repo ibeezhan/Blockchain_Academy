@@ -77,7 +77,8 @@
       "offChain": "off-chain",
       "trickLabel": "O truque:",
       "trickBody": " o cofre guarda os fundos. Cada pagamento é um acordo assinado sobre como o conteúdo do cofre deve ser dividido. A blockchain on-chain só alguma vez vê DUAS transações — OPEN e CLOSE — independentemente de quantos pagamentos ocorreram pelo meio."
-    }
+    },
+    "keyPoint": "Lightning moves everyday payments off-chain and uses Bitcoin only to open and settle — speed without giving up base-layer security."
   },
   "txLifecycle": {
     "badge": "🧩 Animado",
@@ -107,7 +108,8 @@
       "blockValue": "~10 min",
       "confLabel": "6 confirmações:",
       "confValue": "~1 h ≈ liquidado"
-    }
+    },
+    "keyPoint": "A Bitcoin payment becomes final by probability, not by decree — wait six blocks (about an hour) before releasing high-value goods."
   },
   "architecture": {
     "heading": "Arquitetura da Bitcoin",
@@ -168,7 +170,8 @@
         { "name": "Exchanges", "ex": "Coinbase, Kraken, Binance" }
       ],
       "caption": "As apps comunicam com a rede através de chamadas RPC aos nós Bitcoin Core (porta 8332)."
-    }
+    },
+    "keyPoint": "A business touches the app layer; the other three layers are what make the record trustworthy without a bank."
   },
   "transaction": {
     "heading": "Transação Bitcoin & Modelo UTXO",
@@ -220,7 +223,8 @@
         "desc": "Each UTXO traces back to the block it was mined in. Auditors and compliance teams can follow provenance — Bitcoin is pseudonymous, not anonymous."
       }
     ],
-    "hood": ["txid", "vout", "scriptSig", "scriptPubKey", "locktime"]
+    "hood": ["txid", "vout", "scriptSig", "scriptPubKey", "locktime"],
+    "keyPoint": "Bitcoin keeps cash-like notes, not account balances — fees price bytes, and every coin carries its history."
   },
   "utxoExercise": {
     "heading": "Exercício: Construir uma Transação Bitcoin",
@@ -265,7 +269,8 @@
         ],
         "explanation": "UTXO A + B = 0,75 BTC. Cobre 0,6 + 0,01 BTC. Troco = 0,75 − 0,6 − 0,01 = 0,14 BTC de volta à Alice. O UTXO C não é necessário."
       }
-    ]
+    ],
+    "keyPoint": "Spend whole notes and take change back — wallets hide this, treasury systems cannot."
   },
   "pow": {
     "heading": "Proof of Work",
@@ -278,9 +283,6 @@
     "puzzleC": " tal que o hash do bloco resultante fique abaixo do target atual — ou seja, comece com zeros à esquerda suficientes. Isto exige tentativa e erro por força bruta.",
     "headerTitle": "Campos do Cabeçalho do Bloco",
     "hashLabel": "SHA256(SHA256(header)) =",
-    "difficultyA": "A dificuldade ajusta a cada ",
-    "difficultyStrong": "2.016 blocos (~2 semanas)",
-    "difficultyB": " para manter um tempo de bloco de ~10 min.",
     "cards": {
       "hardware": {
         "title": "Evolução do Hardware de Mining",
@@ -312,7 +314,8 @@
     ],
     "buyLabel": "What a business is buying",
     "buyBody": "Rewriting history means redoing all that work faster than the rest of the world combined. PoW turns electricity into a cost of attack — and that cost is the security.",
-    "hood": ["block header", "nonce", "target", "SHA-256d", "2,016-block retarget"]
+    "hood": ["block header", "nonce", "target", "SHA-256d", "2,016-block retarget"],
+    "keyPoint": "You are not paying miners to process payments — you are paying them to make rewriting history unaffordable."
   },
   "trilemma": {
     "heading": "O Trilema da Blockchain",
@@ -356,9 +359,8 @@
         "detail": "Os elevados requisitos de hardware concentram o conjunto de validadores. A rede já sofreu várias interrupções."
       }
     },
-    "businessLabel": "For a business decision",
-    "businessBody": "Pick the platform whose sacrifice you can live with. Bitcoin gives up on-chain speed — so it suits high-value settlement and reserves, not coffee at the till.",
-    "hood": ["Nakamoto consensus", "block size", "validator count", "Layer 2"]
+    "hood": ["Nakamoto consensus", "block size", "validator count", "Layer 2"],
+    "keyPoint": "Bitcoin chose security and decentralisation and paid with speed — good for settling high-value transfers, not for coffee at the till."
   },
   "apps": {
     "heading": "Para além dos pagamentos — a camada de apps da Bitcoin",
@@ -406,7 +408,8 @@
       }
     ],
     "caveatLabel": "Ressalva pedagógica — ",
-    "caveatBody": "A camada de apps da Bitcoin é debatida dentro da comunidade Bitcoin. Os puristas querem a chain de base minimalista (\"ouro digital\"); os construtores defendem usá-la como camada de liquidação para apps mais ricas. Sê cético quanto ao hype de ambos os lados — os dois campos têm preocupações legítimas."
+    "caveatBody": "A camada de apps da Bitcoin é debatida dentro da comunidade Bitcoin. Os puristas querem a chain de base minimalista (\"ouro digital\"); os construtores defendem usá-la como camada de liquidação para apps mais ricas. Sê cético quanto ao hype de ambos os lados — os dois campos têm preocupações legítimas.",
+    "keyPoint": "Bitcoin's base layer stays deliberately simple — applications live around it, each with its own trust model and its own risks."
   },
   "lightningWhy": {
     "heading": "Lightning Network — Porque é Importante",
@@ -458,7 +461,8 @@
       { "emoji": "🛡️", "name": "Ativo de reserva estratégica",      "why": "Escassez verificável + neutralidade jurisdicional + infraestrutura de nível carrier → atrativa como reserva \"neutra\".", "example": "US Strategic Bitcoin Reserve (2025) · alocações de fundos soberanos · políticas de tesouraria empresarial." }
     ],
     "notFitLabel": "Não encaixa em:",
-    "notFitBody": " smart contracts ricos (usa Ethereum), point-of-sale de retalho de alto débito na camada de base (usa Lightning ou outra chain), consórcios empresariais privados (usa Fabric), identidade / governação / composabilidade DeFi on-chain."
+    "notFitBody": " smart contracts ricos (usa Ethereum), point-of-sale de retalho de alto débito na camada de base (usa Lightning ou outra chain), consórcios empresariais privados (usa Fabric), identidade / governação / composabilidade DeFi on-chain.",
+    "keyPoint": "Bitcoin wins where neutrality and scarcity matter more than features: reserves, settlement, censorship-resistant value."
   },
   "worstFits": {
     "badge": "🚫 Piores Encaixes",
@@ -475,7 +479,8 @@
       { "emoji": "🌾", "name": "DeFi / NFTs / DAOs", "why": "Sem tokens nativos, sem identidade on-chain, sem governação programável. Todo o projeto de \"Bitcoin DeFi\" acaba por exigir Ethereum ou uma sidechain federada para realmente compor.", "alt": "Usa Ethereum + L2s · Solana · Sui para composabilidade DeFi e standards de ativos ricos." }
     ],
     "rightToolLabel": "Ferramenta certa, tarefa certa:",
-    "rightToolBody": " se a resposta for \"reserva de valor\", \"camada de liquidação neutra\" ou \"resistência à censura\" — a Bitcoin vence. Para literalmente qualquer coisa programável, escolhe uma chain diferente (e tudo bem)."
+    "rightToolBody": " se a resposta for \"reserva de valor\", \"camada de liquidação neutra\" ou \"resistência à censura\" — a Bitcoin vence. Para literalmente qualquer coisa programável, escolhe uma chain diferente (e tudo bem).",
+    "keyPoint": "If you find yourself fighting the protocol, you have picked the wrong chain — Bitcoin is not a general-purpose computer."
   },
   "quiz": {
     "question": "A Alice tem dois UTXOs: 0,35 BTC e 0,40 BTC. Quer enviar 0,60 BTC ao Bob e pagar uma fee de mineiro de 0,01 BTC. O que tem de acontecer nesta transação?",
@@ -534,7 +539,7 @@
   "handoff": {
     "badge": "↩ Recap handoff · Blockchain Fundamentals",
     "heading": "You already know how Bitcoin works — now look at it as a platform",
-    "lead": "In Blockchain Fundamentals you learned the mechanics. This section asks the platform question instead: what did Bitcoin's designers optimise for, what did they give up, and what is it actually good for in business?",
+    "lead": "You learned Bitcoin’s mechanics in Fundamentals §2 — here we look at it as a platform: what did its designers optimise for, what did they give up, and what is it actually good for in business?",
     "coveredLabel": "Already covered — we won't re-teach it",
     "covered": [
       "Hashing & SHA-256",
@@ -568,7 +573,7 @@
       }
     ],
     "questionLabel": "The question we'll answer",
-    "refresher": "Need the mechanics again? The 🧩 interactive slides (Tx Lifecycle, UTXO Exercise, Lightning) are there for exactly that.",
-    "hood": ["SHA-256", "UTXO", "nonce", "difficulty", "longest chain"]
+    "hood": ["SHA-256", "UTXO", "nonce", "difficulty", "longest chain"],
+    "keyPoint": "Same Bitcoin, different question: not how it works, but what it is for — and what it costs."
   }
 }

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { Fragment, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { TitleSlide } from '../../components/templates/TitleSlide';
@@ -10,6 +10,7 @@ import { ConceptSlide } from '../../components/templates/ConceptSlide';
 import { QuizSlide } from '../../components/templates/QuizSlide';
 import { Building2 } from 'lucide-react';
 import { UnderTheHood } from '../../components/shared/UnderTheHood';
+import { KeyPointBar } from '../../components/shared/KeyPointBar';
 
 // Language-neutral shape — only IDs + kind. Labels come from t() at render time.
 const chapterShape = [
@@ -21,13 +22,7 @@ const chapterShape = [
 
   { kind: 'group' as const, id: 'g-s3-arch' },
   { id: 's3-overview' },
-  { id: 's3-fabricx' },
-
-  { kind: 'group' as const, id: 'g-s3-consensus' },
-  { id: 's3-consensus-evo' },
-  { id: 's3-consensus' },
-  { id: 's3-raft' },
-  { id: 's3-bft' },
+  { id: 's3-how-agrees' },
 
   { kind: 'group' as const, id: 'g-s3-privacy' },
   { id: 's3-channels' },
@@ -140,7 +135,10 @@ function WhyPermissionedSlide() {
           </motion.div>
         </div>
       </div>
-      <UnderTheHood items={t('why.hood', { returnObjects: true }) as string[]} className="shrink-0 mt-3" />
+      <div className="shrink-0 mt-3 flex flex-col gap-2 lg:pr-20">
+        <KeyPointBar text={t('why.keyPoint')} />
+        <UnderTheHood items={t('why.hood', { returnObjects: true }) as string[]} />
+      </div>
     </div>
   );
 }
@@ -198,9 +196,7 @@ function TradeoffsSlide() {
       </div>
 
       <div className="shrink-0 mt-3 flex flex-col gap-2 lg:pr-20">
-        <div className="rounded-xl border p-3" style={{ borderColor: '#6366f155', backgroundColor: '#6366f10d' }}>
-          <p className="text-xs text-foreground leading-snug">{t('tradeoffs.rule')}</p>
-        </div>
+        <KeyPointBar text={t('tradeoffs.keyPoint')} />
         <UnderTheHood items={hood} />
       </div>
     </div>
@@ -282,9 +278,7 @@ function UseCasesSlide() {
       </div>
 
       <div className="shrink-0 mt-3 flex flex-col gap-2 lg:pr-20">
-        <div className="rounded-xl border p-3" style={{ borderColor: '#39B54A55', backgroundColor: '#39B54A0d' }}>
-          <p className="text-xs text-foreground leading-snug">{t('usecases.pattern')}</p>
-        </div>
+        <KeyPointBar text={t('usecases.keyPoint')} />
         <UnderTheHood items={hood} />
       </div>
     </div>
@@ -397,7 +391,10 @@ function SupplyChainsSlide() {
           </div>
         </div>
       </div>
-      <UnderTheHood items={t('supplychains.hood', { returnObjects: true }) as string[]} className="shrink-0 mt-3" />
+      <div className="shrink-0 mt-3 flex flex-col gap-2 lg:pr-20">
+        <KeyPointBar text={t('supplychains.keyPoint')} />
+        <UnderTheHood items={t('supplychains.hood', { returnObjects: true }) as string[]} />
+      </div>
     </div>
   );
 }
@@ -424,438 +421,92 @@ function FabricOverviewVisual() {
   );
 }
 
-// ─── s3-fabricx ──────────────────────────────────────────────────────────────
+// ─── s3-how-agrees ───────────────────────────────────────────────────────────
 
-// Language-neutral: colors + emoji only. Text resolved via t().
-const FABRIC_COMPONENT_STYLE = [
-  { emoji: '👥', color: '#6366f1' },
-  { emoji: '🖥️', color: '#39B54A' },
-  { emoji: '📮', color: '#f59e0b' },
-  { emoji: '🔑', color: '#ED1C24' },
-  { emoji: '📁', color: '#22d3ee' },
-];
+const HOW_AGREES_COLORS = ['#f59e0b', '#6366f1', '#39B54A'];
 
-const FABRIC_ORG_COLORS = ['#6366f1', '#39B54A', '#ED1C24'];
+interface MechanismText { emoji: string; label: string; one: string; business: string; }
+interface CompareRow { platform: string; who: string; time: string; finality: string; }
 
-function FabricDeepDiveSlide() {
+function HowFabricAgreesSlide() {
   const { t } = useTranslation('blockchain-platforms/section-3');
-  const componentText = t('fabricx.components', { returnObjects: true }) as { emoji: string; label: string; desc: string }[];
-  const components = FABRIC_COMPONENT_STYLE.map((s, i) => ({ ...s, ...componentText[i] }));
-  const orgNames = t('fabricx.orgs', { returnObjects: true }) as { name: string }[];
-  const ORGS = orgNames.map((o, i) => ({ name: o.name, color: FABRIC_ORG_COLORS[i] }));
+  const mechanisms = t('howAgrees.mechanisms', { returnObjects: true }) as MechanismText[];
+  const compareCols = t('howAgrees.compareCols', { returnObjects: true }) as string[];
+  const compare = t('howAgrees.compare', { returnObjects: true }) as CompareRow[];
+  const hood = t('howAgrees.hood', { returnObjects: true }) as string[];
 
   return (
     <div className="h-full flex flex-col p-6 lg:p-10">
-      <div className="shrink-0 mb-3">
-        <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('fabricx.heading')}</h2>
-        <p className="text-sm text-muted-foreground mt-1">{t('fabricx.subtitle')}</p>
+      <div className="shrink-0 mb-4">
+        <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('howAgrees.heading')}</h2>
+        <p className="text-sm text-muted-foreground mt-1">{t('howAgrees.subtitle')}</p>
       </div>
 
-      {/* Definition strip */}
-      <div className="shrink-0 mb-4 rounded-xl border p-3" style={{ borderColor: '#39B54A55', backgroundColor: '#39B54A0d' }}>
-        <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#39B54A' }}>{t('fabricx.inOneLineLabel')}</p>
-        <p className="text-sm text-foreground mt-0.5 leading-snug">
-          {t('fabricx.inOneLine.a')}<span className="font-semibold">{t('fabricx.inOneLine.organizations')}</span>{t('fabricx.inOneLine.b')}<span className="font-semibold">{t('fabricx.inOneLine.peers')}</span>{t('fabricx.inOneLine.c')}<span className="font-semibold">{t('fabricx.inOneLine.mspca')}</span>{t('fabricx.inOneLine.d')}<span className="font-semibold">{t('fabricx.inOneLine.channels')}</span>{t('fabricx.inOneLine.e')}<span className="font-semibold">{t('fabricx.inOneLine.ordering')}</span>{t('fabricx.inOneLine.f')}
-        </p>
-      </div>
-
-      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-5">
-        {/* Left — components list */}
-        <div className="flex flex-col gap-2 min-h-0">
-          <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider shrink-0">{t('fabricx.componentsHeading')}</h3>
-          <div className="flex-1 min-h-0 grid auto-rows-fr gap-2">
-            {components.map((c, i) => (
-              <motion.div
-                key={c.label}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.08, duration: 0.3 }}
-                className="flex items-center gap-3 p-2.5 rounded-xl border min-h-0"
-                style={{ borderColor: c.color + '50', backgroundColor: c.color + '0d' }}
-              >
-                <span className="text-2xl shrink-0 leading-none">{c.emoji}</span>
-                <div className="min-w-0">
-                  <div className="font-bold text-sm leading-tight" style={{ color: c.color }}>{c.label}</div>
-                  <div className="text-[11px] text-muted-foreground leading-snug mt-0.5">{c.desc}</div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Right — network diagram (channel scope) */}
-        <div className="flex flex-col gap-2 min-h-0">
-          <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider shrink-0">{t('fabricx.diagramHeading')}</h3>
-
-          {/* Channel scope */}
-          <div
-            className="flex-1 min-h-0 relative rounded-2xl border-2 border-dashed p-3 lg:p-4 flex flex-col gap-3"
-            style={{ borderColor: '#6366f155', backgroundColor: '#6366f108' }}
-          >
-            <span
-              className="absolute -top-2.5 left-4 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest"
-              style={{ backgroundColor: 'hsl(var(--background))', color: '#6366f1', border: '1px solid #6366f180' }}
-            >
-              {t('fabricx.channelBadge')}
-            </span>
-
-            {/* Orderer (Raft cluster) */}
-            <div className="flex justify-center shrink-0">
-              <div
-                className="rounded-xl border-2 px-3 py-2 flex items-center gap-2.5"
-                style={{ borderColor: '#f59e0b', backgroundColor: '#f59e0b15' }}
-              >
-                <span className="text-base leading-none">📮</span>
-                <div>
-                  <div className="text-xs font-black leading-tight" style={{ color: '#f59e0b' }}>{t('fabricx.orderingServiceTitle')}</div>
-                  <div className="text-[10px] text-muted-foreground leading-tight">{t('fabricx.orderingServiceSub')}</div>
-                </div>
-                <div className="flex gap-1 ml-1">
-                  {[1, 2, 3].map(n => (
-                    <span key={n} className="size-1.5 rounded-full" style={{ backgroundColor: '#f59e0b' }} />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Bidirectional flow indicator */}
-            <div className="shrink-0 flex justify-center items-center gap-2 text-[10px] font-medium" style={{ color: '#f59e0b' }}>
-              <span>{t('fabricx.flowUp')}</span>
-              <span className="opacity-40">·</span>
-              <span>{t('fabricx.flowDown')}</span>
-            </div>
-
-            {/* 3 Orgs */}
-            <div className="flex-1 min-h-0 grid grid-cols-3 gap-2">
-              {ORGS.map(org => (
-                <div
-                  key={org.name}
-                  className="flex flex-col gap-1.5 rounded-lg border p-2"
-                  style={{ borderColor: org.color + '70', backgroundColor: org.color + '10' }}
-                >
-                  <div
-                    className="text-[10px] font-black uppercase tracking-wider text-center"
-                    style={{ color: org.color }}
-                  >
-                    🏢 {org.name}
-                  </div>
-
-                  {[1, 2].map(p => (
-                    <div
-                      key={p}
-                      className="rounded-md border bg-card px-1.5 py-1 flex items-center justify-between gap-1"
-                      style={{ borderColor: org.color + '50' }}
-                    >
-                      <span className="text-[10px] font-semibold text-foreground flex items-center gap-1">
-                        <span>🖥</span>{t('fabricx.peerLabel')} {p}
-                      </span>
-                      <span className="text-[9px] opacity-70" title={t('fabricx.peerTitle')}>📜📁</span>
-                    </div>
-                  ))}
-
-                  <div
-                    className="rounded-md border border-dashed px-1.5 py-1 flex items-center justify-center gap-1 text-[10px] font-semibold"
-                    style={{ borderColor: org.color + '60', color: org.color, backgroundColor: org.color + '08' }}
-                  >
-                    {t('fabricx.mspCaLabel')}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Footer note inside channel */}
-            <div className="shrink-0 text-[10px] text-muted-foreground text-center leading-snug">
-              {t('fabricx.channelFooter.a')}<span className="font-semibold text-foreground">{t('fabricx.channelFooter.identical')}</span>{t('fabricx.channelFooter.b')}<span className="font-semibold text-foreground">{t('fabricx.channelFooter.binary')}</span>{t('fabricx.channelFooter.c')}
-            </div>
-          </div>
-
-          {/* Chaincode note */}
-          <div
-            className="shrink-0 p-2.5 rounded-xl border flex items-start gap-2.5"
-            style={{ borderColor: '#39B54A50', backgroundColor: '#39B54A0d' }}
-          >
-            <span className="text-base leading-none mt-0.5">📜</span>
-            <div className="min-w-0">
-              <div className="font-bold text-xs" style={{ color: '#39B54A' }}>{t('fabricx.chaincodeNoteTitle')}</div>
-              <div className="text-[11px] text-muted-foreground leading-snug">
-                {t('fabricx.chaincodeNoteBody')}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── s3-consensus ─────────────────────────────────────────────────────────────
-
-const CONSENSUS_OPTION_COLORS = ['#39B54A', '#f59e0b', '#6366f1'];
-
-function PluggableConsensusSlide() {
-  const { t } = useTranslation('blockchain-platforms/section-3');
-  const optionText = t('consensus.options', { returnObjects: true }) as { label: string; badge: string; desc: string }[];
-  const options = optionText.map((o, i) => ({ ...o, color: CONSENSUS_OPTION_COLORS[i] }));
-  const table = t('consensus.table', { returnObjects: true }) as { prop: string; raft: string; bft: string }[];
-
-  return (
-    <div className="h-full flex flex-col p-6 lg:p-10">
-      <div className="shrink-0 mb-5">
-        <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('consensus.heading')}</h2>
-        <p className="text-sm text-muted-foreground mt-1">{t('consensus.subtitle')}</p>
-      </div>
-
-      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Left — why pluggable */}
-        <div className="flex flex-col gap-3">
-          <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">{t('consensus.whyHeading')}</h3>
-          <p className="text-sm text-muted-foreground">
-            {t('consensus.whyBody')}
-          </p>
-          {options.map((opt, i) => (
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {mechanisms.map((m, i) => {
+          const color = HOW_AGREES_COLORS[i];
+          return (
             <motion.div
-              key={opt.label}
-              initial={{ opacity: 0, y: 12 }}
+              key={m.label}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 + i * 0.1 }}
-              className="p-3 rounded-xl border"
-              style={{ borderColor: opt.color + '40', backgroundColor: opt.color + '0d' }}
+              transition={{ delay: i * 0.1, duration: 0.3 }}
+              className="rounded-2xl border-2 p-4 flex flex-col gap-3 min-h-0"
+              style={{ borderColor: color + '55', backgroundColor: color + '08' }}
             >
-              <div className="flex items-center gap-2 mb-1">
-                <span className="font-bold text-sm text-foreground">{opt.label}</span>
-                <span
-                  className="text-xs px-1.5 py-0.5 rounded-full font-medium"
-                  style={{ backgroundColor: opt.color + '20', color: opt.color }}
-                >
-                  {opt.badge}
-                </span>
+              <div className="shrink-0 flex items-center gap-2.5">
+                <span className="text-3xl leading-none">{m.emoji}</span>
+                <div className="font-black text-base text-foreground leading-tight">{m.label}</div>
               </div>
-              <div className="text-xs text-muted-foreground">{opt.desc}</div>
+              <div className="flex-1 min-h-0">
+                <div className="text-[9px] font-black uppercase tracking-widest" style={{ color }}>{t('howAgrees.oneLineLabel')}</div>
+                <p className="text-sm lg:text-base text-foreground leading-snug mt-1">{m.one}</p>
+              </div>
+              <div className="shrink-0 rounded-lg px-2.5 py-2 border-l-2" style={{ borderColor: color, backgroundColor: color + '12' }}>
+                <div className="text-[9px] font-black uppercase tracking-widest" style={{ color }}>{t('howAgrees.businessLabel')}</div>
+                <div className="text-xs lg:text-sm text-muted-foreground leading-snug mt-0.5">{m.business}</div>
+              </div>
             </motion.div>
-          ))}
-        </div>
+          );
+        })}
+      </div>
 
-        {/* Right — comparison table */}
-        <div className="flex flex-col gap-2">
-          <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">{t('consensus.tableHeading')}</h3>
-
-          {/* Header */}
-          <div className="grid grid-cols-3 gap-2">
-            <div className="p-2 rounded-lg bg-muted text-xs font-bold text-foreground">{t('consensus.propertyLabel')}</div>
-            <div className="p-2 rounded-lg text-xs font-bold text-white text-center" style={{ backgroundColor: '#39B54A' }}>{t('consensus.raftLabel')}</div>
-            <div className="p-2 rounded-lg text-xs font-bold text-white text-center" style={{ backgroundColor: '#f59e0b' }}>{t('consensus.bftLabel')}</div>
-          </div>
-
-          {/* Rows */}
-          <div className="flex flex-col gap-1.5 flex-1">
-            {table.map((row, i) => (
-              <motion.div
-                key={row.prop}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 + i * 0.07 }}
-                className="grid grid-cols-3 gap-2 flex-1"
-              >
-                <div className="p-2 rounded-lg border border-border bg-card text-xs font-semibold text-foreground flex items-center">{row.prop}</div>
-                <div className="p-2 rounded-lg border border-[#39B54A]/30 text-xs text-muted-foreground flex items-center justify-center text-center" style={{ backgroundColor: '#39B54A08' }}>{row.raft}</div>
-                <div className="p-2 rounded-lg border border-[#f59e0b]/30 text-xs text-muted-foreground flex items-center justify-center text-center" style={{ backgroundColor: '#f59e0b08' }}>{row.bft}</div>
-              </motion.div>
+      {/* Bitcoin vs Fabric at a glance + which ordering to pick */}
+      <div className="shrink-0 mt-3 grid grid-cols-1 lg:grid-cols-2 gap-3">
+        <div className="rounded-xl border border-border bg-card/50 p-3">
+          <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2">{t('howAgrees.compareLabel')}</div>
+          <div className="grid grid-cols-[auto_1.3fr_1fr_1.2fr] gap-x-3 gap-y-1.5 text-[11px] items-start">
+            <div />
+            {compareCols.map((c) => (
+              <div key={c} className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">{c}</div>
             ))}
+            {compare.map((row, i) => {
+              const color = i === 0 ? '#f7931a' : '#39B54A';
+              return (
+                <Fragment key={row.platform}>
+                  <div className="font-black" style={{ color }}>{row.platform}</div>
+                  <div className="text-muted-foreground leading-snug">{row.who}</div>
+                  <div className="text-foreground font-semibold leading-snug">{row.time}</div>
+                  <div className="text-muted-foreground leading-snug">{row.finality}</div>
+                </Fragment>
+              );
+            })}
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── s3-bft ───────────────────────────────────────────────────────────────────
-
-// Language-neutral: numeric thresholds only. Hints resolved via t().
-const BFT_TABLE_NUMS = [
-  { faulty: 1,  needed: 4 },
-  { faulty: 2,  needed: 7 },
-  { faulty: 10, needed: 31 },
-];
-
-function BFTThresholdDonut() {
-  const { t } = useTranslation('blockchain-platforms/section-3');
-  const r = 40;
-  const c = 2 * Math.PI * r;        // ~251.3
-  const honest = (2 / 3) * c;
-  const byz    = (1 / 3) * c;
-  return (
-    <svg viewBox="0 0 100 100" className="w-full h-full">
-      {/* Background ring */}
-      <circle cx={50} cy={50} r={r} fill="none" stroke="hsl(var(--border))" strokeWidth={14} />
-      {/* Honest segment (2/3) */}
-      <circle
-        cx={50} cy={50} r={r}
-        fill="none" stroke="#39B54A" strokeWidth={14}
-        strokeDasharray={`${honest} ${c}`}
-        transform="rotate(-90 50 50)"
-        strokeLinecap="butt"
-      />
-      {/* Byzantine segment (1/3) */}
-      <circle
-        cx={50} cy={50} r={r}
-        fill="none" stroke="#ED1C24" strokeWidth={14}
-        strokeDasharray={`${byz} ${c}`}
-        strokeDashoffset={-honest}
-        transform="rotate(-90 50 50)"
-        strokeLinecap="butt"
-      />
-      {/* Center text */}
-      <text x={50} y={47} textAnchor="middle" fontSize={9} fontWeight="800" className="fill-foreground">{t('bft.donutCenter')}</text>
-      <text x={50} y={58} textAnchor="middle" fontSize={5.5} className="fill-muted-foreground">{t('bft.donutSub')}</text>
-    </svg>
-  );
-}
-
-function EquivocationDiagram() {
-  const { t } = useTranslation('blockchain-platforms/section-3');
-  return (
-    <svg viewBox="0 0 240 110" className="w-full h-28">
-      <defs>
-        <marker id="bft-arrow" markerWidth={7} markerHeight={7} refX={6} refY={3.5} orient="auto">
-          <polygon points="0 0, 7 3.5, 0 7" fill="#ED1C24" />
-        </marker>
-      </defs>
-      {/* Honest A (left) */}
-      <circle cx={32} cy={55} r={16} fill="#39B54A30" stroke="#39B54A" strokeWidth={2} />
-      <text x={32} y={59} textAnchor="middle" fontSize={11} fontWeight="800" fill="#39B54A">A</text>
-      <text x={32} y={88} textAnchor="middle" fontSize={8} className="fill-muted-foreground">{t('bft.honestLabel')}</text>
-      {/* Byzantine center */}
-      <circle cx={120} cy={55} r={20} fill="#ED1C2430" stroke="#ED1C24" strokeWidth={2.5} />
-      <text x={120} y={60} textAnchor="middle" fontSize={14} fontWeight="800" fill="#ED1C24">✗</text>
-      <text x={120} y={92} textAnchor="middle" fontSize={8} fontWeight="700" fill="#ED1C24">{t('bft.byzantineLabel')}</text>
-      {/* Honest C (right) */}
-      <circle cx={208} cy={55} r={16} fill="#39B54A30" stroke="#39B54A" strokeWidth={2} />
-      <text x={208} y={59} textAnchor="middle" fontSize={11} fontWeight="800" fill="#39B54A">C</text>
-      <text x={208} y={88} textAnchor="middle" fontSize={8} className="fill-muted-foreground">{t('bft.honestLabel')}</text>
-      {/* Conflicting messages */}
-      <line x1={102} y1={55} x2={50} y2={55} stroke="#ED1C24" strokeWidth={1.6} markerEnd="url(#bft-arrow)" />
-      <line x1={138} y1={55} x2={190} y2={55} stroke="#ED1C24" strokeWidth={1.6} markerEnd="url(#bft-arrow)" />
-      <text x={76} y={48} textAnchor="middle" fontSize={9} fontWeight="700" fill="#ED1C24">"X = $100"</text>
-      <text x={164} y={48} textAnchor="middle" fontSize={9} fontWeight="700" fill="#ED1C24">"X = $50"</text>
-    </svg>
-  );
-}
-
-function BFTSlide() {
-  const { t } = useTranslation('blockchain-platforms/section-3');
-  const tableHints = t('bft.table', { returnObjects: true }) as { hint: string }[];
-  const bftTable = BFT_TABLE_NUMS.map((row, i) => ({ ...row, hint: tableHints[i].hint }));
-  const scenarioText = t('bft.scenarios', { returnObjects: true }) as { emoji: string; label: string; desc: string }[];
-  const scenarioColors = ['#ED1C24', '#f59e0b', '#6366f1'];
-  const scenarios = scenarioText.map((s, i) => ({ ...s, color: scenarioColors[i] }));
-
-  return (
-    <div className="h-full flex flex-col p-6 lg:p-10">
-      <div className="shrink-0 mb-3">
-        <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('bft.heading')}</h2>
-        <p className="text-sm text-muted-foreground mt-1">{t('bft.subtitle')}</p>
-      </div>
-
-      {/* Definition strip */}
-      <div className="shrink-0 mb-3 rounded-xl border p-3" style={{ borderColor: '#f59e0b55', backgroundColor: '#f59e0b0d' }}>
-        <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#f59e0b' }}>
-          {t('bft.defLabel')}
-        </p>
-        <p className="text-sm text-foreground mt-0.5 leading-snug">
-          {t('bft.def.a')}<span className="font-semibold">{t('bft.def.bftTerm')}</span>{t('bft.def.b')}<span className="font-semibold">{t('bft.def.f')}</span>{t('bft.def.c')}<span className="italic">{t('bft.def.different')}</span>{t('bft.def.d')}
-        </p>
-      </div>
-
-      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-5">
-
-        {/* Left — Theory: threshold + formula + table */}
-        <div className="flex flex-col gap-2 min-h-0">
-          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider shrink-0">{t('bft.thresholdLabel')}</p>
-
-          {/* Donut + formula side by side */}
-          <div className="shrink-0 grid grid-cols-[auto_1fr] gap-3 p-3 rounded-xl border border-border bg-card/50 items-center">
-            <div className="size-24 lg:size-28 shrink-0">
-              <BFTThresholdDonut />
-            </div>
-            <div className="min-w-0">
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{t('bft.formulaLabel')}</div>
-              <div className="text-xl lg:text-2xl font-black text-foreground font-mono leading-none mt-0.5">N ≥ 3F + 1</div>
-              <div className="text-[11px] text-muted-foreground mt-1.5 leading-snug">
-                <span className="text-[#39B54A] font-semibold">{t('bft.formulaNote.honest')}</span>{t('bft.formulaNote.a')}<span className="text-[#ED1C24] font-semibold">{t('bft.formulaNote.malicious')}</span>{t('bft.formulaNote.b')}<span className="font-semibold">{t('bft.formulaNote.fgt')}</span>{t('bft.formulaNote.c')}
-              </div>
-            </div>
-          </div>
-
-          {/* Table */}
-          <div className="flex-1 min-h-0 grid auto-rows-fr gap-1.5">
-            <div className="grid grid-cols-[auto_auto_1fr] gap-2 items-center px-2">
-              <div className="text-[10px] font-bold uppercase tracking-wider text-[#ED1C24]">{t('bft.tableFCol')}</div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-[#39B54A]">{t('bft.tableNCol')}</div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{t('bft.tableUseCol')}</div>
-            </div>
-            {bftTable.map(row => (
-              <div key={row.faulty} className="grid grid-cols-[auto_auto_1fr] gap-2 items-center min-h-0">
-                <div className="px-3 py-1.5 rounded-lg border text-base font-black text-center" style={{ borderColor: '#ED1C2440', color: '#ED1C24', backgroundColor: '#ED1C240d', minWidth: 64 }}>
-                  {row.faulty}
-                </div>
-                <div className="px-3 py-1.5 rounded-lg border text-base font-black text-center" style={{ borderColor: '#39B54A40', color: '#39B54A', backgroundColor: '#39B54A0d', minWidth: 64 }}>
-                  {row.needed}
-                </div>
-                <div className="text-[11px] text-muted-foreground italic">{row.hint}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Right — Practice: what BFT prevents + enterprise scenarios */}
-        <div className="flex flex-col gap-2 min-h-0">
-          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider shrink-0">{t('bft.faultLookLabel')}</p>
-
-          {/* Equivocation diagram */}
-          <div className="shrink-0 rounded-xl border p-3" style={{ borderColor: '#ED1C2440', backgroundColor: '#ED1C2408' }}>
-            <EquivocationDiagram />
-            <p className="text-[11px] text-muted-foreground leading-snug text-center mt-1">
-              <span className="font-semibold text-foreground">{t('bft.equivocationNote.term')}</span>{t('bft.equivocationNote.body')}
-            </p>
-          </div>
-
-          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider shrink-0 mt-1">{t('bft.enterpriseLabel')}</p>
-
-          <div className="flex-1 min-h-0 grid auto-rows-fr gap-2">
-            {scenarios.map((item, i) => (
-              <motion.div
-                key={item.label}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.08 }}
-                className="flex items-start gap-2.5 p-2.5 rounded-xl border min-h-0"
-                style={{ borderColor: item.color + '50', backgroundColor: item.color + '0d' }}
-              >
-                <span className="text-lg shrink-0 leading-none mt-0.5">{item.emoji}</span>
-                <div className="min-w-0">
-                  <div className="font-bold text-xs leading-tight" style={{ color: item.color }}>{item.label}</div>
-                  <div className="text-[11px] text-muted-foreground leading-snug mt-0.5">{item.desc}</div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom comparison strip */}
-      <div className="shrink-0 mt-3 grid grid-cols-1 lg:grid-cols-2 gap-2">
-        <div className="rounded-xl border p-2.5" style={{ borderColor: '#f59e0b55', backgroundColor: '#f59e0b0d' }}>
-          <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#f59e0b' }}>{t('bft.raftStripLabel')}</p>
-          <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">
-            {t('bft.raftStrip.a')}<span className="text-foreground font-semibold">{t('bft.raftStrip.crashes')}</span>{t('bft.raftStrip.b')}
+        <div className="rounded-xl border p-3 flex flex-col gap-1.5" style={{ borderColor: '#6366f155', backgroundColor: '#6366f10d' }}>
+          <div className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#6366f1' }}>{t('howAgrees.chooseLabel')}</div>
+          <p className="text-[11px] text-muted-foreground leading-snug">
+            <span className="font-bold" style={{ color: '#6366f1' }}>{t('howAgrees.chooseRaft.term')}</span>{t('howAgrees.chooseRaft.body')}
+          </p>
+          <p className="text-[11px] text-muted-foreground leading-snug">
+            <span className="font-bold" style={{ color: '#39B54A' }}>{t('howAgrees.chooseBft.term')}</span>{t('howAgrees.chooseBft.body')}
           </p>
         </div>
-        <div className="rounded-xl border p-2.5" style={{ borderColor: '#39B54A55', backgroundColor: '#39B54A0d' }}>
-          <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#39B54A' }}>{t('bft.bftStripLabel')}</p>
-          <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">
-            {t('bft.bftStrip.a')}<span className="text-foreground font-semibold">{t('bft.bftStrip.malicious')}</span>{t('bft.bftStrip.b')}
-          </p>
-        </div>
+      </div>
+
+      <div className="shrink-0 mt-3 flex flex-col gap-2 lg:pr-20">
+        <KeyPointBar text={t('howAgrees.keyPoint')} />
+        <UnderTheHood items={hood} />
       </div>
     </div>
   );
@@ -1007,6 +658,7 @@ function ChannelsSlide() {
           </div>
         </div>
       </div>
+      <KeyPointBar text={t('channels.keyPoint')} className="shrink-0 mt-3 lg:mr-20" />
     </div>
   );
 }
@@ -1141,348 +793,10 @@ function TxFlowSlide() {
               {t('txflow.eovBodyA')}<strong>{t('txflow.eovBefore')}</strong>{t('txflow.eovBodyB')}
             </div>
           </div>
-          <div className="p-3 rounded-xl border border-[#6366f1]/40" style={{ backgroundColor: '#6366f10d' }}>
-            <div className="text-xs text-muted-foreground">
-              <span className="font-bold text-foreground">{t('txflow.resultLabel')}</span>
-              {t('txflow.resultBody')}
-            </div>
-          </div>
           <UnderTheHood items={t('txflow.hood', { returnObjects: true }) as string[]} className="mt-auto" />
         </div>
       </div>
-    </div>
-  );
-}
-
-// ─── s3-consensus-evo ─────────────────────────────────────────────────────────
-
-// ─── s3-consensus-evo ─────────────────────────────────────────────────────────
-
-type ConsensusVersionText = {
-  name: string;
-  status: string;
-  stats: { label: string; value: string }[];
-  desc: string;
-  limit: string;
-  solved: string;
-  adoption: string;
-};
-
-// Language-neutral: version/year/color/diagram only. Text resolved via t().
-const CONSENSUS_VERSION_STYLE = [
-  { version: 'v1.x', year: '2017', color: '#ED1C24', diagram: 'kafka' as const },
-  { version: 'v2.x', year: '2019', color: '#f59e0b', diagram: 'raft' as const },
-  { version: 'v3.x', year: '2023', color: '#39B54A', diagram: 'bft' as const },
-];
-
-function ConsensusMiniDiagram({ kind, color }: { kind: 'kafka' | 'raft' | 'bft'; color: string }) {
-  const { t } = useTranslation('blockchain-platforms/section-3');
-  if (kind === 'kafka') {
-    return (
-      <svg viewBox="0 0 240 120" className="w-full h-28">
-        {/* Peers row */}
-        {[40, 90, 150, 200].map((x, i) => (
-          <g key={i}>
-            <circle cx={x} cy={22} r={11} fill={color + '30'} stroke={color} strokeWidth={1.5} />
-            <text x={x} y={26} textAnchor="middle" fontSize={10} fontWeight="700" fill="currentColor" className="text-foreground">P{i + 1}</text>
-            <line x1={x} y1={33} x2={120} y2={75} stroke={color} strokeWidth={1} strokeDasharray="3 3" opacity={0.6} />
-          </g>
-        ))}
-        {/* External Kafka box */}
-        <rect x={50} y={70} width={140} height={38} rx={6} fill={color + '20'} stroke={color} strokeWidth={1.5} strokeDasharray="4 3" />
-        <text x={120} y={88} textAnchor="middle" fontSize={11} fontWeight="800" fill={color}>{t('consensusEvo.diagram.kafkaCluster')}</text>
-        <text x={120} y={102} textAnchor="middle" fontSize={9} fill="currentColor" className="text-muted-foreground">{t('consensusEvo.diagram.kafkaSub')}</text>
-      </svg>
-    );
-  }
-  if (kind === 'raft') {
-    return (
-      <svg viewBox="0 0 240 120" className="w-full h-28">
-        {/* Leader */}
-        <circle cx={120} cy={28} r={16} fill={color + '40'} stroke={color} strokeWidth={2} />
-        <text x={120} y={32} textAnchor="middle" fontSize={10} fontWeight="800" fill={color}>{t('consensusEvo.diagram.raftLead')}</text>
-        {/* Followers */}
-        {[60, 180].map((x, i) => (
-          <g key={i}>
-            <circle cx={x} cy={88} r={13} fill={color + '20'} stroke={color} strokeWidth={1.5} />
-            <text x={x} y={92} textAnchor="middle" fontSize={9} fontWeight="700" fill={color}>F{i + 1}</text>
-            <line x1={120} y1={44} x2={x} y2={75} stroke={color} strokeWidth={1.8} markerEnd="url(#arrow-raft)" />
-          </g>
-        ))}
-        <defs>
-          <marker id="arrow-raft" markerWidth={7} markerHeight={7} refX={6} refY={3.5} orient="auto">
-            <polygon points="0 0, 7 3.5, 0 7" fill={color} />
-          </marker>
-        </defs>
-        <text x={120} y={114} textAnchor="middle" fontSize={9} fill="currentColor" className="text-muted-foreground">{t('consensusEvo.diagram.raftLogReplication')}</text>
-      </svg>
-    );
-  }
-  // bft
-  return (
-    <svg viewBox="0 0 240 120" className="w-full h-28">
-      {/* 4 nodes in a square */}
-      {[
-        { x: 80,  y: 32, label: 'N1', honest: true },
-        { x: 160, y: 32, label: 'N2', honest: true },
-        { x: 80,  y: 84, label: 'N3', honest: true },
-        { x: 160, y: 84, label: 'N4', honest: false },
-      ].map((n, i) => (
-        <g key={i}>
-          <circle
-            cx={n.x} cy={n.y} r={14}
-            fill={n.honest ? color + '30' : '#ED1C2430'}
-            stroke={n.honest ? color : '#ED1C24'}
-            strokeWidth={1.8}
-          />
-          <text x={n.x} y={n.y + 4} textAnchor="middle" fontSize={n.honest ? 10 : 13} fontWeight="800" fill={n.honest ? color : '#ED1C24'}>
-            {n.honest ? n.label : '✗'}
-          </text>
-        </g>
-      ))}
-      {/* Connecting lines between honest nodes (triangle) */}
-      {[
-        [80, 32, 160, 32], [80, 32, 80, 84], [160, 32, 80, 84],
-      ].map(([x1, y1, x2, y2], i) => (
-        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth={1.2} opacity={0.55} />
-      ))}
-      <text x={120} y={114} textAnchor="middle" fontSize={9} fill="currentColor" className="text-muted-foreground">{t('consensusEvo.diagram.bftHonestAgree')}</text>
-    </svg>
-  );
-}
-
-function ConsensusEvolutionSlide() {
-  const { t } = useTranslation('blockchain-platforms/section-3');
-  const versionText = t('consensusEvo.versions', { returnObjects: true }) as ConsensusVersionText[];
-  const CONSENSUS_VERSIONS = CONSENSUS_VERSION_STYLE.map((s, i) => ({ ...s, ...versionText[i] }));
-
-  return (
-    <div className="h-full flex flex-col p-6 lg:p-10">
-      <div className="shrink-0 mb-3">
-        <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('consensusEvo.heading')}</h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          {t('consensusEvo.subtitle')}
-        </p>
-      </div>
-
-      <div className="flex-1 min-h-0 flex flex-col gap-3">
-        {/* Timeline strip */}
-        <div className="shrink-0 flex items-center gap-2 px-1">
-          {CONSENSUS_VERSIONS.map((v, i) => (
-            <div key={v.version} className="flex items-center flex-1 gap-2">
-              <div className="flex items-center gap-2 shrink-0">
-                <div
-                  className="size-9 rounded-full border-2 flex items-center justify-center font-black text-[10px] shrink-0"
-                  style={{ borderColor: v.color, backgroundColor: v.color + '20', color: v.color }}
-                >
-                  {v.version}
-                </div>
-                <div className="leading-tight">
-                  <div className="text-xs font-bold text-foreground whitespace-nowrap">{v.name}</div>
-                  <div className="text-[10px] text-muted-foreground">{v.year}</div>
-                </div>
-              </div>
-              {i < CONSENSUS_VERSIONS.length - 1 && (
-                <div className="flex-1 flex items-center gap-1 min-w-0">
-                  <div className="flex-1 h-0.5" style={{ background: `linear-gradient(to right, ${v.color}, ${CONSENSUS_VERSIONS[i + 1].color})` }} />
-                  <span className="text-[10px] text-muted-foreground">→</span>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Cards */}
-        <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-3">
-          {CONSENSUS_VERSIONS.map((v, i) => (
-            <motion.div
-              key={v.name}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1, duration: 0.3 }}
-              className="flex flex-col gap-2 p-3 rounded-xl border min-h-0"
-              style={{ borderColor: v.color + '55', backgroundColor: v.color + '08', color: v.color }}
-            >
-              {/* Header */}
-              <div className="flex items-center justify-between shrink-0">
-                <div className="font-black text-sm text-foreground">{v.name}</div>
-                <span
-                  className="px-2 py-0.5 rounded-full text-[10px] font-bold border"
-                  style={{ borderColor: v.color + '70', color: v.color, backgroundColor: v.color + '12' }}
-                >
-                  {v.status}
-                </span>
-              </div>
-
-              {/* Mini diagram */}
-              <div className="rounded-lg border bg-card/50 p-2 shrink-0" style={{ borderColor: v.color + '30' }}>
-                <ConsensusMiniDiagram kind={v.diagram} color={v.color} />
-              </div>
-
-              {/* Stats row */}
-              <div className="grid grid-cols-3 gap-1 shrink-0">
-                {v.stats.map(s => (
-                  <div key={s.label} className="rounded-md border px-1.5 py-1 text-center bg-card" style={{ borderColor: v.color + '35' }}>
-                    <div className="text-[10px] font-black leading-tight" style={{ color: v.color }}>{s.value}</div>
-                    <div className="text-[8px] text-muted-foreground uppercase tracking-wider leading-tight mt-0.5">{s.label}</div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Description */}
-              <p className="text-[11px] text-muted-foreground leading-snug flex-1">{v.desc}</p>
-
-              {/* Limit / Solved */}
-              <div className="shrink-0 space-y-1">
-                <div className="p-1.5 rounded text-[10px] leading-snug" style={{ backgroundColor: '#ED1C2410', borderLeft: '2px solid #ED1C24' }}>
-                  <span className="font-bold" style={{ color: '#ED1C24' }}>{t('consensusEvo.limitLabel')}</span>
-                  <span className="text-muted-foreground">{v.limit}</span>
-                </div>
-                <div className="p-1.5 rounded text-[10px] leading-snug" style={{ backgroundColor: '#39B54A10', borderLeft: '2px solid #39B54A' }}>
-                  <span className="font-bold" style={{ color: '#39B54A' }}>{t('consensusEvo.solvedLabel')}</span>
-                  <span className="text-muted-foreground">{v.solved}</span>
-                </div>
-              </div>
-
-              {/* Adoption note */}
-              <div className="shrink-0 text-[9px] italic text-muted-foreground leading-snug border-t pt-1.5" style={{ borderColor: v.color + '25' }}>
-                {v.adoption}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Decision strip */}
-        <div className="shrink-0 rounded-xl border p-2.5 flex flex-col lg:flex-row items-start lg:items-center gap-2 lg:gap-4" style={{ borderColor: '#6366f155', backgroundColor: '#6366f10d' }}>
-          <span className="text-[10px] font-black uppercase tracking-widest shrink-0" style={{ color: '#6366f1' }}>{t('consensusEvo.decisionLabel')}</span>
-          <div className="flex flex-col lg:flex-row gap-2 lg:gap-5 text-[11px] text-muted-foreground leading-snug">
-            <div>
-              <span className="font-bold" style={{ color: '#f59e0b' }}>{t('consensusEvo.decisionRaft.term')}</span>{t('consensusEvo.decisionRaft.a')}<span className="text-foreground font-medium">{t('consensusEvo.decisionRaft.trusted')}</span>{t('consensusEvo.decisionRaft.b')}
-            </div>
-            <div>
-              <span className="font-bold" style={{ color: '#39B54A' }}>{t('consensusEvo.decisionBft.term')}</span>{t('consensusEvo.decisionBft.a')}<span className="text-foreground font-medium">{t('consensusEvo.decisionBft.competitors')}</span>{t('consensusEvo.decisionBft.b')}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── s3-raft ──────────────────────────────────────────────────────────────────
-
-// Language-neutral: id/color/icon only. label/desc/details resolved via t().
-const RAFT_PHASE_STYLE = [
-  { id: 'election', color: '#6366f1', icon: '🗳️' },
-  { id: 'replication', color: '#39B54A', icon: '📋' },
-  { id: 'commit', color: '#f59e0b', icon: '✅' },
-];
-
-function RaftMechanicsSlide() {
-  const { t } = useTranslation('blockchain-platforms/section-3');
-  const phaseText = t('raft.phases', { returnObjects: true }) as { label: string; desc: string; details: string[] }[];
-  const RAFT_PHASES = RAFT_PHASE_STYLE.map((s, i) => ({ ...s, ...phaseText[i] }));
-
-  const [activePhase, setActivePhase] = useState(0);
-  const phase = RAFT_PHASES[activePhase];
-
-  return (
-    <div className="h-full flex flex-col p-6 lg:p-10">
-      <div className="shrink-0 mb-5">
-        <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('raft.heading')}</h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          {t('raft.subtitle')}
-        </p>
-      </div>
-
-      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Left — phase selector + node visual */}
-        <div className="flex flex-col gap-4">
-          {/* Phase tabs */}
-          <div className="flex gap-2 shrink-0">
-            {RAFT_PHASES.map((p, i) => (
-              <button
-                key={p.id}
-                onClick={() => setActivePhase(i)}
-                className="flex-1 py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer"
-                style={{
-                  borderColor: activePhase === i ? p.color : 'var(--border)',
-                  backgroundColor: activePhase === i ? p.color + '18' : 'transparent',
-                  color: activePhase === i ? p.color : 'var(--muted-foreground)',
-                }}
-              >
-                {p.icon} {p.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Node diagram */}
-          <div className="flex-1 rounded-xl border border-border bg-card/50 p-4 flex flex-col gap-3">
-            <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider shrink-0">{t('raft.clusterLabel')}</div>
-            <div className="flex-1 flex items-center justify-center">
-              <div className="flex gap-4 items-center flex-wrap justify-center">
-                {[
-                  { role: 'leader', color: phase.color, animate: activePhase === 0 || activePhase === 1 || activePhase === 2 },
-                  { role: 'follower', color: '#6366f1', animate: activePhase === 1 || activePhase === 2 },
-                  { role: 'follower', color: '#6366f1', animate: activePhase === 1 || activePhase === 2 },
-                  { role: activePhase === 0 ? 'candidate' : 'follower', color: activePhase === 0 ? '#f59e0b' : '#6366f1', animate: activePhase === 0 },
-                  { role: 'follower', color: '#6366f1', animate: false },
-                ].map((node, i) => (
-                  <motion.div
-                    key={i}
-                    animate={node.animate ? { scale: [1, 1.08, 1] } : { scale: 1 }}
-                    transition={{ duration: 1.2, repeat: Infinity, repeatDelay: 0.5 }}
-                    className="flex flex-col items-center gap-1"
-                  >
-                    <div
-                      className="size-12 rounded-full border-2 flex items-center justify-center text-lg"
-                      style={{ borderColor: node.color, backgroundColor: node.color + '18' }}
-                    >
-                      {node.role === 'leader' ? '👑' : node.role === 'candidate' ? '✋' : '🖥️'}
-                    </div>
-                    <span className="text-xs font-medium" style={{ color: node.color }}>
-                      {node.role === 'leader' ? t('raft.roleLeader') : node.role === 'candidate' ? t('raft.roleCandidate') : t('raft.roleFollower')}
-                    </span>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-            <p className="text-xs text-muted-foreground shrink-0 text-center">{phase.desc}</p>
-          </div>
-        </div>
-
-        {/* Right — step list */}
-        <div className="flex flex-col gap-3">
-          <div className="font-bold text-base text-foreground shrink-0">{phase.icon} {phase.label}{t('raft.stepsSuffix')}</div>
-          {phase.details.map((step, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: 16 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.07, duration: 0.28 }}
-              className="flex items-start gap-3 p-3 rounded-xl border"
-              style={{ borderColor: phase.color + '40', backgroundColor: phase.color + '0a' }}
-            >
-              <div
-                className="size-5 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5"
-                style={{ backgroundColor: phase.color, color: '#fff' }}
-              >
-                {i + 1}
-              </div>
-              <span className="text-sm text-foreground">{step}</span>
-            </motion.div>
-          ))}
-
-          {/* Quorum formula */}
-          <div className="mt-auto p-3 rounded-xl border border-[#39B54A]/40" style={{ backgroundColor: '#39B54A0d' }}>
-            <div className="text-xs font-bold text-[#39B54A] mb-1">{t('raft.quorumTitle')}</div>
-            <div className="font-mono text-sm text-foreground">{t('raft.quorumFormula')}</div>
-            <div className="text-xs text-muted-foreground mt-1">
-              {t('raft.quorumNote')}
-            </div>
-          </div>
-        </div>
-      </div>
+      <KeyPointBar text={t('txflow.keyPoint')} className="shrink-0 mt-3 lg:mr-20" />
     </div>
   );
 }
@@ -1609,6 +923,7 @@ function SupplyChainExercise() {
           </span>
         </motion.div>
       )}
+      <KeyPointBar text={t('exerciseSupply.keyPoint')} className="shrink-0 mt-3 lg:mr-20" />
     </div>
   );
 }
@@ -1795,6 +1110,7 @@ function HealthDataExercise() {
           )}
         </div>
       </div>
+      <KeyPointBar text={t('exerciseHealth.keyPoint')} className="shrink-0 mt-3 lg:mr-20" />
     </div>
   );
 }
@@ -1871,38 +1187,21 @@ export function BP_Section3() {
         </div>
 
         {/* ═══════ FABRIC OVERVIEW ═══════ */}
-        <div id="s3-overview" className="h-full flex items-start">
-          <ConceptSlide
-            title={t('overview.title')}
-            description={t('overview.description')}
-            visual={<FabricOverviewVisual />}
-            keyPoints={overviewKeyPoints}
-          />
+        <div id="s3-overview" className="h-full flex flex-col">
+          <div className="flex-1 min-h-0 overflow-hidden">
+            <ConceptSlide
+              title={t('overview.title')}
+              description={t('overview.description')}
+              visual={<FabricOverviewVisual />}
+              keyPoints={overviewKeyPoints}
+            />
+          </div>
+          <KeyPointBar text={t('overview.keyPoint')} className="shrink-0 mx-5 mb-5 lg:ml-10 lg:mr-30 lg:mb-8" />
         </div>
 
-        {/* ═══════ FABRIC DEEP DIVE ═══════ */}
-        <div id="s3-fabricx" className="h-full">
-          <FabricDeepDiveSlide />
-        </div>
-
-        {/* ═══════ CONSENSUS EVOLUTION ═══════ */}
-        <div id="s3-consensus-evo" className="h-full">
-          <ConsensusEvolutionSlide />
-        </div>
-
-        {/* ═══════ PLUGGABLE CONSENSUS ═══════ */}
-        <div id="s3-consensus" className="h-full">
-          <PluggableConsensusSlide />
-        </div>
-
-        {/* ═══════ RAFT MECHANICS ═══════ */}
-        <div id="s3-raft" className="h-full">
-          <RaftMechanicsSlide />
-        </div>
-
-        {/* ═══════ BFT ═══════ */}
-        <div id="s3-bft" className="h-full">
-          <BFTSlide />
+        {/* ═══════ UNDER THE HOOD — HOW FABRIC AGREES ═══════ */}
+        <div id="s3-how-agrees" className="h-full">
+          <HowFabricAgreesSlide />
         </div>
 
         {/* ═══════ CHANNELS ═══════ */}
@@ -1979,23 +1278,21 @@ export function BP_Section3() {
             ))}
           </div>
 
-          <div className="shrink-0 mt-3 rounded-xl border p-2.5" style={{ borderColor: '#39B54A55', backgroundColor: '#39B54A0d' }}>
-            <p className="text-[11px] text-muted-foreground leading-snug">
-              <span className="font-bold" style={{ color: '#39B54A' }}>{t('production.patternLabel')}</span>
-              {t('production.patternBody')}
-            </p>
-          </div>
+          <KeyPointBar text={t('production.keyPoint')} className="shrink-0 mt-3 lg:mr-20" />
         </div>
 
         {/* ═══════ COMPARISON ═══════ */}
-        <div id="s3-comparison" className="h-full">
-          <ComparisonSlide
-            title={t('comparison.title')}
-            featureLabel={t('comparison.featureLabel')}
-            option1Label={t('comparison.option1Label')}
-            option2Label={t('comparison.option2Label')}
-            items={comparisonItems}
-          />
+        <div id="s3-comparison" className="h-full flex flex-col">
+          <div className="flex-1 min-h-0">
+            <ComparisonSlide
+              title={t('comparison.title')}
+              featureLabel={t('comparison.featureLabel')}
+              option1Label={t('comparison.option1Label')}
+              option2Label={t('comparison.option2Label')}
+              items={comparisonItems}
+            />
+          </div>
+          <KeyPointBar text={t('comparison.keyPoint')} className="shrink-0 mx-5 mb-5 lg:ml-8 lg:mr-28 lg:mb-8" />
         </div>
 
         {/* ═══════ BEST FITS — WHERE FABRIC WINS ═══════ */}
@@ -2028,6 +1325,7 @@ export function BP_Section3() {
           <div className="shrink-0 mt-3 p-2.5 bg-[#ef4444]/08 border border-[#ef4444]/30 rounded-lg text-[11px] text-muted-foreground">
             <strong className="text-[#ef4444]">{t('bestfits.notAFitLabel')}</strong>{t('bestfits.notAFitBody')}
           </div>
+          <KeyPointBar text={t('bestfits.keyPoint')} className="shrink-0 mt-2 lg:mr-20" />
         </div>
 
         {/* ═══════ WORST FITS — WHERE FABRIC IS WRONG ═══════ */}
@@ -2060,6 +1358,7 @@ export function BP_Section3() {
           <div className="shrink-0 mt-3 p-2.5 bg-[#10b981]/08 border border-[#10b981]/30 rounded-lg text-[11px] text-muted-foreground">
             <strong className="text-[#10b981]">{t('worstfits.rightToolLabel')}</strong>{t('worstfits.rightToolBody.a')}<em>{t('worstfits.rightToolBody.known')}</em>{t('worstfits.rightToolBody.b')}<em>{t('worstfits.rightToolBody.regulated')}</em>{t('worstfits.rightToolBody.c')}<em>{t('worstfits.rightToolBody.selective')}</em>{t('worstfits.rightToolBody.d')}
           </div>
+          <KeyPointBar text={t('worstfits.keyPoint')} className="shrink-0 mt-2 lg:mr-20" />
         </div>
 
         {/* ═══════ FABRIC ↔ PUBLIC-CHAIN GLOSSARY ═══════ */}
@@ -2092,9 +1391,7 @@ export function BP_Section3() {
             ))}
           </div>
 
-          <div className="shrink-0 mt-3 p-2.5 bg-[#0EA5E9]/08 border border-[#0EA5E9]/30 rounded-lg text-[11px] text-muted-foreground">
-            <strong className="text-[#0EA5E9]">{t('vocab.bottomLineLabel')}</strong>{t('vocab.bottomLineBody')}
-          </div>
+          <KeyPointBar text={t('vocab.keyPoint')} className="shrink-0 mt-3 lg:mr-20" />
         </div>
 
         {/* ═══════ QUIZ ═══════ */}

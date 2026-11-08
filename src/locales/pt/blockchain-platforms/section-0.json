@@ -6,8 +6,8 @@
     "s0-comparison":      "Comparação",
     "s0-usecases":        "Uso da Blockchain",
     "s0-takeaways":       "Conclusões",
-    "s0-team-reminder":   "🤝 Lembrete de Equipa",
-    "s0-spectrum": "The Spectrum"
+    "s0-spectrum": "The Spectrum",
+    "s0-sorter": "🧩 Who may write?"
   },
   "title": {
     "sectionNumber": "SECÇÃO 00",
@@ -44,7 +44,8 @@
         "Exemplos: Bitcoin, Ethereum, IPFS, Tor"
       ]
     },
-    "hood": ["Paul Baran (1964)", "network topology", "single point of failure", "consensus"]
+    "hood": ["Paul Baran (1964)", "network topology", "single point of failure", "consensus"],
+    "keyPoint": "Centralisation buys efficiency; distribution buys resilience — the business question is who you must trust, and what happens when they fail."
   },
   "types": {
     "title": "Tipos de Blockchain",
@@ -90,7 +91,8 @@
         "option2": "Quorum (JPMorgan), R3 Corda, Fabric multi-org",
         "option3": "Hyperledger Fabric (single org), private chains"
       }
-    ]
+    ],
+    "keyPoint": "The three types differ in who may read, write and validate — not in the cryptography underneath."
   },
   "permissioned": {
     "title": "Blockchains Permissionadas",
@@ -193,7 +195,8 @@
         { "label": "Identidade:", "text": " credenciais auto-soberanas, KYC uma só vez" },
         { "label": "Governo:", "text": " registos prediais, votação, contratação pública" }
       ]
-    }
+    },
+    "keyPoint": "Blockchain earns its place only when several parties who do not fully trust each other must share one record."
   },
   "takeaways": {
     "title": "Secção 00 — Conclusões",
@@ -205,29 +208,6 @@
       "As blockchains de consórcio permitem que organizações concorrentes colaborem em infraestrutura partilhada",
       "Não existe uma blockchain universalmente melhor — cada uma é otimizada para restrições diferentes"
     ]
-  },
-  "teamReminder": {
-    "badge": "🤝 Lembrete rápido de equipa",
-    "heading": "Já tens a tua equipa?",
-    "leadA": "Até ao final do ",
-    "leadStrong1": "Dia 1",
-    "leadB": " já deves ter formado uma equipa de ",
-    "leadStrong2": "3 a 4 pessoas",
-    "leadC": ". O conteúdo de hoje sobre os compromissos entre plataformas vai alimentar diretamente as escolhas de desenho que a tua equipa terá de fazer no ",
-    "leadStrong3": "Dia 3",
-    "leadD": ".",
-    "ifYes": {
-      "label": "Se sim",
-      "body": "Senta-te com a equipa, se puderes — começa a discutir o encaixe de plataforma durante os intervalos."
-    },
-    "ifNotYet": {
-      "label": "Se ainda não",
-      "body": "Encontra os teus colegas no próximo intervalo. Não esperes pelo Dia 3 — vais andar a correr atrás do prejuízo."
-    },
-    "todaysLink": {
-      "label": "Ligação de hoje",
-      "body": "À medida que vires Bitcoin / Ethereum / Hyperledger / etc — pensa qual delas encaixaria num problema que já tenhas vivido."
-    }
   },
   "recapBadge": "↩ Recap · from Blockchain Fundamentals",
   "spectrum": {
@@ -270,7 +250,42 @@
         { "q": "Does the value depend on anyone in the world being able to join?", "lean": "yes → lean permissionless" }
       ]
     },
-    "footer": "Neither end is \"more blockchain\". They solve different problems — the rest of this course is about matching the problem to the platform.",
-    "hood": ["PoW / PoS", "BFT / Raft", "MSP identity", "channels"]
+    "hood": ["PoW / PoS", "BFT / Raft", "MSP identity", "channels"],
+    "keyPoint": "Permissioned vs permissionless is a question of WHO may write — not how fast it is."
+  },
+  "sorter": {
+    "heading": "Who may write to this ledger?",
+    "subtitle": "Drag each card into a bucket — or tap a card, then a bucket. You get feedback instantly. One question decides everything: who is allowed to add entries?",
+    "cardsLabel": "Cards to sort",
+    "allSorted": "All sorted — read the feedback on each card.",
+    "dropHint": "Drop here",
+    "reset": "↺ Reset",
+    "scorePrefix": "Score: ",
+    "scorePerfect": " — Perfect! 🎉",
+    "scoreGreat": " — Great work!",
+    "scoreReview": " — Move the red cards and try again.",
+    "buckets": [
+      { "id": "permissionless", "label": "Permissionless", "hint": "anyone can write and validate" },
+      { "id": "permissioned", "label": "Permissioned", "hint": "only vetted members write" },
+      { "id": "none", "label": "Not a blockchain", "hint": "one owner, one database" }
+    ],
+    "cards": [
+      { "id": "bitcoin", "label": "Bitcoin", "why": "Anyone with a wallet can send, and anyone can run a node or mine — no gatekeeper decides who writes." },
+      { "id": "bank", "label": "A bank's core ledger", "why": "One institution owns and edits it. A single writer needs a well-run database, not a blockchain." },
+      {
+        "id": "fabric",
+        "label": "Hyperledger consortium",
+        "why": "Several known organisations write, each with a certificate issued under the consortium rules — permissioned."
+      },
+      { "id": "ethereum", "label": "Ethereum", "why": "Anyone can deploy a contract or validate by staking ETH — open to the world, like Bitcoin." },
+      { "id": "sap", "label": "A company's SAP database", "why": "An internal system with one owner, shared with nobody who distrusts the company — a database." },
+      {
+        "id": "cbdc",
+        "label": "A CBDC (central bank digital currency)",
+        "why": "The central bank decides who runs nodes and who may issue. Pilots such as the digital euro use a permissioned ledger — some skip blockchain altogether."
+      }
+    ],
+    "keyPoint": "If one organisation controls every writer, you do not need a blockchain — you need a database.",
+    "wrongHint": "Not quite — drag it to another bucket."
   }
 }
