@@ -10,11 +10,14 @@
     "s3-ethereum": "Ethereum",
     "s3-smartcontract": "Smart Contracts",
     "s3-accounts": "Accounts",
+    "s3-limits": "Limits",
     "s3-gas": "Gas",
+    "s3-gas-why": "Why Gas",
     "s3-defi": "DeFi",
     "s3-nfts": "NFTs",
     "s3-daos": "DAOs",
     "s3-tokens": "Tokens",
+    "s3-tokens-sort": "Token Sorter",
     "s3-usecases-trust": "Trust w/o Middlemen",
     "s3-usecases-provenance": "Provenance",
     "s3-usecases-coord": "Coordination",
@@ -116,6 +119,43 @@
     "keyPoint": "Every action starts with a human's key; contracts only react.",
     "peek": "You'll deploy a contract and call it from your wallet."
   },
+  "contractLimits": {
+    "recapBadge": "Recap · accounts",
+    "recapBody": "A contract only reacts. Two limits follow from that.",
+    "heading": "What a Smart Contract Can't Do",
+    "lead": "The code is reliable, but it lives in a closed room: it sees only the chain and moves only when called.",
+    "oracle": {
+      "example": "Flight-delay insurance",
+      "title": "It can't read outside data",
+      "body": "The contract cannot check whether the flight was late. An oracle, a service that writes outside facts onto the chain, posts the delay; only then can the contract pay.",
+      "catch": "Now you have to trust the oracle.",
+      "svg": {
+        "alt": "An oracle carries an outside fact across the wall into the chain, where the contract can read it",
+        "chain": "the chain",
+        "contract": "contract",
+        "world": "outside world",
+        "fact": "flight late by 3 h",
+        "oracle": "oracle"
+      }
+    },
+    "trigger": {
+      "example": "Monthly payroll",
+      "title": "It can't start itself",
+      "body": "A contract has no clock. 'Pay on the 1st' still needs someone to send a transaction on the 1st: a person, or a bot paid to do it.",
+      "catch": "Someone always has to pull the trigger.",
+      "svg": {
+        "alt": "A wallet's transaction reaches the contract; the contract has no timer of its own",
+        "wallet": "wallet",
+        "tx": "transaction",
+        "contract": "contract",
+        "noClock": "no timer",
+        "caption": "Idle until a transaction arrives."
+      }
+    },
+    "hood": "oracles, keepers & automation",
+    "keyPoint": "A contract sees only the chain and runs only when a transaction calls it.",
+    "peek": "The Smart Contracts course returns to the oracle problem in depth."
+  },
   "ethGas": {
     "recapBadge": "Recap · smart contracts",
     "recapBody": "A contract runs on thousands of computers at once. Gas pays for that work.",
@@ -193,6 +233,13 @@
       "body": "Without a per-step fee, one endless loop could freeze the network for everyone. Paying per instruction stops that, and stops spam."
     },
     "hood": "gwei & the EIP-1559 fee market",
+    "demoKeyPoint": "Fee = gas units × gas price: bigger job or busier network, higher fee.",
+    "whySlide": {
+      "recapBadge": "Recap · gas",
+      "recapBody": "Fee = gas units × gas price. Now, why the fee exists at all.",
+      "heading": "Why Gas Exists",
+      "lead": "The fee is not just a toll. It is what keeps a computer shared by millions usable."
+    },
     "keyPoint": "Gas prices computation and stops anyone jamming the network.",
     "peek": "You'll deploy a contract and see what it costs in gas."
   },
@@ -411,6 +458,9 @@
       "right": "✓",
       "wrong": "✗",
       "score": "{{correct}} / {{total}} right",
+      "badge": "Interactive",
+      "recap": "ERC-20 counts identical units; ERC-721 names one-of-a-kind items.",
+      "keyPoint": "If any unit swaps for any other, it is fungible; if each one is named, it is not.",
       "cards": [
         { "emoji": "💶", "label": "A €10 note", "answer": "fungible", "why": "Any €10 note is as good as any other — count them." },
         { "emoji": "✈️", "label": "Airline miles", "answer": "fungible", "why": "Points are identical units; 500 miles is 500 miles." },
@@ -743,16 +793,6 @@
       "Controlo e regulação governamental de todo o conteúdo da internet"
     ],
     "explanation": "A Web3 muda a propriedade das plataformas para os utilizadores através da descentralização e de chaves criptográficas. Em vez de empresas possuírem os teus dados, tu controlas a tua identidade e ativos via carteiras e protocolos on-chain."
-  },
-  "quizDapp": {
-    "question": "Qual é uma vantagem-chave de uma dApp em relação a uma aplicação centralizada tradicional?",
-    "options": [
-      "As dApps são sempre mais rápidas e baratas de usar",
-      "As dApps não têm ponto único de falha — correm enquanto a rede blockchain existir",
-      "As dApps não precisam de ligação à internet para funcionar",
-      "As dApps são sempre gratuitas e não geram receita"
-    ],
-    "explanation": "Porque as dApps correm em redes blockchain descentralizadas via smart contracts, não têm servidor central que possa falhar ou ser desligado. Enquanto a rede blockchain subjacente operar, a dApp continua a funcionar."
   },
   "quizLayers": {
     "question": "Qual camada do ecossistema Web3 contém protocolos como Ethereum, Solana e Polygon?",
