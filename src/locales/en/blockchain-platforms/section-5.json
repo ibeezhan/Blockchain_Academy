@@ -15,7 +15,7 @@
     "s5-zk-identity": "ZK: Identity Walkthrough",
     "s5-l2-why": "Trilemma → Why L2",
     "s5-layer2": "L2: Optimistic vs ZK",
-    "s5-l2apps": "L2 App Landscape",
+    "s5-data-avail": "L2: Why Post Data",
     "s5-starknet": "Snapshot: Starknet",
     "s5-polkadot": "Snapshot: Polkadot",
     "s5-avalanche": "Snapshot: Avalanche",
@@ -26,7 +26,6 @@
     "s5-evaluate": "Evaluate (1/2)",
     "s5-evaluate-2": "Evaluate (2/2)",
     "s5-decision": "Decision Framework",
-    "s5-decision-examples": "Platform Examples",
     "s5-quiz": "Quiz",
     "s5-quiz-2": "Quiz 2",
     "s5-takeaways": "Takeaways",
@@ -321,49 +320,27 @@
     ],
     "recap": "Section 02 · L1 ↔ L2 Flow animation"
   },
-  "l2apps": {
-    "heading": "What runs on each rollup",
-    "subtitle": "Each major rollup has a distinct app ecosystem, which often matters more than the proving system.",
-    "rollups": [
-      {
-        "name": "Arbitrum One", "type": "Optimistic",
-        "culture": "DeFi-heavy · mature", "tvl": "~$13B TVL — highest of any L2",
-        "apps": [
-          { "name": "GMX", "kind": "Decentralised perpetuals" },
-          { "name": "Camelot", "kind": "Native concentrated-liquidity DEX" },
-          { "name": "Pendle", "kind": "Yield-tokenisation primitive" }
-        ]
-      },
-      {
-        "name": "Optimism · OP Stack", "type": "Optimistic",
-        "culture": "Public-goods · modular", "tvl": "OP Stack also powers Base, Mode, opBNB",
-        "apps": [
-          { "name": "Velodrome", "kind": "Vote-escrow DEX, OP DeFi core" },
-          { "name": "Synthetix", "kind": "Synthetic assets & perps" },
-          { "name": "Worldcoin", "kind": "Iris-scan identity, $WLD" }
-        ]
-      },
-      {
-        "name": "Base (Coinbase)", "type": "OP Stack",
-        "culture": "Consumer & social-first", "tvl": "~$5B TVL · fastest growth 2024",
-        "apps": [
-          { "name": "Aerodrome", "kind": "Dominant Base DEX" },
-          { "name": "Zora", "kind": "Creator minting platform" },
-          { "name": "Farcaster Frames", "kind": "Mini-apps in social posts" }
-        ]
-      },
-      {
-        "name": "Starknet", "type": "ZK · Cairo",
-        "culture": "Gaming · on-chain compute", "tvl": "Cairo VM · STARK proofs · STRK",
-        "apps": [
-          { "name": "Realms / Loot Survivor", "kind": "Fully on-chain games (Dojo)" },
-          { "name": "Ekubo", "kind": "Native concentrated AMM" },
-          { "name": "Influence", "kind": "On-chain space MMO" }
-        ]
-      }
-    ],
-    "chooseLabel": "How to choose — ",
-    "chooseBody": "DeFi-mature build → Arbitrum. Public goods / rollup-as-a-service → Optimism. Consumer & social with Coinbase reach → Base. Games or proof-heavy compute → Starknet."
+  "dataAvail": {
+    "heading": "Why rollups post their data to Ethereum",
+    "subtitle": "A proof shows the batch was correct. The data is what lets you leave if the rollup's operator disappears.",
+    "svg": {
+      "l2Title": "Rollup (L2)",
+      "l2Sub": "operator runs thousands of transactions",
+      "proofTitle": "Proof",
+      "proofSub": "\"this batch is correct\"",
+      "dataTitle": "Data",
+      "dataSub": "compressed copy of every transaction (blob)",
+      "l1Title": "Ethereum (L1)",
+      "l1Sub": "stores both · anyone can read them",
+      "userTitle": "You",
+      "userSub": "rebuild your balance from L1 data and withdraw, operator or not",
+      "caption": "Proof without data: you know the books balance but cannot see your own line. The data is what makes the exit possible."
+    },
+    "cards": [
+      { "title": "What gets posted", "desc": "Not just a result. A compressed copy of every L2 transaction goes to Ethereum; since 2024 it travels in cheap 'blobs' that Ethereum keeps for about 18 days, long enough for anyone to copy." },
+      { "title": "Why it matters", "desc": "If the rollup's servers go dark, anyone can read the data from Ethereum, rebuild every balance and prove theirs to the L1 bridge to withdraw. Without the data your coins are stuck even though the proof was valid." },
+      { "title": "The cheaper shortcut", "desc": "Some chains post data to a separate network (Celestia) or a small committee instead. Fees fall, but you now also trust that group to keep the data. Such chains are called validiums or optimiums, and L2BEAT lists them apart from rollups." }
+    ]
   },
   "privacy": {
     "heading": "A public chain is not private",
@@ -519,19 +496,6 @@
     "toolsLabel": "Free tools — ",
     "toolsBody": "<0>Etherscan</0> (contracts, holders) · <1>DeFiLlama</1> (TVL, volume) · <2>Token Terminal</2> (revenue) · <3>Nansen / Arkham</3> (wallet flows) · <4>Dune</4> (custom analytics)."
   },
-  "decisionExamples": {
-    "heading": "Platform selection — worked examples",
-    "subtitle": "Seven use cases run through the five questions.",
-    "items": [
-      { "use": "Cross-border remittance, low value", "rec": "Bitcoin Lightning · USDC on Base / Solana", "why": "Low cost · sub-second finality · users already trust USD-denominated value" },
-      { "use": "High-value DeFi protocol", "rec": "Ethereum L1 + L2 deployment", "why": "L1 for vault security, L2 for user flow · deepest liquidity · most auditors available" },
-      { "use": "Multi-company supply chain", "rec": "Hyperledger Fabric channel", "why": "Permissioned access · selective data sharing per channel · no token economics required" },
-      { "use": "Privacy-preserving identity / KYC", "rec": "Starknet (Cairo + ZK creds) · Aztec", "why": "Programmable ZK privacy · verifiable claims without disclosure · Ethereum L1 settlement" },
-      { "use": "On-chain game with tradable assets", "rec": "Immutable · Ronin · Starknet (Dojo) · Base", "why": "High throughput · low gas per action · gaming-focused tooling · existing player ecosystems" },
-      { "use": "Sovereign app-chain, custom consensus", "rec": "Cosmos zone via Cosmos SDK", "why": "Full control over VM, gas token, governance · trade-off: bootstrap your own validator set" },
-      { "use": "Cross-border government credentials", "rec": "EU EBSI (Fabric-based) · purpose-built consortium", "why": "Regulator-mandated participation · interop required at policy level · no public token needed" }
-    ]
-  },
   "quiz": {
     "question": "A user withdraws funds from Arbitrum (an optimistic rollup) back to Ethereum L1. The standard withdrawal takes ~7 days. Why?",
     "options": [
@@ -569,7 +533,7 @@
     "s5-zk-identity": "Verify the claim, not the person: the issuer vouches once and the customer reveals only what each service needs.",
     "s5-l2-why": "You cannot max out speed, cost and decentralisation at once; L2s buy speed by borrowing L1 security.",
     "s5-layer2": "Optimistic rollups are innocent until proven guilty (7-day exit), ZK rollups are proven before accepted (hours), and neither is private by default.",
-    "s5-l2apps": "Pick an L2 by ecosystem and exit speed, not by brand.",
+    "s5-data-avail": "A rollup is only as safe as the data behind it; posting every transaction to Ethereum is what lets users leave without the operator's help.",
     "s5-starknet": "Starknet uses ZK for cheap verification, not secrecy.",
     "s5-polkadot": "Polkadot rents out security; parachains skip recruiting validators but live by the Relay Chain's rules.",
     "s5-avalanche": "Avalanche sells sovereign lanes with shared tooling; a custom L1 is only as secure as its own validators.",
@@ -579,8 +543,7 @@
     "s5-privacy-future": "Keep the data confidential and still prove you follow the rules.",
     "s5-evaluate": "Judge a project by who built it, what the code says and who holds the tokens.",
     "s5-evaluate-2": "Locked liquidity, honest docs and organic on-chain usage; ten minutes with free tools beats any influencer thread.",
-    "s5-decision": "Five questions beat a hundred logos: permission, programmability, throughput, privacy, sovereignty.",
-    "s5-decision-examples": "There is no best chain, only a best fit."
+    "s5-decision": "Five questions beat a hundred logos: permission, programmability, throughput, privacy, sovereignty."
   },
   "snapshot": {
     "starknet": {

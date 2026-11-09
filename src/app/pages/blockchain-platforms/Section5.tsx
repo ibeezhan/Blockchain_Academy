@@ -382,7 +382,7 @@ const chapterShape = [
   { kind: 'group' as const, id: 'g-s5-l2' },
   { id: 's5-l2-why' },
   { id: 's5-layer2' },
-  { id: 's5-l2apps' },
+  { id: 's5-data-avail' },
 
   { kind: 'group' as const, id: 'g-s5-platforms' },
   { id: 's5-starknet' },
@@ -401,7 +401,6 @@ const chapterShape = [
 
   { kind: 'group' as const, id: 'g-s5-decide' },
   { id: 's5-decision' },
-  { id: 's5-decision-examples' },
 
   { kind: 'group' as const, id: 'g-s5-wrap' },
   { id: 's5-quiz' },
@@ -410,7 +409,6 @@ const chapterShape = [
   { id: 's5-discussion' },
 ];
 
-interface AppItem { name: string; kind: string }
 interface CompareRow { label: string; value: string }
 interface EvalAxis { title: string; green: string[]; red: string[] }
 
@@ -448,7 +446,7 @@ export function BP_Section5() {
   const layer2ZkRows = t('layer2.zk.rows', { returnObjects: true }) as CompareRow[];
   const layer2Shared = t('layer2.shared', { returnObjects: true }) as string[];
   const layer2Choose = t('layer2.choose', { returnObjects: true }) as { strong: string; rest: string }[];
-  const l2appsRollups = t('l2apps.rollups', { returnObjects: true }) as { name: string; type: string; culture: string; tvl: string; apps: AppItem[] }[];
+  const dataAvailCards = t('dataAvail.cards', { returnObjects: true }) as { title: string; desc: string }[];
   const privacyApproaches = t('privacyApproaches.items', { returnObjects: true }) as { name: string; sub: string; mech: string; trade: string }[];
   const privacyTrace = t('privacy.trace', { returnObjects: true }) as { who: string; note: string }[];
   const privacyBusiness = t('privacy.business', { returnObjects: true }) as string[];
@@ -456,7 +454,6 @@ export function BP_Section5() {
   const privacyFutureItems = t('privacyFuture.items', { returnObjects: true }) as { title: string; d: string }[];
   const evaluateAxes = t('evaluate.axes', { returnObjects: true }) as EvalAxis[];
   const evaluate2Axes = t('evaluate2.axes', { returnObjects: true }) as EvalAxis[];
-  const decisionItems = t('decisionExamples.items', { returnObjects: true }) as { use: string; rec: string; why: string }[];
   const quizOptions = t('quiz.options', { returnObjects: true }) as string[];
   const quiz2Options = t('quiz2.options', { returnObjects: true }) as string[];
   const takeawayItems = t('takeaways.items', { returnObjects: true }) as string[];
@@ -494,12 +491,6 @@ export function BP_Section5() {
   const layer2OpColors = ['#f97316', '#ef4444', '#39B54A', '#39B54A', '#f97316', '#f97316', '#6366f1'];
   const layer2ZkColors = ['#6366f1', '#39B54A', '#ef4444', '#f97316', '#39B54A', '#6366f1', '#6366f1'];
   const l2WhyStepMeta = ['⚡', '📦', '⚖️'];
-  const l2appsMeta = [
-    { emoji: '🟦', typeColor: '#f97316', color: '#28A0F0' },
-    { emoji: '🔴', typeColor: '#f97316', color: '#FF0420' },
-    { emoji: '🔵', typeColor: '#f97316', color: '#0052FF' },
-    { emoji: '🟪', typeColor: '#8b5cf6', color: '#EC796B' },
-  ];
   const discussionMeta = [
     { icon: '🏦', color: '#6366f1' },
     { icon: '🎮', color: '#ec4899' },
@@ -527,7 +518,6 @@ export function BP_Section5() {
     { icon: '📣', color: '#ec4899' },
     { icon: '🔬', color: '#06b6d4' },
   ];
-  const decisionColors = ['#f59e0b', '#627EEA', '#39B54A', '#8b5cf6', '#ec4899', '#22d3ee', '#6366f1'];
 
   return (
     <div className="h-full w-full flex overflow-hidden">
@@ -919,58 +909,72 @@ export function BP_Section5() {
           {kp('s5-layer2', '#39B54A')}
         </div>
 
-        {/* ═══════ L2 APPS — what runs on each rollup ═══════ */}
-        <div id="s5-l2apps" className="h-full flex flex-col p-6 lg:p-10">
+        {/* ═══════ S5-DATA-AVAIL — why rollups post data to L1 ═══════ */}
+        <div id="s5-data-avail" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-4">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('l2apps.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('l2apps.subtitle')}</p>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{t('dataAvail.heading')}</h2>
+            <p className="text-sm text-muted-foreground max-w-4xl">{t('dataAvail.subtitle')}</p>
           </div>
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-4">
 
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-4 gap-4 content-center">
-            {l2appsRollups.map((rollup, i) => {
-              const { emoji, typeColor, color } = l2appsMeta[i];
-              return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="flex flex-col gap-3 p-4 rounded-2xl border-2"
-                style={{ borderColor: color + '55', backgroundColor: color + '0a' }}
-              >
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xl leading-none">{emoji}</span>
-                    <div className="font-black text-base leading-tight" style={{ color }}>{rollup.name}</div>
-                  </div>
-                  <span className="inline-block text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded mt-2"
-                    style={{ backgroundColor: typeColor + '20', color: typeColor, border: `1px solid ${typeColor}40` }}>
-                    {rollup.type}
-                  </span>
-                </div>
-                <div>
-                  <div className="text-sm text-foreground font-semibold leading-tight">{rollup.culture}</div>
-                  <div className="text-xs text-muted-foreground italic leading-snug mt-0.5">{rollup.tvl}</div>
-                </div>
-                <div className="flex flex-col gap-2">
-                  {rollup.apps.map((app, j) => (
-                    <div key={j} className="rounded-lg border bg-card/60 px-2.5 py-2" style={{ borderColor: color + '35' }}>
-                      <div className="text-sm font-bold leading-tight" style={{ color }}>{app.name}</div>
-                      <div className="text-xs text-muted-foreground leading-snug mt-0.5">{app.kind}</div>
+            {/* Visual — L2 posts proof + data to L1; the user exits from L1 data */}
+            <div className="flex flex-col gap-2 min-h-0">
+              <div className="flex-1 min-h-[220px] rounded-xl border border-border bg-card/40 p-3 flex flex-col">
+                <svg viewBox="0 0 480 250" className="w-full flex-1">
+                  {/* L2 operator */}
+                  <rect x="140" y="14" width="200" height="44" rx="8" fill="#8b5cf614" stroke="#8b5cf6" strokeWidth="1.5" />
+                  <text x="240" y="33" textAnchor="middle" fontSize="11" fontWeight="900" fill="#8b5cf6">{t('dataAvail.svg.l2Title')}</text>
+                  <text x="240" y="48" textAnchor="middle" fontSize="8.5" fill="var(--muted-foreground)">{t('dataAvail.svg.l2Sub')}</text>
+
+                  {/* Two things go down to L1 */}
+                  <line x1="200" y1="58" x2="150" y2="96" stroke="#6366f1" strokeWidth="1.5" strokeDasharray="4 3" />
+                  <polygon points="153,90 148,98 158,97" fill="#6366f1" />
+                  <line x1="280" y1="58" x2="330" y2="96" stroke="#39B54A" strokeWidth="1.5" strokeDasharray="4 3" />
+                  <polygon points="322,97 332,98 327,90" fill="#39B54A" />
+
+                  <rect x="60" y="98" width="170" height="52" rx="8" fill="#6366f112" stroke="#6366f1" strokeWidth="1.5" />
+                  <text x="145" y="118" textAnchor="middle" fontSize="11" fontWeight="900" fill="#6366f1">{t('dataAvail.svg.proofTitle')}</text>
+                  <text x="145" y="136" textAnchor="middle" fontSize="8.5" fill="var(--muted-foreground)">{t('dataAvail.svg.proofSub')}</text>
+
+                  <rect x="250" y="98" width="170" height="52" rx="8" fill="#39B54A12" stroke="#39B54A" strokeWidth="1.5" />
+                  <text x="335" y="118" textAnchor="middle" fontSize="11" fontWeight="900" fill="#39B54A">{t('dataAvail.svg.dataTitle')}</text>
+                  <text x="335" y="136" textAnchor="middle" fontSize="8.5" fill="var(--muted-foreground)">{t('dataAvail.svg.dataSub')}</text>
+
+                  {/* L1 band */}
+                  <rect x="30" y="168" width="420" height="40" rx="8" fill="#627EEA14" stroke="#627EEA" strokeWidth="1.5" />
+                  <text x="240" y="185" textAnchor="middle" fontSize="11" fontWeight="900" fill="#627EEA">{t('dataAvail.svg.l1Title')}</text>
+                  <text x="240" y="199" textAnchor="middle" fontSize="8.5" fill="var(--muted-foreground)">{t('dataAvail.svg.l1Sub')}</text>
+                  <line x1="145" y1="150" x2="145" y2="166" stroke="#6366f1" strokeWidth="1.5" />
+                  <line x1="335" y1="150" x2="335" y2="166" stroke="#39B54A" strokeWidth="1.5" />
+
+                  {/* User exits from the data */}
+                  <line x1="400" y1="208" x2="422" y2="222" stroke="#39B54A" strokeWidth="1.5" />
+                  <polygon points="416,224 426,225 421,217" fill="#39B54A" />
+                  <text x="450" y="230" textAnchor="end" fontSize="10" fontWeight="900" fill="#39B54A">🧍 {t('dataAvail.svg.userTitle')}</text>
+                  <text x="450" y="245" textAnchor="end" fontSize="8" fill="var(--muted-foreground)">{t('dataAvail.svg.userSub')}</text>
+                </svg>
+                <p className="text-[11px] text-muted-foreground leading-snug shrink-0 mt-1">{t('dataAvail.svg.caption')}</p>
+              </div>
+              <UnderTheHood label={hoodLabel} terms={['data availability', 'EIP-4844 blobs', 'forced exit', 'validium', 'Celestia']} className="self-start" />
+            </div>
+
+            {/* What gets posted · why it matters · the cheaper shortcut */}
+            <div className="flex-1 min-h-0 grid auto-rows-fr gap-2">
+              {dataAvailCards.map((c, i) => {
+                const color = ['#39B54A', '#6366f1', '#f59e0b'][i];
+                return (
+                  <div key={c.title} className="min-h-0 flex gap-3 p-3 bg-card border rounded-xl items-start" style={{ borderColor: color + '40' }}>
+                    <div className="w-1 self-stretch rounded-full shrink-0" style={{ backgroundColor: color }} />
+                    <div className="min-w-0">
+                      <div className="font-bold text-sm mb-0.5" style={{ color }}>{c.title}</div>
+                      <div className="text-xs lg:text-sm text-muted-foreground leading-snug">{c.desc}</div>
                     </div>
-                  ))}
-                </div>
-              </motion.div>
-            );})}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-
-          <div className="shrink-0 mt-4 rounded-xl border p-3" style={{ borderColor: '#8b5cf655', backgroundColor: '#8b5cf60d' }}>
-            <p className="text-sm text-muted-foreground leading-snug">
-              <span className="font-bold" style={{ color: '#8b5cf6' }}>{t('l2apps.chooseLabel')}</span>
-              {t('l2apps.chooseBody')}
-            </p>
-          </div>
-          {kp('s5-l2apps', '#39B54A')}
+          {kp('s5-data-avail', '#39B54A')}
         </div>
 
         {/* ═══════ PLATFORM SNAPSHOTS — one slide each ═══════ */}
@@ -1264,31 +1268,6 @@ export function BP_Section5() {
         {/* ═══════ DECISION FRAMEWORK — Interactive wizard ═══════ */}
         <div id="s5-decision" className="h-full">
           <PlatformRecommender />
-        </div>
-
-        {/* ═══════ DECISION EXAMPLES — Worked Examples ═══════ */}
-        <div id="s5-decision-examples" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-4">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('decisionExamples.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('decisionExamples.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-3">
-            {decisionItems.map((c, i, arr) => {
-              const color = decisionColors[i];
-              return (
-              <div
-                key={i}
-                className={`rounded-xl border p-4 min-h-0 flex flex-col gap-1.5${i === arr.length - 1 && arr.length % 2 !== 0 ? ' col-span-2' : ''}`}
-                style={{ borderColor: color + '50', backgroundColor: color + '08' }}
-              >
-                <div className="text-xs font-black uppercase tracking-wider leading-tight" style={{ color }}>{c.use}</div>
-                <div className="text-base font-bold text-foreground leading-snug">→ {c.rec}</div>
-                <div className="text-sm text-muted-foreground italic leading-snug">{c.why}</div>
-              </div>
-            );})}
-          </div>
-          {kp('s5-decision-examples', '#6366f1')}
         </div>
 
         {/* ═══════ QUIZ — Optimistic vs ZK withdrawal latency ═══════ */}

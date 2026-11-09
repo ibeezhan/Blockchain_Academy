@@ -22,11 +22,12 @@ const chapterShape = [
   { id: 's4-chooser' },
 
   { kind: 'group' as const, id: 'g-s4-bridges' },
+  { id: 's4-wrapped' },
   { id: 's4-bridges' },
+  { id: 's4-bridge-hacks' },
 
   { kind: 'group' as const, id: 'g-s4-cosmos' },
   { id: 's4-cosmos' },
-  { id: 's4-cosmos-eco' },
 
   { kind: 'group' as const, id: 'g-s4-l0' },
   { id: 's4-layer0' },
@@ -34,7 +35,6 @@ const chapterShape = [
 
   { kind: 'group' as const, id: 'g-s4-xrp' },
   { id: 's4-xrp' },
-  { id: 's4-xrp-anim' },
 
   { kind: 'group' as const, id: 'g-s4-wrap' },
   { id: 's4-quiz' },
@@ -261,214 +261,6 @@ function Layer0AnimatedStack() {
   );
 }
 
-/* ──────────────────── Animated XRPL ↔ Axelar interop ─────────────────────
-   Shows a GMP (General Message Passing) call leaving XRPL, hitting the
-   Axelar validator network, and landing on an EVM chain. Auto-plays.
-   ───────────────────────────────────────────────────────────────────────── */
-
-function XrplAxelarFlow() {
-  const { t } = useTranslation('blockchain-platforms/section-4');
-  const rootRef    = useRef<HTMLDivElement | null>(null);
-  const packetRef  = useRef<SVGGElement | null>(null);
-  const stepRef    = useRef<HTMLDivElement | null>(null);
-  const validatorRefs = useRef<(SVGCircleElement | null)[]>([]);
-  const [phase, setPhase] = useState<'idle' | 'playing'>('idle');
-  const playedRef  = useRef(false);
-
-  const STEP_COLORS = ['#06b6d4', '#f59e0b', '#10b981', '#6366f1'];
-  const stepLabels = t('xrplAxelarAnim.steps', { returnObjects: true }) as string[];
-  const STEPS = STEP_COLORS.map((color, i) => ({ label: stepLabels[i], color }));
-
-  const setStep = (i: number) => {
-    if (!stepRef.current) return;
-    stepRef.current.textContent = STEPS[i].label;
-    stepRef.current.style.color = STEPS[i].color;
-    stepRef.current.style.borderColor = STEPS[i].color + 'AA';
-    stepRef.current.style.backgroundColor = STEPS[i].color + '14';
-  };
-
-  const play = () => {
-    if (phase === 'playing') return;
-    setPhase('playing');
-    setStep(0);
-
-    // Reset
-    if (packetRef.current) {
-      packetRef.current.style.opacity = '0';
-      packetRef.current.style.transform = 'translate(0, 0)';
-    }
-    validatorRefs.current.forEach(c => {
-      if (c) { c.setAttribute('fill', '#f59e0b22'); c.setAttribute('stroke', '#f59e0b'); }
-    });
-
-    // Waypoints (viewBox 0 0 520 240): XRPL → Axelar hub centre → EVM chain
-    const W = [
-      { x: 75,  y: 130 },  // XRPL
-      { x: 260, y: 130 },  // Axelar hub
-      { x: 445, y: 130 },  // EVM chain
-    ];
-
-    const tl = anime.timeline({ easing: 'easeInOutCubic', complete: () => setPhase('idle') });
-
-    tl.add({
-      targets: packetRef.current,
-      opacity: [0, 1],
-      duration: 250,
-      easing: 'easeOutQuad',
-    })
-    .add({
-      targets: packetRef.current,
-      translateX: W[1].x - W[0].x,
-      duration: 1100,
-      changeBegin: () => setStep(0),
-    })
-    // Validators flash one by one (consensus)
-    .add({
-      targets: { i: 0 },
-      i: 4,
-      duration: 1200,
-      easing: 'linear',
-      changeBegin: () => setStep(1),
-      update: (a) => {
-        const n = Math.floor((a.animations[0].currentValue as unknown) as number);
-        for (let k = 0; k <= n && k < validatorRefs.current.length; k++) {
-          const c = validatorRefs.current[k];
-          if (c) {
-            c.setAttribute('fill', '#10b98140');
-            c.setAttribute('stroke', '#10b981');
-          }
-        }
-      },
-    })
-    .add({
-      targets: packetRef.current,
-      scale: [1, 1.4, 1],
-      duration: 400,
-      easing: 'easeOutQuad',
-      changeBegin: () => setStep(2),
-    })
-    .add({
-      targets: packetRef.current,
-      translateX: W[2].x - W[0].x,
-      duration: 1100,
-      changeBegin: () => setStep(3),
-    })
-    .add({
-      targets: packetRef.current,
-      scale: [1, 1.4, 1],
-      duration: 400,
-      easing: 'easeOutQuad',
-    });
-  };
-
-  useEffect(() => {
-    if (!rootRef.current) return;
-    const obs = new IntersectionObserver(entries => {
-      for (const e of entries) {
-        if (e.isIntersecting && !playedRef.current) {
-          playedRef.current = true;
-          setTimeout(play, 350);
-          break;
-        }
-      }
-    }, { threshold: 0.35 });
-    obs.observe(rootRef.current);
-    return () => obs.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return (
-    <div ref={rootRef} className="flex flex-col gap-3 min-h-0 h-full">
-      {/* Header + replay */}
-      <div className="flex items-start justify-between gap-2 shrink-0">
-        <div>
-          <div className="text-sm font-bold text-foreground">{t('xrplAxelarAnim.headline')}</div>
-        </div>
-        <button
-          onClick={play}
-          disabled={phase === 'playing'}
-          className="text-[11px] px-2.5 py-1 rounded-md bg-muted/60 hover:bg-muted text-foreground font-semibold disabled:opacity-50 transition-colors shrink-0"
-        >{t('xrplAxelarAnim.replay')}</button>
-      </div>
-
-      {/* Step caption */}
-      <div
-        ref={stepRef}
-        className="shrink-0 px-3 py-2 rounded-lg border-2 text-xs font-bold transition-all"
-        style={{ borderColor: STEPS[0].color + 'AA', backgroundColor: STEPS[0].color + '14', color: STEPS[0].color }}
-      >
-        {STEPS[0].label}
-      </div>
-
-      {/* SVG stage */}
-      <div className="flex-1 min-h-[200px] rounded-xl border border-border bg-card/40 p-3">
-        <svg viewBox="0 0 520 240" className="w-full h-full" style={{ overflow: 'visible' }}>
-          {/* XRPL node */}
-          <rect x="15" y="80" width="120" height="100" rx="8" fill="#06b6d418" stroke="#06b6d4" strokeWidth="1.5" />
-          <text x="75" y="105" textAnchor="middle" fontSize="11" fontWeight="900" fill="#06b6d4">{t('xrplAxelarAnim.svg.xrplTitle')}</text>
-          <text x="75" y="123" textAnchor="middle" fontSize="9" fill="hsl(var(--muted-foreground))">{t('xrplAxelarAnim.svg.xrplSub')}</text>
-          <text x="75" y="148" textAnchor="middle" fontSize="9" fontWeight="700" fill="hsl(var(--foreground))">{t('xrplAxelarAnim.svg.xrplLine1')}</text>
-          <text x="75" y="164" textAnchor="middle" fontSize="8" fill="hsl(var(--muted-foreground))">{t('xrplAxelarAnim.svg.xrplLine2')}</text>
-
-          {/* Axelar hub (centre) */}
-          <rect x="200" y="55" width="120" height="150" rx="8" fill="#f59e0b14" stroke="#f59e0b" strokeWidth="1.5" />
-          <text x="260" y="78" textAnchor="middle" fontSize="11" fontWeight="900" fill="#f59e0b">{t('xrplAxelarAnim.svg.axelarTitle')}</text>
-          <text x="260" y="92" textAnchor="middle" fontSize="8" fill="hsl(var(--muted-foreground))">{t('xrplAxelarAnim.svg.axelarSub')}</text>
-
-          {/* Validator ring inside the Axelar box */}
-          {[
-            { x: 230, y: 130 },
-            { x: 260, y: 115 },
-            { x: 290, y: 130 },
-            { x: 275, y: 165 },
-            { x: 245, y: 165 },
-          ].map((v, i) => (
-            <g key={i}>
-              <circle
-                ref={el => { validatorRefs.current[i] = el; }}
-                cx={v.x} cy={v.y} r={9}
-                fill="#f59e0b22" stroke="#f59e0b" strokeWidth={1.2}
-              />
-              <text x={v.x} y={v.y + 3} textAnchor="middle" fontSize={7} fontWeight="800" fill="hsl(var(--foreground))">v{i+1}</text>
-            </g>
-          ))}
-          <text x="260" y="195" textAnchor="middle" fontSize="8" fontWeight="700" fill="hsl(var(--muted-foreground))">{t('xrplAxelarAnim.svg.axelarSign')}</text>
-
-          {/* EVM chain */}
-          <rect x="385" y="80" width="120" height="100" rx="8" fill="#6366f118" stroke="#6366f1" strokeWidth="1.5" />
-          <text x="445" y="105" textAnchor="middle" fontSize="11" fontWeight="900" fill="#6366f1">{t('xrplAxelarAnim.svg.evmTitle')}</text>
-          <text x="445" y="123" textAnchor="middle" fontSize="9" fill="hsl(var(--muted-foreground))">{t('xrplAxelarAnim.svg.evmSub')}</text>
-          <text x="445" y="148" textAnchor="middle" fontSize="9" fontWeight="700" fill="hsl(var(--foreground))">{t('xrplAxelarAnim.svg.evmLine1')}</text>
-          <text x="445" y="164" textAnchor="middle" fontSize="8" fill="hsl(var(--muted-foreground))">{t('xrplAxelarAnim.svg.evmLine2')}</text>
-
-          {/* Static channel cues */}
-          <line x1="135" y1="130" x2="200" y2="130" stroke="#06b6d460" strokeWidth="1.4" strokeDasharray="4 3" />
-          <line x1="320" y1="130" x2="385" y2="130" stroke="#6366f160" strokeWidth="1.4" strokeDasharray="4 3" />
-
-          {/* Animated packet */}
-          <g ref={packetRef} style={{ opacity: 0, transformBox: 'fill-box' as React.CSSProperties['transformBox'], transformOrigin: '75px 130px' }}>
-            <rect x="60" y="118" width="30" height="22" rx="3" fill="#facc15" stroke="#a16207" strokeWidth="1.3" />
-            <text x="75" y="133" textAnchor="middle" fontSize="9" fontWeight="900" fill="#7c2d12">GMP</text>
-          </g>
-        </svg>
-      </div>
-
-      {/* Mini-legend */}
-      <div className="shrink-0 grid grid-cols-3 gap-2 text-[10px]">
-        <div className="rounded-md p-1.5 border" style={{ borderColor: '#06b6d455', backgroundColor: '#06b6d410' }}>
-          <span className="font-black text-[#06b6d4]">XRPL</span> <span className="text-muted-foreground">{t('xrplAxelarAnim.legend.xrpl')}</span>
-        </div>
-        <div className="rounded-md p-1.5 border" style={{ borderColor: '#f59e0b55', backgroundColor: '#f59e0b10' }}>
-          <span className="font-black text-[#f59e0b]">Axelar</span> <span className="text-muted-foreground">{t('xrplAxelarAnim.legend.axelar')}</span>
-        </div>
-        <div className="rounded-md p-1.5 border" style={{ borderColor: '#6366f155', backgroundColor: '#6366f110' }}>
-          <span className="font-black text-[#6366f1]">EVM</span> <span className="text-muted-foreground">{t('xrplAxelarAnim.legend.evm')}</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ───────────── "How should these two chains talk?" — tiny chooser ─────────────
    Pick a scenario, pick a route (bridge / IBC / Layer 0), get fit + main risk. */
 type RouteId = 'bridge' | 'ibc' | 'l0';
@@ -570,14 +362,6 @@ interface ZoneItem { label: string; purpose: string; }
 interface MetricItem { metric: string; label: string; }
 interface HackItem { name: string; amount: string; year: string; chain: string; method: string; }
 interface UseCaseItem { title: string; scenario: string; how: string; }
-interface EcoApp {
-  emoji: string;
-  name: string;
-  category: string;
-  tag: string;
-  stats: string;
-  items: { name: string; kind: string }[];
-}
 
 export function BP_Section4() {
   const { t } = useTranslation('blockchain-platforms/section-4');
@@ -606,11 +390,11 @@ export function BP_Section4() {
   const bridgeHacks = t('bridges.hacks', { returnObjects: true }) as HackItem[];
   const bridgeDangers = t('bridges.dangers', { returnObjects: true }) as IconCard[];
   const bridgeSafer = t('bridges.safer', { returnObjects: true }) as TitledCard[];
+  const wrappedCards = t('wrapped.cards', { returnObjects: true }) as TitledCard[];
 
   const cosmosZones = t('cosmos.zones', { returnObjects: true }) as ZoneItem[];
   const cosmosMetrics = t('cosmos.metrics', { returnObjects: true }) as MetricItem[];
   const cosmosProperties = t('cosmos.properties', { returnObjects: true }) as EmojiCard[];
-  const cosmosApps = t('cosmosEco.apps', { returnObjects: true }) as EcoApp[];
 
   const xrpDesign = t('xrp.design', { returnObjects: true }) as EmojiCard[];
   const xrpPillars = t('xrp.pillars', { returnObjects: true }) as Array<{ label: string; title: string; body: string }>;
@@ -626,6 +410,7 @@ export function BP_Section4() {
   ];
   const hackColors = ['#ef4444', '#f97316', '#eab308', '#6366f1'];
   const saferColors = ['#39B54A', '#6366f1', '#ef4444'];
+  const wrappedColors = ['#f7931a', '#6366f1', '#ef4444'];
   const zoneMeta = [
     { angle: -90,  color: '#f59e0b' },
     { angle: -30,  color: '#6366f1' },
@@ -634,7 +419,6 @@ export function BP_Section4() {
     { angle: 150,  color: '#ef4444' },
     { angle: -150, color: '#10b981' },
   ];
-  const cosmosAppColors = ['#7B2BF9', '#6966FF', '#7E5CF7', '#FF414C', '#E91E63'];
   const xrpPillarColors = ['#06b6d4', '#f59e0b', '#10b981'];
   const useCaseMeta = [
     { emoji: '💱', color: '#6366f1' },
@@ -869,13 +653,85 @@ export function BP_Section4() {
           {kp('s4-chooser')}
         </div>
 
+        {/* ═══════ S4-WRAPPED — what a wrapped token is ═══════ */}
+        <div id="s4-wrapped" className="h-full flex flex-col p-5 lg:p-8">
+          <div className="shrink-0 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{t('wrapped.heading')}</h2>
+            <p className="text-sm text-muted-foreground max-w-4xl">{t('wrapped.subtitle')}</p>
+          </div>
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-4">
+
+            {/* Visual — real coin, issuer in the middle, IOU on the other chain */}
+            <div className="flex flex-col gap-2 min-h-0">
+              <div className="flex-1 min-h-[220px] rounded-xl border border-border bg-card/40 p-3 flex flex-col">
+                <svg viewBox="0 0 480 220" className="w-full flex-1">
+                  {/* Source chain — the real coin */}
+                  <rect x="15" y="60" width="130" height="130" rx="10" fill="#f7931a14" stroke="#f7931a" strokeWidth="1.5" />
+                  <text x="80" y="50" textAnchor="middle" fontSize="11" fontWeight="900" fill="#f7931a">{t('wrapped.svg.sourceChain')}</text>
+                  <text x="80" y="104" textAnchor="middle" fontSize="26">🔒</text>
+                  <text x="80" y="138" textAnchor="middle" fontSize="16" fontWeight="900" fill="var(--foreground)">{t('wrapped.svg.sourceAsset')}</text>
+                  <text x="80" y="156" textAnchor="middle" fontSize="8.5" fill="var(--muted-foreground)">{t('wrapped.svg.sourceNote')}</text>
+
+                  {/* Issuer — controls mint, burn and pause */}
+                  <rect x="170" y="22" width="140" height="68" rx="10" fill="#ef444412" stroke="#ef4444" strokeWidth="1.5" />
+                  <text x="240" y="44" textAnchor="middle" fontSize="11" fontWeight="900" fill="#ef4444">{t('wrapped.svg.issuer')}</text>
+                  <text x="240" y="60" textAnchor="middle" fontSize="8.5" fill="var(--muted-foreground)">{t('wrapped.svg.issuerNote')}</text>
+                  <text x="240" y="78" textAnchor="middle" fontSize="8.5" fontWeight="700" fill="#ef4444">{t('wrapped.svg.issuerPowers')}</text>
+                  <line x1="240" y1="90" x2="240" y2="108" stroke="#ef4444" strokeWidth="1" strokeDasharray="2 3" />
+
+                  {/* deposit → mint */}
+                  <line x1="150" y1="118" x2="324" y2="118" stroke="#10b981" strokeWidth="1.5" strokeDasharray="4 3" />
+                  <polygon points="324,113 334,118 324,123" fill="#10b981" />
+                  <text x="240" y="131" textAnchor="middle" fontSize="8.5" fontWeight="700" fill="#10b981">{t('wrapped.svg.mint')}</text>
+                  {/* burn → withdraw */}
+                  <line x1="330" y1="160" x2="156" y2="160" stroke="#f59e0b" strokeWidth="1.5" strokeDasharray="4 3" />
+                  <polygon points="156,155 146,160 156,165" fill="#f59e0b" />
+                  <text x="240" y="173" textAnchor="middle" fontSize="8.5" fontWeight="700" fill="#f59e0b">{t('wrapped.svg.burn')}</text>
+
+                  {/* Target chain — the IOU */}
+                  <rect x="335" y="60" width="130" height="130" rx="10" fill="#6366f114" stroke="#6366f1" strokeWidth="1.5" />
+                  <text x="400" y="50" textAnchor="middle" fontSize="11" fontWeight="900" fill="#6366f1">{t('wrapped.svg.targetChain')}</text>
+                  <text x="400" y="104" textAnchor="middle" fontSize="26">🎟️</text>
+                  <text x="400" y="138" textAnchor="middle" fontSize="16" fontWeight="900" fill="var(--foreground)">{t('wrapped.svg.targetAsset')}</text>
+                  <text x="400" y="156" textAnchor="middle" fontSize="8.5" fill="var(--muted-foreground)">{t('wrapped.svg.targetNote')}</text>
+                </svg>
+                <p className="text-[11px] text-muted-foreground leading-snug shrink-0 mt-1">{t('wrapped.svg.caption')}</p>
+              </div>
+              <div className="shrink-0 rounded-lg border p-2.5" style={{ borderColor: '#22d3ee60', backgroundColor: '#22d3ee10' }}>
+                <p className="text-[10px] font-black uppercase tracking-widest text-[#22d3ee]">{t('wrapped.noteLabel')}</p>
+                <p className="text-xs text-foreground leading-snug mt-0.5">{t('wrapped.note')}</p>
+              </div>
+            </div>
+
+            {/* What it is · who can redeem · who can freeze */}
+            <div className="flex flex-col gap-2 min-h-0">
+              <div className="flex-1 min-h-0 grid auto-rows-fr gap-2">
+                {wrappedCards.map((c, i) => {
+                  const color = wrappedColors[i];
+                  return (
+                    <div key={c.title} className="min-h-0 flex gap-3 p-3 bg-card border rounded-xl items-start" style={{ borderColor: color + '40' }}>
+                      <div className="w-1 self-stretch rounded-full shrink-0" style={{ backgroundColor: color }} />
+                      <div className="min-w-0">
+                        <div className="font-bold text-sm mb-0.5" style={{ color }}>{c.title}</div>
+                        <div className="text-xs lg:text-sm text-muted-foreground leading-snug">{c.desc}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <UnderTheHood label={hoodLabel} terms={['custodian', 'mint / burn', 'merchant', 'pausable contract', 'proof of reserves']} className="self-start" />
+            </div>
+          </div>
+          {kp('s4-wrapped')}
+        </div>
+
         {/* ═══════ BRIDGE SECURITY ═══════ */}
         <div id="s4-bridges" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-4">
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{t('bridges.heading')}</h2>
             <p className="text-sm text-muted-foreground max-w-4xl">{t('bridges.subA')}<span className="font-semibold text-foreground">{t('bridges.subAmount')}</span>{t('bridges.subB')}</p>
           </div>
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
 
             {/* How a bridge works — the vault visual */}
             <div className="flex flex-col gap-2 min-h-0">
@@ -906,26 +762,6 @@ export function BP_Section4() {
               <div className="shrink-0 rounded-lg border p-2.5" style={{ borderColor: '#f59e0b60', backgroundColor: '#f59e0b10' }}>
                 <p className="text-[10px] font-black uppercase tracking-widest text-[#f59e0b]">{t('bridges.honestLabel')}</p>
                 <p className="text-xs text-foreground leading-snug mt-0.5">{t('bridges.honest')}</p>
-              </div>
-            </div>
-
-            {/* Hall of shame */}
-            <div className="flex flex-col gap-2 min-h-0">
-              <div className="text-xs font-black uppercase tracking-widest text-muted-foreground shrink-0">{t('bridges.hacksLabel')}</div>
-              <div className="flex-1 min-h-0 grid auto-rows-fr gap-2">
-                {bridgeHacks.map((h, i) => {
-                  const color = hackColors[i];
-                  return (
-                    <div key={h.name} className="min-h-0 p-3 bg-card border rounded-xl flex flex-col gap-1" style={{ borderColor: color + '40' }}>
-                      <div className="flex items-center justify-between">
-                        <span className="font-bold text-sm text-foreground">{h.name}</span>
-                        <span className="font-black text-base" style={{ color }}>{h.amount}</span>
-                      </div>
-                      <div className="text-[11px] text-muted-foreground">{h.year} · {h.chain}</div>
-                      <div className="text-xs text-muted-foreground leading-snug">{h.method}</div>
-                    </div>
-                  );
-                })}
               </div>
             </div>
 
@@ -963,6 +799,41 @@ export function BP_Section4() {
             </div>
           </div>
           {kp('s4-bridges')}
+        </div>
+
+        {/* ═══════ S4-BRIDGE-HACKS — the four largest, one readable card each ═══════ */}
+        <div id="s4-bridge-hacks" className="h-full flex flex-col p-5 lg:p-8">
+          <div className="shrink-0 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{t('bridgeHacks.heading')}</h2>
+            <p className="text-sm text-muted-foreground max-w-4xl">{t('bridgeHacks.subtitle')}</p>
+          </div>
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {bridgeHacks.map((h, i) => {
+              const color = hackColors[i];
+              return (
+                <motion.div
+                  key={h.name}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: i * 0.05 }}
+                  className="min-h-0 rounded-xl border-2 p-4 lg:p-5 flex flex-col gap-2"
+                  style={{ borderColor: color + '55', backgroundColor: color + '08' }}
+                >
+                  <div className="flex items-baseline justify-between gap-3 shrink-0">
+                    <p className="text-lg lg:text-xl font-bold text-foreground leading-tight">{h.name}</p>
+                    <p className="text-2xl lg:text-3xl font-black shrink-0" style={{ color }}>{h.amount}</p>
+                  </div>
+                  <p className="text-xs text-muted-foreground shrink-0">{h.year} · {h.chain}</p>
+                  <div className="flex-1 min-h-0 mt-2 rounded-lg border bg-card p-4 flex flex-col justify-center gap-1.5" style={{ borderColor: color + '40' }}>
+                    <p className="text-[10px] font-black uppercase tracking-widest" style={{ color }}>{t('bridgeHacks.whatWentWrong')}</p>
+                    <p className="text-base lg:text-lg text-foreground leading-snug">{h.method}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+          {kp('s4-bridge-hacks')}
         </div>
 
         {/* ═══════ S4-COSMOS ═══════ */}
@@ -1105,8 +976,12 @@ export function BP_Section4() {
                 ))}
               </div>
 
-              {/* IBC reach beyond Cosmos */}
-              <div className="shrink-0">
+              {/* One example + IBC reach beyond Cosmos */}
+              <div className="shrink-0 grid grid-cols-1 lg:grid-cols-2 gap-2">
+                <div className="p-2.5 bg-[#22d3ee]/5 rounded-lg border border-[#22d3ee]/30">
+                  <p className="text-[11px] font-bold text-[#22d3ee] mb-1">{t('cosmos.dydxLabel')}</p>
+                  <p className="text-[10px] text-muted-foreground leading-relaxed">{t('cosmos.dydx')}</p>
+                </div>
                 <div className="p-2.5 bg-[#6366f1]/5 rounded-lg border border-[#6366f1]/30">
                   <p className="text-[11px] font-bold text-[#6366f1] mb-1 flex items-center gap-1.5">
                     <span>🔗</span> {t('cosmos.beyondTitle')}
@@ -1119,69 +994,6 @@ export function BP_Section4() {
             </div>
           </div>
           {kp('s4-cosmos')}
-        </div>
-
-        {/* ═══════ COSMOS APPS — ecosystem ═══════ */}
-        <div id="s4-cosmos-eco" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-3">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('cosmosEco.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('cosmosEco.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-5 gap-2.5">
-            {cosmosApps.map((app, ai) => {
-              const color = cosmosAppColors[ai];
-              return (
-                <motion.div
-                  key={app.name}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex flex-col gap-1.5 p-2.5 rounded-xl border-2 min-h-0"
-                  style={{ borderColor: color + '55', backgroundColor: color + '0a' }}
-                >
-                  <div className="shrink-0">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-base shrink-0 leading-none">{app.emoji}</span>
-                      <div className="font-black text-[12px] leading-tight" style={{ color }}>{app.name}</div>
-                    </div>
-                    <span
-                      className="inline-block text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded mt-1"
-                      style={{ backgroundColor: color + '20', color, border: `1px solid ${color}40` }}
-                    >
-                      {app.category}
-                    </span>
-                  </div>
-
-                  <div className="shrink-0">
-                    <div className="text-[10px] text-foreground font-medium leading-tight">{app.tag}</div>
-                    <div className="text-[9px] text-muted-foreground italic leading-snug mt-0.5">{app.stats}</div>
-                  </div>
-
-                  <div className="flex-1 min-h-0 flex flex-col gap-1">
-                    {app.items.slice(0, 3).map(item => (
-                      <div
-                        key={item.name}
-                        className="rounded-md border bg-card/60 px-1.5 py-1 min-h-0"
-                        style={{ borderColor: color + '35' }}
-                      >
-                        <div className="text-[10px] font-bold leading-tight" style={{ color }}>{item.name}</div>
-                        <div className="text-[9px] text-muted-foreground leading-snug mt-0.5">{item.kind}</div>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          <div className="shrink-0 mt-3 rounded-xl border p-2.5" style={{ borderColor: '#22d3ee55', backgroundColor: '#22d3ee0d' }}>
-            <p className="text-[11px] text-muted-foreground leading-snug">
-              <span className="font-bold" style={{ color: '#22d3ee' }}>{t('cosmosEco.footerStrong')}</span>
-              <span className="font-medium text-foreground">{t('cosmosEco.footerA')}</span>{t('cosmosEco.footerAtext')}<span className="font-medium text-foreground">{t('cosmosEco.footerB')}</span>{t('cosmosEco.footerBtext')}<span className="font-medium text-foreground">{t('cosmosEco.footerC')}</span>{t('cosmosEco.footerCtext')}<span className="font-medium text-foreground">{t('cosmosEco.footerD')}</span>{t('cosmosEco.footerDtext')}<span className="font-medium text-foreground">{t('cosmosEco.footerE')}</span>{t('cosmosEco.footerEtext')}<span className="font-medium text-foreground">{t('cosmosEco.footerF')}</span>{t('cosmosEco.footerFtext')}<span className="font-medium text-foreground">{t('cosmosEco.footerG')}</span>{t('cosmosEco.footerGtext')}
-            </p>
-          </div>
-          {kp('s4-cosmos-eco')}
         </div>
 
         {/* ═══════ S4-LAYER0 (1/2) — Animated Concept ═══════ */}
@@ -1330,20 +1142,6 @@ export function BP_Section4() {
             <UnderTheHood label={hoodLabel} terms={['UNL', 'federated BFT', 'Trust Lines', 'XLS-30 AMM', 'Hooks']} className="self-start lg:self-center" />
           </div>
           {kp('s4-xrp')}
-        </div>
-
-        {/* ═══════ XRPL ↔ AXELAR — dedicated animation slide ═══════ */}
-        <div id="s4-xrp-anim" className="h-full flex flex-col p-5 lg:p-8">
-          <div className="shrink-0 mb-3">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('xrpAnim.heading')}</h2>
-            <p className="text-sm text-muted-foreground max-w-3xl">
-              {t('xrpAnim.subtitle')}
-            </p>
-          </div>
-          <div className="flex-1 min-h-0">
-            <XrplAxelarFlow />
-          </div>
-          {kp('s4-xrp-anim')}
         </div>
 
         {/* ═══════ QUIZ ═══════ */}

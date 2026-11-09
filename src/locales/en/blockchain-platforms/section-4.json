@@ -14,11 +14,11 @@
     "s4-chooser": "Which Connection?",
     "s4-layer0": "Layer 0: Concept",
     "s4-layer0-2": "Layer 0: Platforms",
+    "s4-wrapped": "Wrapped Tokens",
     "s4-bridges": "Bridge Security",
+    "s4-bridge-hacks": "Bridge Hacks",
     "s4-cosmos": "Cosmos",
-    "s4-cosmos-eco": "Cosmos Apps",
     "s4-xrp": "XRP Ledger",
-    "s4-xrp-anim": "XRPL ↔ Axelar",
     "s4-quiz": "Quiz",
     "s4-takeaways": "Takeaways"
   },
@@ -57,34 +57,6 @@
       "l0": "— shared validators, message bus",
       "l1": "— app chain plugged into L0",
       "l2": "— rollup on a specific L1"
-    }
-  },
-  "xrplAxelarAnim": {
-    "headline": "XRPL → Axelar → another blockchain",
-    "replay": "↻ Replay",
-    "steps": [
-      "1. User triggers a cross-chain call from XRPL (e.g. send RLUSD to Ethereum)",
-      "2. Axelar gateway picks up the message; validators vote on the payload",
-      "3. ≥ 2/3 of Axelar validators sign — the message is admitted on the hub",
-      "4. Axelar relayer delivers to the destination chain; recipient receives it"
-    ],
-    "svg": {
-      "xrplTitle": "XRP LEDGER",
-      "xrplSub": "Source chain",
-      "xrplLine1": "send RLUSD",
-      "xrplLine2": "to 0x… on Ethereum",
-      "axelarTitle": "AXELAR NETWORK",
-      "axelarSub": "PoS hub · GMP gateway",
-      "axelarSign": "≥ 2/3 sign",
-      "evmTitle": "ETHEREUM",
-      "evmSub": "Destination chain",
-      "evmLine1": "RLUSD received",
-      "evmLine2": "+ message delivered"
-    },
-    "legend": {
-      "xrpl": "— source: payment-optimised L1",
-      "axelar": "— PoS hub network + GMP",
-      "evm": "— destination: any chain Axelar covers"
     }
   },
   "interop": {
@@ -231,7 +203,6 @@
     },
     "honestLabel": "In practice",
     "honest": "Using a bridge is a trust decision, not a technical detail: you are trusting whoever controls the vault. Prefer a chain's official (canonical) bridge, and move only what you need.",
-    "hacksLabel": "Largest Bridge Hacks",
     "hacks": [
       { "name": "Ronin Bridge", "amount": "$625M", "year": "2022", "chain": "Axie Infinity ↔ Ethereum", "method": "5 of the 9 signer keys were stolen — enough to approve any withdrawal from the vault." },
       { "name": "Wormhole Bridge", "amount": "$320M", "year": "2022", "chain": "Solana ↔ Ethereum", "method": "A signature check could be skipped — the attacker issued 120,000 wrapped ETH backed by nothing." },
@@ -250,6 +221,36 @@
       { "title": "Official (canonical) bridges", "desc": "Ethereum rollups' own bridges (Arbitrum, Optimism, Base) are secured by the rollup's proof system, not by a separate group of signers." },
       { "title": "Rate limits & circuit breakers", "desc": "Cap how much can leave per hour. Nomad was drained in minutes — a limit would have saved most of it." }
     ]
+  },
+  "wrapped": {
+    "heading": "What a wrapped token is",
+    "subtitle": "WBTC, wETH and friends are not the coin itself. They are a claim on a coin that someone else is holding.",
+    "svg": {
+      "sourceChain": "Bitcoin",
+      "sourceAsset": "1 BTC",
+      "sourceNote": "held in the custodian's wallet",
+      "issuer": "Custodian / bridge",
+      "issuerNote": "mints and burns the copies",
+      "issuerPowers": "can pause · can refuse to redeem",
+      "targetChain": "Ethereum",
+      "targetAsset": "1 WBTC",
+      "targetNote": "your balance, an IOU",
+      "mint": "deposit → mint",
+      "burn": "burn → withdraw",
+      "caption": "The wrapped balance is worth 1 BTC only while the custodian still holds 1 BTC and will hand it back."
+    },
+    "cards": [
+      { "title": "What it is", "desc": "A token on one chain that stands for a coin held on another. 1 WBTC on Ethereum is a claim on 1 BTC kept by a custodian, much as a casino chip is a claim on cash at the cage." },
+      { "title": "Who can redeem it", "desc": "Usually not you. Only approved, identity-checked merchants swap WBTC back for BTC; everyone else sells it on an exchange. The price holds only while people believe the vault is full." },
+      { "title": "Who can freeze it", "desc": "The issuer. The WBTC contract can be paused by its owner, and a bridge operator can stop minting or releasing. If the vault is emptied, as at Wormhole in 2022, the copies are backed by nothing." }
+    ],
+    "noteLabel": "Not every wrapper needs a custodian",
+    "note": "WETH on Ethereum itself is a plain contract: anyone swaps ETH for WETH and back 1:1 with nobody in the middle. The question to ask of any wrapped token is who holds the original."
+  },
+  "bridgeHacks": {
+    "heading": "The four largest bridge hacks",
+    "subtitle": "All in 2022, all on the same design: one vault, a few keys, one checking routine.",
+    "whatWentWrong": "What went wrong"
   },
   "cosmos": {
     "heading": "Cosmos: The Internet of Blockchains",
@@ -282,88 +283,9 @@
     "beyondTitle": "Beyond Cosmos",
     "beyondBodyA": "IBC ",
     "beyondBodyStrong": "Eureka",
-    "beyondBodyB": " (live 2025) extends IBC to Ethereum and other non-Cosmos chains without a centralised bridge."
-  },
-  "cosmosEco": {
-    "heading": "Cosmos ecosystem — what runs across IBC",
-    "subtitle": "Five of the 110+ IBC-connected chains. The most-used apps run on the zones, not on the Hub.",
-    "apps": [
-      {
-        "emoji": "🌊",
-        "name": "Osmosis",
-        "category": "DEX",
-        "tag": "largest IBC DEX",
-        "stats": "~$200M TVL · since 2021",
-        "items": [
-          { "name": "Concentrated liquidity", "kind": "Uniswap-v3-style ranges" },
-          { "name": "Superfluid staking", "kind": "LP tokens that also stake" },
-          { "name": "IBC-native swaps", "kind": "Any IBC asset, no bridge" }
-        ]
-      },
-      {
-        "emoji": "📈",
-        "name": "dYdX v4",
-        "category": "Perps DEX",
-        "tag": "migrated off StarkEx (2023)",
-        "stats": "Daily vol in $100Ms · Cosmos SDK",
-        "items": [
-          { "name": "Order-book perps", "kind": "Off-chain matching, on-chain settlement" },
-          { "name": "Sovereign chain", "kind": "Validators paid in trading fees" },
-          { "name": "Custom matching", "kind": "Built specifically for derivatives" }
-        ]
-      },
-      {
-        "emoji": "🧊",
-        "name": "Celestia",
-        "category": "Modular DA",
-        "tag": "data layer for rollups",
-        "stats": "Mainnet 2023 · TIA token",
-        "items": [
-          { "name": "Data availability", "kind": "Sells blob space to rollups" },
-          { "name": "Data sampling", "kind": "Light clients verify w/o full state" },
-          { "name": "Powers RaaS", "kind": "Manta, Eclipse, Movement use it" }
-        ]
-      },
-      {
-        "emoji": "☁️",
-        "name": "Akash",
-        "category": "GPU Compute",
-        "tag": "open marketplace for compute",
-        "stats": "GPU demand from AI workloads",
-        "items": [
-          { "name": "GPU rentals", "kind": "A100s, H100s for ML training" },
-          { "name": "Reverse auction", "kind": "Buyers post jobs, providers bid" },
-          { "name": "AKT payments", "kind": "Settle in token or any IBC asset" }
-        ]
-      },
-      {
-        "emoji": "🌀",
-        "name": "Stride",
-        "category": "Liquid Staking",
-        "tag": "liquid staking across IBC",
-        "stats": "Liquid stakes ATOM, OSMO, INJ, TIA…",
-        "items": [
-          { "name": "stATOM, stTIA…", "kind": "Liquid staking tokens, IBC-portable" },
-          { "name": "Auto-compound", "kind": "Rewards re-staked automatically" },
-          { "name": "IBC-native LST", "kind": "Use stTokens across all IBC chains" }
-        ]
-      }
-    ],
-    "footerStrong": "Also: ",
-    "footerA": "Injective",
-    "footerAtext": " (finance-focused L1) · ",
-    "footerB": "Sei",
-    "footerBtext": " (orderbook L1) · ",
-    "footerC": "Mantra",
-    "footerCtext": " (RWA tokenisation) · ",
-    "footerD": "Stargaze",
-    "footerDtext": " (NFTs) · ",
-    "footerE": "Secret Network",
-    "footerEtext": " (privacy) · ",
-    "footerF": "Fetch.ai / ASI",
-    "footerFtext": " (AI agents) · ",
-    "footerG": "Neutron",
-    "footerGtext": " (smart-contract platform secured by ATOM)."
+    "beyondBodyB": " (live 2025) extends IBC to Ethereum and other non-Cosmos chains without a centralised bridge.",
+    "dydxLabel": "Example",
+    "dydx": "dYdX, a derivatives exchange, left its Ethereum rollup in 2023 for its own Cosmos chain: an app gets its own chain once it is big enough to justify one."
   },
   "xrp": {
     "badgePartner": "Partner platform",
@@ -382,10 +304,6 @@
     ],
     "honestTitle": "What you give up",
     "honestBody": "A smaller smart-contract surface than the EVM, and federated validation: anyone can run a node, but the default validator list ships with the software. The bet is payments, tokenised assets and cross-chain settlement, not general-purpose apps."
-  },
-  "xrpAnim": {
-    "heading": "XRPL ↔ Axelar — one hub to reach other chains",
-    "subtitle": "How XRPL talks to other chains without a bespoke bridge contract per pair."
   },
   "quiz": {
     "question": "Cross-chain bridges have been responsible for the largest hacks in crypto history — Ronin ($625M), Wormhole ($320M), Nomad ($190M). What architectural property makes bridges such high-value targets?",
@@ -413,12 +331,12 @@
     "s4-interop-compare": "Three routes, one question: do you trust an operator, the maths, or a shared validator set?",
     "s4-chooser": "The safest connection is the one with the fewest people to trust.",
     "s4-bridges": "Bridges are where most of the money has been stolen; using one is a trust decision.",
+    "s4-wrapped": "A wrapped token is an IOU; it is worth the original only while someone holds that coin and agrees to give it back.",
+    "s4-bridge-hacks": "Every big bridge hack came down to a few stolen keys or one bug in the vault's checks; one shared vault turned it into a total loss.",
     "s4-cosmos": "Cosmos trades shared security for sovereignty; IBC lets chains verify each other without a middleman.",
-    "s4-cosmos-eco": "An app gets its own chain when it is big enough to justify one, as dYdX did.",
     "s4-layer0": "A Layer 0 is a security team for hire; new chains inherit protection on day one.",
     "s4-layer0-2": "Shared security or full sovereignty: you rent one or build the other.",
-    "s4-xrp": "XRPL is a payments rail, not an app platform; it is fast and cheap because it does less.",
-    "s4-xrp-anim": "One message hub replaces a bridge per pair, but now you trust the hub's validators."
+    "s4-xrp": "XRPL is a payments rail, not an app platform; it is fast and cheap because it does less."
   },
   "chooser": {
     "badge": "Try it",
