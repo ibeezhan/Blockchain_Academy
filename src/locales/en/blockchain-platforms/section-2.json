@@ -12,6 +12,7 @@
   },
   "chapters": {
     "s2-why": "Why Ethereum?",
+    "s2-turing": "Turing-complete",
     "s2-accounts-visual": "Accounts Visual",
     "s2-accounts": "Accounts",
     "s2-evm": "EVM",
@@ -33,8 +34,7 @@
     "s2-bestfits": "🎯 Best Fits",
     "s2-worstfits": "🚫 Worst Fits",
     "s2-quiz": "Quiz",
-    "s2-takeaways": "Takeaways",
-    "s2-summary": "Summary"
+    "s2-takeaways": "Takeaways"
   },
   "rollupsAnim": {
     "steps": [
@@ -44,7 +44,6 @@
       "4. Compressed blob + new state root posted to L1 (EIP-4844 blob lane)",
       "5. L1 verifies the proof and finalises — L2 inherits Ethereum security"
     ],
-    "liveLabel": "Live animation",
     "heading": "L2 user txs → Sequencer → Compression → L1 finalisation",
     "replay": "↻ Replay",
     "svg": {
@@ -75,18 +74,10 @@
     "title": "Ethereum: From Money to Programmable Blockchain",
     "subtitle": "Accounts, EVM, smart contracts, Proof of Stake, staking & ETH issuance, and the EVM ecosystem"
   },
-  "recap": {
-    "badge": "↩ recap from Fundamentals",
-    "linkLabel": "open the intro ↗",
-    "why": "The intro covered the “why” — Bitcoin's limits and Vitalik's insight. Here's how the idea actually works.",
-    "accounts": "You already met the two account types. Now the architecture: who initiates, who responds, who pays.",
-    "gas": "Gas as “fuel” was the intro. Now the mechanics: how it's measured, priced, and why it halts runaway code.",
-    "smartContracts": "You know a smart contract is code-as-agreement. Now the lifecycle: Solidity → bytecode → on-chain (Course 2 goes deeper).",
-    "defi": "DeFi was introduced as “finance without middlemen”. Here it is systematised as three primitives."
-  },
   "hood": {
     "label": "under the hood →",
     "why": "state machine · Turing-completeness · world state · EVM bytecode",
+    "turing": "Turing completeness · halting problem · gas limit",
     "accounts": "ECDSA key pairs · nonce · code hash · storage root · msg.sender",
     "gas": "opcode gas table · gasLimit vs gasUsed · revert · block gas limit (~30M)",
     "smartContracts": "Solidity → bytecode · ABI · CREATE / CREATE2 · immutability vs proxies",
@@ -100,6 +91,7 @@
   "keyPoint": {
     "label": "🔑 Key point",
     "why": "Bitcoin moves one asset by one rule; Ethereum runs any rule you can write.",
+    "turing": "Turing-complete = can compute anything computable, given enough gas.",
     "accountsVisual": "Only wallets can start a transaction; contracts just react — so every action traces back to someone's key.",
     "accounts": "People hold keys, contracts hold code — and only a key-holder can start a transaction.",
     "evm": "Thousands of machines run the same program and must agree on one result — that's what makes code trustworthy.",
@@ -136,7 +128,7 @@
     "quoteHighlight": "ANY program",
     "quoteB": "?\"",
     "properties": [
-      { "label": "Turing-complete scripting language", "desc": "Smart contracts can express any computation" },
+      { "label": "Turing-complete scripting language", "desc": "Can run any program, not just payments — explained on the next slide" },
       { "label": "Global shared state (accounts)", "desc": "One universal ledger for all addresses and contracts" },
       { "label": "Ethereum Virtual Machine (EVM)", "desc": "A sandboxed runtime replicated on every node worldwide" }
     ],
@@ -149,6 +141,29 @@
     "posLabel": "🌿 PoS (since Sep 2022)",
     "posValueA": "~0.01 TWh/yr ",
     "posValueHighlight": "(−99.95%)"
+  },
+  "turing": {
+    "heading": "What “Turing-complete” means",
+    "subtitle": "Bitcoin's scripting language is a fixed menu. Ethereum's machine is a kitchen.",
+    "menu": {
+      "title": "Bitcoin Script",
+      "tag": "A vending machine — like a calculator",
+      "buttons": ["Send coins", "Lock coins", "Multi-signature", "Time lock"],
+      "display": "one button → one fixed result",
+      "body": "Press a button, get the matching result. Safe and predictable — and nothing else is possible, by design."
+    },
+    "kitchen": {
+      "title": "Ethereum Virtual Machine",
+      "tag": "A kitchen — like a computer",
+      "tools": [
+        { "label": "Repeat", "desc": "Loops — do a step again and again" },
+        { "label": "Remember", "desc": "Memory — keep values between steps" },
+        { "label": "Decide", "desc": "Conditions — if this, then that" }
+      ],
+      "body": "Any recipe you can write down, it can cook: an auction, a loan, a token, a voting system."
+    },
+    "catchLabel": "The catch: ",
+    "catchBody": "a recipe can also say “repeat forever”. That is why every step costs gas — when the gas runs out, the program stops."
   },
   "accountsVisual": {
     "heading": "EOA vs Contract Account",
@@ -369,76 +384,88 @@
     "nextBody": " what staking means for the people who put up the 32 ETH — and what the switch did to ETH's supply."
   },
   "staking": {
-    "badge": "🧩 Staking",
     "heading": "Staking — ETH's Interest Rate",
-    "subtitle": "Lock ETH to help secure the network and earn a yield. It behaves almost like a yield instrument — but with a twist: you can't get in or out instantly.",
-    "whatLabel": "What staking is",
-    "whatBodyA": "You deposit ETH as collateral and your validator proposes and attests to blocks. In return the protocol pays you new ETH plus tips. ",
-    "whatBodyStrong": "~3–4% a year",
-    "whatBodyB": " — often called ETH's native interest rate. Misbehave (double-sign) and you get ",
-    "whatBodySlash": "slashed",
-    "whatBodyC": ": part of your stake is burned and you're ejected.",
-    "pathsLabel": "Three ways in",
-    "paths": [
-      { "title": "Solo validator", "req": "32 ETH + run a node 24/7", "get": "Full rewards, full control", "risk": "You own the uptime and slashing risk" },
-      { "title": "Liquid staking", "req": "Any amount — Lido, Rocket Pool", "get": "A liquid token back (stETH, rETH) that keeps earning and can be traded or used in DeFi", "risk": "Protocol fee (~10–15%) · smart-contract risk · Lido alone ≈ 25–30% of all staked ETH" },
-      { "title": "Institutional & ETFs", "req": "Custodians (Coinbase, Figment…) or a staked-ETH ETF", "get": "Staked-ETH yield inside a brokerage account — US spot-ETH ETFs were cleared to stake in 2025", "risk": "Counterparty + regulatory risk; the fund holds the keys, not you" }
-    ],
+    "subtitleA": "Lock ETH as a security deposit, help validate blocks, and earn ",
+    "subtitleRate": "~3–4% a year",
+    "subtitleB": " in new ETH — often called ETH's native interest rate. Cheat and you get ",
+    "subtitleSlash": "slashed",
+    "subtitleC": " (part of your deposit is burned). The twist: you can't get in or out instantly.",
     "instructorLabel": "From the instructor:",
     "instructorBody": " Ether Capital (Toronto, publicly listed) was one of the first public companies to run its own ETH staking operation — turning validator yield into a line item a listed company reports.",
     "sim": {
-      "label": "Try it — stake and exit simulator",
-      "intro": "The protocol admits and releases validators at a fixed rate, so entry and exit become queues. Pick an amount and a path:",
+      "step1": "Your choice",
+      "step2": "What happens",
       "amountLabel": "Amount",
+      "amountMeaning": {
+        "1": "A small saver — below the 32 ETH minimum for running a validator.",
+        "32": "Exactly one validator's security deposit.",
+        "1000": "A treasury or fund — 31 validators' worth."
+      },
       "pathLabel": "Path",
-      "paths": ["Solo", "Liquid staking", "ETF"],
-      "qualifyLabel": "Do you qualify?",
-      "yieldLabel": "Indicative yield",
-      "yieldPerYear": "≈ {{eth}} ETH / year at {{pct}}%",
-      "qualify": {
-        "soloNo": "✗ Solo needs 32 ETH per validator — {{amount}} ETH is not enough.",
-        "soloYes": "✓ {{validators}} validator(s) · {{idle}} ETH left idle",
-        "soloOne": "✓ Exactly one validator",
-        "liquid": "✓ Any amount — you receive stETH / rETH that keeps earning",
-        "etf": "✓ Any amount — you buy fund shares; the fund holds the keys"
+      "paths": { "solo": "Solo", "liquid": "Liquid staking", "etf": "ETF" },
+      "pathMeaning": {
+        "solo": "Run your own validator: 32 ETH per validator, a machine online 24/7, full rewards and full responsibility.",
+        "liquid": "Deposit any amount with Lido or Rocket Pool and receive a tradable token (stETH, rETH) that represents your stake.",
+        "etf": "Buy shares of a staked-ETH fund in a brokerage account. US spot-ETH ETFs were cleared to stake in 2025."
       },
-      "stages": ["Entry queue", "Earning", "Exit queue", "Withdrawal"],
+      "canLabel": "Can you stake this way?",
+      "can": {
+        "soloNo": "✗ No — solo staking needs 32 ETH per validator; {{amount}} ETH is below the minimum.",
+        "soloOne": "✓ Yes — exactly one validator.",
+        "soloMany": "✓ Yes — enough for {{validators}} validators (or one large validator since the 2025 Pectra upgrade).",
+        "liquid": "✓ Yes — any amount. The pool runs the validators; your token keeps earning in your wallet.",
+        "etf": "✓ Yes — any amount. The fund stakes the ETH and holds the keys, not you."
+      },
+      "earnLabel": "What you earn",
+      "earn": "≈ {{eth}} ETH a year at ~{{pct}}%",
+      "earnNone": "— nothing is staked",
+      "earnNote": {
+        "solo": "Full rewards. You carry the uptime and slashing risk yourself.",
+        "liquid": "After the pool's ~10% fee. Smart-contract risk; Lido alone holds ≈25–30% of all staked ETH.",
+        "etf": "After the fund's fee. Counterparty and regulatory risk sit with the fund."
+      },
+      "exitLabel": "How long to get your ETH back",
+      "exit": {
+        "solo": "Join the exit queue: hours to weeks, depending on how many others are leaving. Then about a day until the ETH is back in your wallet.",
+        "liquid": "Sell the token instantly on the market — but when many want out at once it can trade below 1:1 (≈0.94 in June 2022). Redeeming 1:1 takes days.",
+        "etf": "Sell your shares any trading day; cash arrives the next business day — you never hold ETH. The fund itself waits in the same exit queue, so it keeps part of its ETH unstaked."
+      },
+      "stops": ["Enter", "Earning", "Exit", "Back in wallet"],
       "waits": {
-        "solo": ["hours → weeks", "~3.5% / yr", "hours → weeks", "~1–2 days"],
-        "liquid": ["instant (mint)", "~3.1% / yr net", "sell now, or redeem in days", "instant if sold"],
-        "etf": ["T+1 (buy shares)", "~3.0% / yr net", "fund's exit queue", "T+1 (sell shares)"]
-      },
-      "needNow": "⚡ I need my ETH now",
-      "needNowQueue": "Join the exit queue — hours to weeks before your ETH is back in your wallet. The yield was real; the liquidity isn't instant.",
-      "needNowLiquid": "Sell stETH instantly on the market — but the price can slip below 1:1 when many people want out at once (≈ 0.94 in June 2022).",
-      "replay": "↻ Replay"
+        "solo": ["entry queue · hours to weeks", "~3.5% a year", "exit queue · hours to weeks", "about a day later"],
+        "liquid": ["instant — token minted", "~3.1% a year after fee", "sell instantly, or redeem in days", "instant if sold"],
+        "etf": ["next business day", "~3.0% a year after fee", "sell shares any trading day", "cash, next business day"]
+      }
     }
   },
   "issuance": {
-    "badge": "🧩 Monetary policy",
     "heading": "ETH Issuance — No Hard Cap, Yet Nearly Flat",
     "subtitle": "Bitcoin's supply is fixed by schedule. Ethereum's is a balance between what the protocol prints and what it burns.",
     "facts": [
-      { "title": "No hard cap", "detail": "Nothing in the protocol limits total ETH. Supply is a policy outcome, not a constant — and it has changed by upgrade." },
-      { "title": "The Merge cut issuance ~88%", "detail": "PoW paid miners ~13,000 ETH/day. PoS pays validators far less — and the amount scales with the square root of ETH staked, not with hardware." },
-      { "title": "EIP-1559 burns the base fee", "detail": "Every transaction destroys its base fee. Busy network → more burned than issued → net supply shrinks. The community calls it “ultrasound money”." }
+      { "title": "No hard cap", "detail": "Nothing in the protocol limits total ETH. Supply is a policy outcome — it has changed by upgrade." },
+      { "title": "The Merge cut issuance ~88%", "detail": "Miners earned ~13,000 ETH/day. Validators earned ~1,700/day right after the Merge (≈2,600 today, rising slowly with the amount staked)." },
+      { "title": "EIP-1559 burns the base fee", "detail": "Every transaction destroys its base fee. Busy network → more burned than issued → supply shrinks (“ultrasound money”)." }
     ],
-    "visualLabel": "Issuance vs burn → net supply (illustrative daily figures)",
-    "sliderLabel": "Network activity — drag it:",
-    "sliderQuiet": "quiet",
-    "sliderBusy": "busy",
-    "zoneGrowing": "supply growing — issuance beats burn",
-    "zoneBalanced": "roughly flat — burn ≈ issuance",
-    "zoneShrinking": "supply shrinking — the “ultrasound” zone",
-    "issuedLabel": "Issued to validators",
-    "burnedLabel": "Burned (base fee)",
-    "netLabel": "Net change",
-    "perDay": "ETH / day",
-    "perYear": "≈ {{pct}}% per year on ~120M ETH",
-    "btcLabel": "₿ Bitcoin (for contrast)",
-    "btcBody": "Fixed 21M · ~450 BTC/day today, halving every ~4 years · nothing is burned · last coin ≈ 2140. Predictable, always mildly inflationary until then.",
-    "ethLabel": "Ξ Ethereum",
-    "ethBody": "~120M ETH, roughly flat since the Merge (Sep 2022). Can inflate or deflate depending on demand for block space."
+    "chart": {
+      "title": "Total ETH supply, 2015 → 2030 (millions of ETH)",
+      "liveLink": "Live data: ultrasound.money ↗",
+      "genesis": "2015 genesis ≈72M",
+      "powLabel": "Proof of Work · +4–5% a year",
+      "powSub": "new coins paid to miners",
+      "merge": "The Merge · Sep 2022",
+      "mergeSub": "≈120.5M · new issuance −88%",
+      "projection": "projection",
+      "quiet": "quiet network · slight growth",
+      "busy": "busy network · slight shrink",
+      "zoomTitle": "Zoom · since the Merge",
+      "issuedLegend": "▲ issued to validators (+) · ≈2,600 ETH/day",
+      "burnLegend": "▼ EIP-1559 burn (−) · rises with usage",
+      "mergeDot": "≈120.5M",
+      "dipLabel": "2024 low ≈120.1M",
+      "footnote": "Stylised curve; dashed lines are projections, not forecasts. Quiet network → issuance beats burn → supply drifts up; busy network → burn beats issuance → supply shrinks. Either way, well under 1% a year."
+    },
+    "btcLabel": "₿ Bitcoin, for contrast",
+    "btcBody": "Fixed 21M · new coins halve every ~4 years (halvings) · nothing is ever burned · last coin ≈2140. Predictable by rule."
   },
   "evmEcosystem": {
     "heading": "EVM Everywhere",
@@ -499,12 +526,10 @@
     "eip4844B": " data — a cheap, ephemeral lane on L1 dedicated to rollups. L2 fees dropped ~10× overnight."
   },
   "rollupsAnimSlide": {
-    "badge": "🧩 Animated",
     "heading": "What Actually Happens Between L1 and L2",
     "subtitle": "You just read the steps. Now watch them: user tx → sequencer → batch → compressed blob → L1 finalisation."
   },
   "defi": {
-    "sectionLabel": "Section 02",
     "heading": "DeFi — Three Primitives, One Idea",
     "subtitleA": "DeFi replaces financial intermediaries with smart contracts. Three primitives explain ~90% of what's out there. ",
     "subtitleHighlight": "We'll go deeper in Course 03 (Smart Contracts) — this is the lay of the land.",
@@ -680,7 +705,6 @@
     ]
   },
   "bestFits": {
-    "badge": "🎯 Best Fits",
     "heading": "Where Ethereum Wins — The Use Cases It Actually Owns",
     "subtitleA": "Ethereum's design choices (Turing-complete EVM, account model, deep liquidity, ERC standards, the L2 stack) make it the default for anything that needs ",
     "subtitleStrong": "programmable state + composability + an open developer ecosystem",
@@ -697,7 +721,6 @@
     "notFitBody": " pure store-of-value at Bitcoin-level neutrality (use BTC), high-throughput retail payments without L2 (gas spikes), private enterprise consortia where data must stay off public view (use Fabric), use cases that don't need programmability or composability — extra cost for no benefit."
   },
   "worstFits": {
-    "badge": "🚫 Worst Fits",
     "headingA": "Where Ethereum is the ",
     "headingEm": "Wrong",
     "headingB": " Tool",

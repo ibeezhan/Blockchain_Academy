@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router';
 import anime from 'animejs';
 import { motion } from 'motion/react';
-import { useLocalizedPath } from '../../../i18n/useLang';
 import { TitleSlide } from '../../components/templates/TitleSlide';
 import { TakeawaySlide } from '../../components/templates/TakeawaySlide';
 import { ComparisonSlide } from '../../components/templates/ComparisonSlide';
@@ -18,6 +16,7 @@ import { Eip1559Demo } from '../../components/ethereum/Eip1559Demo';
 const chapterShape = [
   { kind: 'group' as const, id: 'g-s2-intro' },
   { id: 's2-why' },
+  { id: 's2-turing' },
 
   { kind: 'group' as const, id: 'g-s2-accounts' },
   { id: 's2-accounts-visual' },
@@ -61,21 +60,6 @@ const chapterShape = [
 // Language-neutral colors for the Rollups L1↔L2 animation steps (parallel to t('rollupsAnim.steps')).
 const ROLLUP_STEP_COLORS = ['#8b5cf6', '#f59e0b', '#06b6d4', '#3b82f6', '#10b981'] as const;
 
-const FUNDAMENTALS_INTRO_PATH = '/blockchain-fundamentals/section-3';
-
-/* One-line handoff: "this was introduced in Fundamentals — here we go deeper". Links to the intro section. */
-function RecapBadge({ topic }: { topic: 'why' | 'accounts' | 'gas' | 'smartContracts' | 'defi' }) {
-  const { t } = useTranslation('blockchain-platforms/section-2');
-  const localized = useLocalizedPath();
-  return (
-    <div className="flex flex-wrap items-center gap-2 mb-1.5 text-[11px] text-muted-foreground">
-      <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] font-bold whitespace-nowrap">{t('recap.badge')}</span>
-      <span className="leading-snug">{t(`recap.${topic}`)}</span>
-      <Link to={localized(FUNDAMENTALS_INTRO_PATH)} className="font-semibold text-[#627EEA] hover:underline whitespace-nowrap">{t('recap.linkLabel')}</Link>
-    </div>
-  );
-}
-
 /* Keyword trail for students who want the tech underneath — never required reading. */
 function HoodHint({ topic, className = '' }: { topic: string; className?: string }) {
   const { t } = useTranslation('blockchain-platforms/section-2');
@@ -101,262 +85,202 @@ function KeyPoint({ topic, hood, className = '' }: { topic: string; hood?: strin
   );
 }
 
-const ISSUANCE_BAR_MAX = 5200;
-const ISSUANCE_PER_DAY = 2600;
-const BURN_MIN = 150;
-const BURN_MAX = 5000;
+/* ── ETH supply chart: stylised history 2015→2025 + two dashed projections, with a post-Merge zoom inset. ── */
+const CH = { w: 640, h: 400, left: 46, right: 150, top: 18, bottom: 30 };
+const SUPPLY_HISTORY: [number, number][] = [
+  [2015.58, 72.0], [2016, 76.5], [2017, 88.0], [2018, 96.9], [2019, 104.1], [2020, 109.2], [2021, 114.0], [2021.6, 117.0], [2022.7, 120.5],
+  [2023.0, 120.5], [2023.5, 120.25], [2024.0, 120.2], [2024.3, 120.07], [2024.7, 120.25], [2025.0, 120.45], [2025.5, 120.65], [2025.95, 120.8],
+];
+const SUPPLY_QUIET: [number, number][] = [[2025.95, 120.8], [2030, 123.2]];
+const SUPPLY_BUSY: [number, number][] = [[2025.95, 120.8], [2030, 119.5]];
+const MERGE_YEAR = 2022.7;
+const PROJECTION_START = 2026;
 
-/* Issuance vs burn → net supply. A continuous activity slider drives the burn; bars + net animate. */
-function IssuanceBalance() {
+function SupplyChart() {
   const { t } = useTranslation('blockchain-platforms/section-2');
-  const [activity, setActivity] = useState(45);
-  // Burn grows faster than linearly with activity — busy blocks push the base fee up, not just the count.
-  const burned = Math.round(BURN_MIN + (BURN_MAX - BURN_MIN) * Math.pow(activity / 100, 1.6));
-  const net = ISSUANCE_PER_DAY - burned;
-  const shrinking = net < 0;
-  const balanced = Math.abs(net) < 250;
-  const netColor = shrinking ? '#10b981' : balanced ? '#627EEA' : '#f59e0b';
-  const zone = shrinking ? t('issuance.zoneShrinking') : balanced ? t('issuance.zoneBalanced') : t('issuance.zoneGrowing');
-  const pctPerYear = ((net * 365) / 120_000_000 * 100).toFixed(2);
-  const sliderColor = shrinking ? '#10b981' : '#f97316';
+  const muted = 'var(--muted-foreground)';
+  const fg = 'var(--foreground)';
+  const x = (yr: number) => CH.left + ((yr - 2015) / 15) * (CH.w - CH.left - CH.right);
+  const y = (m: number) => CH.top + ((130 - m) / 70) * (CH.h - CH.top - CH.bottom);
+  // Zoom inset: 2022.5→2030 on the x axis, 119→124M on the y axis.
+  const IN = { x0: 286, x1: 488, y0: 125, y1: 350, px0: 294, px1: 480, py0: 170, py1: 325 };
+  const ix = (yr: number) => IN.px0 + ((yr - 2022.5) / 7.5) * (IN.px1 - IN.px0);
+  const iy = (m: number) => IN.py0 + ((124 - m) / 5) * (IN.py1 - IN.py0);
+  const path = (pts: [number, number][], fx: (v: number) => number, fy: (v: number) => number) =>
+    pts.map(([yr, m], i) => `${i === 0 ? 'M' : 'L'}${fx(yr).toFixed(1)},${fy(m).toFixed(1)}`).join(' ');
+  const postMerge = SUPPLY_HISTORY.filter(([yr]) => yr >= MERGE_YEAR);
+  const genesis = SUPPLY_HISTORY[0];
+  const last = SUPPLY_HISTORY[SUPPLY_HISTORY.length - 1];
 
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4 h-full min-h-0">
-      <div className="text-[10px] font-black uppercase tracking-widest text-[#627EEA]">{t('issuance.visualLabel')}</div>
-
-      <div>
-        <div className="flex justify-between items-baseline text-xs mb-1">
-          <span className="text-muted-foreground font-semibold">{t('issuance.sliderLabel')}</span>
-          <span className="font-mono text-foreground">{activity}%</span>
-        </div>
-        <input
-          type="range"
-          min={0}
-          max={100}
-          step={1}
-          value={activity}
-          onChange={(e) => setActivity(parseInt(e.target.value, 10))}
-          aria-label={t('issuance.sliderLabel')}
-          className="w-full h-2 rounded-full appearance-none cursor-pointer"
-          style={{
-            background: `linear-gradient(to right, ${sliderColor} 0%, ${sliderColor} ${activity}%, var(--muted) ${activity}%, var(--muted) 100%)`,
-            accentColor: sliderColor,
-          }}
-        />
-        <div className="flex justify-between text-[10px] text-muted-foreground mt-0.5">
-          <span>🌙 {t('issuance.sliderQuiet')}</span>
-          <span>{t('issuance.sliderBusy')} 🔥</span>
-        </div>
+    <div className="rounded-xl border border-border bg-card p-3 lg:p-4 h-full min-h-0 flex flex-col gap-2">
+      <div className="flex items-baseline justify-between gap-3 shrink-0">
+        <div className="text-xs font-bold text-foreground">{t('issuance.chart.title')}</div>
+        <a href="https://ultrasound.money/" target="_blank" rel="noopener noreferrer" className="text-[11px] font-semibold text-[#627EEA] hover:underline whitespace-nowrap">{t('issuance.chart.liveLink')}</a>
       </div>
 
-      {/* Zone strip — which regime the slider is in right now */}
-      <div className="grid grid-cols-3 gap-1.5 text-[10px] font-semibold text-center">
-        {[
-          { label: t('issuance.zoneGrowing'), color: '#f59e0b', on: !shrinking && !balanced },
-          { label: t('issuance.zoneBalanced'), color: '#627EEA', on: balanced },
-          { label: t('issuance.zoneShrinking'), color: '#10b981', on: shrinking },
-        ].map(z => (
-          <div key={z.label} className="rounded-md border px-1.5 py-1 leading-tight transition-colors" style={{ borderColor: z.color + (z.on ? 'FF' : '35'), backgroundColor: z.color + (z.on ? '20' : '00'), color: z.on ? z.color : 'var(--muted-foreground)', opacity: z.on ? 1 : 0.7 }}>
-            {z.label}
-          </div>
+      <svg viewBox={`0 0 ${CH.w} ${CH.h}`} className="flex-1 min-h-0 w-full" role="img" aria-label={t('issuance.chart.title')}>
+        {/* grid + axes */}
+        {[60, 80, 100, 120].map(m => (
+          <g key={m}>
+            <line x1={CH.left} x2={x(2030)} y1={y(m)} y2={y(m)} stroke={muted} strokeOpacity="0.2" strokeWidth="1" />
+            <text x={CH.left - 6} y={y(m) + 3} textAnchor="end" fontSize="9" fill={muted}>{m}M</text>
+          </g>
         ))}
-      </div>
-
-      <div className="flex-1 min-h-0 flex flex-col justify-evenly gap-3">
-        {[
-          { label: t('issuance.issuedLabel'), value: ISSUANCE_PER_DAY, color: '#627EEA', sign: '+' },
-          { label: t('issuance.burnedLabel'), value: burned, color: '#f97316', sign: '−' },
-        ].map((row) => (
-          <div key={row.label}>
-            <div className="flex justify-between text-sm mb-1">
-              <span className="font-semibold text-foreground">{row.label}</span>
-              <span className="font-mono font-bold" style={{ color: row.color }}>{row.sign}{row.value.toLocaleString()} {t('issuance.perDay')}</span>
-            </div>
-            <div className="h-7 rounded-full bg-muted overflow-hidden">
-              <motion.div
-                animate={{ width: `${Math.min(100, (row.value / ISSUANCE_BAR_MAX) * 100)}%` }}
-                transition={{ duration: 0.25, ease: 'easeOut' }}
-                className="h-full rounded-full"
-                style={{ backgroundColor: row.color }}
-              />
-            </div>
-          </div>
+        {[2015, 2018, 2021, 2024, 2027, 2030].map(yr => (
+          <text key={yr} x={x(yr)} y={CH.h - 10} textAnchor="middle" fontSize="9" fill={muted}>{yr}</text>
         ))}
 
-        <motion.div
-          animate={{ borderColor: netColor + '70', backgroundColor: netColor + '14' }}
-          transition={{ duration: 0.3 }}
-          className="rounded-xl border-2 px-4 py-4 flex items-center justify-between gap-3"
-        >
-          <div className="min-w-0">
-            <div className="text-[10px] font-black uppercase tracking-widest" style={{ color: netColor }}>{t('issuance.netLabel')}</div>
-            <div className="text-base text-foreground font-bold mt-0.5 leading-snug">{zone}</div>
-            <div className="text-xs text-muted-foreground mt-1">{t('issuance.perYear', { pct: (net > 0 ? '+' : '') + pctPerYear })}</div>
-          </div>
-          <div className="text-right shrink-0">
-            <motion.div
-              key={shrinking ? 'neg' : 'pos'}
-              initial={{ scale: 0.85, opacity: 0.6 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="font-mono text-4xl font-black tabular-nums"
-              style={{ color: netColor }}
-            >{net > 0 ? '+' : net < 0 ? '−' : ''}{Math.abs(net).toLocaleString()}</motion.div>
-            <div className="text-[10px] text-muted-foreground">{t('issuance.perDay')}</div>
-          </div>
-        </motion.div>
-      </div>
+        {/* projection zone */}
+        <line x1={x(PROJECTION_START)} x2={x(PROJECTION_START)} y1={CH.top - 6} y2={y(60)} stroke={muted} strokeOpacity="0.35" strokeDasharray="2 3" />
+        <text x={x(PROJECTION_START) + 4} y={CH.top - 6} fontSize="9" fontStyle="italic" fill={muted}>{t('issuance.chart.projection')} →</text>
+
+        {/* history + projections */}
+        <path d={path(SUPPLY_HISTORY, x, y)} fill="none" stroke="#627EEA" strokeWidth="2" strokeLinejoin="round" />
+        <path d={path(SUPPLY_QUIET, x, y)} fill="none" stroke="#f59e0b" strokeWidth="1.5" strokeDasharray="5 4" />
+        <path d={path(SUPPLY_BUSY, x, y)} fill="none" stroke="#10b981" strokeWidth="1.5" strokeDasharray="5 4" />
+        <text x={x(2030) + 6} y={y(123.2) + 3} fontSize="9" fontWeight="600" fill={fg}>{t('issuance.chart.quiet')}</text>
+        <text x={x(2030) + 6} y={y(119.5) + 5} fontSize="9" fontWeight="600" fill={fg}>{t('issuance.chart.busy')}</text>
+
+        {/* milestones */}
+        <circle cx={x(genesis[0])} cy={y(genesis[1])} r="3.5" fill="#627EEA" stroke="var(--card)" strokeWidth="1.5" />
+        <text x={x(genesis[0]) + 7} y={y(genesis[1]) + 16} fontSize="9" fill={fg}>{t('issuance.chart.genesis')}</text>
+        <text x={x(2018.2)} y={y(81)} fontSize="9" fontWeight="600" fill={fg}>{t('issuance.chart.powLabel')}</text>
+        <text x={x(2018.2)} y={y(81) + 11} fontSize="8.5" fill={muted}>{t('issuance.chart.powSub')}</text>
+        <line x1={x(MERGE_YEAR)} x2={x(MERGE_YEAR)} y1={y(120.5)} y2={CH.top + 10} stroke="#627EEA" strokeOpacity="0.6" strokeDasharray="2 2" />
+        <circle cx={x(MERGE_YEAR)} cy={y(120.5)} r="3.5" fill="#627EEA" stroke="var(--card)" strokeWidth="1.5" />
+        <text x={x(MERGE_YEAR) - 5} y={CH.top + 12} textAnchor="end" fontSize="9" fontWeight="700" fill={fg}>{t('issuance.chart.merge')}</text>
+        <text x={x(MERGE_YEAR) - 5} y={CH.top + 23} textAnchor="end" fontSize="8.5" fill={muted}>{t('issuance.chart.mergeSub')}</text>
+
+        {/* zoom inset */}
+        <rect x={IN.x0} y={IN.y0} width={IN.x1 - IN.x0} height={IN.y1 - IN.y0} rx="6" fill="var(--card)" stroke={muted} strokeOpacity="0.45" />
+        <text x={IN.x0 + 7} y={IN.y0 + 13} fontSize="9" fontWeight="700" fill={fg}>{t('issuance.chart.zoomTitle')}</text>
+        <text x={IN.x0 + 7} y={IN.y0 + 27} fontSize="8.5" fill="#627EEA" fontWeight="600">{t('issuance.chart.issuedLegend')}</text>
+        <text x={IN.x0 + 7} y={IN.y0 + 39} fontSize="8.5" fill="#f97316" fontWeight="600">{t('issuance.chart.burnLegend')}</text>
+        {[120, 122].map(m => (
+          <g key={m}>
+            <line x1={IN.px0} x2={IN.px1} y1={iy(m)} y2={iy(m)} stroke={muted} strokeOpacity="0.2" />
+            <text x={IN.x0 - 4} y={iy(m) + 3} textAnchor="end" fontSize="8" fill={muted}>{m}M</text>
+          </g>
+        ))}
+        {[2023, 2026, 2029].map(yr => (
+          <text key={yr} x={ix(yr)} y={IN.y1 - 6} textAnchor="middle" fontSize="8" fill={muted}>{yr}</text>
+        ))}
+        <path d={path(postMerge, ix, iy)} fill="none" stroke="#627EEA" strokeWidth="2" strokeLinejoin="round" />
+        <path d={path(SUPPLY_QUIET, ix, iy)} fill="none" stroke="#f59e0b" strokeWidth="1.5" strokeDasharray="5 4" />
+        <path d={path(SUPPLY_BUSY, ix, iy)} fill="none" stroke="#10b981" strokeWidth="1.5" strokeDasharray="5 4" />
+        <circle cx={ix(MERGE_YEAR)} cy={iy(120.5)} r="3" fill="#627EEA" />
+        <text x={ix(MERGE_YEAR) + 5} y={iy(120.5) - 6} fontSize="8" fill={fg}>{t('issuance.chart.mergeDot')}</text>
+        <circle cx={ix(2024.3)} cy={iy(120.07)} r="3" fill="#f97316" />
+        <text x={ix(2024.3)} y={iy(120.07) + 13} textAnchor="middle" fontSize="8" fill={fg}>{t('issuance.chart.dipLabel')}</text>
+        <circle cx={ix(last[0])} cy={iy(last[1])} r="3" fill="#627EEA" />
+      </svg>
+
+      <p className="shrink-0 text-[11px] text-muted-foreground leading-snug">{t('issuance.chart.footnote')}</p>
     </div>
   );
 }
 
 const STAKE_AMOUNTS = [1, 32, 1000] as const;
-const STAKE_PATH_KEYS = ['solo', 'liquid', 'etf'] as const;
-const STAKE_PATH_COLORS = ['#627EEA', '#06b6d4', '#8b5cf6'] as const;
-const STAKE_RATES = { solo: 3.5, liquid: 3.1, etf: 3.0 } as const;
-const STAGE_COLORS = ['#f59e0b', '#10b981', '#f59e0b', '#627EEA'] as const;
-const STAGE_MS = 1100;
+const STAKE_PATHS = ['solo', 'liquid', 'etf'] as const;
+type StakeAmount = (typeof STAKE_AMOUNTS)[number];
+type StakePath = (typeof STAKE_PATHS)[number];
+const STAKE_PATH_COLORS: Record<StakePath, string> = { solo: '#627EEA', liquid: '#06b6d4', etf: '#8b5cf6' };
+const STAKE_RATES: Record<StakePath, number> = { solo: 3.5, liquid: 3.1, etf: 3.0 };
 
-/* Stake-and-exit simulator: amount × path → qualify, yield, animated queue timeline, "need it now" outcome. */
+/* Stake-and-exit simulator: amount × path → three plain result cards + a four-stop timeline with the waits. */
 function StakingSimulator() {
   const { t } = useTranslation('blockchain-platforms/section-2');
-  const [amount, setAmount] = useState<(typeof STAKE_AMOUNTS)[number]>(32);
-  const [pathIdx, setPathIdx] = useState(0);
-  const [stage, setStage] = useState(0);
-  const [needNow, setNeedNow] = useState(false);
-  const [run, setRun] = useState(0);
-
-  const path = STAKE_PATH_KEYS[pathIdx];
-  const pathColor = STAKE_PATH_COLORS[pathIdx];
-  const pathLabels = t('staking.sim.paths', { returnObjects: true }) as string[];
-  const stages = t('staking.sim.stages', { returnObjects: true }) as string[];
+  const [amount, setAmount] = useState<StakeAmount>(32);
+  const [path, setPath] = useState<StakePath>('solo');
+  const color = STAKE_PATH_COLORS[path];
+  const pathLabels = t('staking.sim.paths', { returnObjects: true }) as Record<StakePath, string>;
+  const stops = t('staking.sim.stops', { returnObjects: true }) as string[];
   const waits = t(`staking.sim.waits.${path}`, { returnObjects: true }) as string[];
 
-  const validators = Math.floor(amount / 32);
-  const qualifies = path !== 'solo' || validators >= 1;
-  const qualifyText = path === 'liquid'
-    ? t('staking.sim.qualify.liquid')
-    : path === 'etf'
-      ? t('staking.sim.qualify.etf')
-      : validators < 1
-        ? t('staking.sim.qualify.soloNo', { amount })
-        : validators === 1 && amount === 32
-          ? t('staking.sim.qualify.soloOne')
-          : t('staking.sim.qualify.soloYes', { validators, idle: amount - validators * 32 });
-  const stakedAmount = path === 'solo' ? validators * 32 : amount;
+  const canStake = path !== 'solo' || amount >= 32;
+  const canText = path !== 'solo'
+    ? t(`staking.sim.can.${path}`)
+    : amount < 32 ? t('staking.sim.can.soloNo', { amount })
+      : amount === 32 ? t('staking.sim.can.soloOne')
+        : t('staking.sim.can.soloMany', { validators: Math.floor(amount / 32) });
   const rate = STAKE_RATES[path];
-  const yearlyEth = stakedAmount * rate / 100;
+  const yearly = (amount * rate / 100).toLocaleString(undefined, { maximumFractionDigits: 1 });
 
-  // Auto-play entry → earning on every input change; "need it now" jumps to the exit leg.
-  useEffect(() => {
-    setNeedNow(false);
-    if (!qualifies) { setStage(-1); return; }
-    setStage(0);
-    const id = setTimeout(() => setStage(1), STAGE_MS);
-    return () => clearTimeout(id);
-  }, [amount, pathIdx, qualifies, run]);
-
-  useEffect(() => {
-    if (!needNow) return;
-    setStage(2);
-    const id = setTimeout(() => setStage(3), STAGE_MS * 1.4);
-    return () => clearTimeout(id);
-  }, [needNow]);
-
-  const chip = (active: boolean, color: string) => active
-    ? { backgroundColor: color, borderColor: color, color: '#fff' }
+  const chip = (active: boolean, c: string) => active
+    ? { backgroundColor: c, borderColor: c, color: '#fff' }
     : { borderColor: 'var(--border)', color: 'var(--muted-foreground)' };
+  const stepLabel = (n: string, text: string) => (
+    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+      <span className="size-4 rounded-full bg-foreground text-background flex items-center justify-center text-[9px]">{n}</span>{text}
+    </div>
+  );
+  const results = [
+    { label: t('staking.sim.canLabel'), body: canText, c: canStake ? '#10b981' : '#ef4444' },
+    { label: t('staking.sim.earnLabel'), body: canStake ? t('staking.sim.earn', { eth: yearly, pct: rate }) : t('staking.sim.earnNone'), note: canStake ? t(`staking.sim.earnNote.${path}`) : '', c: color },
+    { label: t('staking.sim.exitLabel'), body: t(`staking.sim.exit.${path}`), c: color },
+  ];
 
   return (
-    <div className="rounded-xl border border-border bg-card p-3 lg:p-4 flex-1 min-h-0 flex flex-col gap-2.5">
-      <div>
-        <div className="text-[10px] font-black uppercase tracking-widest text-[#f59e0b]">{t('staking.sim.label')}</div>
-        <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">{t('staking.sim.intro')}</p>
-      </div>
-
-      <div className="grid grid-cols-2 gap-2">
-        <div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">{t('staking.sim.amountLabel')}</div>
-          <div className="flex gap-1.5">
-            {STAKE_AMOUNTS.map(a => (
-              <button key={a} onClick={() => setAmount(a)} className="flex-1 text-xs px-2 py-1 rounded-full border font-bold font-mono transition-colors" style={chip(a === amount, '#10b981')}>
-                {a.toLocaleString()} Ξ
-              </button>
-            ))}
-          </div>
-        </div>
-        <div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">{t('staking.sim.pathLabel')}</div>
-          <div className="flex gap-1.5">
-            {pathLabels.map((label, i) => (
-              <button key={i} onClick={() => setPathIdx(i)} className="flex-1 text-[11px] px-1.5 py-1 rounded-full border font-bold transition-colors leading-tight" style={chip(i === pathIdx, STAKE_PATH_COLORS[i])}>
-                {label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-2">
-        <div className="rounded-lg border px-2.5 py-1.5" style={{ borderColor: (qualifies ? '#10b981' : '#ef4444') + '60', backgroundColor: (qualifies ? '#10b981' : '#ef4444') + '10' }}>
-          <div className="text-[9px] font-black uppercase tracking-widest" style={{ color: qualifies ? '#10b981' : '#ef4444' }}>{t('staking.sim.qualifyLabel')}</div>
-          <div className="text-[11px] text-foreground leading-snug mt-0.5">{qualifyText}</div>
-        </div>
-        <div className="rounded-lg border px-2.5 py-1.5" style={{ borderColor: pathColor + '60', backgroundColor: pathColor + '10' }}>
-          <div className="text-[9px] font-black uppercase tracking-widest" style={{ color: pathColor }}>{t('staking.sim.yieldLabel')}</div>
-          <div className="text-[11px] text-foreground leading-snug mt-0.5 font-mono">
-            {qualifies ? t('staking.sim.yieldPerYear', { eth: yearlyEth.toLocaleString(undefined, { maximumFractionDigits: 2 }), pct: rate }) : '—'}
-          </div>
-        </div>
-      </div>
-
-      {/* Timeline — the active stage lights up; queue stages are dashed */}
-      <div className="flex-1 min-h-0 grid grid-cols-4 gap-1.5 mt-1" style={{ maxHeight: 180 }}>
-        {stages.map((label, i) => {
-          const color = STAGE_COLORS[i];
-          const active = stage === i;
-          const done = stage > i;
-          const isQueue = i === 0 || i === 2;
-          return (
-            <div key={i} className="flex items-center gap-1 min-w-0 min-h-0">
-              <motion.div
-                animate={{ opacity: !qualifies ? 0.35 : active || done ? 1 : 0.45, scale: active ? 1.04 : 1 }}
-                transition={{ duration: 0.3 }}
-                className="flex-1 min-w-0 h-full rounded-lg border-2 px-1.5 py-2.5 flex flex-col items-center justify-center text-center"
-                style={{ borderColor: color + (active ? 'FF' : '60'), backgroundColor: color + (active ? '25' : '0d'), borderStyle: isQueue ? 'dashed' : 'solid' }}
-              >
-                <div className="text-2xl leading-none">{isQueue ? '⏳' : i === 1 ? '💰' : '🏦'}</div>
-                <div className="text-xs font-bold text-foreground leading-tight mt-2">{label}</div>
-                <div className="text-[10px] font-mono leading-tight mt-1" style={{ color }}>{waits[i]}</div>
-              </motion.div>
-              {i < 3 && <span className="text-muted-foreground text-xs shrink-0">→</span>}
+    <div className="flex-1 min-h-0 flex flex-col gap-3">
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-4">
+        {/* Step 1 — inputs */}
+        <div className="rounded-xl border border-border bg-card p-3 lg:p-4 flex flex-col gap-3 min-h-0">
+          {stepLabel('1', t('staking.sim.step1'))}
+          <div>
+            <div className="text-xs font-bold text-foreground mb-1.5">{t('staking.sim.amountLabel')}</div>
+            <div className="flex gap-1.5">
+              {STAKE_AMOUNTS.map(a => (
+                <button key={a} onClick={() => setAmount(a)} className="flex-1 text-sm px-2 py-1.5 rounded-lg border font-bold font-mono transition-colors" style={chip(a === amount, '#10b981')}>
+                  {a.toLocaleString()} ETH
+                </button>
+              ))}
             </div>
-          );
-        })}
+            <p className="text-[11px] text-muted-foreground leading-snug mt-1.5">{t(`staking.sim.amountMeaning.${amount}`)}</p>
+          </div>
+          <div>
+            <div className="text-xs font-bold text-foreground mb-1.5">{t('staking.sim.pathLabel')}</div>
+            <div className="flex gap-1.5">
+              {STAKE_PATHS.map(p => (
+                <button key={p} onClick={() => setPath(p)} className="flex-1 text-xs px-2 py-1.5 rounded-lg border font-bold transition-colors leading-tight" style={chip(p === path, STAKE_PATH_COLORS[p])}>
+                  {pathLabels[p]}
+                </button>
+              ))}
+            </div>
+            <p className="text-[11px] text-muted-foreground leading-snug mt-1.5">{t(`staking.sim.pathMeaning.${path}`)}</p>
+          </div>
+          <p className="mt-auto text-[11px] text-muted-foreground leading-snug border-t border-border pt-2">
+            <span className="font-bold text-[#8b5cf6]">{t('staking.instructorLabel')}</span>{t('staking.instructorBody')}
+          </p>
+        </div>
+
+        {/* Step 2 — results */}
+        <div className="rounded-xl border border-border bg-card p-3 lg:p-4 flex flex-col gap-2 min-h-0">
+          {stepLabel('2', t('staking.sim.step2'))}
+          {results.map(r => (
+            <div key={r.label} className="flex-1 min-h-0 rounded-lg border px-3 py-2 flex flex-col justify-center transition-colors" style={{ borderColor: r.c + '60', backgroundColor: r.c + '10' }}>
+              <div className="text-[10px] font-black uppercase tracking-widest" style={{ color: r.c }}>{r.label}</div>
+              <div className="text-sm lg:text-base text-foreground leading-snug mt-0.5">{r.body}</div>
+              {r.note && <div className="text-[11px] text-muted-foreground leading-snug mt-0.5">{r.note}</div>}
+            </div>
+          ))}
+        </div>
       </div>
 
-      <div className="flex items-center gap-2">
-        <button
-          onClick={() => setNeedNow(true)}
-          disabled={!qualifies || stage < 1 || needNow}
-          className="text-xs px-3 py-1.5 rounded-lg font-bold text-white transition-opacity disabled:opacity-40"
-          style={{ backgroundColor: '#ef4444' }}
-        >{t('staking.sim.needNow')}</button>
-        <button onClick={() => setRun(r => r + 1)} className="text-[11px] px-2.5 py-1.5 rounded-lg bg-muted/60 hover:bg-muted text-foreground font-semibold transition-colors">{t('staking.sim.replay')}</button>
-      </div>
-
-      {/* Outcome of "need it now" — the yield-vs-liquidity payoff */}
-      <div className="shrink-0 min-h-[60px] flex items-start">
-        {needNow && (
-          <motion.div
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="w-full text-sm leading-snug rounded-xl border-2 px-3 py-2.5 flex items-start gap-2"
-            style={{ borderColor: (path === 'liquid' ? '#06b6d4' : '#f59e0b') + '80', backgroundColor: (path === 'liquid' ? '#06b6d4' : '#f59e0b') + '14', color: 'var(--foreground)' }}
-          >
-            <span className="text-lg leading-none shrink-0">{path === 'liquid' ? '💧' : '⏳'}</span>
-            <span>{path === 'liquid' ? t('staking.sim.needNowLiquid') : t('staking.sim.needNowQueue')}</span>
-          </motion.div>
-        )}
+      {/* Timeline — four stops, the wait for the chosen path under each */}
+      <div className="shrink-0 rounded-xl border border-border bg-card px-3 py-3 relative" style={{ opacity: canStake ? 1 : 0.4 }}>
+        <div className="absolute left-[12.5%] right-[12.5%] top-[21px] h-0.5" style={{ backgroundColor: color + '70' }} />
+        <div className="grid grid-cols-4 gap-2 relative">
+          {stops.map((label, i) => (
+            <div key={i} className="flex flex-col items-center text-center">
+              <div className="size-[18px] rounded-full border-2 bg-card flex items-center justify-center" style={{ borderColor: color }}>
+                <div className="size-2 rounded-full" style={{ backgroundColor: color }} />
+              </div>
+              <div className="text-xs font-bold text-foreground mt-1.5 leading-tight">{label}</div>
+              <div className="text-[11px] leading-snug mt-0.5 font-semibold" style={{ color }}>{waits[i]}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -496,10 +420,7 @@ function RollupsL1L2Animation() {
   return (
     <div ref={rootRef} className="flex flex-col gap-3 min-h-0 h-full">
       <div className="shrink-0 flex items-start justify-between gap-3">
-        <div>
-          <div className="text-[10px] font-black uppercase tracking-widest text-[#8b5cf6]">{t('rollupsAnim.liveLabel')}</div>
-          <div className="text-sm font-bold text-foreground">{t('rollupsAnim.heading')}</div>
-        </div>
+        <div className="text-sm font-bold text-foreground">{t('rollupsAnim.heading')}</div>
         <button
           onClick={play}
           disabled={phase === 'playing'}
@@ -596,7 +517,6 @@ interface StablecoinCard { title: string; sub: string; mechanism: string; logos:
 interface AppProject { sym: string; tag: string; }
 interface AppCard { title: string; sub: string; what: string; projects: AppProject[]; limit: string; }
 interface FitItem { name: string; why: string; example?: string; alt?: string; }
-interface StakingPath { title: string; req: string; get: string; risk: string; }
 interface IssuanceFact { title: string; detail: string; }
 
 export function BP_Section2() {
@@ -615,6 +535,10 @@ export function BP_Section2() {
   // Static color/icon metadata kept module-side; text resolved per index from t().
   const whyLimits = t('why.limits', { returnObjects: true }) as WhyItem[];
   const whyProperties = t('why.properties', { returnObjects: true }) as LabelDesc[];
+
+  const turingButtons = t('turing.menu.buttons', { returnObjects: true }) as string[];
+  const turingTools = t('turing.kitchen.tools', { returnObjects: true }) as LabelDesc[];
+  const turingToolIcons = ['🔁', '🗄️', '🔀'];
 
   const accountsVisualEoaPoints = t('accountsVisual.eoa.points', { returnObjects: true }) as string[];
   const accountsVisualEoaIcons = ['👤', '🚀', '💰', '⛽'];
@@ -652,13 +576,6 @@ export function BP_Section2() {
   const consensusSteps = t('consensus.steps', { returnObjects: true }) as ConsensusStep[];
   const consensusStepColors = ['#627EEA', '#8b5cf6', '#3b82f6', '#10b981'];
   const consensusStepIcons = ['🔒', '🎲', '🗳️', '✅'];
-
-  const stakingPaths = t('staking.paths', { returnObjects: true }) as StakingPath[];
-  const stakingPathMeta = [
-    { icon: '🖥️', color: '#627EEA' },
-    { icon: '💧', color: '#06b6d4' },
-    { icon: '🏦', color: '#8b5cf6' },
-  ];
 
   const issuanceFacts = t('issuance.facts', { returnObjects: true }) as IssuanceFact[];
   const issuanceFactMeta = [
@@ -746,7 +663,6 @@ export function BP_Section2() {
         {/* ═══════ S2-WHY ═══════ */}
         <div id="s2-why" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-5">
-            <RecapBadge topic="why" />
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('why.heading')}</h2>
             <p className="text-muted-foreground text-sm mt-1">{t('why.subtitle')}</p>
           </div>
@@ -876,10 +792,67 @@ export function BP_Section2() {
           <KeyPoint topic="why" hood="why" className="mt-3" />
         </div>
 
+        {/* ═══════ S2-TURING — menu vs kitchen ═══════ */}
+        <div id="s2-turing" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-5">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('turing.heading')}</h2>
+            <p className="text-muted-foreground text-sm mt-1">{t('turing.subtitle')}</p>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-4 items-stretch">
+            {/* Bitcoin Script — the vending machine */}
+            <div className="rounded-2xl border-2 p-5 flex flex-col gap-4" style={{ borderColor: '#f7931a60', backgroundColor: '#f7931a08' }}>
+              <div className="flex items-center gap-3">
+                <span className="text-4xl leading-none">🎛️</span>
+                <div>
+                  <div className="font-black text-lg text-foreground leading-tight">{t('turing.menu.title')}</div>
+                  <div className="text-xs text-muted-foreground">{t('turing.menu.tag')}</div>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {turingButtons.map((label, i) => (
+                  <div key={i} className="rounded-xl border-2 bg-card px-3 py-6 text-center text-base font-bold text-foreground" style={{ borderColor: '#f7931a50' }}>{label}</div>
+                ))}
+              </div>
+              <div className="rounded-lg px-3 py-2.5 text-sm font-mono text-center" style={{ backgroundColor: '#f7931a18', color: '#b86a0e' }}>{t('turing.menu.display')}</div>
+              <p className="text-base text-muted-foreground leading-snug mt-auto">{t('turing.menu.body')}</p>
+            </div>
+
+            <div className="hidden lg:flex items-center text-xs font-black uppercase tracking-widest text-muted-foreground">vs</div>
+
+            {/* Ethereum EVM — the kitchen */}
+            <div className="rounded-2xl border-2 p-5 flex flex-col gap-4" style={{ borderColor: '#627EEA60', backgroundColor: '#627EEA08' }}>
+              <div className="flex items-center gap-3">
+                <span className="text-4xl leading-none">🍳</span>
+                <div>
+                  <div className="font-black text-lg text-foreground leading-tight">{t('turing.kitchen.title')}</div>
+                  <div className="text-xs text-muted-foreground">{t('turing.kitchen.tag')}</div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                {turingTools.map((tool, i) => (
+                  <div key={i} className="rounded-xl border bg-card px-4 py-4 flex items-center gap-4" style={{ borderColor: '#627EEA40' }}>
+                    <span className="text-3xl leading-none shrink-0">{turingToolIcons[i]}</span>
+                    <div>
+                      <div className="text-base font-bold text-foreground leading-tight">{tool.label}</div>
+                      <div className="text-sm text-muted-foreground leading-snug">{tool.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="text-base text-muted-foreground leading-snug mt-auto">{t('turing.kitchen.body')}</p>
+            </div>
+          </div>
+
+          <div className="shrink-0 mt-4 rounded-xl border px-4 py-2.5 text-sm text-foreground leading-snug" style={{ borderColor: '#f59e0b60', backgroundColor: '#f59e0b0d' }}>
+            <span className="font-bold text-[#f59e0b]">{t('turing.catchLabel')}</span>{t('turing.catchBody')}
+          </div>
+          <KeyPoint topic="turing" hood="turing" className="mt-3" />
+        </div>
+
         {/* ═══════ S2-ACCOUNTS-VISUAL ═══════ */}
         <div id="s2-accounts-visual" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-5">
-            <RecapBadge topic="accounts" />
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('accountsVisual.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1">{t('accountsVisual.subtitle')}</p>
           </div>
@@ -1181,7 +1154,6 @@ export function BP_Section2() {
         {/* ═══════ S2-GAS ═══════ */}
         <div id="s2-gas" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-4">
-            <RecapBadge topic="gas" />
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('gas.heading')}</h2>
             <p className="text-muted-foreground text-sm mt-1">{t('gas.subtitle')}</p>
           </div>
@@ -1366,7 +1338,6 @@ export function BP_Section2() {
         {/* ═══════ S2-SMARTCONTRACTS ═══════ */}
         <div id="s2-smartcontracts" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-5">
-            <RecapBadge topic="smartContracts" />
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('smartContracts.heading')}</h2>
             <p className="text-muted-foreground text-sm mt-1">{t('smartContracts.subtitle')}</p>
           </div>
@@ -1544,137 +1515,50 @@ export function BP_Section2() {
           </div>
         </div>
 
-        {/* ═══════ S2-STAKING — ETH's interest rate + entry/exit queue ═══════ */}
+        {/* ═══════ S2-STAKING — ETH's interest rate + the stake-and-exit simulator ═══════ */}
         <div id="s2-staking" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#10b981]/15 border border-[#10b981]/40 text-[#10b981] text-xs font-bold">{t('staking.badge')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('staking.heading')}</h2>
-            <p className="text-sm text-muted-foreground max-w-3xl">{t('staking.subtitle')}</p>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('staking.heading')}</h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              {t('staking.subtitleA')}<span className="font-bold text-[#10b981]">{t('staking.subtitleRate')}</span>{t('staking.subtitleB')}<span className="font-bold text-[#ef4444]">{t('staking.subtitleSlash')}</span>{t('staking.subtitleC')}
+            </p>
           </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
-
-            {/* Left — what it is + three ways in */}
-            <div className="flex flex-col gap-3 min-h-0">
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="rounded-xl border-2 p-3"
-                style={{ borderColor: '#10b98160', backgroundColor: '#10b9810d' }}
-              >
-                <div className="text-[10px] font-black uppercase tracking-widest text-[#10b981] mb-1">{t('staking.whatLabel')}</div>
-                <p className="text-sm text-foreground leading-snug">
-                  {t('staking.whatBodyA')}<span className="font-black text-[#10b981]">{t('staking.whatBodyStrong')}</span>{t('staking.whatBodyB')}<span className="font-bold text-[#ef4444]">{t('staking.whatBodySlash')}</span>{t('staking.whatBodyC')}
-                </p>
-              </motion.div>
-
-              <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t('staking.pathsLabel')}</div>
-              <div className="flex-1 min-h-0 flex flex-col gap-2">
-                {stakingPaths.map((p, i) => {
-                  const meta = stakingPathMeta[i];
-                  return (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 + i * 0.1 }}
-                    className="flex-1 rounded-xl border bg-card px-3 py-2 flex items-center gap-3 min-h-0"
-                    style={{ borderColor: meta.color + '50' }}
-                  >
-                    <span className="text-2xl shrink-0 leading-none">{meta.icon}</span>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-baseline gap-2 flex-wrap">
-                        <span className="font-black text-sm" style={{ color: meta.color }}>{p.title}</span>
-                        <span className="text-[10px] font-mono text-muted-foreground">{p.req}</span>
-                      </div>
-                      <div className="text-xs text-foreground leading-snug">{p.get}</div>
-                      <div className="text-[10px] text-muted-foreground leading-snug">⚠ {p.risk}</div>
-                    </div>
-                  </motion.div>
-                  );
-                })}
-              </div>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.45 }}
-                className="shrink-0 rounded-xl px-3 py-2 text-[11px] leading-snug"
-                style={{ backgroundColor: '#8b5cf612', border: '1px solid #8b5cf640', color: 'var(--muted-foreground)' }}
-              >
-                <span className="font-bold text-[#8b5cf6]">{t('staking.instructorLabel')}</span>{t('staking.instructorBody')}
-              </motion.div>
-            </div>
-
-            {/* Right — interactive stake-and-exit simulator */}
-            <motion.div
-              initial={{ opacity: 0, x: 12 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex flex-col min-h-0"
-            >
-              <StakingSimulator />
-            </motion.div>
-
-          </div>
+          <StakingSimulator />
           <KeyPoint topic="staking" hood="staking" className="mt-3" />
         </div>
 
-        {/* ═══════ S2-ISSUANCE — monetary policy: issuance vs burn ═══════ */}
+        {/* ═══════ S2-ISSUANCE — monetary policy: the supply curve ═══════ */}
         <div id="s2-issuance" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#f97316]/15 border border-[#f97316]/40 text-[#f97316] text-xs font-bold">{t('issuance.badge')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('issuance.heading')}</h2>
-            <p className="text-sm text-muted-foreground max-w-3xl">{t('issuance.subtitle')}</p>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('issuance.heading')}</h2>
+            <p className="text-sm text-muted-foreground mt-1 max-w-3xl">{t('issuance.subtitle')}</p>
           </div>
 
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
-
-            {/* Left — three facts + BTC contrast */}
-            <div className="flex flex-col gap-3 min-h-0 justify-center">
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[1fr_1.9fr] gap-4">
+            {/* Left — three facts + Bitcoin contrast */}
+            <div className="flex flex-col gap-2.5 min-h-0">
               {issuanceFacts.map((f, i) => {
                 const meta = issuanceFactMeta[i];
                 return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="rounded-xl border bg-card p-4 flex items-start gap-3"
-                  style={{ borderColor: meta.color + '50' }}
-                >
-                  <span className="text-3xl shrink-0 leading-none">{meta.icon}</span>
+                <div key={i} className="flex-1 min-h-0 rounded-xl border bg-card px-3 py-2.5 flex items-center gap-3" style={{ borderColor: meta.color + '50' }}>
+                  <span className="text-2xl shrink-0 leading-none">{meta.icon}</span>
                   <div className="min-w-0">
-                    <div className="font-black text-base" style={{ color: meta.color }}>{f.title}</div>
-                    <div className="text-sm text-muted-foreground leading-snug mt-0.5">{f.detail}</div>
+                    <div className="font-black text-sm" style={{ color: meta.color }}>{f.title}</div>
+                    <div className="text-xs text-muted-foreground leading-snug mt-0.5">{f.detail}</div>
                   </div>
-                </motion.div>
+                </div>
                 );
               })}
-
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35 }}
-                className="shrink-0 grid grid-cols-2 gap-2 mt-auto"
-              >
-                <div className="rounded-xl border-2 p-2.5" style={{ borderColor: '#f7931a60', backgroundColor: '#f7931a10' }}>
-                  <div className="text-[10px] font-black uppercase tracking-widest text-[#f7931a]">{t('issuance.btcLabel')}</div>
-                  <div className="text-[11px] text-muted-foreground leading-snug mt-0.5">{t('issuance.btcBody')}</div>
-                </div>
-                <div className="rounded-xl border-2 p-2.5" style={{ borderColor: '#627EEA60', backgroundColor: '#627EEA10' }}>
-                  <div className="text-[10px] font-black uppercase tracking-widest text-[#627EEA]">{t('issuance.ethLabel')}</div>
-                  <div className="text-[11px] text-muted-foreground leading-snug mt-0.5">{t('issuance.ethBody')}</div>
-                </div>
-              </motion.div>
+              <div className="shrink-0 rounded-xl border-2 px-3 py-2.5" style={{ borderColor: '#f7931a60', backgroundColor: '#f7931a10' }}>
+                <div className="text-[10px] font-black uppercase tracking-widest text-[#f7931a]">{t('issuance.btcLabel')}</div>
+                <div className="text-xs text-foreground leading-snug mt-0.5">{t('issuance.btcBody')}</div>
+              </div>
             </div>
 
-            {/* Right — issuance vs burn slider */}
+            {/* Right — supply chart */}
             <div className="flex flex-col min-h-0">
-              <IssuanceBalance />
+              <SupplyChart />
             </div>
-
           </div>
           <KeyPoint topic="issuance" hood="issuance" className="mt-3" />
         </div>
@@ -1913,8 +1797,7 @@ export function BP_Section2() {
         {/* ═══════ S2-ROLLUPS ANIMATION — animated L1 ↔ L2 flow ═══════ */}
         <div id="s2-rollups-anim" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#8b5cf6]/15 border border-[#8b5cf6]/40 text-[#8b5cf6] text-xs font-bold">{t('rollupsAnimSlide.badge')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('rollupsAnimSlide.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('rollupsAnimSlide.heading')}</h2>
             <p className="text-sm text-muted-foreground max-w-3xl">
               {t('rollupsAnimSlide.subtitle')}
             </p>
@@ -1927,7 +1810,6 @@ export function BP_Section2() {
         {/* ═══════ DEFI MECHANICS ═══════ */}
         <div id="s2-defi" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-4">
-            <RecapBadge topic="defi" />
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{t('defi.heading')}</h2>
             <p className="text-sm text-muted-foreground">
               {t('defi.subtitleA')}
@@ -2221,8 +2103,7 @@ export function BP_Section2() {
         {/* ═══════ BEST FITS — WHERE ETHEREUM WINS ═══════ */}
         <div id="s2-bestfits" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#627EEA]/15 border border-[#627EEA]/40 text-[#627EEA] text-xs font-bold">{t('bestFits.badge')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('bestFits.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('bestFits.heading')}</h2>
             <p className="text-sm text-muted-foreground max-w-3xl">
               {t('bestFits.subtitleA')}<strong className="text-foreground">{t('bestFits.subtitleStrong')}</strong>{t('bestFits.subtitleB')}
             </p>
@@ -2254,8 +2135,7 @@ export function BP_Section2() {
         {/* ═══════ WORST FITS — WHERE ETHEREUM IS WRONG ═══════ */}
         <div id="s2-worstfits" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#ef4444]/15 border border-[#ef4444]/40 text-[#ef4444] text-xs font-bold">{t('worstFits.badge')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('worstFits.headingA')}<em>{t('worstFits.headingEm')}</em>{t('worstFits.headingB')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('worstFits.headingA')}<em>{t('worstFits.headingEm')}</em>{t('worstFits.headingB')}</h2>
             <p className="text-sm text-muted-foreground max-w-3xl">
               {t('worstFits.subtitle')}
             </p>
