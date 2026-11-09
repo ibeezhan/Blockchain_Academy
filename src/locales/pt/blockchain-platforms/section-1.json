@@ -12,7 +12,8 @@
     "s1-tx-lifecycle": "🧩 Ciclo de Vida da Tx",
     "s1-trilemma": "Trilema",
     "s1-quiz-trilemma": "Quiz: Trilemma",
-    "s1-apps": "Apps",
+    "s1-apps": "Apps: scaling",
+    "s1-apps-assets": "Apps: assets",
     "s1-lightning": "🧩 Lightning Network",
     "s1-bestfits": "🎯 Melhores Encaixes",
     "s1-quiz-fit": "Quiz: Right tool?",
@@ -55,9 +56,7 @@
       "l1Wallet": "(carteira L1)",
       "vaultTitle": "COFRE (2-de-2)",
       "aliceLabel": "Alice",
-      "bobLabel": "Bob",
-      "aliceArrow": "Alice ←",
-      "bobArrow": "→ Bob"
+      "bobLabel": "Bob"
     },
     "panel": {
       "channelState": "Estado do canal",
@@ -313,16 +312,7 @@
 "apps": {
     "heading": "Para além dos pagamentos — a camada de apps da Bitcoin",
     "subtitle": "Durante a maior parte da sua vida, a Bitcoin fazia apenas uma coisa: enviar valor. Desde 2018 — e acelerando desde 2023 — emergiu uma verdadeira camada de aplicação sobre, em torno de e por cima da chain de base.",
-    "whereLabel": "Onde as apps realmente vivem",
-    "whereBodyA": "A chain de base da Bitcoin processa ~7 TPS e não tem VM para smart contracts. As apps vivem em ",
-    "whereChannels": "canais de pagamento",
-    "whereBodyB": " (Lightning), em ",
-    "whereInscriptions": "inscrições em satoshis",
-    "whereBodyC": " (Ordinals · BRC-20 · Runes), em ",
-    "whereSidechains": "sidechains",
-    "whereBodyD": " (Stacks, Liquid, Rootstock), e em novos ",
-    "whereStaking": "sistemas de staking de Bitcoin",
-    "whereBodyE": " (Babylon).",
+    "subtitleAssets": "Newer and more contested: assets inscribed on satoshis, and BTC used as staking collateral for other networks.",
     "adoptionLabel": "Adoção: ",
     "limitLabel": "Limite honesto: ",
     "items": [
@@ -331,33 +321,34 @@
         "sub": "Canais de pagamento L2 · 2018+",
         "what": "Uma rede de canais de pagamento. Duas partes abrem um canal on-chain uma vez, e depois trocam milhares de transações off-chain instantaneamente e quase de graça. Os canais fecham on-chain para liquidar o saldo final.",
         "adoption": "Apps: Strike · Cash App (US Bitcoin) · Phoenix · Wallet of Satoshi · Cashu · Capacidade pública ~5.000 BTC · ~15.000 nós de routing.",
-        "limit": "A liquidez tem de ser pré-alocada · falhas de routing comuns na periferia · as carteiras custodiais dominam a UX de retalho, corroendo o argumento da soberania pessoal."
+        "limit": "A liquidez tem de ser pré-alocada, pelo que os pagamentos podem falhar no routing."
       },
       {
         "title": "Ordinals · BRC-20 · Runes",
         "sub": "Inscrições em satoshis · 2023+",
         "what": "Os Ordinals de Casey Rodarmor (jan. 2023) numeram cada satoshi e permitem-te \"inscrever\" dados arbitrários sobre ele — imagens, JSON, código. O BRC-20 reutilizou isto para tokens fungíveis; os Runes (abril de 2024) acrescentaram um sistema de tokens nativos mais eficiente.",
         "adoption": "Mercado secundário de Ordinals ~4 mil M$+ · o ímpeto do BRC-20 arrefeceu em 2024 · os Runes herdaram o caso de uso após o Halving.",
-        "limit": "Muito contestado: incha os dados da blockchain, aumenta as fees da chain de base durante ondas de inscrição. Muitos operadores de nós e core devs opõem-se filosoficamente — \"a Bitcoin é para dinheiro\"."
+        "limit": "Contestado — as inscrições incham a chain e fazem disparar as fees."
       },
       {
         "title": "Sidechains & rollups da Bitcoin",
         "sub": "Stacks · Liquid · Rootstock · 2018+",
         "what": "Camadas programáveis ancoradas a BTC. Stacks (linguagem Clarity, liquida via \"Proof of Transfer\"); Liquid (federação, txs confidenciais rápidas); Rootstock (compatível com EVM, merge-mined). Novos participantes 2024-25: rollups ao estilo BitVM, BOB, Bitlayer.",
-        "adoption": "Stacks ~1 mil M$ de TVL · a Liquid potencia txs confidenciais para grandes exchanges · a Rootstock tem atividade DeFi estável.",
-        "limit": "Os modelos de confiança variam muito: a Liquid é federada (confia-se no conjunto de signatários); a Stacks liquida na BTC mas a segurança continua em debate; os pegs da Rootstock usam merge-mining. Nenhuma herda a segurança da Bitcoin de forma tão nativa como os rollups da ETH herdam a L1."
+        "adoption": "Stacks tem um TVL DeFi modesto (~100–200 M$) · a Liquid potencia txs confidenciais para grandes exchanges · a Rootstock tem atividade DeFi estável.",
+        "limit": "Cada uma tem o seu próprio modelo de confiança (federação ou merge-mining) e nenhuma herda a segurança da Bitcoin."
       },
       {
         "title": "Staking de Bitcoin — Babylon",
         "sub": "Restaking nativo de BTC · 2024+",
         "what": "A Babylon permite que os detentores de BTC façam staking das suas moedas para fornecer segurança económica a chains PoS — sem fazer bridge nem wrapping. Se um validador equivocar, o seu BTC em staking é cortado (slashed) através de um script nativo da Bitcoin.",
         "adoption": "~5 mil M$+ de BTC em staking no final de 2024 · apoiado por várias chains PoS que procuram segurança partilhada · mainnet lançada em 2024.",
-        "limit": "Novo e por comprovar à escala · introduz script Bitcoin complexo · cria rendimento denominado em BTC, rompendo com a longa tradição de que \"a Bitcoin não paga rendimento\"."
+        "limit": "Novo e por comprovar à escala."
       }
     ],
     "caveatLabel": "Ressalva pedagógica — ",
     "caveatBody": "A camada de apps da Bitcoin é debatida dentro da comunidade Bitcoin. Os puristas querem a chain de base minimalista (\"ouro digital\"); os construtores defendem usá-la como camada de liquidação para apps mais ricas. Sê cético quanto ao hype de ambos os lados — os dois campos têm preocupações legítimas.",
-    "keyPoint": "Bitcoin's base layer stays deliberately simple; applications live around it, each with its own trust model and risks."
+    "keyPoint": "Bitcoin's base layer stays deliberately simple; scaling happens around it, and each layer brings its own trust model.",
+    "keyPointAssets": "Inscriptions and BTC staking turn Bitcoin into a settlement layer for new assets — both are young, and both are contested."
   },
 "bestFits": {
     "heading": "Onde a Bitcoin Vence — Os Casos de Uso que Realmente Domina",

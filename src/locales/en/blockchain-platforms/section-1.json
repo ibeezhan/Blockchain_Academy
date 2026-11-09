@@ -12,7 +12,8 @@
     "s1-tx-lifecycle": "🧩 Tx Flow",
     "s1-trilemma": "Trilemma",
     "s1-quiz-trilemma": "Quiz: Trilemma",
-    "s1-apps": "Apps",
+    "s1-apps": "Apps: scaling",
+    "s1-apps-assets": "Apps: assets",
     "s1-lightning": "🧩 Lightning Network",
     "s1-bestfits": "🎯 Best Fits",
     "s1-quiz-fit": "Quiz: Right tool?",
@@ -55,9 +56,7 @@
       "l1Wallet": "(L1 wallet)",
       "vaultTitle": "VAULT (2-of-2)",
       "aliceLabel": "Alice",
-      "bobLabel": "Bob",
-      "aliceArrow": "Alice ←",
-      "bobArrow": "→ Bob"
+      "bobLabel": "Bob"
     },
     "panel": {
       "channelState": "Channel state",
@@ -359,17 +358,8 @@
   },
 "apps": {
     "heading": "Beyond payments — Bitcoin's app layer",
-    "subtitle": "For most of its life Bitcoin did one thing: send value. Since 2018 an application layer has grown around the base chain.",
-    "whereLabel": "Where the apps actually live",
-    "whereBodyA": "Bitcoin's base chain handles ~7 TPS and has no smart-contract VM. Apps live in ",
-    "whereChannels": "payment channels",
-    "whereBodyB": " (Lightning), in ",
-    "whereInscriptions": "satoshi inscriptions",
-    "whereBodyC": " (Ordinals · BRC-20 · Runes), on ",
-    "whereSidechains": "sidechains",
-    "whereBodyD": " (Stacks, Liquid, Rootstock), and in new ",
-    "whereStaking": "Bitcoin staking",
-    "whereBodyE": " systems (Babylon).",
+    "subtitle": "For most of its life Bitcoin did one thing: send value. Since 2018 an application layer has grown around the base chain — first, the layers that scale payments.",
+    "subtitleAssets": "Newer and more contested: assets inscribed on satoshis, and BTC used as staking collateral for other networks.",
     "adoptionLabel": "Adoption: ",
     "limitLabel": "Honest limit: ",
     "items": [
@@ -378,33 +368,34 @@
         "sub": "L2 payment channels · 2018+",
         "what": "Two parties lock funds on-chain once, then pay each other instantly and almost free off-chain. Only opening and closing touch Bitcoin.",
         "adoption": "Strike · Cash App · Phoenix · Wallet of Satoshi · public capacity ~5,000 BTC · ~15,000 routing nodes.",
-        "limit": "Liquidity must be pre-allocated · payments can fail to route · most retail users rely on custodial wallets."
+        "limit": "Liquidity must be pre-allocated, so payments can fail to route."
       },
       {
         "title": "Ordinals · BRC-20 · Runes",
         "sub": "Inscriptions on satoshis · 2023+",
         "what": "Ordinals (2023) number every satoshi and let you attach data to it — images, text, tokens. BRC-20 and Runes (2024) built token systems on top.",
         "adoption": "Multi-billion-dollar secondary market in 2023–24 · activity cooled after the 2024 Halving.",
-        "limit": "Contested: bloats the chain and spikes fees. Many node operators argue \"Bitcoin is for money\"."
+        "limit": "Contested — inscriptions bloat the chain and spike fees."
       },
       {
         "title": "Bitcoin sidechains & rollups",
         "sub": "Stacks · Liquid · Rootstock · 2018+",
         "what": "Separate programmable chains pegged to BTC: Stacks (own language), Liquid (federation of exchanges), Rootstock (Ethereum-compatible).",
-        "adoption": "Stacks ~$1B TVL · Liquid moves funds between major exchanges · Rootstock hosts steady DeFi activity.",
-        "limit": "Each has its own trust model (federations, merge-mining). None inherits Bitcoin's security the way Ethereum rollups inherit Ethereum's."
+        "adoption": "Stacks holds modest DeFi TVL (~$100–200M) · Liquid moves funds between major exchanges · Rootstock hosts steady DeFi activity.",
+        "limit": "Each has its own trust model (federation or merge-mining) and none inherits Bitcoin's security."
       },
       {
         "title": "Bitcoin staking — Babylon",
         "sub": "Native BTC staking · 2024+",
         "what": "BTC holders lock coins to secure other proof-of-stake networks and earn yield — without wrapping or moving the BTC off Bitcoin.",
         "adoption": "~$5B+ BTC staked by late 2024 · mainnet live · multiple PoS chains buying shared security.",
-        "limit": "New and unproven at scale · breaks the long-held \"Bitcoin doesn't pay yield\" tradition."
+        "limit": "New and unproven at scale."
       }
     ],
     "caveatLabel": "Caveat — ",
     "caveatBody": "Bitcoin's app layer is contested inside the Bitcoin community. Purists want the base chain minimal (\"digital gold\"); builders want a settlement layer for richer apps. Both camps have legitimate concerns.",
-    "keyPoint": "Bitcoin's base layer stays deliberately simple; applications live around it, each with its own trust model and risks."
+    "keyPoint": "Bitcoin's base layer stays deliberately simple; scaling happens around it, and each layer brings its own trust model.",
+    "keyPointAssets": "Inscriptions and BTC staking turn Bitcoin into a settlement layer for new assets — both are young, and both are contested."
   },
 "bestFits": {
     "heading": "Where Bitcoin wins",

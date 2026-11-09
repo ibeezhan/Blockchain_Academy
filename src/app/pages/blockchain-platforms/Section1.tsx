@@ -25,6 +25,7 @@ const chapterShape = [
 
   { kind: 'group' as const, id: 'g-s1-apps' },
   { id: 's1-apps' },
+  { id: 's1-apps-assets' },
   { id: 's1-lightning' },
 
   { kind: 'group' as const, id: 'g-s1-fit' },
@@ -35,28 +36,25 @@ const chapterShape = [
   { id: 's1-takeaways' },
 ] as const;
 
-/* ─────────────────── Lightning vault — animated demo ───────────────────
+/* ─────────────────── Lightning vault — interactive demo ───────────────────
    A 2-of-2 multisig "vault" between Alice and Bob. Open it → exchange
    off-chain payments freely → Close it to settle balances back on-chain.
-   Interactions:
-     - Open Channel button   → an on-chain tx animates from Alice + Bob into the vault
-     - ⚡ Pay buttons         → fast Lightning flashes that update the channel state
-     - Close Vault button    → a settlement tx animates from the vault up to L1
+   Interactions (state-driven, subtle fades only):
+     - Open Channel button   → one on-chain OPEN tx; vault fills, channel opens
+     - ⚡ Pay buttons         → off-chain balance updates + in-place bolt flash
+     - Close Vault button    → one on-chain CLOSE tx; vault empties, wallets settle
    ──────────────────────────────────────────────────────────────────────── */
 
 const VAULT_DEPOSIT = 1.0;                  // BTC each side commits
+const TX_SETTLE_MS  = 600;                  // brief "pending" window for OPEN / CLOSE
+const FADE: React.CSSProperties = { transition: 'opacity 0.4s ease, fill 0.4s ease, stroke 0.4s ease' };
 
 function LightningVaultDemo() {
   const { t } = useTranslation('blockchain-platforms/section-1');
-  const rootRef       = useRef<HTMLDivElement | null>(null);
-  const stepRef       = useRef<HTMLDivElement | null>(null);
-  const openPacketA   = useRef<SVGGElement | null>(null);
-  const openPacketB   = useRef<SVGGElement | null>(null);
-  const settlePacketA = useRef<SVGGElement | null>(null);
-  const settlePacketB = useRef<SVGGElement | null>(null);
-  const lightningRef  = useRef<SVGGElement | null>(null);
-  const newBlockRef   = useRef<SVGGElement | null>(null);
-  const vaultBoxRef   = useRef<SVGGElement | null>(null);
+  const rootRef      = useRef<HTMLDivElement | null>(null);
+  const stepRef      = useRef<HTMLDivElement | null>(null);
+  const lightningRef = useRef<SVGGElement | null>(null);
+  const timerRef     = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   type Phase = 'closed' | 'opening' | 'open' | 'closing' | 'settled';
   const [phase,        setPhase]        = useState<Phase>('closed');
@@ -67,6 +65,10 @@ function LightningVaultDemo() {
   const [paymentLog,   setPaymentLog]   = useState<{ dir: 'A→B' | 'B→A'; amt: number }[]>([]);
   const [aliceWallet,  setAliceWallet]  = useState(5.0);   // off-vault L1 balance
   const [bobWallet,    setBobWallet]    = useState(3.0);
+
+  const vaultOpen   = aliceLocked + bobLocked > 0;
+  const openTxShown = phase !== 'closed';                          // OPEN block on L1
+  const closeTxShown = phase === 'closing' || phase === 'settled'; // CLOSE block on L1
 
   const setStep = (label: string, color: string) => {
     if (!stepRef.current) return;
@@ -82,52 +84,19 @@ function LightningVaultDemo() {
     setPhase('opening');
     setStep(t('lightning.steps.opening'), '#f59e0b');
 
-    // Reset packet positions
-    [openPacketA, openPacketB].forEach(ref => {
-      if (!ref.current) return;
-      ref.current.style.opacity = '0';
-      ref.current.style.transform = 'translate(0, 0)';
-    });
-
-    const tl = anime.timeline({ easing: 'easeInOutCubic' });
-
-    // Alice → vault (from 70 → 220 on x axis, slight downward arc)
-    tl.add({
-      targets: openPacketA.current,
-      opacity: [0, 1],
-      translateX: [0, 150],
-      duration: 900,
-    }, 0)
-    .add({
-      targets: openPacketB.current,
-      opacity: [0, 1],
-      translateX: [0, -150],
-      duration: 900,
-    }, 0)
-    .add({
-      targets: vaultBoxRef.current,
-      scale: [1, 1.15, 1],
-      duration: 500,
-      easing: 'easeOutQuad',
-    })
-    .add({
-      targets: [openPacketA.current, openPacketB.current],
-      opacity: 0,
-      duration: 300,
-      complete: () => {
-        setAliceLocked(VAULT_DEPOSIT);
-        setBobLocked(VAULT_DEPOSIT);
-        setAliceShare(VAULT_DEPOSIT);
-        setBobShare(VAULT_DEPOSIT);
-        setAliceWallet(w => +(w - VAULT_DEPOSIT).toFixed(4));
-        setBobWallet(w => +(w - VAULT_DEPOSIT).toFixed(4));
-        setPhase('open');
-        setStep(t('lightning.steps.open'), '#10b981');
-      },
-    });
+    timerRef.current = setTimeout(() => {
+      setAliceLocked(VAULT_DEPOSIT);
+      setBobLocked(VAULT_DEPOSIT);
+      setAliceShare(VAULT_DEPOSIT);
+      setBobShare(VAULT_DEPOSIT);
+      setAliceWallet(w => +(w - VAULT_DEPOSIT).toFixed(4));
+      setBobWallet(w => +(w - VAULT_DEPOSIT).toFixed(4));
+      setPhase('open');
+      setStep(t('lightning.steps.open'), '#10b981');
+    }, TX_SETTLE_MS);
   };
 
-  /* PAY — pure off-chain balance update + Lightning bolt flash. */
+  /* PAY — pure off-chain balance update + in-place Lightning bolt flash. */
   const pay = (dir: 'A→B' | 'B→A', amount: number) => {
     if (phase !== 'open') return;
     if (dir === 'A→B' && aliceShare < amount) return;
@@ -144,15 +113,12 @@ function LightningVaultDemo() {
       setAliceShare(s => +(s + amount).toFixed(4));
     }
 
-    // Flash the lightning bolt over the channel
     if (lightningRef.current) {
-      lightningRef.current.style.opacity = '0';
-      const dx = dir === 'A→B' ? 1 : -1;
+      anime.remove(lightningRef.current);
       anime({
         targets: lightningRef.current,
         opacity: [0, 1, 0],
-        translateX: [-50 * dx, 50 * dx],
-        duration: 700,
+        duration: 600,
         easing: 'easeOutQuad',
       });
     }
@@ -164,68 +130,35 @@ function LightningVaultDemo() {
     setPhase('closing');
     setStep(t('lightning.steps.closing'), '#ED1C24');
 
-    [settlePacketA, settlePacketB].forEach(ref => {
-      if (!ref.current) return;
-      ref.current.style.opacity = '0';
-      ref.current.style.transform = 'translate(0, 0)';
-    });
-    if (newBlockRef.current) newBlockRef.current.style.opacity = '0';
-
     const finalA = aliceShare;
     const finalB = bobShare;
+    const count  = paymentLog.length;
 
-    const tl = anime.timeline({ easing: 'easeInOutCubic' });
-
-    // Vault releases tx into the L1 chain
-    tl.add({
-      targets: newBlockRef.current,
-      opacity: [0, 1],
-      scale: [0.6, 1],
-      duration: 600,
-      easing: 'easeOutQuad',
-    })
-    // Settlement packets fly to each wallet
-    .add({
-      targets: settlePacketA.current,
-      opacity: [0, 1],
-      translateX: [0, -150],
-      duration: 800,
-    })
-    .add({
-      targets: settlePacketB.current,
-      opacity: [0, 1],
-      translateX: [0, 150],
-      duration: 800,
-    }, '-=800')
-    .add({
-      targets: [settlePacketA.current, settlePacketB.current],
-      opacity: 0,
-      duration: 300,
-      complete: () => {
-        setAliceWallet(w => +(w + finalA).toFixed(4));
-        setBobWallet(w   => +(w + finalB).toFixed(4));
-        setAliceLocked(0);
-        setBobLocked(0);
-        setAliceShare(0);
-        setBobShare(0);
-        setPhase('settled');
-        setStep(t('lightning.settledStep', { count: paymentLog.length }), '#10b981');
-      },
-    });
+    timerRef.current = setTimeout(() => {
+      setAliceWallet(w => +(w + finalA).toFixed(4));
+      setBobWallet(w   => +(w + finalB).toFixed(4));
+      setAliceLocked(0);
+      setBobLocked(0);
+      setAliceShare(0);
+      setBobShare(0);
+      setPhase('settled');
+      setStep(t('lightning.settledStep', { count }), '#10b981');
+    }, TX_SETTLE_MS);
   };
 
   const reset = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
     setPhase('closed');
     setAliceLocked(0); setBobLocked(0); setAliceShare(0); setBobShare(0);
     setAliceWallet(5.0); setBobWallet(3.0); setPaymentLog([]);
-    if (newBlockRef.current) newBlockRef.current.style.opacity = '0';
     setStep(t('lightning.steps.idle'), '#737373');
   };
 
   useEffect(() => {
     setStep(t('lightning.steps.idle'), '#737373');
+    let obs: IntersectionObserver | undefined;
     if (rootRef.current) {
-      const obs = new IntersectionObserver(es => {
+      obs = new IntersectionObserver(es => {
         for (const e of es) {
           if (e.isIntersecting && phase === 'closed' && aliceWallet === 5.0) {
             setTimeout(openChannel, 600);
@@ -234,8 +167,11 @@ function LightningVaultDemo() {
         }
       }, { threshold: 0.35 });
       obs.observe(rootRef.current);
-      return () => obs.disconnect();
     }
+    return () => {
+      obs?.disconnect();
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -283,22 +219,22 @@ function LightningVaultDemo() {
             {/* L1 chain band */}
             <rect x="20" y="20" width="480" height="64" rx="8" fill="#f7931a14" stroke="#f7931a" strokeWidth="1.2" />
             <text x="40" y="42" fontSize="11" fontWeight="900" fill="#f7931a">{t('lightning.svg.l1Title')}</text>
-            <text x="40" y="56" fontSize="9" fill="hsl(var(--muted-foreground))">{t('lightning.svg.l1Sub')}</text>
+            <text x="40" y="56" fontSize="9" fill="var(--muted-foreground)">{t('lightning.svg.l1Sub')}</text>
 
-            {/* OPEN block — labelled so it doesn't blend in with regular chain */}
-            <g>
-              <rect x="170" y="40" width="36" height="28" rx="2" fill="#10b98140" stroke="#10b981" strokeWidth="1.2" />
-              <text x="188" y="58" textAnchor="middle" fontSize="7" fontWeight="800" fill="#10b981">{t('lightning.svg.open')}</text>
+            {/* OPEN block — fades in when the channel is opened */}
+            <g style={{ ...FADE, opacity: openTxShown ? 1 : 0.12 }}>
+              <rect x="216" y="40" width="36" height="28" rx="2" fill="#10b98140" stroke="#10b981" strokeWidth="1.2" />
+              <text x="234" y="58" textAnchor="middle" fontSize="7" fontWeight="800" fill="#10b981">{t('lightning.svg.open')}</text>
             </g>
-            {/* Existing chain blocks (decorative) — shifted right so OPEN/CLOSE don't overlap them */}
+            {/* Existing chain blocks (decorative) */}
             {[1, 2, 3, 4].map((i) => (
               <g key={i}>
                 <rect x={210 + i * 50} y="40" width="32" height="28" rx="2" fill="#f7931a25" stroke="#f7931a" strokeWidth="0.8" />
                 <text x={226 + i * 50} y="58" textAnchor="middle" fontSize="7" fontWeight="800" fill="#f7931a">#{900_000 + i}</text>
               </g>
             ))}
-            {/* New CLOSE block — flashes when channel closes, sits at the right edge */}
-            <g ref={newBlockRef} style={{ opacity: 0, transformBox: 'fill-box' as React.CSSProperties['transformBox'], transformOrigin: '478px 54px' }}>
+            {/* CLOSE block — fades in when the channel is closed */}
+            <g style={{ ...FADE, opacity: closeTxShown ? 1 : 0.12 }}>
               <rect x="460" y="40" width="36" height="28" rx="2" fill="#ED1C2440" stroke="#ED1C24" strokeWidth="1.2" />
               <text x="478" y="58" textAnchor="middle" fontSize="7" fontWeight="800" fill="#ED1C24">{t('lightning.svg.close')}</text>
             </g>
@@ -308,8 +244,8 @@ function LightningVaultDemo() {
               <circle cx="70" cy="190" r="32" fill="#6366f120" stroke="#6366f1" strokeWidth="1.6" />
               <text x="70" y="186" textAnchor="middle" fontSize="20">👩</text>
               <text x="70" y="208" textAnchor="middle" fontSize="10" fontWeight="900" fill="#6366f1">{t('lightning.svg.alice')}</text>
-              <text x="70" y="232" textAnchor="middle" fontSize="9" fontWeight="700" fill="hsl(var(--foreground))">{aliceWallet.toFixed(2)} BTC</text>
-              <text x="70" y="246" textAnchor="middle" fontSize="7" fill="hsl(var(--muted-foreground))">{t('lightning.svg.l1Wallet')}</text>
+              <text x="70" y="232" textAnchor="middle" fontSize="9" fontWeight="700" fill="var(--foreground)">{aliceWallet.toFixed(2)} BTC</text>
+              <text x="70" y="246" textAnchor="middle" fontSize="7" fill="var(--muted-foreground)">{t('lightning.svg.l1Wallet')}</text>
             </g>
 
             {/* Bob */}
@@ -317,53 +253,33 @@ function LightningVaultDemo() {
               <circle cx="450" cy="190" r="32" fill="#39B54A20" stroke="#39B54A" strokeWidth="1.6" />
               <text x="450" y="186" textAnchor="middle" fontSize="20">👨</text>
               <text x="450" y="208" textAnchor="middle" fontSize="10" fontWeight="900" fill="#39B54A">{t('lightning.svg.bob')}</text>
-              <text x="450" y="232" textAnchor="middle" fontSize="9" fontWeight="700" fill="hsl(var(--foreground))">{bobWallet.toFixed(2)} BTC</text>
-              <text x="450" y="246" textAnchor="middle" fontSize="7" fill="hsl(var(--muted-foreground))">{t('lightning.svg.l1Wallet')}</text>
+              <text x="450" y="232" textAnchor="middle" fontSize="9" fontWeight="700" fill="var(--foreground)">{bobWallet.toFixed(2)} BTC</text>
+              <text x="450" y="246" textAnchor="middle" fontSize="7" fill="var(--muted-foreground)">{t('lightning.svg.l1Wallet')}</text>
             </g>
 
-            {/* Vault (center) */}
-            <g ref={vaultBoxRef} style={{ transformBox: 'fill-box' as React.CSSProperties['transformBox'], transformOrigin: '260px 190px' }}>
-              <rect x="200" y="140" width="120" height="100" rx="10" fill={aliceLocked + bobLocked > 0 ? '#10b98118' : '#73737318'} stroke={aliceLocked + bobLocked > 0 ? '#10b981' : '#737373'} strokeWidth="1.6" />
-              <text x="260" y="160" textAnchor="middle" fontSize="22">{aliceLocked + bobLocked > 0 ? '🔓' : '🔒'}</text>
-              <text x="260" y="182" textAnchor="middle" fontSize="10" fontWeight="900" fill={aliceLocked + bobLocked > 0 ? '#10b981' : '#737373'}>{t('lightning.svg.vaultTitle')}</text>
-              <text x="260" y="208" textAnchor="middle" fontSize="12" fontWeight="900" fill="hsl(var(--foreground))">{(aliceLocked + bobLocked).toFixed(2)} BTC</text>
-              <text x="260" y="223" textAnchor="middle" fontSize="8" fill="hsl(var(--muted-foreground))">{t('lightning.svg.aliceLabel')} {aliceShare.toFixed(2)} · {t('lightning.svg.bobLabel')} {bobShare.toFixed(2)}</text>
+            {/* Vault (center) — fills / empties with the channel state */}
+            <g>
+              <rect x="200" y="140" width="120" height="100" rx="10" style={FADE} fill={vaultOpen ? '#10b98118' : '#73737318'} stroke={vaultOpen ? '#10b981' : '#737373'} strokeWidth="1.6" />
+              <text x="260" y="160" textAnchor="middle" fontSize="22">{vaultOpen ? '🔓' : '🔒'}</text>
+              <text x="260" y="182" textAnchor="middle" fontSize="10" fontWeight="900" style={FADE} fill={vaultOpen ? '#10b981' : '#737373'}>{t('lightning.svg.vaultTitle')}</text>
+              <text x="260" y="208" textAnchor="middle" fontSize="12" fontWeight="900" fill="var(--foreground)">{(aliceLocked + bobLocked).toFixed(2)} BTC</text>
+              <text x="260" y="223" textAnchor="middle" fontSize="8" fill="var(--muted-foreground)">{t('lightning.svg.aliceLabel')} {aliceShare.toFixed(2)} · {t('lightning.svg.bobLabel')} {bobShare.toFixed(2)}</text>
             </g>
 
             {/* Channel lines — Alice ↔ Vault ↔ Bob */}
-            <line x1="102" y1="190" x2="200" y2="190" stroke={aliceLocked > 0 ? '#10b981' : '#737373'} strokeWidth="1.4" strokeDasharray={aliceLocked > 0 ? 'none' : '4 4'} />
-            <line x1="320" y1="190" x2="418" y2="190" stroke={bobLocked > 0 ? '#10b981' : '#737373'} strokeWidth="1.4" strokeDasharray={bobLocked > 0 ? 'none' : '4 4'} />
+            <line x1="102" y1="190" x2="200" y2="190" style={FADE} stroke={aliceLocked > 0 ? '#10b981' : '#737373'} strokeWidth="1.4" strokeDasharray={aliceLocked > 0 ? 'none' : '4 4'} />
+            <line x1="320" y1="190" x2="418" y2="190" style={FADE} stroke={bobLocked > 0 ? '#10b981' : '#737373'} strokeWidth="1.4" strokeDasharray={bobLocked > 0 ? 'none' : '4 4'} />
 
-            {/* Lightning bolt (flashes on payment) */}
-            <g ref={lightningRef} style={{ opacity: 0, transformBox: 'fill-box' as React.CSSProperties['transformBox'], transformOrigin: '260px 190px' }}>
-              <text x="260" y="195" textAnchor="middle" fontSize="22" fontWeight="900" fill="#facc15">⚡</text>
-            </g>
-
-            {/* Open packets (Alice → vault, Bob → vault) */}
-            <g ref={openPacketA} style={{ opacity: 0, transformBox: 'fill-box' as React.CSSProperties['transformBox'], transformOrigin: '70px 130px' }}>
-              <rect x="55" y="115" width="32" height="22" rx="3" fill="#6366f1" stroke="#1e1b4b" strokeWidth="0.8" />
-              <text x="71" y="131" textAnchor="middle" fontSize="9" fontWeight="900" fill="#fff">1 BTC</text>
-            </g>
-            <g ref={openPacketB} style={{ opacity: 0, transformBox: 'fill-box' as React.CSSProperties['transformBox'], transformOrigin: '450px 130px' }}>
-              <rect x="434" y="115" width="32" height="22" rx="3" fill="#39B54A" stroke="#14532d" strokeWidth="0.8" />
-              <text x="450" y="131" textAnchor="middle" fontSize="9" fontWeight="900" fill="#fff">1 BTC</text>
-            </g>
-
-            {/* Settle packets (vault → Alice, vault → Bob) */}
-            <g ref={settlePacketA} style={{ opacity: 0, transformBox: 'fill-box' as React.CSSProperties['transformBox'], transformOrigin: '230px 270px' }}>
-              <rect x="214" y="258" width="40" height="22" rx="3" fill="#6366f1" stroke="#1e1b4b" strokeWidth="0.8" />
-              <text x="234" y="274" textAnchor="middle" fontSize="9" fontWeight="900" fill="#fff">{t('lightning.svg.aliceArrow')}</text>
-            </g>
-            <g ref={settlePacketB} style={{ opacity: 0, transformBox: 'fill-box' as React.CSSProperties['transformBox'], transformOrigin: '290px 270px' }}>
-              <rect x="266" y="258" width="40" height="22" rx="3" fill="#39B54A" stroke="#14532d" strokeWidth="0.8" />
-              <text x="286" y="274" textAnchor="middle" fontSize="9" fontWeight="900" fill="#fff">{t('lightning.svg.bobArrow')}</text>
+            {/* Lightning bolt (in-place flash on payment) */}
+            <g ref={lightningRef} style={{ opacity: 0 }}>
+              <text x="260" y="118" textAnchor="middle" fontSize="22" fontWeight="900" fill="#facc15">⚡</text>
             </g>
           </svg>
         </div>
 
         {/* Side panel — channel state + log */}
         <div className="flex flex-col gap-2 min-h-0 overflow-y-auto">
-          <div className="rounded-xl border-2 p-3" style={{ borderColor: phase === 'open' ? '#10b98155' : '#73737355', backgroundColor: phase === 'open' ? '#10b9810d' : '#73737308' }}>
+          <div className="rounded-xl border-2 p-3 transition-colors" style={{ borderColor: phase === 'open' ? '#10b98155' : '#73737355', backgroundColor: phase === 'open' ? '#10b9810d' : '#73737308' }}>
             <div className="text-[10px] font-black uppercase tracking-widest" style={{ color: phase === 'open' ? '#10b981' : '#737373' }}>{t('lightning.panel.channelState')}</div>
             <div className="text-sm font-bold text-foreground mt-0.5">{phase === 'closed' ? t('lightning.panel.stateClosed') : phase === 'opening' ? t('lightning.panel.stateOpening') : phase === 'open' ? t('lightning.panel.stateOpen') : phase === 'closing' ? t('lightning.panel.stateClosing') : t('lightning.panel.stateSettled')}</div>
             <div className="grid grid-cols-2 gap-2 mt-2 text-[11px]">
@@ -405,10 +321,83 @@ function LightningVaultDemo() {
     </div>
   );
 }
+/* ─────────── Bitcoin's app layer — two slides, two cards each ───────────
+   slot="scaling": Lightning + sidechains & rollups (key point)
+   slot="assets":  inscriptions (Ordinals/BRC-20/Runes) + Bitcoin staking (caveat + key point)
+   ──────────────────────────────────────────────────────────────────────── */
+
+const APP_META = [
+  { icon: '⚡', color: '#f59e0b' },  // 0 Lightning
+  { icon: '📜', color: '#ef4444' },  // 1 Ordinals · BRC-20 · Runes
+  { icon: '🔗', color: '#6366f1' },  // 2 sidechains & rollups
+  { icon: '🛡️', color: '#39B54A' },  // 3 Bitcoin staking — Babylon
+];
+const APP_SLOTS = { scaling: [0, 2], assets: [1, 3] } as const;
+
+interface AppItem { title: string; sub: string; what: string; adoption: string; limit: string; }
+
+function AppLayerSlide({ slot }: { slot: keyof typeof APP_SLOTS }) {
+  const { t } = useTranslation('blockchain-platforms/section-1');
+  const items = t('apps.items', { returnObjects: true }) as AppItem[];
+  const isAssets = slot === 'assets';
+
+  return (
+    <div className="h-full flex flex-col p-6 lg:p-10">
+      <div className="shrink-0 mb-4">
+        <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('apps.heading')}</h2>
+        <p className="text-sm text-muted-foreground mt-1">{isAssets ? t('apps.subtitleAssets') : t('apps.subtitle')}</p>
+      </div>
+
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4 content-center">
+        {APP_SLOTS[slot].map((idx) => {
+          const meta = APP_META[idx];
+          const app = items[idx];
+          return (
+            <motion.div
+              key={app.title}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="rounded-xl border-2 p-5 flex flex-col gap-3 min-h-0 overflow-hidden"
+              style={{ borderColor: meta.color + '50', backgroundColor: meta.color + '08' }}
+            >
+              <div className="flex items-center gap-2.5 shrink-0">
+                <span className="text-2xl shrink-0 leading-none">{meta.icon}</span>
+                <div className="min-w-0">
+                  <div className="font-black text-base leading-tight" style={{ color: meta.color }}>{app.title}</div>
+                  <div className="text-xs text-muted-foreground leading-tight">{app.sub}</div>
+                </div>
+              </div>
+              <p className="text-base text-foreground/90 leading-snug">{app.what}</p>
+              <div className="rounded-lg border bg-card/60 px-3 py-2 text-sm leading-snug" style={{ borderColor: meta.color + '40' }}>
+                <span className="font-bold" style={{ color: meta.color }}>{t('apps.adoptionLabel')}</span>
+                <span className="text-muted-foreground">{app.adoption}</span>
+              </div>
+              <div className="rounded-lg border bg-card/60 px-3 py-2 text-sm leading-snug" style={{ borderColor: '#ED1C2440' }}>
+                <span className="font-bold" style={{ color: '#ED1C24' }}>{t('apps.limitLabel')}</span>
+                <span className="text-muted-foreground">{app.limit}</span>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {isAssets && (
+        <div className="shrink-0 mt-3 rounded-xl border p-2.5" style={{ borderColor: '#f59e0b55', backgroundColor: '#f59e0b0d' }}>
+          <p className="text-xs text-muted-foreground leading-snug">
+            <span className="font-bold" style={{ color: '#f59e0b' }}>{t('apps.caveatLabel')}</span>
+            {t('apps.caveatBody')}
+          </p>
+        </div>
+      )}
+      <KeyPointBar text={isAssets ? t('apps.keyPointAssets') : t('apps.keyPoint')} className="shrink-0 mt-3 lg:mr-20" />
+    </div>
+  );
+}
 
 /* ─────────── Transaction flow, end to end — animated systemisation recap ───────────
-   8 platform-neutral stages from wallet to irreversible. A single tx packet rides
-   through each stage; auto-plays on scroll-in, ↻ Replay always available.
+   8 platform-neutral stages from wallet to irreversible. Each stage card lights
+   up in turn; auto-plays on scroll-in, ↻ Replay always available.
    ──────────────────────────────────────────────────────────────────────────────── */
 
 // Language-neutral stage metadata. Text (title/what/note) comes from t() by index.
@@ -429,7 +418,6 @@ function TxLifecycleAnimated() {
   const { t } = useTranslation('blockchain-platforms/section-1');
   const stageText = t('txLifecycle.stages', { returnObjects: true }) as TxStageText[];
   const rootRef    = useRef<HTMLDivElement | null>(null);
-  const packetRef  = useRef<HTMLDivElement | null>(null);
   const stepRef    = useRef<HTMLDivElement | null>(null);
   const cardRefs   = useRef<(HTMLDivElement | null)[]>([]);
   const [phase, setPhase] = useState<'idle' | 'playing'>('idle');
@@ -445,45 +433,22 @@ function TxLifecycleAnimated() {
       c.style.boxShadow = 'none';
       c.style.borderColor = 'hsl(var(--border))';
     });
-    if (packetRef.current) {
-      packetRef.current.style.opacity = '0';
-      packetRef.current.style.transform = 'translate(0, 0)';
-    }
     if (stepRef.current) {
       stepRef.current.textContent = t('txLifecycle.starting');
     }
 
+    // Timeline drives a dummy counter; each step highlights the next stage card.
+    const cursor = { i: 0 };
     const tl = anime.timeline({
-      easing: 'easeInOutCubic',
+      easing: 'linear',
       complete: () => setPhase('idle'),
     });
 
-    // Reveal packet at stage 1 position
-    tl.add({
-      targets: packetRef.current,
-      opacity: [0, 1],
-      scale: [0.6, 1],
-      duration: 350,
-      easing: 'easeOutQuad',
-      changeBegin: () => moveTo(0),
-    });
-
-    // For each subsequent stage, slide the packet over + highlight the card
+    tl.add({ targets: cursor, i: 0, duration: 350, changeBegin: () => moveTo(0) });
     for (let i = 1; i < TX_STAGES.length; i++) {
-      tl.add({
-        targets: packetRef.current,
-        translateX: i * 100, // each card is ~100px wide on the timeline
-        duration: 750,
-        changeBegin: () => moveTo(i),
-      });
+      tl.add({ targets: cursor, i, duration: 750, changeBegin: () => moveTo(i) });
     }
-    // Final pulse
-    tl.add({
-      targets: packetRef.current,
-      scale: [1, 1.5, 1],
-      duration: 600,
-      easing: 'easeOutQuad',
-    });
+    tl.add({ targets: cursor, i: TX_STAGES.length, duration: 600 });
 
     function moveTo(i: number) {
       const stage = TX_STAGES[i];
@@ -549,7 +514,7 @@ function TxLifecycleAnimated() {
         {t('txLifecycle.starting')}
       </div>
 
-      {/* Stage rail with moving packet */}
+      {/* Stage rail */}
       <div className="flex-1 min-h-0 relative">
         {/* Stage cards */}
         <div className="grid grid-cols-4 lg:grid-cols-8 gap-2 h-full">
@@ -569,17 +534,6 @@ function TxLifecycleAnimated() {
               <div className="mt-2 text-[9px] font-medium leading-snug rounded-md px-1.5 py-1" style={{ backgroundColor: s.zone + '14', color: s.zone }}>{stageText[i].note}</div>
             </div>
           ))}
-        </div>
-
-        {/* Packet — anime.js translates it across the rail (only on lg, where 8 columns laid out) */}
-        <div
-          ref={packetRef}
-          className="absolute top-2 left-2 pointer-events-none z-20 hidden lg:flex items-center justify-center"
-          style={{ opacity: 0, width: '40px', height: '40px' }}
-        >
-          <div className="size-9 rounded-full bg-[#facc15] border-2 border-[#a16207] flex items-center justify-center shadow-lg">
-            <span className="text-[12px] font-black text-[#7c2d12]">tx</span>
-          </div>
         </div>
       </div>
 
@@ -1206,65 +1160,14 @@ export function BP_Section1() {
           />
         </div>
 
-        {/* ═══════ APPS — Bitcoin's app layer ═══════ */}
-        <div id="s1-apps" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-3">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('apps.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('apps.subtitle')}</p>
-          </div>
+        {/* ═══════ APPS A — Lightning + sidechains & rollups ═══════ */}
+        <div id="s1-apps" className="h-full">
+          <AppLayerSlide slot="scaling" />
+        </div>
 
-          <div className="shrink-0 mb-4 rounded-xl border p-3" style={{ borderColor: '#f59e0b55', backgroundColor: '#f59e0b0d' }}>
-            <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#f59e0b' }}>{t('apps.whereLabel')}</p>
-            <p className="text-sm text-foreground mt-0.5 leading-snug">
-              {t('apps.whereBodyA')}<span className="font-semibold">{t('apps.whereChannels')}</span>{t('apps.whereBodyB')}<span className="font-semibold">{t('apps.whereInscriptions')}</span>{t('apps.whereBodyC')}<span className="font-semibold">{t('apps.whereSidechains')}</span>{t('apps.whereBodyD')}<span className="font-semibold">{t('apps.whereStaking')}</span>{t('apps.whereBodyE')}
-            </p>
-          </div>
-
-          <div className="flex-1 min-h-0 overflow-y-auto grid grid-cols-1 lg:grid-cols-2 lg:auto-rows-fr gap-3">
-            {[
-              { icon: '⚡', color: '#f59e0b' },
-              { icon: '📜', color: '#ef4444' },
-              { icon: '🔗', color: '#6366f1' },
-              { icon: '🛡️', color: '#39B54A' },
-            ].map((appMeta, idx) => {
-              const app = (t('apps.items', { returnObjects: true }) as { title: string; sub: string; what: string; adoption: string; limit: string }[])[idx];
-              return (
-              <motion.div
-                key={app.title}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="rounded-xl border-2 p-3 flex flex-col gap-2 min-h-0 overflow-hidden"
-                style={{ borderColor: appMeta.color + '50', backgroundColor: appMeta.color + '08' }}
-              >
-                <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-xl shrink-0 leading-none">{appMeta.icon}</span>
-                  <div className="min-w-0">
-                    <div className="font-black text-sm leading-tight" style={{ color: appMeta.color }}>{app.title}</div>
-                    <div className="text-[11px] text-muted-foreground leading-tight">{app.sub}</div>
-                  </div>
-                </div>
-                <p className="text-xs text-muted-foreground leading-snug flex-1">{app.what}</p>
-                <div className="rounded-lg border bg-card/60 px-2 py-1 text-[11px] leading-snug" style={{ borderColor: appMeta.color + '40' }}>
-                  <span className="font-bold" style={{ color: appMeta.color }}>{t('apps.adoptionLabel')}</span>
-                  <span className="text-muted-foreground">{app.adoption}</span>
-                </div>
-                <div className="rounded-lg border bg-card/60 px-2 py-1 text-[11px] leading-snug" style={{ borderColor: '#ED1C2440' }}>
-                  <span className="font-bold" style={{ color: '#ED1C24' }}>{t('apps.limitLabel')}</span>
-                  <span className="text-muted-foreground">{app.limit}</span>
-                </div>
-              </motion.div>
-              );
-            })}
-          </div>
-
-          <div className="shrink-0 mt-3 rounded-xl border p-2.5" style={{ borderColor: '#f59e0b55', backgroundColor: '#f59e0b0d' }}>
-            <p className="text-xs text-muted-foreground leading-snug">
-              <span className="font-bold" style={{ color: '#f59e0b' }}>{t('apps.caveatLabel')}</span>
-              {t('apps.caveatBody')}
-            </p>
-          </div>
-          <KeyPointBar text={t('apps.keyPoint')} className="shrink-0 mt-2 lg:mr-20" />
+        {/* ═══════ APPS B — inscriptions + Bitcoin staking ═══════ */}
+        <div id="s1-apps-assets" className="h-full">
+          <AppLayerSlide slot="assets" />
         </div>
 
         {/* ═══════ LIGHTNING NETWORK ═══════ */}
