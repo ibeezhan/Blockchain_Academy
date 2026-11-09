@@ -1,24 +1,44 @@
 {
   "groups": {
     "g-s4-problem": "🌉 O Problema",
-    "g-s4-l0": "🏛️ Layer 0",
+    "g-s4-l0": "Layer 0",
     "g-s4-bridges": "🔥 Segurança das Bridges",
-    "g-s4-cosmos": "⚛ Cosmos",
-    "g-s4-xrp": "✕ XRP Ledger",
+    "g-s4-cosmos": "Cosmos",
+    "g-s4-xrp": "XRP Ledger",
     "g-s4-wrap": "✅ Resumo"
   },
   "chapters": {
+    "s4-usecases": "Real-World Use Cases",
     "s4-interop": "Interoperabilidade",
     "s4-interop-compare": "Abordagens Comparadas",
+    "s4-chooser": "Which Connection?",
     "s4-layer0": "🧩 Layer 0: Conceito",
     "s4-layer0-2": "Layer 0: Plataformas",
+    "s4-wrapped": "Wrapped Tokens",
     "s4-bridges": "Segurança das Bridges",
+    "s4-bridge-hacks": "Bridge Hacks",
     "s4-cosmos": "Cosmos",
-    "s4-cosmos-eco": "Apps Cosmos",
     "s4-xrp": "XRP Ledger",
-    "s4-xrp-anim": "🧩 XRPL ↔ Axelar",
     "s4-quiz": "Quiz",
     "s4-takeaways": "Conclusões"
+  },
+  "usecases": {
+    "heading": "Where this shows up in real life",
+    "subtitle": "Six everyday situations, and how value crosses today.",
+    "howLabel": "How it crosses",
+    "items": [
+      { "title": "Moving to a cheaper lane", "scenario": "You hold ETH on Ethereum, but a swap costs $20 in fees. You move it to Arbitrum or Base, where the same swap costs cents.", "how": "Canonical rollup bridge (Section 02)" },
+      { "title": "Using Bitcoin in DeFi", "scenario": "You want to earn yield on BTC inside an Ethereum lending app. A custodian holds the BTC and issues WBTC you can use.", "how": "Wrapped token · custodian risk" },
+      { "title": "One stablecoin, many chains", "scenario": "USDC lives natively on a dozen-plus chains; Circle's CCTP burns it on one chain and mints it on another. RLUSD settles on XRPL and Ethereum.", "how": "Native multi-chain issuance" },
+      { "title": "Game items that travel", "scenario": "A game runs on its own chain for speed (Ronin, Immutable), but players want to sell items on an Ethereum marketplace.", "how": "Bridge · wrapped NFT" },
+      { "title": "Private data, public settlement", "scenario": "A consortium keeps supplier data on a private Fabric network but wants final settlement or tokens on a public chain for liquidity.", "how": "Anchoring · messaging layer" },
+      { "title": "Cross-border payment routes", "scenario": "A payment starts as a stablecoin on one chain and must arrive as a local-currency token on another — in one trip, not three hops.", "how": "Message + value routing (Axelar, IBC)" }
+    ]
+  },
+  "ui": {
+    "hood": "under the hood →",
+    "recap": "Already covered",
+    "keyPoint": "Key point"
   },
   "title": {
     "sectionNumber": "SECÇÃO 04",
@@ -26,7 +46,6 @@
     "subtitle": "Bridges cross-chain, Cosmos IBC, Layer 0 e XRP"
   },
   "layer0Anim": {
-    "liveLabel": "Animação ao vivo",
     "headline": "Uma transação a viajar L2 → L1 → L0 → L1 → L2",
     "replay": "↻ Repetir",
     "steps": [
@@ -53,36 +72,14 @@
       "l2": "— rollup numa L1 específica"
     }
   },
-  "xrplAxelarAnim": {
-    "liveLabel": "Animação ao vivo",
-    "headline": "XRPL → Axelar → outra blockchain",
-    "replay": "↻ Repetir",
-    "steps": [
-      "1. O utilizador despoleta uma chamada cross-chain a partir da XRPL (ex.: enviar RLUSD para a Ethereum)",
-      "2. O gateway Axelar recolhe a mensagem; os validadores votam no payload",
-      "3. ≥ 2/3 dos validadores Axelar assinam — a mensagem é admitida no hub",
-      "4. O relayer Axelar entrega-a à chain de destino; o destinatário recebe-a"
-    ],
-    "svg": {
-      "xrplTitle": "XRP LEDGER",
-      "xrplSub": "Chain de origem",
-      "xrplLine1": "enviar RLUSD",
-      "xrplLine2": "para 0x… na Ethereum",
-      "axelarTitle": "REDE AXELAR",
-      "axelarSub": "hub PoS · gateway GMP",
-      "axelarSign": "≥ 2/3 assinam",
-      "evmTitle": "ETHEREUM",
-      "evmSub": "Chain de destino",
-      "evmLine1": "RLUSD recebido",
-      "evmLine2": "+ mensagem entregue"
-    },
-    "legend": {
-      "xrpl": "— origem: L1 otimizada para pagamentos",
-      "axelar": "— rede hub PoS + GMP",
-      "evm": "— destino: qualquer chain que a Axelar cubra"
-    }
-  },
   "interop": {
+    "svg": {
+      "noLink": "no native link",
+      "caption": "Each island validates only its own ledger. A coin cannot \"swim\" across."
+    },
+    "analogy": "Early email: a Gmail user could not write to a Hotmail user until providers agreed on a shared standard. Blockchains today are mostly still at the \"no shared standard\" stage.",
+    "analogyLabel": "Analogy",
+    "recap": "Bitcoin (Section 01) · Ethereum (Section 02) · Hyperledger Fabric (Section 03) — each one is its own island",
     "heading": "O Problema da Interoperabilidade",
     "subtitle": "Bitcoin, Ethereum, Solana e Hyperledger Fabric operam cada uma como redes isoladas — não conseguem comunicar nativamente entre si.",
     "islands": {
@@ -107,14 +104,6 @@
       ]
     },
     "matters": {
-      "title": "Porque Importa",
-      "intro": "A verdadeira interoperabilidade desbloqueia um mundo multi-chain onde ativos e mensagens fluem livremente:",
-      "items": [
-        "Pagar com BTC dentro de um protocolo DeFi da Ethereum — sem necessidade de confiança",
-        "Transferir um NFT da Ethereum para a Solana mantendo a proveniência",
-        "Uma rede empresarial Hyperledger Fabric a liquidar o estado final na Ethereum",
-        "Uma única interface de utilizador a aceder a liquidez em 10 chains em simultâneo"
-      ],
       "solutionsLabel": "Soluções Emergentes",
       "solutions": [
         { "label": "Bridges", "sub": "Arriscadas mas muito usadas" },
@@ -127,49 +116,44 @@
     "heading": "Abordagens de Interoperabilidade — Comparadas",
     "subtitle": "Três respostas fundamentalmente diferentes à mesma pergunta: como é que duas blockchains trocam valor ou mensagens sem confiarem numa terceira parte?",
     "rowLabels": {
+      "analogy": "Think of it as",
       "mechanism": "Mecanismo",
       "trust": "Modelo de confiança",
-      "risk": "Risco",
-      "finality": "Finalidade",
-      "compatibility": "Compatibilidade"
+      "risk": "Risco"
     },
     "examplesLabel": "Exemplos",
     "col1": {
+      "analogy": "A courier keeps your luggage and gives you a claim ticket to use in the other city.",
       "approachLabel": "Abordagem 1",
       "title": "Bridges & Tokens Embrulhados",
       "subtitle": "Lock-and-mint · baseada em smart contracts",
       "mechanism": "Bloquear o ativo nativo num smart contract na chain de origem → cunhar uma representação embrulhada na chain de destino",
       "trust": "Validadores multisig ou MPC — um conjunto de operadores off-chain tem de concordar antes de libertar os fundos",
       "risk": "Os ativos bloqueados acumulam-se num só contrato — uma bridge com 500 M$ de TVL é uma recompensa de 500 M$ por bugs",
-      "finality": "Minutos a horas, consoante a profundidade de confirmação da chain de origem",
-      "compatibility": "Funciona entre quaisquer duas chains sem necessidade de infraestrutura partilhada",
       "examples": "WBTC · Ronin · Wormhole · Hop Protocol · LayerZero · Stargate"
     },
     "col2": {
+      "analogy": "Both airports read each other's boarding passes directly — no courier needed.",
       "approachLabel": "Abordagem 2",
       "title": "Nativa de protocolo / IBC",
       "subtitle": "Light clients · mensagens com confiança minimizada",
       "mechanism": "Cada chain corre um light client da outra — as provas das transições de estado são verificadas on-chain, não por um operador externo",
       "trust": "Criptográfico — o consenso da chain emissora é a fonte de verdade. Não é preciso um conjunto de validadores separado",
       "risk": "Sem contrato honeypot — circulam mensagens, não ativos bloqueados. Zero ataques via IBC até à data",
-      "finality": "Tão rápida quanto o consenso de ambas as chains — tipicamente 1 a 6 segundos ponta a ponta",
-      "compatibility": "Exige que ambas as chains implementem a norma IBC — hoje limitada ao ecossistema IBC",
       "examples": "Cosmos IBC · IBC Eureka (Ethereum) · Polkadot XCM (entre parachains)"
     },
     "col3": {
+      "analogy": "One security team guards every terminal in the airport — moving between terminals is just walking.",
       "approachLabel": "Abordagem 3",
       "title": "Rede Layer 0",
       "subtitle": "Validadores partilhados · chamadas cross-chain nativas",
       "mechanism": "Um conjunto de validadores partilhado (Relay Chain / Primary Network) protege todas as L1s ligadas — as mensagens cross-chain são uma operação nativa do protocolo, não um smart contract",
       "trust": "Os próprios validadores da L0 — o mesmo conjunto que finaliza blocos também valida as mensagens cross-chain",
       "risk": "As mensagens dentro da L0 são tão seguras quanto a própria L0. Continuam a ser precisas bridges externas para chains fora do ecossistema",
-      "finality": "Nativa — as chamadas cross-chain liquidam no mesmo ciclo de produção de blocos que as transações normais",
-      "compatibility": "As chains têm de se ligar à L0 e respeitar as regras do seu runtime — segurança máxima, flexibilidade mínima",
       "examples": "Polkadot (Relay Chain + XCM) · Avalanche (Primary Network + Warp) · Babylon (camada de segurança BTC)"
     }
   },
   "layer0": {
-    "badge": "🧩 Animado",
     "heading": "Layer 0 — O Substrato por Baixo das L1s",
     "leadA": "Uma L0 aluga ",
     "leadStrong": "validadores, segurança e um tecido de mensagens",
@@ -205,12 +189,20 @@
     "cosmosModelBody3": "cada chain arranca os seus próprios validadores"
   },
   "bridges": {
-    "sectionLabel": "Secção 04",
+    "honest": "Using a bridge is a trust decision, not a technical detail: you are trusting whoever controls the vault. Prefer a chain's official (canonical) bridge, and move only what you need.",
+    "honestLabel": "In practice",
+    "vault": {
+      "label": "How a lock-and-mint bridge works",
+      "chainA": "Chain A",
+      "chainB": "Chain B",
+      "locked": "locked in one vault",
+      "minted": "copies (wrapped) issued",
+      "caption": "Every user adds to the same vault. The bigger it gets, the bigger the prize — that is the honeypot."
+    },
     "heading": "Segurança das Bridges Cross-Chain",
     "subA": "As bridges são a categoria mais explorada na blockchain. Mais de ",
     "subAmount": "2,5 mil M$",
     "subB": " foram roubados de bridges só em 2022 — mais do que todos os outros ataques DeFi juntos.",
-    "hacksLabel": "Maiores Ataques a Bridges",
     "hacks": [
       { "name": "Ronin Bridge", "amount": "625 M$", "year": "2022", "chain": "Axie Infinity ↔ Ethereum", "method": "O atacante comprometeu 5 de 9 chaves privadas de validadores — atingiu o limiar multisig de 5/9 e esvaziou todo o contrato de bloqueio." },
       { "name": "Wormhole Bridge", "amount": "320 M$", "year": "2022", "chain": "Solana ↔ Ethereum", "method": "Contorno da verificação de assinaturas — o atacante forjou uma assinatura de guardian para cunhar 120 000 wETH na Solana sem bloquear ETH real." },
@@ -221,27 +213,48 @@
     "dangers": [
       { "icon": "🍯", "title": "Arquitetura de Honeypot", "desc": "Para fazer bridge de 1 ETH da Ethereum para outra chain, bloqueias 1 ETH num smart contract e cunhas ETH embrulhado no destino. Cada utilizador acrescenta ao mesmo bolo — criando um alvo que cresce com a adoção. Uma bridge com 500 M$ de TVL é uma recompensa de 500 M$ por bugs." },
       { "icon": "🔑", "title": "Pressupostos de Confiança Centralizados", "desc": "A maioria das bridges depende de um multisig de validadores para confirmar eventos cross-chain. Isto é inerentemente centralizado. Se o conjunto de chaves de validadores for pequeno (2 de 5) ou as chaves estiverem mal guardadas, todo o TVL fica em risco por um único comprometimento coordenado de chaves." },
-      { "icon": "⚠️", "title": "Complexidade Cross-Chain", "desc": "As bridges têm de raciocinar sobre o estado de duas blockchains diferentes em simultâneo. A passagem de mensagens, a verificação de assinaturas e os pressupostos de finalidade diferem por chain. Esta superfície é enorme — e bugs em qualquer camada podem ser fatais." },
-      { "icon": "⏱️", "title": "Desfasamento de Finalidade", "desc": "As bridges otimistas libertam fundos antes de a finalidade ser confirmada na chain de origem. Se uma transação for posteriormente reorganizada (reorg), a bridge pode já ter cunhado ativos no destino sem qualquer lastro." }
+      { "icon": "⚠️", "title": "Complexidade Cross-Chain", "desc": "As bridges têm de raciocinar sobre o estado de duas blockchains diferentes em simultâneo. A passagem de mensagens, a verificação de assinaturas e os pressupostos de finalidade diferem por chain. Esta superfície é enorme — e bugs em qualquer camada podem ser fatais." }
     ],
     "saferLabel": "Padrões de Desenho Mais Seguros",
     "safer": [
       { "title": "IBC Nativo (Cosmos)", "desc": "A Inter-Blockchain Communication está integrada no protocolo — sem multisig externo, sem contrato de bloqueio. Verificação por light client de ambos os lados. Zero ataques a bridges via IBC até à data." },
       { "title": "Bridges Canónicas", "desc": "As bridges oficiais de rollup da Ethereum (Arbitrum, Optimism, Base) usam o próprio sistema de provas de fraude/validade do rollup — segurança L1 herdada, não um conjunto de confiança separado." },
-      { "title": "Limiares Multisig Grandes", "desc": "5 de 9 é o mínimo aceitável. A Ronin usou 5 de 9 mas tinha apenas 4 signatários reais. Módulos de segurança de hardware (HSMs) para guardar chaves são obrigatórios." },
-      { "title": "Verificação Formal", "desc": "A lógica de passagem de mensagens e o código de verificação de assinaturas devem ser verificados formalmente — não apenas auditados. O bug da Wormhole passou numa auditoria manual." },
       { "title": "Limites de Taxa & Disjuntores", "desc": "Limitar quanto pode ser retirado por hora. Os 190 M$ da Nomad foram esvaziados por centenas de imitadores em minutos — um limitador de taxa teria poupado 180 M$." }
     ]
+  },
+  "wrapped": {
+    "heading": "What a wrapped token is",
+    "subtitle": "WBTC, wETH and friends are not the coin itself. They are a claim on a coin that someone else is holding.",
+    "svg": {
+      "sourceChain": "Bitcoin",
+      "sourceAsset": "1 BTC",
+      "sourceNote": "held in the custodian's wallet",
+      "issuer": "Custodian / bridge",
+      "issuerNote": "mints and burns the copies",
+      "issuerPowers": "can pause · can refuse to redeem",
+      "targetChain": "Ethereum",
+      "targetAsset": "1 WBTC",
+      "targetNote": "your balance, an IOU",
+      "mint": "deposit → mint",
+      "burn": "burn → withdraw",
+      "caption": "The wrapped balance is worth 1 BTC only while the custodian still holds 1 BTC and will hand it back."
+    },
+    "cards": [
+      { "title": "What it is", "desc": "A token on one chain that stands for a coin held on another. 1 WBTC on Ethereum is a claim on 1 BTC kept by a custodian, much as a casino chip is a claim on cash at the cage." },
+      { "title": "Who can redeem it", "desc": "Usually not you. Only approved, identity-checked merchants swap WBTC back for BTC; everyone else sells it on an exchange. The price holds only while people believe the vault is full." },
+      { "title": "Who can freeze it", "desc": "The issuer. The WBTC contract can be paused by its owner, and a bridge operator can stop minting or releasing. If the vault is emptied, as at Wormhole in 2022, the copies are backed by nothing." }
+    ],
+    "noteLabel": "Not every wrapper needs a custodian",
+    "note": "WETH on Ethereum itself is a plain contract: anyone swaps ETH for WETH and back 1:1 with nobody in the middle. The question to ask of any wrapped token is who holds the original."
+  },
+  "bridgeHacks": {
+    "heading": "The four largest bridge hacks",
+    "subtitle": "All in 2022, all on the same design: one vault, a few keys, one checking routine.",
+    "whatWentWrong": "What went wrong"
   },
   "cosmos": {
     "heading": "Cosmos: A Internet das Blockchains",
     "subtitle": "Uma rede de chains soberanas e interoperáveis ligadas pelo protocolo IBC — cada uma otimizada para o seu caso de uso específico.",
-    "pill1Label": "Forma-de-rede",
-    "pill1Strong": "Cross-chain por desenho",
-    "pill1Text": " — o IBC é o protocolo nativo, não uma bridge acrescentada por cima",
-    "pill2Label": "Forma-de-chain",
-    "pill2Strong": "L1s específicas de aplicação",
-    "pill2Text": " — cada zona é uma chain feita à medida (DEX, perps, computação GPU…)",
     "archTitle": "Arquitetura de Hub & Zona",
     "archNote": "As zonas também podem fazer IBC diretamente entre si (mesh)",
     "hubName1": "Cosmos",
@@ -267,104 +280,16 @@
       { "emoji": "⚛️", "title": "CometBFT (ex-Tendermint)", "desc": "Motor BFT renomeado em 2023. Finalidade instantânea, blocos de ~1 segundo, sem forks. Conjunto de validadores conhecido por zona — seguro desde que < 1/3 sejam bizantinos." },
       { "emoji": "⚡", "title": "Soberania Específica de Aplicação", "desc": "Cada chain afina o gas, a governação e as atualizações ao seu próprio caso de uso — sem competição por espaço de bloco partilhado, sem necessidade de encaixar na VM de outrem." }
     ],
-    "atomTitle": "Economia do ATOM",
-    "atomBody": "Segurança do Hub via staking · votos de governação · a Interchain Security permite que chains aderentes aluguem o conjunto de validadores do Hub em vez de arrancarem o seu.",
     "beyondTitle": "Para Além da Cosmos",
     "beyondBodyA": "O IBC ",
     "beyondBodyStrong": "Eureka",
-    "beyondBodyB": " (2024+) estende o IBC à Ethereum e a outras chains não-Cosmos — mensagens com confiança minimizada, sem bridge centralizada."
-  },
-  "cosmosEco": {
-    "heading": "Ecossistema Cosmos — o que corre sobre IBC",
-    "subtitle": "O grafo IBC liga mais de 110 chains. Cada uma especializada — e a app mais usada na Cosmos não está no próprio Hub, está nas zonas.",
-    "apps": [
-      {
-        "emoji": "🌊",
-        "name": "Osmosis",
-        "category": "DEX",
-        "tag": "DEX IBC líder",
-        "stats": "~200 M$ de TVL · desde 2021",
-        "items": [
-          { "name": "Liquidez concentrada", "kind": "Intervalos ao estilo Uniswap-v3" },
-          { "name": "Superfluid staking", "kind": "Tokens LP que também fazem staking" },
-          { "name": "Swaps nativos de IBC", "kind": "Qualquer ativo IBC, sem bridge" },
-          { "name": "Trade como mensagem IBC", "kind": "Swap cross-chain numa só transação" }
-        ]
-      },
-      {
-        "emoji": "📈",
-        "name": "dYdX v4",
-        "category": "DEX de Perps",
-        "tag": "migrou da StarkEx (2023)",
-        "stats": "Volume diário na ordem das centenas de M$ · Cosmos SDK",
-        "items": [
-          { "name": "Perps de order-book", "kind": "Correspondência off-chain, liquidação on-chain" },
-          { "name": "Chain soberana", "kind": "Validadores pagos com taxas de trading" },
-          { "name": "Correspondência à medida", "kind": "Construída especificamente para derivados" },
-          { "name": "Prova do Cosmos SDK", "kind": "Maior migração para zona soberana até à data" }
-        ]
-      },
-      {
-        "emoji": "🧊",
-        "name": "Celestia",
-        "category": "DA Modular",
-        "tag": "pioneira da tese modular",
-        "stats": "Mainnet 2023 · token TIA",
-        "items": [
-          { "name": "Disponibilidade de dados", "kind": "Vende espaço de blob a rollups" },
-          { "name": "Amostragem de dados", "kind": "Light clients verificam sem estado completo" },
-          { "name": "Suporta RaaS", "kind": "Manta, Eclipse, Movement usam-na" },
-          { "name": "Blockchain modular", "kind": "Separa execução / DA / liquidação" }
-        ]
-      },
-      {
-        "emoji": "☁️",
-        "name": "Akash",
-        "category": "Computação GPU",
-        "tag": "cloud descentralizada",
-        "stats": "Grande crescimento de cargas de IA em 2024",
-        "items": [
-          { "name": "Aluguer de GPUs", "kind": "A100 e H100 para treino de ML" },
-          { "name": "Leilão invertido", "kind": "Compradores publicam tarefas, fornecedores licitam" },
-          { "name": "Pagamentos em AKT", "kind": "Liquidam em token ou em qualquer ativo IBC" },
-          { "name": "ML de código aberto", "kind": "Hospedagem de Llama / Mistral" }
-        ]
-      },
-      {
-        "emoji": "🌀",
-        "name": "Stride",
-        "category": "Liquid Staking",
-        "tag": "líder de LST em IBC",
-        "stats": "Faz liquid staking de ATOM, OSMO, INJ, TIA…",
-        "items": [
-          { "name": "stATOM, stTIA…", "kind": "Tokens de liquid staking, portáveis por IBC" },
-          { "name": "Auto-compound", "kind": "Recompensas re-stakadas automaticamente" },
-          { "name": "LST nativo de IBC", "kind": "Usa stTokens em todas as chains IBC" },
-          { "name": "Stride Hub", "kind": "Agora uma consumer chain da Interchain Security" }
-        ]
-      }
-    ],
-    "footerStrong": "Também vale a pena saber — ",
-    "footerA": "Injective",
-    "footerAtext": " (L1 focada em finanças) · ",
-    "footerB": "Sei",
-    "footerBtext": " (L1 de orderbook) · ",
-    "footerC": "Mantra",
-    "footerCtext": " (tokenização de RWA) · ",
-    "footerD": "Stargaze",
-    "footerDtext": " (NFTs) · ",
-    "footerE": "Secret Network",
-    "footerEtext": " (privacidade) · ",
-    "footerF": "Fetch.ai / ASI",
-    "footerFtext": " (agentes de IA) · ",
-    "footerG": "Neutron",
-    "footerGtext": " (plataforma de smart contracts protegida pelo ATOM)."
+    "beyondBodyB": " (2024+) estende o IBC à Ethereum e a outras chains não-Cosmos — mensagens com confiança minimizada, sem bridge centralizada.",
+    "dydxLabel": "Example",
+    "dydx": "dYdX, a derivatives exchange, left its Ethereum rollup in 2023 for its own Cosmos chain: an app gets its own chain once it is big enough to justify one."
   },
   "xrp": {
     "badgePartner": "🧩 Plataforma parceira",
     "heading": "XRP Ledger — um rail de liquidação feito à medida",
-    "takeawayLabel": "A única coisa a reter",
-    "takeaway": "A XRPL é um rail feito à medida para pagamentos, FX e ativos do mundo real tokenizados — rápida e barata por desenho. Não é uma plataforma de smart contracts de uso geral, e essa troca é deliberada.",
     "pillars": [
       { "label": "Operações nativas", "title": "DEX & pagamentos são de primeira classe", "body": "O DEX de order-book está no protocolo desde 2012 (sem smart contract); o AMM nativo (XLS-30) juntou-se em 2024. Otimizada para estas tarefas — mas o conjunto de regras é fixo." },
       { "label": "Validação federada", "title": "UNL — os operadores escolhem os validadores", "body": "Qualquer pessoa pode ler e usar a chain, mas cada nó confia numa Unique Node List de validadores (Federated Byzantine Agreement, ≥ 80% concorda por ronda). Sem permissão para usar, federada para validar." },
@@ -379,11 +304,6 @@
     ],
     "honestTitle": "Contexto honesto — o que abdicas",
     "honestBody": "Uma superfície de smart contracts menor que a EVM, e validação que é federada: qualquer pessoa pode correr um nó, mas o conjunto de validadores por omissão vem com o software. A aposta é em pagamentos, RWA e liquidação cross-chain — não em dApps de uso geral."
-  },
-  "xrpAnim": {
-    "badge": "🧩 Animado",
-    "heading": "XRPL ↔ Axelar — Uma API para Alcançar Todas as Chains",
-    "subtitle": "Acabaste de ver no que a XRPL é boa (pagamentos, DEX nativo, RWA). Eis como fala com o resto do mundo multi-chain — sem escrever um contrato de bridge à medida por cada par."
   },
   "quiz": {
     "question": "As bridges cross-chain têm sido responsáveis pelos maiores ataques da história da cripto — Ronin (625 M$), Wormhole (320 M$), Nomad (190 M$). Que propriedade arquitetural torna as bridges alvos de tão elevado valor?",
@@ -401,7 +321,117 @@
       "As ilhas blockchain não conseguem transferir ativos ou dados nativamente — a interoperabilidade é uma área ativa de engenharia",
       "As bridges concentram ativos bloqueados num único contrato, tornando-as alvos de ataque de elevado valor (Ronin 625 M$, Wormhole 320 M$)",
       "O Cosmos IBC consegue comunicação cross-chain com confiança minimizada sem um contrato de bridge centralizado",
-      "A XRP Ledger é otimizada para pagamentos, com um DEX nativo, Trust Lines e suporte de sidechain federada"
+      "A XRP Ledger é otimizada para pagamentos, com um DEX nativo, Trust Lines e suporte de sidechain federada",
+      "XRP Ledger is a payments rail that reaches other chains through Axelar rather than a bespoke bridge per pair"
     ]
+  },
+  "keyPoints": {
+    "s4-interop": "Every chain is an island by design; value only moves if someone builds a route and someone is trusted to run it.",
+    "s4-usecases": "In every real case someone holds the asset or verifies the other chain; who that is, is the design question.",
+    "s4-interop-compare": "Three routes, one question: do you trust an operator, the maths, or a shared validator set?",
+    "s4-chooser": "The safest connection is the one with the fewest people to trust.",
+    "s4-bridges": "Bridges are where most of the money has been stolen; using one is a trust decision.",
+    "s4-wrapped": "A wrapped token is an IOU; it is worth the original only while someone holds that coin and agrees to give it back.",
+    "s4-bridge-hacks": "Every big bridge hack came down to a few stolen keys or one bug in the vault's checks; one shared vault turned it into a total loss.",
+    "s4-cosmos": "Cosmos trades shared security for sovereignty; IBC lets chains verify each other without a middleman.",
+    "s4-layer0": "A Layer 0 is a security team for hire; new chains inherit protection on day one.",
+    "s4-layer0-2": "Shared security or full sovereignty: you rent one or build the other.",
+    "s4-xrp": "XRPL is a payments rail, not an app platform; it is fast and cheap because it does less."
+  },
+  "chooser": {
+    "badge": "Try it",
+    "heading": "How should these two chains talk?",
+    "subtitle": "Pick a situation, then a route, to see the fit and the main risk.",
+    "scenarioLabel": "1 · The situation",
+    "optionLabel": "2 · Your route",
+    "feedbackLabel": "3 · Fit & main risk",
+    "idle": "Pick a situation on the left and a route in the middle…",
+    "riskLabel": "Main risk",
+    "verdicts": {
+      "best": "Best fit",
+      "ok": "Workable",
+      "poor": "Poor fit"
+    },
+    "scenarios": [
+      {
+        "title": "Move stablecoins to an L2",
+        "desc": "You hold USDC on Ethereum and want to use it on Arbitrum or Base, where fees are cents."
+      },
+      {
+        "title": "One app, two chains, shared state",
+        "desc": "A lending app runs on two independent chains and needs balances and prices to stay in sync."
+      },
+      {
+        "title": "Bank consortium meets a public chain",
+        "desc": "Banks run a private settlement chain but want tokens and final settlement on a public network."
+      }
+    ],
+    "options": {
+      "bridge": {
+        "label": "Bridge",
+        "sub": "Lock here, mint a copy there — an operator in the middle"
+      },
+      "ibc": {
+        "label": "IBC-style messaging",
+        "sub": "Both chains verify each other's proofs directly"
+      },
+      "l0": {
+        "label": "Layer 0",
+        "sub": "Both chains sit under one shared validator set"
+      }
+    },
+    "feedback": {
+      "s0": {
+        "bridge": {
+          "verdict": "best",
+          "text": "Use the rollup's own (canonical) bridge. It is secured by the rollup's proof system, not by a separate group of signers.",
+          "risk": "Going back to L1 is slow: hours on a ZK rollup, about 7 days on an optimistic one. 'Fast' third-party bridges fix that by adding an operator you must trust."
+        },
+        "ibc": {
+          "verdict": "poor",
+          "text": "Ethereum and its rollups do not use IBC; the rollup already has a native, proof-secured route to L1.",
+          "risk": "You would be building a second, less-tested path next to one that already exists."
+        },
+        "l0": {
+          "verdict": "poor",
+          "text": "Arbitrum and Base are not parachains — there is no Layer 0 here. Ethereum itself is the shared security the rollups borrow.",
+          "risk": "Adding a Layer 0 means adding a validator set and a token you don't need for this job."
+        }
+      },
+      "s1": {
+        "bridge": {
+          "verdict": "ok",
+          "text": "General message bridges (Axelar, LayerZero, Wormhole) can carry state updates between almost any two chains today — the widest reach.",
+          "risk": "Your app's state now depends on the bridge's signer set. If it is compromised, both deployments can be corrupted at once — the honeypot problem."
+        },
+        "ibc": {
+          "verdict": "best",
+          "text": "If both chains speak IBC (Cosmos zones, or Ethereum via IBC Eureka), each verifies the other's proofs directly — messages travel without a middleman or a giant vault.",
+          "risk": "Only as strong as the weaker chain, and both must implement the standard — reach is limited to the IBC ecosystem today."
+        },
+        "l0": {
+          "verdict": "ok",
+          "text": "If both chains live inside the same Layer 0 (two parachains, two Avalanche L1s), messaging is native — XCM or Warp — and verified by the shared validators.",
+          "risk": "Only works inside the club. The moment one chain is outside, you are back to a bridge."
+        }
+      },
+      "s2": {
+        "bridge": {
+          "verdict": "ok",
+          "text": "Anchor the private chain's state, or settle tokens, through a bridge the consortium controls. Simple and chain-agnostic — this is how most pilots start.",
+          "risk": "The bridge operator is a single point of failure, and the regulator will ask who holds the keys. Governing that bridge becomes the real project."
+        },
+        "ibc": {
+          "verdict": "poor",
+          "text": "A Fabric or Besu consortium chain does not speak IBC. You would have to rebuild it on an IBC-capable stack first — a migration, not an integration.",
+          "risk": "A large rebuild for a standard the public chain you target may not support either."
+        },
+        "l0": {
+          "verdict": "best",
+          "text": "Run the consortium chain as a permissioned L1 inside a Layer 0 (an Avalanche L1 or a parachain). You keep your own validators and rules, yet messaging to the public network is native — the model JP Morgan piloted on Avalanche.",
+          "risk": "You are bound to that Layer 0's rules, token and validator security — and reaching chains outside it still needs a bridge."
+        }
+      }
+    }
   }
 }

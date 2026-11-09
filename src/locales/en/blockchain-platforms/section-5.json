@@ -1,29 +1,24 @@
 {
   "groups": {
-    "g-s5-zk": "🔐 Zero-Knowledge",
-    "g-s5-stark": "⭑ Starknet",
-    "g-s5-l2": "📈 Layer 2",
-    "g-s5-polka": "🔴 Polkadot",
-    "g-s5-ava": "🔺 Avalanche",
-    "g-s5-priv": "🛡️ Privacy",
-    "g-s5-eval": "🧪 Evaluating Trends",
-    "g-s5-decide": "🧩 Decision",
-    "g-s5-wrap": "✅ Wrap Up"
+    "g-s5-zk": "Zero-Knowledge",
+    "g-s5-l2": "Layer 2",
+    "g-s5-platforms": "Platform Snapshots",
+    "g-s5-priv": "Privacy",
+    "g-s5-eval": "Evaluating Trends",
+    "g-s5-decide": "Decision",
+    "g-s5-wrap": "Wrap Up"
   },
   "chapters": {
     "s5-zkp": "ZK: The Idea",
     "s5-zkp-cave": "ZK: Where's Waldo?",
-    "s5-zkp-props": "ZK: Properties & Uses",
-    "s5-starknet": "Starknet",
-    "s5-starknet-compare": "Starknet: ZK in Practice",
-    "s5-starknet-eco": "Starknet Apps",
-    "s5-l2-why": "L2: Why Needed",
+    "s5-zk-apps": "ZK: Real Apps Today",
+    "s5-zk-identity": "ZK: Identity Walkthrough",
+    "s5-l2-why": "Trilemma → Why L2",
     "s5-layer2": "L2: Optimistic vs ZK",
-    "s5-l2apps": "L2 App Landscape",
-    "s5-polkadot": "Polkadot",
-    "s5-polkadot-eco": "Polkadot Apps",
-    "s5-avalanche": "Avalanche",
-    "s5-avalanche-eco": "Avalanche Apps",
+    "s5-data-avail": "L2: Why Post Data",
+    "s5-starknet": "Snapshot: Starknet",
+    "s5-polkadot": "Snapshot: Polkadot",
+    "s5-avalanche": "Snapshot: Avalanche",
     "s5-privacy": "Privacy: Why Hard",
     "s5-privacy-approaches": "Privacy: Approaches",
     "s5-privacy-regulation": "Privacy: Regulation",
@@ -31,15 +26,20 @@
     "s5-evaluate": "Evaluate (1/2)",
     "s5-evaluate-2": "Evaluate (2/2)",
     "s5-decision": "Decision Framework",
-    "s5-decision-examples": "Platform Examples",
     "s5-quiz": "Quiz",
+    "s5-quiz-2": "Quiz 2",
     "s5-takeaways": "Takeaways",
-    "s5-team-checkpoint": "🤝 Team Checkpoint"
+    "s5-discussion": "Discussion"
   },
   "title": {
     "sectionNumber": "SECTION 05",
     "title": "New Trends",
     "subtitle": "ZK rollups, Layer 2 scaling, privacy primitives, and choosing the right platform"
+  },
+  "ui": {
+    "hood": "under the hood →",
+    "recap": "Already covered",
+    "keyPoint": "Key point"
   },
   "recommender": {
     "questions": [
@@ -48,8 +48,8 @@
         "title": "Who can use it?",
         "subtitle": "Anyone in the world, or only known organisations?",
         "options": [
-          { "value": "public", "label": "🌐 Public", "hint": "Anyone with a wallet. No vetting." },
-          { "value": "permissioned", "label": "🏢 Permissioned", "hint": "Only members invited by a consortium." }
+          { "value": "public", "label": "Public", "hint": "Anyone with a wallet. No vetting." },
+          { "value": "permissioned", "label": "Permissioned", "hint": "Only members invited by a consortium." }
         ]
       },
       {
@@ -57,9 +57,9 @@
         "title": "What does it need to do?",
         "subtitle": "Just move value, or run logic / apps on-chain?",
         "options": [
-          { "value": "value", "label": "💸 Move value only", "hint": "Payments, settlement, store of value." },
-          { "value": "contracts", "label": "🤖 Smart contracts", "hint": "DeFi, NFTs, DAOs, programmable rules." },
-          { "value": "highperf", "label": "⚡ High-perf consumer apps", "hint": "Order books, games, social — needs speed." }
+          { "value": "value", "label": "Move value only", "hint": "Payments, settlement, store of value." },
+          { "value": "contracts", "label": "Smart contracts", "hint": "DeFi, NFTs, DAOs, programmable rules." },
+          { "value": "highperf", "label": "High-perf consumer apps", "hint": "Order books, games, social — needs speed." }
         ]
       },
       {
@@ -67,9 +67,9 @@
         "title": "How sensitive to throughput + fees?",
         "subtitle": "Are you a high-value settlement layer or a consumer app?",
         "options": [
-          { "value": "low", "label": "🐢 Low — settlement only", "hint": "Few txs/day, large value, fees acceptable." },
-          { "value": "med", "label": "🛒 Medium — retail", "hint": "Daily user traffic, fees in cents." },
-          { "value": "high", "label": "🚀 High — apps / games", "hint": "Thousands of tx/s, sub-second response." }
+          { "value": "low", "label": "Low — settlement only", "hint": "Few txs/day, large value, fees acceptable." },
+          { "value": "med", "label": "Medium — retail", "hint": "Daily user traffic, fees in cents." },
+          { "value": "high", "label": "High — apps / games", "hint": "Thousands of tx/s, sub-second response." }
         ]
       },
       {
@@ -77,9 +77,9 @@
         "title": "Privacy needs?",
         "subtitle": "How much of your data must stay off the public ledger?",
         "options": [
-          { "value": "none", "label": "🔓 None — all public", "hint": "Transparency is the feature." },
-          { "value": "channel", "label": "🚪 Selective — known parties", "hint": "Some data shared only between subsets of members." },
-          { "value": "strong", "label": "🛡️ Strong — cryptographic", "hint": "Hide amounts, identities, calldata. ZK or shielded." }
+          { "value": "none", "label": "None — all public", "hint": "Transparency is the feature." },
+          { "value": "channel", "label": "Selective — known parties", "hint": "Some data shared only between subsets of members." },
+          { "value": "strong", "label": "Strong — cryptographic", "hint": "Hide amounts, identities, calldata. ZK or shielded." }
         ]
       },
       {
@@ -87,14 +87,14 @@
         "title": "Security & validator model?",
         "subtitle": "Inherit a big chain's security, or own your validator set?",
         "options": [
-          { "value": "inherit", "label": "🛡️ Inherit security", "hint": "L2 / parachain / settle to a big L1." },
-          { "value": "own", "label": "🏛️ Run my own", "hint": "Sovereign chain — full control, must bootstrap validators." },
-          { "value": "agnostic", "label": "🤷 Doesn't matter", "hint": "Take whatever the default is." }
+          { "value": "inherit", "label": "Inherit security", "hint": "L2 / parachain / settle to a big L1." },
+          { "value": "own", "label": "Run my own", "hint": "Sovereign chain — full control, must bootstrap validators." },
+          { "value": "agnostic", "label": "Doesn't matter", "hint": "Take whatever the default is." }
         ]
       }
     ],
     "platforms": {
-      "btc": { "name": "Bitcoin", "tagline": "Digital scarcity · neutral settlement", "reason": "Public, value-only, settlement-grade — Bitcoin is the most credible neutral money network." },
+      "btc": { "name": "Bitcoin", "tagline": "Digital scarcity · neutral settlement", "reason": "Public, value-only, settlement-grade: the most credible neutral money network." },
       "ln": { "name": "Bitcoin Lightning", "tagline": "BTC at retail speed · sub-cent fees", "reason": "You want public BTC payments but with consumer-grade throughput — Lightning is Bitcoin's L2 for that." },
       "eth": { "name": "Ethereum L1", "tagline": "Programmable money · deepest DeFi liquidity", "reason": "Public, contract-driven, settlement-grade — Ethereum L1 is the canonical choice for high-value composable DeFi." },
       "arb": { "name": "Ethereum L2 (Arbitrum / Base)", "tagline": "Cheap EVM · inherits L1 security", "reason": "Same EVM, much lower fees, inherits Ethereum security via fraud proofs. The default for medium-throughput dApps." },
@@ -102,13 +102,12 @@
       "avax": { "name": "Avalanche L1", "tagline": "Sovereign chains · sub-second finality", "reason": "Sub-second finality with the option to launch a sovereign L1 (subnet) while plugging into the Primary Network." },
       "cosmos": { "name": "Cosmos zone", "tagline": "Sovereign app-chain · IBC native", "reason": "You want full control over consensus + gas + governance, and you're happy to bootstrap your own validators. Cosmos SDK + IBC." },
       "fabric": { "name": "Hyperledger Fabric", "tagline": "Permissioned consortium · channels", "reason": "Permissioned membership + channels for selective data sharing — purpose-built for known-party B2B consortia." },
-      "stark": { "name": "Starknet (ZK)", "tagline": "Cairo VM · validity proofs", "reason": "Strong cryptographic privacy and programmable Cairo VM with ZK validity proofs. Best fit when privacy + smart contracts both matter." },
+      "stark": { "name": "Starknet (ZK)", "tagline": "Cairo VM · validity proofs", "reason": "Cairo VM with STARK validity proofs and tooling for ZK credential proofs. Note: Starknet itself is public; its proofs give cheap verification, not hidden transactions. For hidden state, see Aztec." },
       "aztec": { "name": "Aztec Network", "tagline": "Encrypted state · public proofs", "reason": "Native encrypted state on Ethereum — every tx hides amount + sender by default. The strongest privacy primitive on EVM-adjacent infra." },
-      "xrpl": { "name": "XRP Ledger", "tagline": "Native DEX · payment-optimised", "reason": "Payment-optimised L1 with a native DEX and Trust Lines. Great for cross-border settlement, RWA tokenisation, and FX rails." }
+      "xrpl": { "name": "XRP Ledger", "tagline": "Native DEX · payment-optimised", "reason": "Payment-optimised L1 with a native DEX and Trust Lines. Suited to cross-border settlement, tokenised assets and FX rails." }
     },
-    "badge": "🧩 Wizard",
-    "heading": "Pick the Right Platform — Guided",
-    "intro": "Five short questions. Each answer narrows the field. At the end you get the best fit (and one runner-up) for your scenario, with the reasoning shown.",
+    "heading": "Pick the right platform",
+    "intro": "Five questions. At the end you get the best fit and one runner-up, with the reasoning.",
     "complete": "Complete",
     "questionProgress": "Question {{current}} / {{total}}",
     "restart": "↺ Restart",
@@ -118,13 +117,12 @@
     "alsoConsider": "Also consider",
     "yourAnswers": "Your answers",
     "realityCheckLabel": "Reality check:",
-    "realityCheckBody": " this is a heuristic. Real selection always includes auditor availability, talent pool, regulatory posture, and existing customer footprint. Use this as a starting point, not a final answer.",
+    "realityCheckBody": " a heuristic. Real selection also weighs auditor availability, talent pool, regulatory posture and existing customers.",
     "runAgain": "↺ Run again with different answers"
   },
   "zkp": {
-    "eyebrow": "Section 05 · Zero-Knowledge",
     "heading": "Zero-Knowledge Proofs — the one idea",
-    "subtitle": "Forget the maths. One sentence and one everyday example are enough to get it.",
+    "subtitle": "One sentence and one everyday example.",
     "oneLinerA": "Prove a statement is true — ",
     "oneLinerB": "without revealing anything that makes it true.",
     "exampleTitle": "Example — proving you're over 18",
@@ -141,16 +139,34 @@
     "withCaptionA": "Verified — and they learned ",
     "withCaptionItalic": "nothing else about you",
     "withCaptionB": ".",
-    "next": "Next: a thought experiment that makes it click →"
+    "demo": {
+      "badge": "Try it",
+      "youLabel": "You, at the door",
+      "pick": "Pick how you prove you're over 18:",
+      "passportBtn": "🛂 Show my passport",
+      "proofBtn": "🔐 Show a ZK proof",
+      "bouncerLabel": "What the bouncer now knows",
+      "idle": "Choose an option on the left…",
+      "verdict": "Over 18 ✓",
+      "leaked": ["Full name", "Home address", "Nationality", "Exact birth date", "Photo"],
+      "hidden": "— stays with you",
+      "leakedCountPassport": "1 fact proven · 5 facts leaked",
+      "leakedCountProof": "1 fact proven · 0 facts leaked"
+    },
+    "moreLabel": "Same trick, other doors",
+    "more": [
+      { "icon": "🔑", "text": "Log in by proving you know the password — without typing it anywhere." },
+      { "icon": "🏠", "text": "Prove your salary clears a mortgage threshold — without handing over the payslip." },
+      { "icon": "🧑", "text": "Prove you are one unique human — without saying which human." }
+    ]
   },
   "zkpCave": {
-    "eyebrow": "Section 05 · Zero-Knowledge",
-    "heading": "Where's Waldo? — ZK made visual",
-    "subtitle": "The classic intuition. I prove I found Waldo on a huge crowded page — without telling you where he is.",
+    "heading": "Where's Waldo? — the same idea, visually",
+    "subtitle": "I prove I found Waldo on a crowded page without telling you where he is.",
     "steps": [
-      { "title": "The claim", "text": "I say I found Waldo on this enormous, crowded page. You don't believe me — and I refuse to just point, because that gives my answer away." },
+      { "title": "The claim", "text": "I say I found Waldo on this crowded page. You don't believe me, and I refuse to point, because that gives my answer away." },
       { "title": "The proof", "text": "I cover the whole page with a large opaque sheet that has one tiny Waldo-sized hole, lined up exactly over him. You see Waldo through the hole." },
-      { "title": "You're convinced", "text": "Waldo is clearly on the page — proven. But the sheet hid the rest, so you still have no idea WHERE on the page he actually is." }
+      { "title": "You're convinced", "text": "Waldo is clearly on the page. But the sheet hid the rest, so you still have no idea where on the page he is." }
     ],
     "punchlineLabel": "The punchline — ",
     "punchlineA": "you end fully convinced Waldo is there, yet learn ",
@@ -159,175 +175,79 @@
     "classicLabel": "The classic version — ",
     "classicBody": "\"the magic cave\": Alice repeatedly exits the side a verifier shouts, proving she knows the password without ever saying it. Repeat enough and luck is ruled out."
   },
-  "zkpProps": {
-    "heading": "ZKP: Three Formal Properties & Blockchain Applications",
-    "subtitle": "Once you have the intuition, these properties formalise it. The blockchain use cases follow directly from the third property — zero-knowledge.",
-    "properties": [
-      { "prop": "Completeness", "desc": "If the statement is true and Alice is honest, she will always be able to convince Bob. A valid proof always passes." },
-      { "prop": "Soundness", "desc": "If the statement is false, Alice cannot cheat and convince Bob — no matter how clever she is. A fake proof always fails." },
-      { "prop": "Zero-Knowledge", "desc": "Bob learns nothing beyond \"the statement is true.\" No extra information leaks — not accidentally, not even in theory." }
+  "zkApps": {
+    "heading": "ZK in production today",
+    "subtitle": "Each card is a live product or protocol.",
+    "propsLabel": "Three properties",
+    "props": [
+      { "t": "True claims always pass", "d": "If you really are over 18, the proof always works." },
+      { "t": "False claims always fail", "d": "No clever trick lets a 16-year-old forge the proof." },
+      { "t": "Nothing else leaks", "d": "The checker learns the yes/no — and nothing more." }
     ],
-    "uses": [
-      { "title": "Private identity & KYC", "desc": "Prove your passport is valid, your sanctions check passed, and your age is ≥ 18 — without showing any document. One ZK credential, verifiable by any dApp anywhere." },
-      { "title": "Private voting", "desc": "Prove your vote was counted in the final tally, and that you only voted once — without revealing which candidate you chose. Fully auditable election, fully private ballot." },
-      { "title": "Proof of solvency", "desc": "A bank or exchange proves it holds enough assets to cover all liabilities — without disclosing individual account balances, trading positions, or counterparty identities." },
-      { "title": "ZK rollups (Starknet ↗)", "desc": "Prove that 10,000 transactions are all valid — with a single compact STARK proof that Ethereum L1 verifies in one block. No waiting, no challenge window, no trust in the sequencer." }
+    "doesLabel": "Lets you",
+    "items": [
+      { "name": "ZK rollups", "who": "zkSync Era · Starknet · Scroll · Linea", "does": "Let Ethereum check thousands of transactions by verifying one small proof — fees in cents, withdrawals in hours instead of a week.", "since": "Scaling · live since 2021–23" },
+      { "name": "Proof of personhood", "who": "World ID (Worldcoin)", "does": "Prove to an app that you are a unique human — without revealing which human.", "since": "Identity · live since 2023" },
+      { "name": "Private payments", "who": "Zcash shielded transactions", "does": "Send money where sender, receiver and amount stay hidden, yet the network still proves the payment is valid.", "since": "Payments · live since 2016" },
+      { "name": "Proof of reserves", "who": "Binance · OKX (zk-based PoR)", "does": "Let an exchange prove it holds every customer's deposit — without publishing any customer's balance.", "since": "Finance · since 2023" },
+      { "name": "zkEmail", "who": "zk.email (Ethereum ecosystem)", "does": "Prove an email says something — a payment confirmation, a ticket, a password reset — without showing the email or your inbox.", "since": "Web data · since 2023" },
+      { "name": "zkTLS / web proofs", "who": "Reclaim Protocol · Opacity · TLSNotary", "does": "Prove a fact from any website you log into (bank balance above X, your driver rating) without sharing your password or a screenshot.", "since": "Web data · 2023+" },
+      { "name": "zkLogin", "who": "Sui zkLogin", "does": "Sign in to a blockchain app with your Google or Apple account — without that identity being linked to you on-chain.", "since": "Login · live since 2023" },
+      { "name": "Private voting", "who": "MACI (Ethereum Foundation PSE) · Vocdoni", "does": "Vote in an election anyone can audit, where nobody — not even the organiser — can see your ballot.", "since": "Governance · in use since 2021" },
+      { "name": "Compliance proofs", "who": "Privacy Pools (Ethereum mainnet)", "does": "Prove your funds do not come from a flagged source — without revealing your transaction history. Returns in the privacy chapter.", "since": "Compliance · live Mar 2025" }
     ],
-    "snarkLabel": "ZK-SNARK — Succinct Non-interactive ARgument of Knowledge",
-    "snarkBody": "Tiny proofs, extremely fast to verify. Requires a one-time trusted setup ceremony. Used by Zcash, Polygon zkEVM, early zkSync.",
-    "starkLabel": "ZK-STARK — Scalable Transparent ARgument of Knowledge",
-    "starkBodyA": "No trusted setup, quantum-resistant. Proofs are larger but fully transparent and more scalable. Used by ",
-    "starkBodyStrong": "Starknet",
-    "starkBodyB": " — next section."
+    "familiesLabel": "Two proof families — ",
+    "families": "SNARKs (tiny proofs, one-off setup ceremony — Zcash, zkSync) and STARKs (bigger proofs, no setup, quantum-resistant — Starknet). For a business decision the difference rarely matters; for an engineer it does."
   },
-  "starknet": {
-    "heading": "Starknet: ZK-Rollup on Ethereum",
-    "subtitle": "Batches thousands of transactions off-chain, generates a cryptographic STARK proof, and posts only that proof to Ethereum L1.",
-    "whyLabel": "Why ZK has to be the next step",
-    "whyBodyA": "Ethereum L1 can't host applications that need ",
-    "whyBodyStrong1": "cheap throughput",
-    "whyBodyB": " AND ",
-    "whyBodyStrong2": "privacy",
-    "whyBodyC": ". Optimistic rollups solve cost only; ZK rollups also unlock ",
-    "whyBodyStrong3": "verifiable privacy",
-    "whyBodyD": " — a user can prove a fact ",
-    "whyBodyItalic": "without revealing the underlying data",
-    "whyBodyE": ".",
-    "cards": [
-      { "title": "Throughput", "desc": "500–1,000 TPS vs ~15 TPS on Ethereum L1. Transactions execute off-chain in batches — the STARK prover is the bottleneck, not the EVM." },
-      { "title": "Cost", "desc": "10–100× cheaper for end users. One STARK proof amortises the L1 settlement cost across thousands of transactions in the same batch." },
-      { "title": "Security model", "desc": "Inherits Ethereum L1 security via validity proofs. No fraud window, no trust in the sequencer — if the proof is invalid, Ethereum rejects it outright." },
-      { "title": "Cairo language", "desc": "Starknet's native language, compiled to Sierra IR. Far more efficient than Solidity/EVM for STARK proving — ZK-friendly logic without low-level circuit expertise." }
+  "zkIdentity": {
+    "heading": "KYC without handing over your identity",
+    "subtitle": "Step by step. Any ZK-capable platform can run this pattern.",
+    "flowLabel": "Who holds what",
+    "flow": [
+      { "node": "Bank", "holds": "verifies you once · signs a credential" },
+      { "node": "Your wallet", "holds": "keeps the credential · makes the proof" },
+      { "node": "The app", "holds": "checks the proof · sees only ✓" }
     ],
-    "newsTitle": "Starknet in 2024–2025",
-    "news": [
-      { "label": "STRK Token", "sub": "Token launch & community airdrop" },
-      { "label": "v0.13+", "sub": "1,000+ TPS throughput milestone" },
-      { "label": "AI Agents", "sub": "On-chain AI agent integration experiments" },
-      { "label": "Onchain Gaming", "sub": "Dojo engine — fully on-chain games in Cairo" }
+    "businessLabel": "Why a business cares",
+    "business": [
+      "No database of passports to leak — far less GDPR exposure",
+      "Onboarding in seconds, reusable across every service that trusts the issuer",
+      "Regulators still get what they need: proof the check was done, on demand"
     ]
   },
   "starknetCompare": {
-    "heading": "Starknet: ZK in Practice",
-    "subtitle": "A concrete KYC walkthrough using Starknet's ZK credentials, then a head-to-head with optimistic rollups — the most common comparison when evaluating L2s.",
-    "kycLabel": "🔐 Concrete example — KYC without sharing your identity",
     "kycSteps": [
-      { "label": "Bank issues a credential", "desc": "Your bank verifies you once and signs a ZK credential containing { name, DOB, residency, sanctions check }. This credential lives in your wallet — only you hold it." },
-      { "label": "You generate a proof", "desc": "In your wallet, you build a STARK proof: \"credential is signed by Bank · age ≥ 18 · residency = EU · sanctions = false.\" No raw data is included in the proof itself." },
-      { "label": "Cairo contract verifies", "desc": "The dApp's Cairo contract on Starknet verifies the proof and grants access. Your name and birth date never leave your wallet — not even the dApp operator can read them." }
+      { "label": "Bank issues a credential", "desc": "Your bank verifies you once and signs a digital credential: name, date of birth, residency, sanctions check. It lives in your wallet — only you hold it." },
+      { "label": "You generate a proof", "desc": "Your wallet builds a proof: \"signed by the bank · age ≥ 18 · EU resident · not sanctioned.\" The proof contains none of the raw data." },
+      { "label": "The app verifies", "desc": "The app's smart contract checks the proof and lets you in. Your name and birth date never leave your wallet — not even the app operator can read them." }
     ],
     "kycFootA": "Same pattern: ",
     "kycFootStrong": "private voting · proof of solvency · medical records · sanctions screening",
-    "kycFootB": " — anywhere the question is \"is this true?\" without \"who are you?\".",
-    "zk": {
-      "title": "ZK Rollup",
-      "sub": "Starknet · zkSync · Polygon zkEVM · Scroll",
-      "introA": "Each batch ships with a ",
-      "introStrong": "validity proof",
-      "introB": " that Ethereum L1 verifies mathematically. No trust in the operator required.",
-      "rows": [
-        { "label": "Proof type", "value": "Validity proof — mathematically proven" },
-        { "label": "Finality", "value": "⚡ Minutes — one L1 block to verify the proof" },
-        { "label": "Compute overhead", "value": "High — STARK/SNARK generation is expensive" },
-        { "label": "EVM compatibility", "value": "⚠️ Partial — zkEVM spectrum still maturing" },
-        { "label": "Trust model", "value": "Trustless — math is the arbiter, not watchers" },
-        { "label": "Best for", "value": "Payments, privacy apps, high-security finance" }
-      ]
-    },
-    "op": {
-      "title": "Optimistic Rollup",
-      "sub": "Arbitrum · Optimism · Base",
-      "introA": "Posts transactions with an ",
-      "introStrong": "optimistic assumption",
-      "introB": " of validity. A 7-day challenge window lets anyone submit a fraud proof.",
-      "rows": [
-        { "label": "Proof type", "value": "Fraud proof — only if fraud detected" },
-        { "label": "Finality", "value": "7-day withdrawal delay (challenge window)" },
-        { "label": "Compute overhead", "value": "Low — no proof generation overhead at all" },
-        { "label": "EVM compatibility", "value": "✅ Full EVM equivalence — deploy existing Solidity" },
-        { "label": "Trust model", "value": "At least 1 honest watcher must monitor the chain" },
-        { "label": "Best for", "value": "DeFi, general dApps needing EVM compatibility" }
-      ]
-    }
-  },
-  "starknetEco": {
-    "heading": "Starknet ecosystem — apps native to Cairo",
-    "subtitle": "Starknet's app character has shifted distinctly toward fully-on-chain games, native AA wallets, and AI-agent experiments — areas where the Cairo VM's ZK-friendliness is genuinely useful.",
-    "cards": [
-      {
-        "name": "Ekubo",
-        "category": "Native AMM",
-        "tag": "concentrated liquidity",
-        "stats": "Built by the Uniswap v3 author",
-        "apps": [
-          { "name": "Singleton design", "kind": "One contract for all pools (gas-efficient)" },
-          { "name": "Concentrated LPs", "kind": "Range positions, like Uni v3" },
-          { "name": "Extensions", "kind": "Programmable hooks per pool" },
-          { "name": "STRK / ETH base", "kind": "Deepest liquidity on Starknet" }
-        ]
-      },
-      {
-        "name": "Realms · Dojo",
-        "category": "Onchain Games",
-        "tag": "fully on-chain games",
-        "stats": "Loot Survivor, Eternum, Loot universe",
-        "apps": [
-          { "name": "Dojo engine", "kind": "ECS framework for fully on-chain games" },
-          { "name": "Loot Survivor", "kind": "Roguelike fully on Starknet" },
-          { "name": "Realms · Eternum", "kind": "On-chain MMO economy" },
-          { "name": "Cairo for state", "kind": "Every move is a verified transaction" }
-        ]
-      },
-      {
-        "name": "ZKLend · Nostra · Vesu",
-        "category": "Lending",
-        "tag": "money markets",
-        "stats": "Aave-style on Starknet",
-        "apps": [
-          { "name": "ZKLend", "kind": "Earliest Starknet lending market" },
-          { "name": "Nostra", "kind": "Lending + LST + stablecoin" },
-          { "name": "Vesu", "kind": "Modular lending pools (2024)" },
-          { "name": "Lending receipts", "kind": "STRK / ETH deposits earn yield" }
-        ]
-      },
-      {
-        "name": "Argent X · Braavos · Ready",
-        "category": "Smart Wallets",
-        "tag": "native account abstraction",
-        "stats": "Every wallet is a smart contract",
-        "apps": [
-          { "name": "Argent X", "kind": "Default Starknet wallet, social recovery" },
-          { "name": "Braavos", "kind": "Multi-sig + biometric signing" },
-          { "name": "Session keys", "kind": "Sign once, play many in-game" },
-          { "name": "Multi-call", "kind": "Approve + swap + stake in one tx" }
-        ]
-      },
-      {
-        "name": "AI agents",
-        "category": "Autonomous Agents",
-        "tag": "on-chain AI experiments",
-        "stats": "Frame in Cairo · agents w/ on-chain wallets",
-        "apps": [
-          { "name": "Eliza framework", "kind": "Open-source agent runtime supports Starknet" },
-          { "name": "Agent wallets", "kind": "Smart accounts AI can fund and act from" },
-          { "name": "On-chain AI infra", "kind": "Verifiable inference using STARK proofs" },
-          { "name": "Reasoning ✓ proofs", "kind": "Cairo enables proving model output" }
-        ]
-      }
-    ],
-    "alsoLabel": "Also worth knowing — ",
-    "alsoBody": "<0>JediSwap</0>, <1>mySwap</1> (alternative AMMs) · <2>Mintsquare</2>, <3>Briq</3> (NFT marketplaces) · <4>Influence</4> (on-chain space MMO) · <5>Ethereal / Topology</5> (game studios) · <6>Voyager</6> · <7>Starkscan</7> (block explorers) · <8>Layerswap</8>, <9>Orbiter</9> (bridges)."
+    "kycFootB": " — anywhere the question is \"is this true?\" without \"who are you?\"."
   },
   "l2Why": {
-    "eyebrow": "Section 05 · Scaling",
-    "heading": "Layer 2 — what it is and why we need it",
-    "subtitle": "Ethereum L1 is secure but small. A Layer 2 keeps that security while doing the heavy lifting somewhere cheaper.",
+    "heading": "The trilemma — and why Layer 2s appeared",
+    "subtitle": "A chain can be open, hard to attack and cheap, but not all three at once. Layer 2 keeps the first two on L1 and adds the third on top.",
+    "recap1": "Section 01 · The Blockchain Trilemma",
+    "recap2": "Section 02 · Rollups & L2s",
+    "triangle": {
+      "corners": [
+        { "name": "Open to everyone", "biz": "no single owner · anyone can verify" },
+        { "name": "Hard to attack", "biz": "settlement you can rely on" },
+        { "name": "Cheap & fast", "biz": "fees in cents · instant confirmations" }
+      ],
+      "pickTwo": "pick two",
+      "l1Label": "Ethereum L1 lives here",
+      "l2Label": "L2 adds this corner on top"
+    },
+    "analogyLabel": "Analogy",
+    "analogy": "You don't take every coffee purchase to court; you use a card terminal and go to court only for disputes. L1 is the court (slow, final, trusted); L2 is the terminal that reports back to it.",
     "problemLabel": "The problem",
     "problemA": "Ethereum L1 settles only ",
     "problemStrong1": "~15 transactions/second",
     "problemB": ". When demand spikes, a simple swap can cost ",
     "problemStrong2": "$20–100+",
-    "problemC": ". Consumer apps, games and micro-payments simply can't live there.",
+    "problemC": ". Consumer apps, games and micro-payments cannot run there.",
     "ideaLabel": "The idea",
     "ideaA": "Execute transactions ",
     "ideaStrong1": "off-chain",
@@ -346,7 +266,6 @@
     ]
   },
   "layer2": {
-    "eyebrow": "Section 05",
     "heading": "Layer 2 Scaling: Optimistic vs ZK Rollups",
     "subtitleA": "Both rollup types execute transactions off-chain and post results to Ethereum L1 — but they differ fundamentally in ",
     "subtitleItalic": "how they prove correctness",
@@ -363,7 +282,7 @@
         { "label": "Proof type", "value": "Fraud proof (submitted if fraud detected)" },
         { "label": "Finality", "value": "~7-day withdrawal delay (challenge window)" },
         { "label": "Compute cost", "value": "Low — no proof generation overhead" },
-        { "label": "EVM compatibility", "value": "✅ Full EVM equivalence — deploy existing Solidity" },
+        { "label": "EVM compatibility", "value": "Full EVM equivalence — deploy existing Solidity" },
         { "label": "Trust model", "value": "At least 1 honest verifier must watch the chain" },
         { "label": "Main chains", "value": "Arbitrum One, Optimism, Base" },
         { "label": "Best for", "value": "General DeFi, DApps needing EVM compatibility" }
@@ -371,15 +290,15 @@
     },
     "zk": {
       "title": "ZK Rollups",
-      "tagline": "Cryptographic validity proof — no trust required",
+      "tagline": "Proven valid before accepted",
       "introA": "Each batch of transactions is accompanied by a ",
       "introStrong": "zero-knowledge validity proof",
       "introB": " (SNARK or STARK) that mathematically proves correctness. L1 verifies the proof — no challenge window needed.",
       "rows": [
         { "label": "Proof type", "value": "Validity proof (ZK-SNARK or ZK-STARK)" },
-        { "label": "Finality", "value": "⚡ Minutes — as soon as L1 verifies the proof" },
+        { "label": "Finality", "value": "Minutes — as soon as L1 verifies the proof" },
         { "label": "Compute cost", "value": "High — proof generation is computationally intensive" },
-        { "label": "EVM compatibility", "value": "⚠️ Partial — zkEVM still maturing (Type 1–4 spectrum)" },
+        { "label": "EVM compatibility", "value": "Partial — zkEVM still maturing (Type 1–4 spectrum)" },
         { "label": "Trust model", "value": "Trustless — math proves correctness, not watchers" },
         { "label": "Main chains", "value": "zkSync Era, Starknet, Polygon zkEVM, Scroll" },
         { "label": "Best for", "value": "Payments, exchanges, privacy apps, high-security finance" }
@@ -396,232 +315,51 @@
     "chooseTitle": "How to choose",
     "choose": [
       { "strong": "Need EVM compatibility today?", "rest": " Use Arbitrum or Optimism — fastest path to deploy existing Solidity." },
-      { "strong": "Need instant finality for payments/exchange?", "rest": " Use a ZK rollup — users don't want to wait 7 days to withdraw." },
-      { "strong": "Building privacy features?", "rest": " ZK proofs are foundational — only ZK rollups enable transaction privacy by design." }
-    ]
+      { "strong": "Need fast exits for payments/exchange?", "rest": " Use a ZK rollup — users don't want to wait 7 days to withdraw." },
+      { "strong": "Building privacy features?", "rest": " Neither rollup type is private by default. ZK proofs are the ingredient, but you need a privacy-first design (Aztec, Zcash-style) on top." }
+    ],
+    "recap": "Section 02 · L1 ↔ L2 Flow animation"
   },
-  "l2apps": {
-    "heading": "What runs on each rollup",
-    "subtitle": "Mechanism (optimistic vs ZK) is one axis. Culture is another — each major rollup has a distinct app character that often matters more than the proving system.",
-    "rollups": [
-      {
-        "name": "Arbitrum One", "type": "Optimistic",
-        "culture": "DeFi-heavy · mature", "tvl": "~$13B TVL — highest of any L2",
-        "apps": [
-          { "name": "GMX", "kind": "Decentralised perpetuals" },
-          { "name": "Camelot", "kind": "Native concentrated-liquidity DEX" },
-          { "name": "Pendle", "kind": "Yield-tokenisation primitive" }
-        ]
-      },
-      {
-        "name": "Optimism · OP Stack", "type": "Optimistic",
-        "culture": "Public-goods · modular", "tvl": "OP Stack also powers Base, Mode, opBNB",
-        "apps": [
-          { "name": "Velodrome", "kind": "Vote-escrow DEX, OP DeFi core" },
-          { "name": "Synthetix", "kind": "Synthetic assets & perps" },
-          { "name": "Worldcoin", "kind": "Iris-scan identity, $WLD" }
-        ]
-      },
-      {
-        "name": "Base (Coinbase)", "type": "OP Stack",
-        "culture": "Consumer & social-first", "tvl": "~$5B TVL · fastest growth 2024",
-        "apps": [
-          { "name": "Aerodrome", "kind": "Dominant Base DEX" },
-          { "name": "Zora", "kind": "Mint-anything creator economy" },
-          { "name": "Farcaster Frames", "kind": "Mini-apps in social posts" }
-        ]
-      },
-      {
-        "name": "Starknet", "type": "ZK · Cairo",
-        "culture": "Gaming · on-chain compute", "tvl": "Cairo VM · STARK proofs · STRK",
-        "apps": [
-          { "name": "Realms / Loot Survivor", "kind": "Fully on-chain games (Dojo)" },
-          { "name": "Ekubo", "kind": "Native concentrated AMM" },
-          { "name": "Influence", "kind": "On-chain space MMO" }
-        ]
-      }
-    ],
-    "chooseLabel": "How to choose — ",
-    "chooseBody": "DeFi-mature build → Arbitrum. Public goods / rollup-as-a-service → Optimism. Consumer & social with Coinbase reach → Base. Games or proof-heavy compute → Starknet. The mechanism matters less than the ecosystem fit."
-  },
-  "polkadot": {
-    "heading": "Polkadot — shared security for sovereign parachains",
-    "subtitle": "A Relay Chain that pools ~300 validators to secure all connected parachains simultaneously. Cross-chain calls between parachains use XCM — no bridge contract, no wrapped token.",
-    "architectureLabel": "Architecture",
-    "architecture": [
-      { "title": "Relay Chain", "desc": "The L0 backbone. ~300 validators (BABE block production + GRANDPA finality) secure every parachain slot simultaneously. Validators rotate across parachains, so no single chain can be attacked in isolation." },
-      { "title": "Parachains & Coretime", "desc": "Parachains are L1s that rent block-production time (Coretime) on the Relay Chain — replacing the old slot-auction model in 2024. Each parachain gets shared security without bootstrapping its own validator set." },
-      { "title": "XCM — Cross-Consensus Messaging", "desc": "A native message format for calls between parachains. Assets and instructions travel trustlessly — verified by the Relay Chain validators, not a bridge multisig. No lock-and-mint, no honeypot." },
-      { "title": "Bridges to external chains", "desc": "Snowbridge (Ethereum ↔ Polkadot) and other dedicated bridge parachains connect to chains outside the Relay Chain. These use traditional bridge security, distinct from XCM." }
-    ],
-    "metrics": [
-      { "metric": "~300", "label": "active validators" },
-      { "metric": "6 s", "label": "epoch finality" },
-      { "metric": "50+", "label": "active parachains" }
-    ],
-    "economicsTitle": "DOT economics",
-    "economics": [
-      "Staked DOT secures the Relay Chain — validators are slashed for misbehaviour",
-      "Coretime is purchased with DOT (on-demand or bulk) — replaces slot auctions",
-      "Governance: OpenGov lets any DOT holder propose and vote on referenda"
-    ],
-    "developmentsTitle": "2024–2025 developments",
-    "developments": [
-      { "strong": "Coretime launch", "rest": " — slot auctions replaced by flexible block-time marketplace" },
-      { "strong": "Agile Coretime", "rest": " — chains can buy seconds of block-time rather than full parachain slots" },
-      { "strong": "JAM Protocol", "rest": " — next-gen Relay Chain redesign (proposed by Gavin Wood) for more general-purpose compute" },
-      { "strong": "Snowbridge live", "rest": " — trustless Ethereum ↔ Polkadot bridge using on-chain light clients" }
-    ]
-  },
-  "polkadotEco": {
-    "heading": "Polkadot ecosystem — apps across parachains",
-    "subtitle": "Each parachain is sovereign — they specialise. EVM compatibility, DeFi hubs, enterprise smart contracts, trustless Bitcoin wrapping: the DOT ecosystem covers the full stack.",
+  "dataAvail": {
+    "heading": "Why rollups post their data to Ethereum",
+    "subtitle": "A proof shows the batch was correct. The data is what lets you leave if the rollup's operator disappears.",
+    "svg": {
+      "l2Title": "Rollup (L2)",
+      "l2Sub": "operator runs thousands of transactions",
+      "proofTitle": "Proof",
+      "proofSub": "\"this batch is correct\"",
+      "dataTitle": "Data",
+      "dataSub": "compressed copy of every transaction (blob)",
+      "l1Title": "Ethereum (L1)",
+      "l1Sub": "stores both · anyone can read them",
+      "userTitle": "You",
+      "userSub": "rebuild your balance from L1 data and withdraw, operator or not",
+      "caption": "Proof without data: you know the books balance but cannot see your own line. The data is what makes the exit possible."
+    },
     "cards": [
-      {
-        "name": "Moonbeam", "category": "EVM Parachain",
-        "tag": "Ethereum compatibility layer", "stats": "Full EVM — Solidity deploys unchanged",
-        "apps": [
-          { "name": "StellaSwap", "kind": "Leading Moonbeam DEX, stable + volatile pairs" },
-          { "name": "Moonwell", "kind": "Lending market, forked from Compound" },
-          { "name": "Connected contracts", "kind": "XCM calls into EVM — Polkadot ↔ Ethereum flows" },
-          { "name": "Entry point", "kind": "EVM users access DOT ecosystem via Moonbeam" }
-        ]
-      },
-      {
-        "name": "Acala", "category": "DeFi Hub",
-        "tag": "DEX · liquid staking · stablecoin", "stats": "Polkadot's native DeFi anchor",
-        "apps": [
-          { "name": "aUSD stablecoin", "kind": "CDP stablecoin backed by DOT/BTC/ETH (post-2022 relaunch)" },
-          { "name": "LDOT", "kind": "Liquid staking — stake DOT, keep liquidity" },
-          { "name": "Acala DEX", "kind": "Native AMM with XCM-native asset support" },
-          { "name": "Case study", "kind": "2022 exploit (erroneous aUSD mint) — upgrade governance lessons" }
-        ]
-      },
-      {
-        "name": "Astar", "category": "Smart Contracts",
-        "tag": "EVM + WASM runtimes", "stats": "Japan enterprise blockchain leader",
-        "apps": [
-          { "name": "dApp staking", "kind": "Developers stake ASTR to earn protocol rewards" },
-          { "name": "Toyota pilot", "kind": "Vehicle data provenance on Astar zkEVM" },
-          { "name": "Sony x Startale", "kind": "Sony Network Communications blockchain initiative" },
-          { "name": "Astar zkEVM", "kind": "Polygon CDK-based zk layer — Ethereum L2 strategy" }
-        ]
-      },
-      {
-        "name": "HydraDX", "category": "DEX · Omnipool",
-        "tag": "single-pool for all assets", "stats": "Unified liquidity model — no fragmentation",
-        "apps": [
-          { "name": "Omnipool", "kind": "All assets in one pool — trade any→any in one hop" },
-          { "name": "HDX token", "kind": "Protocol governance + LP incentive token" },
-          { "name": "Stableswap", "kind": "Low-slippage curve for stablecoin pairs" },
-          { "name": "DCA orders", "kind": "On-chain dollar-cost averaging, native to protocol" }
-        ]
-      },
-      {
-        "name": "Interlay · iBTC", "category": "Bitcoin DeFi",
-        "tag": "trustless wrapped Bitcoin", "stats": "Vault-backed, no multisig custodian",
-        "apps": [
-          { "name": "iBTC", "kind": "1:1 BTC-backed token, vault collateral model" },
-          { "name": "Vault collateral", "kind": "Vaults post DOT/ETH — slashed if BTC stolen" },
-          { "name": "No custodian", "kind": "Different model from WBTC (BitGo) — fully on-chain" },
-          { "name": "Cross-chain use", "kind": "iBTC usable across Acala, HydraDX via XCM" }
-        ]
-      }
-    ],
-    "alsoLabel": "Also worth knowing — ",
-    "alsoBody": "<0>Bifrost</0> (liquid staking hub) · <1>Centrifuge</1> (RWA tokenisation, DeFi for real assets) · <2>Phala</2> (confidential compute via TEEs) · <3>Unique Network</3> (NFT infrastructure) · <4>Parallel Finance</4> (money markets) · <5>Pendulum</5> (fiat-pegged assets, forex DeFi)."
-  },
-  "avalanche": {
-    "heading": "Avalanche — sub-second L0 with sovereign L1s",
-    "subtitle": "A three-chain Primary Network (X, P, C) with Snowman consensus achieving sub-second finality. Avalanche L1s (ex-Subnets) let teams deploy sovereign chains with their own validator subsets while retaining native Warp messaging.",
-    "architectureLabel": "Architecture",
-    "architecture": [
-      { "title": "Primary Network", "desc": "Three built-in chains: X-Chain (UTXO asset transfers), P-Chain (validator coordination, L1 creation), C-Chain (EVM — where most DeFi lives). All validators must validate the Primary Network." },
-      { "title": "Avalanche L1s (ex-Subnets)", "desc": "Custom chains with their own validator subsets. Renamed via ACP-13/77 in 2024 — chains no longer need to validate the Primary Network, reducing the AVAX stake requirement dramatically. Powers gaming chains, institutional deployments." },
-      { "title": "Snowman Consensus", "desc": "Probabilistic consensus where each validator samples a small random subset of peers. Converges in < 1 second with high confidence. Unlike BFT it scales well with validator count — 1,000+ validators without performance loss." },
-      { "title": "Avalanche Warp Messaging", "desc": "Native L1↔L1 messaging. The source L1's validator set signs the message; the destination verifies against the P-Chain's record of that validator set. No third-party bridge relayer needed." }
-    ],
-    "metrics": [
-      { "metric": "<1 s", "label": "finality (Snowman)" },
-      { "metric": "4,500+", "label": "TPS (C-Chain peak)" },
-      { "metric": "70+", "label": "Avalanche L1s live" }
-    ],
-    "economicsTitle": "AVAX economics",
-    "economics": [
-      "All C-Chain gas fees are burned in AVAX — deflationary pressure with network usage",
-      "Validators must stake ≥ 2,000 AVAX on the Primary Network",
-      "Avalanche L1s pay validators in any token — AVAX no longer required (ACP-77)"
-    ],
-    "developmentsTitle": "2024–2025 developments",
-    "developments": [
-      { "strong": "ACP-77 (Subnet → L1)", "rest": " — chains no longer need to validate Primary Network; opens sovereign deployment at lower cost" },
-      { "strong": "Avalanche9000", "rest": " — major fee reduction upgrade, making L1 deployment 99%+ cheaper" },
-      { "strong": "Etna upgrade", "rest": " — dynamic fees and EIP-1559-style base fee on C-Chain" },
-      { "strong": "Warp + Teleporter", "rest": " — production-ready cross-L1 messaging SDK for teams building multi-chain apps" }
+      { "title": "What gets posted", "desc": "Not just a result. A compressed copy of every L2 transaction goes to Ethereum; since 2024 it travels in cheap 'blobs' that Ethereum keeps for about 18 days, long enough for anyone to copy." },
+      { "title": "Why it matters", "desc": "If the rollup's servers go dark, anyone can read the data from Ethereum, rebuild every balance and prove theirs to the L1 bridge to withdraw. Without the data your coins are stuck even though the proof was valid." },
+      { "title": "The cheaper shortcut", "desc": "Some chains post data to a separate network (Celestia) or a small committee instead. Fees fall, but you now also trust that group to keep the data. Such chains are called validiums or optimiums, and L2BEAT lists them apart from rollups." }
     ]
-  },
-  "avalancheEco": {
-    "heading": "Avalanche ecosystem — apps & sovereign L1s",
-    "subtitle": "The C-Chain hosts DeFi; sovereign L1s host games, institutional rails, and enterprise applications — each with its own validator set and economics, connected back via Warp.",
-    "cards": [
-      {
-        "name": "Trader Joe", "category": "DEX",
-        "tag": "Liquidity Book AMM", "stats": "Largest Avalanche DEX · multi-chain",
-        "apps": [
-          { "name": "Liquidity Book", "kind": "Discrete price-bin AMM — LPs choose exact ranges" },
-          { "name": "Auto-pools", "kind": "Managed LB positions that rebalance automatically" },
-          { "name": "Multi-chain", "kind": "Also live on Arbitrum, BNB Chain, Ethereum" },
-          { "name": "JOE token", "kind": "Governance + fee-sharing via veJOE" }
-        ]
-      },
-      {
-        "name": "BENQI", "category": "Lending · LST",
-        "tag": "money market + liquid staking", "stats": "~$200M TVL at peak · since 2021",
-        "apps": [
-          { "name": "Supply & borrow", "kind": "AVAX, USDC, BTC.b, ETH.e as collateral/debt" },
-          { "name": "qiAVAX (sAVAX)", "kind": "Liquid staking — stake AVAX, receive yield-bearing LST" },
-          { "name": "QI governance", "kind": "Token controls risk parameters and new markets" },
-          { "name": "Ignite program", "kind": "Delegated AVAX to help validators reach minimum stake" }
-        ]
-      },
-      {
-        "name": "Pharaoh", "category": "ve-AMM",
-        "tag": "vote-escrow DEX · PHAR", "stats": "Dominant Avax ve(3,3) DEX in 2024",
-        "apps": [
-          { "name": "veNFT model", "kind": "Lock PHAR → veNFT → direct emissions to pools" },
-          { "name": "Bribes market", "kind": "Protocols bribe veNFT holders to direct liquidity" },
-          { "name": "Concentrated", "kind": "Uniswap v3-style CL pools alongside stable pools" },
-          { "name": "Ra stablecoin", "kind": "Ecosystem stablecoin integrated with Pharaoh liquidity" }
-        ]
-      },
-      {
-        "name": "Gaming L1s", "category": "Sovereign L1s",
-        "tag": "DFK · Gunzilla · Shrapnel", "stats": "First major gaming L1 use-case",
-        "apps": [
-          { "name": "DFK Chain", "kind": "DeFi Kingdoms — first major gaming Subnet (2022)" },
-          { "name": "Off The Grid", "kind": "Gunzilla AAA battle royale — custom L1 for in-game economy" },
-          { "name": "Shrapnel", "kind": "Extraction shooter, tokenised skins / maps on L1" },
-          { "name": "Warp bridge", "kind": "Game assets move back to C-Chain via Avalanche Warp" }
-        ]
-      },
-      {
-        "name": "Institutional L1s", "category": "Enterprise",
-        "tag": "private validator sets", "stats": "JP Morgan · T. Rowe Price · Deloitte",
-        "apps": [
-          { "name": "Onyx (JPM)", "kind": "Repo agreements + tokenised fund settlement" },
-          { "name": "Spruce", "kind": "Permissioned L1 for institutional asset tokenisation" },
-          { "name": "EVM-compatible", "kind": "Leverage existing Solidity tooling with permissioned access" },
-          { "name": "Custom gas", "kind": "Fees paid in stablecoin or custom token, not AVAX" }
-        ]
-      }
-    ],
-    "alsoLabel": "Also worth knowing — ",
-    "alsoBody": "<0>Steakhut</0> (automated LB position management) · <1>GoGoPool</1> (minipool liquid staking for validators) · <2>Yield Yak</2> (auto-compounder) · <3>Arena-Z</3> (esports L1) · <4>MapleStory Universe</4> (Nexon gaming L1, 2025) · <5>Core DAO bridge</5> (BTC-staked PoS via Avalanche Warp)."
   },
   "privacy": {
-    "eyebrow": "Section 05 · Privacy",
-    "heading": "Privacy on a public ledger — why it's hard",
-    "subtitle": "Public chains are transparent by default: every address, balance and transfer is visible to anyone, forever.",
+    "heading": "A public chain is not private",
+    "subtitle": "Every address, balance and transfer is visible to anyone, forever. Pseudonymous is not anonymous: one link to your name unlocks your whole history.",
+    "recapCypherpunk": "Course 01 · Prologue — the Cypherpunks: \"privacy is a precondition for freedom\"",
+    "traceLabel": "How one link exposes everything",
+    "trace": [
+      { "who": "Exchange", "note": "knows your name (KYC)" },
+      { "who": "Your wallet", "note": "0xA1b2… — now linked to you" },
+      { "who": "Landlord", "note": "rent, every month" },
+      { "who": "Charity", "note": "a donation you'd rather keep quiet" }
+    ],
+    "traceCaption": "Anyone can follow the same trail, backwards and forwards, forever.",
+    "businessLabel": "Why a business cares",
+    "business": [
+      "Payroll on-chain = every salary public",
+      "Suppliers can read your volumes and margins",
+      "Competitors watch your treasury move in real time"
+    ],
     "normalLabel": "A normal public transaction",
     "normalCaption": "Anyone can read who paid whom, how much, and trace it backwards forever.",
     "shieldedLabel": "A shielded transaction",
@@ -640,10 +378,9 @@
     "trickD": ", or ",
     "trickStrong4": "how much",
     "trickE": ".",
-    "trickCaption": "Every privacy project is a different recipe of cryptography to pull this off — next slide."
+    "trickCaption": "Each privacy project is a different recipe for this — next slide."
   },
   "privacyApproaches": {
-    "eyebrow": "Section 05 · Privacy",
     "heading": "Four ways to get privacy on-chain",
     "subtitle": "Each makes a different trade-off between strength, flexibility, and how regulators treat it.",
     "howLabel": "How: ",
@@ -672,14 +409,21 @@
     ]
   },
   "privacyRegulation": {
-    "eyebrow": "Section 05 · Privacy",
-    "heading": "Privacy is the most contested area in crypto",
-    "subtitle": "Non-custodial privacy code is being tested in court right now. Build with this reality in mind.",
-    "events": [
-      { "yr": "Aug 2022", "t": "Tornado Cash sanctioned", "d": "OFAC sanctioned an immutable smart contract — not a company. Legitimate users were caught alongside launderers." },
-      { "yr": "2024", "t": "Samourai Wallet arrests", "d": "Co-founders of a non-custodial privacy wallet were arrested. Writing privacy software became a legal flashpoint." },
-      { "yr": "Now", "t": "The line is being drawn", "d": "Courts are deciding where \"privacy tool\" ends and \"money-laundering infrastructure\" begins. No settled answer yet." }
+    "heading": "Tornado Cash — when privacy code met the law",
+    "subtitle": "One mixer, one sanction, and years of courts deciding where a privacy tool ends and laundering infrastructure begins.",
+    "story": [
+      { "yr": "2019", "t": "Tornado Cash launches", "d": "A non-custodial mixer on Ethereum: deposit, wait, withdraw to a fresh address. Nobody operates it — the code simply runs." },
+      { "yr": "Aug 2022", "t": "OFAC sanctions the code", "d": "The US Treasury sanctioned the smart-contract addresses themselves — a first. Its reason: ~$7B laundered, including $455M by North Korea's Lazarus Group. Ordinary users were swept in too." },
+      { "yr": "2024", "t": "Developers on trial", "d": "Alexey Pertsev convicted in the Netherlands (64 months, under appeal); Roman Storm awaiting trial in the US. Writing privacy software itself became the legal question." },
+      { "yr": "Nov 2024 → Mar 2025", "t": "Courts push back", "d": "A US appeals court ruled immutable smart contracts are not \"property\" that can be sanctioned. OFAC delisted Tornado Cash on 21 March 2025." },
+      { "yr": "Aug 2025 →", "t": "Still unsettled", "d": "Storm convicted on one count (unlicensed money transmission); the jury hung on laundering and sanctions charges. Samourai Wallet's founders received 4–5 years (Nov 2025)." }
     ],
+    "truthsLabel": "Two things are true at once",
+    "truthA": "Privacy tools really did shield a state-sponsored hacking group's loot. Regulators had a genuine problem.",
+    "truthB": "The same tools protected ordinary people from surveillance — and sanctioning code punished users who had done nothing wrong.",
+    "cypherpunkLabel": "Back to where this course began",
+    "cypherpunk": "The Cypherpunks (Course 01) said privacy is a precondition for freedom; regulators say untraceable money is a precondition for crime. Both are partly right, which is why selective disclosure (next slide) matters.",
+    "recapFreedom": "Course 01 · Prologue — the Cypherpunks: privacy as a precondition for freedom",
     "guidanceLabel": "Design guidance — ",
     "guidanceA": "where regulation matters, prefer ",
     "guidanceStrong1": "selective disclosure",
@@ -688,29 +432,27 @@
     "guidanceC": " (e.g. prove \"not on a sanctions list\" without revealing identity) over all-or-nothing anonymity."
   },
   "privacyFuture": {
-    "eyebrow": "Section 05 · Privacy",
-    "heading": "The upside — why ZK privacy is the next frontier",
-    "subtitleA": "ZK flips privacy from \"hiding things\" to ",
+    "heading": "The upside — selective, provable disclosure",
+    "subtitleA": "ZK turns privacy from hiding things into ",
     "subtitleStrong": "selective, provable disclosure",
-    "subtitleB": " — the unlock institutions and regulators have been waiting for.",
+    "subtitleB": ", which is what institutions and regulators need.",
     "items": [
       { "title": "Confidential DeFi & payments", "d": "Trade without broadcasting your size, run payroll or treasury on-chain without exposing salaries. Dark-pool-style execution with public settlement." },
-      { "title": "Reusable private identity", "d": "KYC once, then prove \"is human\", \"over 18\", or \"not sanctioned\" to any dApp — no document, no doxxing, no honeypot of personal data." },
+      { "title": "Reusable private identity", "d": "KYC once, then prove \"is human\", \"over 18\" or \"not sanctioned\" to any app, with no document and no database of personal data to leak." },
       { "title": "Proof without exposure", "d": "Exchanges prove solvency, funds prove eligibility, firms prove an audit passed — all without opening their books or counterparties." },
       { "title": "Verifiable computation", "d": "ZK rollups, coprocessors and verifiable AI: prove an off-chain result was computed correctly, so chains trust heavy work they never ran." }
     ],
-    "bannerA": "Where this is going: privacy stops being a ",
+    "bannerA": "Privacy stops being a ",
     "bannerStrong1": "red flag",
     "bannerB": " and becomes ",
     "bannerStrong2": "compliant infrastructure",
-    "bannerC": " — the path for regulated finance, healthcare and government to actually use public chains."
+    "bannerC": ", which is what lets regulated finance, healthcare and government use public chains."
   },
   "evaluate": {
-    "eyebrow": "Section 05 · Due Diligence · 1 of 2",
     "heading": "Evaluating a project — the team & the money",
-    "subtitle": "Three of six axes. Glance at the green vs red column — most failures are visible here first.",
-    "greenLabel": "✓ Green flags",
-    "redLabel": "✗ Red flags",
+    "subtitle": "Three of six checks. Most failures are visible here first.",
+    "greenLabel": "Green flags",
+    "redLabel": "Red flags",
     "axes": [
       {
         "title": "Team & track record",
@@ -727,15 +469,13 @@
         "green": ["Clear team/investor vesting", "Top 10 holders < 30%", "Treasury in multisig / DAO"],
         "red": ["Unlock cliffs that dump on retail", "One wallet holds > 50%", "\"Treasury\" is one anon EOA"]
       }
-    ],
-    "next": "Three more axes next — liquidity, marketing, and on-chain reality →"
+    ]
   },
   "evaluate2": {
-    "eyebrow": "Section 05 · Due Diligence · 2 of 2",
     "heading": "Evaluating a project — liquidity & reality check",
-    "subtitle": "The last three axes. Most can be checked in ten minutes with free tools.",
-    "greenLabel": "✓ Green flags",
-    "redLabel": "✗ Red flags",
+    "subtitle": "Three more checks, each doable in minutes with free tools.",
+    "greenLabel": "Green flags",
+    "redLabel": "Red flags",
     "axes": [
       {
         "title": "Liquidity & lock-ups",
@@ -756,19 +496,6 @@
     "toolsLabel": "Free tools — ",
     "toolsBody": "<0>Etherscan</0> (contracts, holders) · <1>DeFiLlama</1> (TVL, volume) · <2>Token Terminal</2> (revenue) · <3>Nansen / Arkham</3> (wallet flows) · <4>Dune</4> (custom analytics)."
   },
-  "decisionExamples": {
-    "heading": "Platform selection — worked examples",
-    "subtitle": "Seven use cases walked through the five-question framework to a concrete recommendation. Read the \"why\" column to understand which axis drove the decision.",
-    "items": [
-      { "use": "Cross-border remittance, low value", "rec": "Bitcoin Lightning · USDC on Base / Solana", "why": "Low cost · sub-second finality · users already trust USD-denominated value" },
-      { "use": "High-value DeFi protocol", "rec": "Ethereum L1 + L2 deployment", "why": "L1 for vault security, L2 for user flow · deepest liquidity · most auditors available" },
-      { "use": "Multi-company supply chain", "rec": "Hyperledger Fabric channel", "why": "Permissioned access · selective data sharing per channel · no token economics required" },
-      { "use": "Privacy-preserving identity / KYC", "rec": "Starknet (Cairo + ZK creds) · Aztec", "why": "Programmable ZK privacy · verifiable claims without disclosure · Ethereum L1 settlement" },
-      { "use": "On-chain game with tradable assets", "rec": "Immutable · Ronin · Starknet (Dojo) · Base", "why": "High throughput · low gas per action · gaming-focused tooling · existing player ecosystems" },
-      { "use": "Sovereign app-chain, custom consensus", "rec": "Cosmos zone via Cosmos SDK", "why": "Full control over VM, gas token, governance · trade-off: bootstrap your own validator set" },
-      { "use": "Cross-border government credentials", "rec": "EU EBSI (Fabric-based) · purpose-built consortium", "why": "Regulator-mandated participation · interop required at policy level · no public token needed" }
-    ]
-  },
   "quiz": {
     "question": "A user withdraws funds from Arbitrum (an optimistic rollup) back to Ethereum L1. The standard withdrawal takes ~7 days. Why?",
     "options": [
@@ -777,7 +504,7 @@
       "Arbitrum batches withdrawals weekly to amortise gas costs across users.",
       "Ethereum L1 deliberately rate-limits L2 withdrawals to prevent rollup-induced congestion."
     ],
-    "explanation": "The 7-day delay is structural to the optimistic rollup model. The L2 sequencer posts state roots to L1 with the assumption they're valid; anyone watching the chain can challenge an invalid root by submitting a fraud proof during the challenge window. Until that window expires, L1 cannot trust the state root enough to release withdrawals. ZK rollups don't have this delay — each batch ships with a validity proof that L1 verifies cryptographically, so withdrawals can finalise in one L1 block. Third-party fast bridges (Across, Hop, Stargate) let users skip the wait by paying liquidity providers a small premium up front."
+    "explanation": "The delay is structural. The sequencer posts state roots to L1 assumed valid; anyone watching can challenge an invalid root with a fraud proof during the window. Until it closes, L1 cannot trust the root enough to release withdrawals. ZK rollups ship a validity proof with each batch, so withdrawals finalise in one L1 block. Third-party fast bridges (Across, Hop, Stargate) let users skip the wait for a small premium."
   },
   "quiz2": {
     "question": "A team is launching a new app-specific blockchain. They need full control over consensus algorithm, gas token, and upgrade governance. Which model best fits — and what's the trade-off?",
@@ -787,48 +514,144 @@
       "Avalanche L1 — sovereign chains, but they must use Snowman consensus and pay AVAX-denominated subscription fees.",
       "All three give equal sovereignty; the decision is purely cost-driven."
     ],
-    "explanation": "Cosmos zones are sovereign by design. Each chain picks its own consensus engine (CometBFT is default, but anything goes), its own gas token, its own governance and upgrade rules. The trade-off is real: the team must recruit validators, design economic security, and bootstrap a token of value to pay them — no shared security comes for free. Polkadot parachains share the relay chain's validator set (great), but must conform to the relay's runtime model and Coretime schedule (less sovereignty than Cosmos). Avalanche L1s (formerly Subnets, renamed via ACP-13/77 in 2024) do allow custom VMs and validator subsets, but in practice most run Snowman variants and pay validator fees in AVAX. The honest framing: shared security versus sovereignty is a trade-off, not a tier list."
+    "explanation": "Cosmos zones are sovereign by design: each picks its consensus engine, gas token, governance and upgrade rules. The trade-off is real: the team must recruit validators and bootstrap a token to pay them. Polkadot parachains share the Relay Chain's validators but must conform to its runtime model and Coretime schedule. Avalanche L1s (formerly Subnets) allow custom VMs and validator sets, but most run Snowman variants and pay validator fees in AVAX. Shared security versus sovereignty is a trade-off, not a tier list."
   },
   "takeaways": {
     "title": "Section 05 — Key Takeaways",
     "items": [
-      "ZK rollups use cryptographic validity proofs — no challenge window, instant finality, and the foundation for verifiable privacy",
-      "Optimistic rollups (Arbitrum, Base, Optimism) offer full EVM compatibility with lower computation cost — at the price of a 7-day withdrawal delay",
-      "Each L2 has a distinct culture: Arbitrum for DeFi depth, Base for consumer apps, Starknet for games and ZK-native compute",
-      "Privacy on public chains requires extra cryptographic machinery — the regulatory line for \"privacy tooling\" is still being drawn",
+      "Zero-knowledge in one line: prove something is true without revealing what makes it true — and it is already live (ZK rollups, World ID, Zcash, proof of reserves, zkLogin, private voting)",
+      "The trilemma explains Layer 2: L1 stays the slow, trusted court; L2s are the fast, cheap lane that reports back to it",
+      "Optimistic rollups (Arbitrum, Base) = full EVM + 7-day exit; ZK rollups (zkSync, Starknet, Scroll) = maths-checked exits in hours — neither is private by default",
+      "Public chains are transparent by default; privacy needs extra cryptography — and the Tornado Cash story shows the law is still catching up",
       "Run five questions before picking a platform: permission, programmability, throughput, privacy, and sovereignty"
     ]
   },
-  "teamCheckpoint": {
-    "contextLabel": "Day 2 wrap · Course 03 → Course 02 (Day 3)",
-    "title": "Find your problem statement",
-    "subtitle": "You've now seen the platform landscape. Time to converge on the specific problem your team wants to tackle — before Day 3 turns it into a concrete smart-contract design.",
-    "duration": "15–20 min",
-    "haveLabel": "What you have",
-    "have": {
-      "item1A": "Your team of ",
-      "item1Strong": "3–4 members",
-      "item1B": " from Day 1 (find them now if you skipped it).",
-      "item2": "The pain points each member brought into Day 2.",
-      "item3": "An understanding of platform trade-offs — public vs permissioned, L1 vs L2, throughput vs cost."
+  "keyPoints": {
+    "s5-zkp": "Prove it is true without showing why.",
+    "s5-zkp-cave": "A proof convinces by making cheating impossible, not by showing the secret.",
+    "s5-zk-apps": "ZK is a product, not a paper: scaling, identity, solvency and compliance proofs are live today.",
+    "s5-zk-identity": "Verify the claim, not the person: the issuer vouches once and the customer reveals only what each service needs.",
+    "s5-l2-why": "You cannot max out speed, cost and decentralisation at once; L2s buy speed by borrowing L1 security.",
+    "s5-layer2": "Optimistic rollups are innocent until proven guilty (7-day exit), ZK rollups are proven before accepted (hours), and neither is private by default.",
+    "s5-data-avail": "A rollup is only as safe as the data behind it; posting every transaction to Ethereum is what lets users leave without the operator's help.",
+    "s5-starknet": "Starknet uses ZK for cheap verification, not secrecy.",
+    "s5-polkadot": "Polkadot rents out security; parachains skip recruiting validators but live by the Relay Chain's rules.",
+    "s5-avalanche": "Avalanche sells sovereign lanes with shared tooling; a custom L1 is only as secure as its own validators.",
+    "s5-privacy": "A public ledger is a permanent record; privacy has to be added on purpose.",
+    "s5-privacy-approaches": "Mixers hide everything or nothing; ZK reveals exactly what a counterparty needs.",
+    "s5-privacy-regulation": "Untraceable money shields dissidents and launderers alike; selective disclosure is the way out.",
+    "s5-privacy-future": "Keep the data confidential and still prove you follow the rules.",
+    "s5-evaluate": "Judge a project by who built it, what the code says and who holds the tokens.",
+    "s5-evaluate-2": "Locked liquidity, honest docs and organic on-chain usage; ten minutes with free tools beats any influencer thread.",
+    "s5-decision": "Five questions beat a hundred logos: permission, programmability, throughput, privacy, sovereignty."
+  },
+  "snapshot": {
+    "starknet": {
+      "heading": "Starknet — a ZK rollup on Ethereum",
+      "subtitle": "Thousands of transactions run off-chain; one STARK proof tells Ethereum they were all executed correctly.",
+      "recap": "Section 02 · Rollups & L2s — and the ZK chapter above",
+      "cards": [
+        {
+          "label": "What it is",
+          "title": "Ethereum's security, Starknet's speed",
+          "body": "A Layer 2 that batches transactions, proves the batch with a STARK and posts only the proof to Ethereum. If the proof is wrong, Ethereum rejects the batch — no waiting period, no trust in the operator."
+        },
+        {
+          "label": "What it's good at",
+          "title": "Cheap verification + smart wallets",
+          "body": "Fees 10–100× below L1 and withdrawals in hours, not a week. Every account is a smart contract by default (account abstraction): social recovery, session keys, fees paid in any token."
+        },
+        {
+          "label": "One real app",
+          "title": "Ekubo — a DEX from a former Uniswap lead",
+          "body": "A concentrated-liquidity exchange with the deepest liquidity on Starknet. Fully on-chain games (Realms: Eternum, Loot Survivor) are the other main use."
+        },
+        {
+          "label": "The caveat",
+          "title": "Public by default, Cairo only",
+          "body": "ZK here buys cheap verification, not secrecy — transactions are as visible as on Ethereum. Apps must be written in Cairo, so Solidity code cannot be copied over unchanged, and the ecosystem is far smaller than Arbitrum or Base."
+        }
+      ]
     },
-    "doLabel": "Do now together",
-    "do": {
-      "item1": "Each member pitches their top pain point (60 seconds each, no debate yet).",
-      "item2A": "As a team, pick ",
-      "item2Strong": "one problem statement",
-      "item2B": " — specific enough to design for, broad enough that everyone is engaged.",
-      "item3A": "Write it as ",
-      "item3Italic": "\"Today, <who> struggles with <what> because <why>. We want to design a smart-contract solution that …\"",
-      "item4": "Capture three current pain metrics if you can — cost, time, error rate, trust gap, etc."
+    "polkadot": {
+      "heading": "Polkadot — security for rent",
+      "subtitle": "A Layer 0: one Relay Chain whose validators secure every connected parachain at once.",
+      "recap": "Section 04 · Layer 0",
+      "cards": [
+        {
+          "label": "What it is",
+          "title": "One validator set, many chains",
+          "body": "Parachains are purpose-built L1s that rent block time (Coretime) on the Relay Chain instead of recruiting their own validators. The Relay Chain's ~300 validators finalise all of them together."
+        },
+        {
+          "label": "What it's good at",
+          "title": "Day-one security and native cross-chain calls",
+          "body": "A new chain is as secure as Polkadot the moment it connects. Parachains talk to each other through XCM — a built-in message format — so no bridge contract and no wrapped token inside the ecosystem."
+        },
+        {
+          "label": "One real app",
+          "title": "Moonbeam — Ethereum apps, Polkadot plumbing",
+          "body": "An EVM-compatible parachain where Solidity contracts deploy unchanged and can call other parachains over XCM. It is the usual entry point for Ethereum teams testing the ecosystem."
+        },
+        {
+          "label": "The caveat",
+          "title": "Rules of the club, and a thin crowd",
+          "body": "Chains must follow Relay Chain rules and pay for coretime in DOT; user and developer traction has lagged Ethereum's L2s; and reaching chains outside Polkadot still needs a bridge (Snowbridge to Ethereum)."
+        }
+      ]
     },
-    "bringLabel": "Bring to Day 3",
-    "bring": {
-      "item1": "Your one-sentence problem statement.",
-      "item2": "A first guess at the industry (you'll refine it Day 3 morning).",
-      "item3": "An open mind — the Day 3 decision framework may tell you blockchain isn't the right tool."
-    },
-    "footnoteStrong": "Day 3 preview →",
-    "footnoteRest": " Business Applications for Smart Contracts will run your problem through a structured decision framework, walk you through five industry verticals, then have you sketch a full design as a team. The project deliverable starts there."
+    "avalanche": {
+      "heading": "Avalanche — sovereign lanes, shared tooling",
+      "subtitle": "A Layer 0 whose Primary Network coordinates custom 'Avalanche L1s', each with its own validators and rules.",
+      "recap": "Section 04 · Layer 0",
+      "cards": [
+        {
+          "label": "What it is",
+          "title": "A primary network plus custom L1s",
+          "body": "Three built-in chains (X, P and the EVM C-Chain, where DeFi lives) plus any number of Avalanche L1s (formerly Subnets): sovereign chains that pick their own validators, gas token and rules, coordinated by the P-Chain."
+        },
+        {
+          "label": "What it's good at",
+          "title": "Sub-second finality and your own lane",
+          "body": "Snowman consensus settles in under a second. A game or a bank can launch its own L1 with custom fees and permissioning, reuse Ethereum tooling, and message other L1s natively through Avalanche Warp."
+        },
+        {
+          "label": "One real app",
+          "title": "JP Morgan on a permissioned L1",
+          "body": "JP Morgan's Onyx (now Kinexys) and Apollo tested tokenised-portfolio management on Avalanche's institutional 'Evergreen Spruce' network under Singapore's Project Guardian (2023)."
+        },
+        {
+          "label": "The caveat",
+          "title": "Small validator sets, fragmented liquidity",
+          "body": "A sovereign L1 is only as secure as its own validators, often a handful. Finality is probabilistic (a tiny chance of reversal, unlike BFT's hard guarantee), and most liquidity still sits on the C-Chain."
+        }
+      ]
+    }
+  },
+  "discussion": {
+    "eyebrow": "In-class discussion · ~10 min · nothing to hand in",
+    "prompt": "Pick one: which platform would you choose — and what are you trading away?",
+    "subtitle": "Choose a scenario, pick a platform from this course, and name the trade-off. The reasoning is the point.",
+    "scenarioLabel": "Scenario {{n}}",
+    "scenarios": [
+      {
+        "title": "A bank tokenises a money-market fund",
+        "desc": "A European bank wants to issue a tokenised fund to institutional clients, with regulators watching every step."
+      },
+      {
+        "title": "A mobile game with millions of micro-trades",
+        "desc": "Players trade in-game items thousands of times a minute and expect ownership that outlives the studio."
+      },
+      {
+        "title": "Aid payments where banks are unreliable",
+        "desc": "An NGO must pay thousands of recipients in a country with a shaky banking system — without exposing who they are."
+      }
+    ],
+    "thinkLabel": "Think about",
+    "questions": [
+      "Who has to trust whom in your design — and would the people involved accept that?",
+      "What does the choice cost you later: lock-in, bridge risk, regulatory exposure, a thin ecosystem?",
+      "Would a plain database do the job? If yes, say so — that is also a valid answer."
+    ]
   }
 }
