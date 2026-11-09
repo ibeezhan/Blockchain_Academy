@@ -27,34 +27,34 @@
     "s3-cert-real": "In Production",
     "s3-cert-prosCons": "Pros & Cons",
     "s3-case-gallery": "Case Gallery",
-    "s3-tradelens": "TradeLens ✗",
+    "s3-tradelens": "TradeLens",
     "s3-exercise": "🧩 Design Your Own",
     "s3-quiz": "Quiz",
     "s3-takeaways": "Takeaways",
     "s3-summary": "Summary"
   },
   "groups": {
-    "g-defi": "💸 DeFi",
-    "g-nft": "🎮 Gaming & NFTs",
-    "g-rwa": "🏢 RWA",
-    "g-sc": "🚚 Supply Chain",
-    "g-cert": "📜 Certification",
-    "g-cases": "📁 Case Studies",
-    "g-close": "✅ Wrap Up",
-    "g-apps": "🏛 NFT Utility & DAOs"
+    "g-defi": "DeFi",
+    "g-nft": "Gaming & NFTs",
+    "g-rwa": "RWA",
+    "g-sc": "Supply Chain",
+    "g-cert": "Certification",
+    "g-cases": "Case Studies",
+    "g-close": "Wrap Up",
+    "g-apps": "NFT Utility & DAOs"
   },
   "title": {
     "sectionNumber": "SECTION 03",
     "title": "Industries & Case Studies",
-    "subtitle": "Where smart contracts are reshaping real industries — and the case studies that prove it (and the ones that didn't)"
+    "subtitle": "Where smart contracts run in real industries, including the cases that failed"
   },
   "prosCons": {
-    "prosLabel": "✓ Pros",
-    "consLabel": "✗ Cons"
+    "prosLabel": "Pros",
+    "consLabel": "Cons"
   },
-  "interactiveBadge": "🧩 Interactive",
+  "interactiveBadge": "Interactive",
   "discussion": {
-    "badge": "💬 Class discussion",
+    "badge": "Class discussion",
     "duration": "5 min",
     "title": "Discussion: which industry hurts most?",
     "lead": "Before the five deep-dives: where does today's process cause the most pain — and would code enforcing the rules actually fix it?",
@@ -63,7 +63,7 @@
       "Which single party in that process does everyone currently have to trust? What happens when they fail, cheat or shut down?",
       "If the rules were code instead of a contract between people, what would still need a human to decide?"
     ],
-    "note": "Keep your answer in mind — the Section 4 framework and the Section 7 one-pager both start from exactly this question."
+    "note": "The Section 4 framework and the Section 7 assignment start from this question."
   },
   "defiIntro": {
     "examplesLabel": "In production today",
@@ -90,19 +90,19 @@
   },
   "nftReal": {
     "heading": "NFTs in production",
-    "subtitle": "Two live deployments — a AAA studio running a game economy on NFTs, and a lending desk that takes NFTs as collateral.",
+    "subtitle": "A major studio running a game economy on NFTs, and a lender that takes NFTs as collateral.",
     "columns": [
       {
         "kicker": "Gaming · Ubisoft",
         "title": "Champions Tactics: Grimoria Chronicles",
         "tag": "Strategic Innovation Lab · launched Oct 2024 on the Oasys chain",
         "points": [
-          "75,000 Champion NFTs minted in a capped drop — sold out in hours, funding live-ops upfront",
+          "75,000 Champion NFTs sold in a capped drop, funding operations upfront",
           "Players battle squads in PvP; victories earn on-chain reward tokens redeemable for gear",
           "Every secondary sale routes a 5% royalty to Ubisoft and collaborating artists — when the marketplace honours it",
           "The servers, artwork and matchmaking are still Ubisoft's — the NFT only covers who owns the item"
         ],
-        "footnote": "A mainstream studio using NFTs for an active game economy — and a reminder that the chain owns the item, not the game."
+        "footnote": "The chain records who owns the item; the game is still Ubisoft's."
       },
       {
         "kicker": "NFT finance · Zharta",
@@ -289,10 +289,10 @@
       }
     ]
   },
-  "exerciseBadge": "🧩 Exercise",
+  "exerciseBadge": "Exercise",
   "amm": {
     "title": "AMM Bonding Curve · ",
-    "subtitle": "Drag the slider to simulate trading on a Uniswap-style pool. Watch how the curve, prices, and slippage move in real time.",
+    "subtitle": "Drag the slider to trade against a Uniswap-style pool and watch price and slippage move.",
     "curveTitle": "Constant-product curve",
     "axisX": "x = ETH reserve",
     "axisY": "y = USDC",
@@ -314,13 +314,13 @@
     "usdcPerEth": "USDC per ETH",
     "effectivePrice": "Effective price you pay",
     "slippage": "Slippage",
-    "slippageMassive": "Massive slippage — your trade is too large for this pool.",
+    "slippageMassive": "Large slippage: the trade is too big for this pool.",
     "slippageNoticeable": "Noticeable slippage — typical for medium trades on shallow pools.",
     "slippageMinimal": "Minimal slippage — small trade on a deep pool.",
     "invariantTitle": "The invariant",
     "invariantA": "The product ",
     "invariantB": " stays constant at ",
-    "invariantC": ". Buy more ETH → reserves shrink → price rises hyperbolically. There's no order book — just the curve."
+    "invariantC": ". Buying ETH shrinks its reserve, so the price rises along the curve. There is no order book."
   },
   "rwaSpectrum": {
     "title": "Tokenization Spectrum · Easier → Harder",
@@ -345,13 +345,13 @@
     }
   },
   "poe": {
-    "title": "Proof of Existence · Try it yourself",
+    "title": "Proof of Existence",
     "subtitle": "Hash a credential, anchor it on-chain, then verify it. The blockchain never sees the document — only the hash.",
     "defaultDoc": "Bachelor of Science — Alice Smith — 2024-06-15",
     "issueStep": "① Issue & anchor",
     "credentialText": "Credential text",
     "hashLabel": "SHA-256 hash (digital fingerprint)",
-    "anchorButton": "⛓ Anchor hash to blockchain",
+    "anchorButton": "Anchor hash to blockchain",
     "anchored": "✓ Anchored",
     "blockTimestamp": "Block timestamp: {{ts}}",
     "anchoredHash": "Anchored hash: ",
@@ -365,11 +365,11 @@
     "computedLabel": "Computed: ",
     "anchoredLabelShort": "Anchored: ",
     "whyWorksLabel": "Why this works:",
-    "whyWorksBody": " SHA-256 is deterministic and collision-resistant. Same input → same hash. Any change to the input — even a single character — produces a completely different hash. Anchoring the hash on-chain proves the document existed at that moment, without revealing its contents."
+    "whyWorksBody": " SHA-256 is deterministic: the same input always gives the same hash, and any change gives a completely different one. Anchoring the hash proves the document existed at that moment without revealing it."
   },
   "pegSim": {
     "title": "Stablecoin Peg Simulator",
-    "subtitle": "Pick a stablecoin design and apply market stress. Watch the peg hold — or break.",
+    "subtitle": "Pick a stablecoin design and apply market stress.",
     "design": "Stablecoin design",
     "shockLabel": "Market shock — % of supply sold off",
     "shockDesc": "Sudden sell pressure (a \"bank run\" event). 100% = entire supply hits the bid simultaneously.",
@@ -387,10 +387,10 @@
       "algo": { "name": "Algorithmic", "control": "Native-token cushion", "controlDesc": "Market-cap of the volatile sister token (LUNA-style) relative to the stablecoin supply" }
     },
     "regime": {
-      "stable": "✓ Stable",
-      "wobble": "⚠️ Wobble",
-      "depeg": "⚠ De-pegging",
-      "collapse": "💀 Death spiral"
+      "stable": "Stable",
+      "wobble": "Wobble",
+      "depeg": "De-pegging",
+      "collapse": "Death spiral"
     },
     "lessons": {
       "fiat": "Fiat-backed stablecoins are only as trustworthy as their auditor. If reserves dip below 100%, a coordinated sell-off can break the peg — see USDC briefly de-pegging in March 2023 when SVB held $3.3B of its reserves.",
@@ -403,7 +403,7 @@
     "subtitle": "Click the QR code to retrieve the on-chain provenance. Each step is signed by the party that handled the product.",
     "productLabel": "Carrefour BIO · Free-range chicken",
     "batchLabel": "batch #BIO-2026-0508",
-    "tapToScan": "📷 Tap to scan",
+    "tapToScan": "Tap to scan",
     "trailLoaded": "✓ Trail loaded",
     "handoffsLabel": "7 hand-offs",
     "handoffsRest": " recorded on a permissioned chain. The QR resolves to a content hash — the data itself is on-chain.",
@@ -430,7 +430,7 @@
     "exampleAnswer": "Example answer — {{industry}}",
     "previous": "← Previous",
     "next": "Next →",
-    "complete": "✓ Brief complete! Now try another industry.",
+    "complete": "Brief complete. Try another industry.",
     "industries": {
       "Finance": "Finance",
       "Supply Chain": "Supply Chain",
@@ -516,7 +516,7 @@
   },
   "industriesIntro": {
     "heading": "Smart Contracts Across Industries",
-    "subtitle": "Five verticals where smart contracts have moved from theory to deployed production systems.",
+    "subtitle": "Five verticals with smart contracts in production.",
     "verticals": {
       "defi": { "name": "DeFi", "tag": "Decentralized Finance", "desc": "AMMs, lending, stablecoins, borderless transfers" },
       "nft": { "name": "Gaming & NFTs", "tag": "Digital Ownership", "desc": "True ownership, P2E economies, embedded royalties" },
@@ -525,13 +525,13 @@
       "cert": { "name": "Digital Certification", "tag": "Trusted Records", "desc": "Diplomas, government records, luxury authentication" }
     },
     "commonThreadLabel": "Common thread:",
-    "commonThreadBody": " in every vertical below, smart contracts replace a slow, intermediary-dependent process with code-enforced execution. We examine each, go deeper on NFT utility and DAOs, then look at six flagship case studies — including one that was shut down."
+    "commonThreadBody": " in each vertical a smart contract replaces a slow, intermediary-dependent process with code-enforced execution. We cover each, then NFT utility and DAOs, then six case studies, including one that was shut down."
   },
   "defiWhat": {
     "heading": "What is DeFi?",
-    "subtitle": "An emerging peer-to-peer financial system using cryptocurrencies and smart contracts.",
+    "subtitle": "Financial services run by smart contracts instead of institutions.",
     "coreIdeaTitle": "The Core Idea",
-    "coreIdeaBody": "Remove third-party intermediaries. Instead of a bank enforcing a loan or a clearinghouse settling a trade, a smart contract automatically executes those functions when conditions are met. Cutting out middlemen reduces fees, settlement times, and gives users more control over their assets.",
+    "coreIdeaBody": "Instead of a bank enforcing a loan or a clearinghouse settling a trade, a smart contract does it when conditions are met. This cuts fees and settlement time, and users keep custody of their assets.",
     "valueCodeTitle": "\"Value and Code at the same level\"",
     "valueCodeBody": "In traditional finance, the rules of trade live in legal documents and back-office systems separate from the money itself. In DeFi, value (ETH, USDC, NFTs) and the rules that govern it (the contract code) sit on the same blockchain — composable, atomic, transparent.",
     "primitivesLabel": "DeFi primitives",
@@ -544,8 +544,8 @@
     }
   },
   "stablecoinsIntro": {
-    "heading": "Stablecoins — Crypto That Holds $1",
-    "subtitle": "The most-used on-chain asset: tokens engineered to track a stable reference, almost always 1 USD. Three designs, three failure modes.",
+    "heading": "Stablecoins",
+    "subtitle": "Tokens designed to track a stable reference, almost always 1 USD. Three designs, three failure modes.",
     "riskLabel": "Risk: ",
     "cards": {
       "fiat": {
@@ -565,14 +565,14 @@
       }
     },
     "nextLabel": "Next: ",
-    "nextBody": "stress-test a peg yourself — push collateral and demand until a stablecoin breaks."
+    "nextBody": "stress-test a peg yourself on the next slide."
   },
   "defiProsCons": {
     "title": "DeFi · Pros & Cons",
     "pros": [
       { "label": "24/7 Global Access", "desc": "Markets, payments, and dollar-pegged balances stay open all day — no cut-off windows or borders." },
       { "label": "Instant Settlement", "desc": "Trades and transfers clear in a single block (seconds), eliminating clearing delays." },
-      { "label": "Reduced Costs", "desc": "Smart contracts replace banks, card networks, and brokers — fees on swaps and cross-border payments drop dramatically." },
+      { "label": "Reduced Costs", "desc": "Smart contracts replace banks, card networks and brokers; fees on swaps and cross-border payments fall." },
       { "label": "Self-Custody", "desc": "Users keep their own keys. Value moves peer-to-peer without frozen accounts or withdrawal limits." },
       { "label": "Predictable Value", "desc": "Stablecoins let users hold and spend a token that maintains a fiat parity (mostly USD)." },
       { "label": "Programmable Cash Flows", "desc": "Code automates swaps, payouts, and recurring transfers once preset conditions are met." },
@@ -597,7 +597,7 @@
     "standardLabel": "Standard",
     "multiTokenLabel": "Multi-token",
     "gamingTitle": "In gaming…",
-    "gamingBody": "NFTs can represent swords, skins, characters, or virtual land. Because the NFT sits in the player's Web3 wallet — not on the publisher's server — it can be listed, traded, or rented peer-to-peer. Open, player-controlled markets emerge.",
+    "gamingBody": "NFTs can represent swords, skins, characters or virtual land. Because the NFT sits in the player's wallet, not on the publisher's server, it can be listed, traded or rented peer-to-peer.",
     "gamingPoints": [
       "Items survive server shutdowns",
       "Tradeable on third-party marketplaces",
@@ -606,7 +606,7 @@
     ]
   },
   "nftEconomies": {
-    "heading": "True Ownership, Digital IP & Virtual Economies",
+    "heading": "Ownership and virtual economies",
     "subtitle": "Smart contracts turn server-side database rows into player-owned, transferable, programmable assets.",
     "cards": {
       "before": {
@@ -748,14 +748,14 @@
       "RWA tokenization spans the spectrum from sovereign debt (BlackRock BUIDL) to real estate (Sweden, Brickblock, Zurich)",
       "Supply chain wins when rivals agree to share truth — Walmart and GSBN run; Maersk's TradeLens shut down because competitors would not join",
       "The common thread for success: many parties, no trusted authority, value from automation and shared truth — and an owner everyone can accept",
-      "Coming up in Section 4 — three lessons from the field: when blockchain wins (Estonia), when it backfires (The DAO), when it should never have been picked (ASX)"
+      "Section 4 adds three lessons from the field: Estonia, The DAO and ASX"
     ]
   },
   "summary": {
     "heading": "Section Summary",
-    "subtitle": "Industries and case studies covered — at a glance",
+    "subtitle": "At a glance",
     "cards": [
-      { "title": "DeFi", "summary": "AMMs (Uniswap, CoW Swap) · stablecoins (Shopify/USDC) · borderless transfers (USDC on L2)" },
+      { "title": "DeFi", "summary": "AMMs (Uniswap, CoW Swap) · stablecoins (USDC, DAI) · borderless transfers (USDC on L2)" },
       { "title": "Gaming & NFTs", "summary": "True ownership · P2E (Ubisoft Champions Tactics) · NFT collateral lending" },
       {
         "title": "NFT Utility & DAOs",
@@ -790,13 +790,13 @@
         "summary": "Food trace from 7 days → 2.2 seconds via IBM Food Trust"
       },
       { "title": "Santander", "summary": "$20M end-to-end Ethereum bond — first major bank, T+2 → same-day" },
-      { "title": "TradeLens ✗", "summary": "Maersk × IBM shipping ledger shut down 2023 — rivals would not join a competitor-owned platform" }
+      { "title": "TradeLens", "summary": "Maersk × IBM shipping ledger shut down 2023 — rivals would not join a competitor-owned platform" }
     ],
-    "footer": "Continue to Section 4 — Critical Thinking: when to use a smart contract → and when not to →"
+    "footer": "Next: Section 4 — when to use a smart contract, and when not to"
   },
   "nftUtility": {
     "heading": "NFTs Beyond Art: the Token as a Key",
-    "subtitle": "Forget the JPEG. An NFT is a transferable, verifiable record that this wallet holds this right — and rights are what businesses actually sell.",
+    "subtitle": "An NFT is a transferable, verifiable record that this wallet holds this right. Rights are what businesses sell.",
     "replacesLabel": "Replaces:",
     "endedTag": "Pilot ended",
     "cards": [
@@ -844,7 +844,7 @@
       }
     ],
     "patternLabel": "The pattern:",
-    "patternBody": " the NFT is rarely the product. It is the key that unlocks one — and keys are portable, verifiable and resellable in a way logins and paper never were."
+    "patternBody": " the NFT is rarely the product. It is the key that unlocks one, and keys are portable, verifiable and resellable."
   },
   "nftGate": {
     "title": "Token-gated access · Try it",
@@ -855,7 +855,7 @@
       "wrong": { "name": "Wallet B", "holds": "Holds an NFT — from a different collection" },
       "empty": { "name": "Wallet C", "holds": "Holds nothing" }
     },
-    "enter": "Connect & enter →",
+    "enter": "Connect & enter",
     "tryAnother": "↺ Try another wallet",
     "stepsLabel": "What the gate does",
     "steps": [
@@ -863,16 +863,16 @@
       { "label": "Read the chain", "desc": "The gate asks the membership contract: how many tokens does this address hold? A free read — no transaction, no gas." },
       { "label": "Decide", "desc": "Balance ≥ 1 → the door opens. Otherwise → denied. The content itself stays on an ordinary server." }
     ],
-    "granted": "✓ Access granted — welcome, member",
-    "deniedWrong": "✗ Denied — that token is from another collection",
-    "deniedEmpty": "✗ Denied — no membership token in this wallet",
+    "granted": "Access granted",
+    "deniedWrong": "Denied: that token is from another collection",
+    "deniedEmpty": "Denied: no membership token in this wallet",
     "idle": "Choose a wallet and click enter",
     "noteLabel": "Why businesses like it:",
     "noteBody": " no customer database to breach, membership that customers can resell, and one key that works across every partner who reads the same contract."
   },
   "nftHonest": {
     "heading": "The Honest NFT Story",
-    "subtitle": "The 2021 boom promised perpetual royalties and a new creator economy. Here is what actually happened — and what survived.",
+    "subtitle": "The 2021 boom promised perpetual royalties and a new creator economy. What happened, and what survived.",
     "lessonLabel": "Lesson: ",
     "cards": [
       {
@@ -892,7 +892,7 @@
       },
       {
         "title": "What survived",
-        "body": "Ticketing, provenance twins, credentials and token-gating — uses where the token is a key, not a speculation. Quiet, unglamorous, and still running.",
+        "body": "Ticketing, provenance twins, credentials and token-gating: uses where the token is a key, not a speculation.",
         "lesson": "Utility that does not depend on the price going up is the utility that lasts."
       }
     ],
@@ -923,7 +923,7 @@
     "daoEnforced": "Enforced by code — every vote, payment and rule change is public forever.",
     "twoLabel": "Two things a DAO can do",
     "mimicTitle": "Mimic a real organisation — transparently",
-    "mimicBody": "Shareholder votes, committees, spending limits, dual signatures: the familiar structures, but with no backdated minutes, no quiet transfers, and an audit trail nobody can edit. Harder to cheat; easier to hold to account.",
+    "mimicBody": "Shareholder votes, committees, spending limits, dual signatures: the familiar structures, with no backdated minutes, no quiet transfers, and an audit trail nobody can edit.",
     "newTitle": "Build structures no charter allows",
     "newBody": "Votes that cost more the more you cast, committees that are themselves contracts, mandatory delays that let members exit before a rule bites, instant withdrawal of your share. New organisational designs — with new failure modes.",
     "defLabel": "DAO = Decentralised Autonomous Organisation.",
@@ -1030,7 +1030,7 @@
     "items": [
       {
         "name": "MakerDAO → Sky",
-        "tag": "✅ Running since 2017",
+        "tag": "Running since 2017",
         "stat": "DAI stablecoin",
         "what": "Issues the DAI stablecoin (and now USDS); token holders set collateral rules and interest rates.",
         "structure": "Token vote → executive \"spell\" → GSM timelock. Core Units and SubDAOs run operations; an Emergency Shutdown exists as a last resort.",
@@ -1038,7 +1038,7 @@
       },
       {
         "name": "Uniswap DAO",
-        "tag": "✅ Slow but alive",
+        "tag": "Running since 2020",
         "stat": "UNI · 2020",
         "what": "Governs the Uniswap protocol and a multi-billion-dollar UNI treasury.",
         "structure": "Snapshot temperature check → on-chain vote (40M UNI quorum) → 2-day Timelock. Most UNI is delegated to a few dozen delegates.",
@@ -1046,7 +1046,7 @@
       },
       {
         "name": "Gitcoin",
-        "tag": "✅ New mechanism at work",
+        "tag": "Running since 2019",
         "stat": "Grants since 2019",
         "what": "Funds open-source and public-goods projects through community rounds — tens of millions of dollars distributed.",
         "structure": "Quadratic funding: many small donations attract more matching than one big cheque. Gitcoin Passport fights fake identities.",
@@ -1054,7 +1054,7 @@
       },
       {
         "name": "ConstitutionDAO",
-        "tag": "⚠️ Coordination win, governance gap",
+        "tag": "Coordination win, governance gap",
         "stat": "~$47M in a week",
         "what": "In Nov 2021, 17,000+ people pooled ~$47M in ETH in under a week to bid on a rare copy of the US Constitution at Sotheby's.",
         "structure": "A multisig held the funds; contributors got PEOPLE tokens. No plan for custody of the document — or for losing.",
@@ -1062,7 +1062,7 @@
       },
       {
         "name": "The DAO (2016)",
-        "tag": "❌ The original failure",
+        "tag": "Failed, 2016",
         "stat": "$150M → $60M drained",
         "what": "A crowd-funded venture fund run entirely by contract — the largest crowdfund of its time.",
         "structure": "Token vote on investments; a \"split\" function with a reentrancy bug and no pause button.",
@@ -1092,7 +1092,7 @@
     ]
   },
   "tradelens": {
-    "kicker": "Case Study 06 — Shipping · ❌ Shut down",
+    "kicker": "Case Study 06 — Shipping · Shut down",
     "heading": "TradeLens: Maersk × IBM",
     "subtitle": "A global shipping-data platform with blue-chip backers — discontinued in 2023 after five years. The technology worked; the business model didn't.",
     "problemBodyA": "Moving one container involves ",
@@ -1126,33 +1126,33 @@
     "lessonBody": " a consortium chain is only as useful as the rivals willing to join it. Who owns the platform decides who adopts it — compare GSBN, owned jointly by several carriers, which is still running."
   },
   "keyPoints": {
-    "s3-industries-intro": "Every winning use case here replaces a slow, paid-for middleman with a shared rule — look for that pattern first.",
-    "s3-defi-intro": "What is DeFi?",
-    "s3-defi-amm": "Price comes from a formula, not a market maker — big trades move it, so liquidity depth is the product.",
-    "s3-defi-stablecoins": "The most-used thing on Ethereum is a dollar — and every stablecoin design is a bet on what backs it.",
-    "s3-defi-prosCons": "DeFi removes the bank but not the risk — it moves risk into code, collateral and the people holding the admin keys.",
-    "s3-nft-intro": "What is an NFT?",
-    "s3-nft-real": "The NFT only controls ownership — the game servers, the artwork and the marketplace are still run by companies.",
+    "s3-industries-intro": "Every working use case here replaces a slow, paid-for middleman with a shared rule.",
+    "s3-defi-intro": "DeFi replaces the bank or clearinghouse with a contract that settles when its conditions are met.",
+    "s3-defi-amm": "Price comes from a formula, so big trades move it; liquidity depth is the product.",
+    "s3-defi-stablecoins": "Every stablecoin design is a bet on what backs the dollar.",
+    "s3-defi-prosCons": "DeFi removes the bank but moves the risk into code, collateral and admin keys.",
+    "s3-nft-intro": "An NFT is a unique token whose owner is recorded on-chain, so ownership can be proved and transferred without the issuer.",
+    "s3-nft-real": "The NFT only records ownership; the servers, artwork and marketplace are still run by companies.",
     "s3-nft-prosCons": "Ownership you can prove and resell is new; demand for the asset is not guaranteed by the blockchain.",
-    "s3-nft-utility": "Think of an NFT as a key, not a picture — tickets, memberships and credentials are where the utility is.",
+    "s3-nft-utility": "An NFT is a key, not a picture; tickets, memberships and credentials are where the utility is.",
     "s3-nft-gate": "A membership card that the club can't secretly revoke and you can resell.",
-    "s3-nft-honest": "Royalties, floor prices and 'community' were promises by marketplaces and founders — only what the contract enforces survived.",
-    "s3-dao-intro": "Code can enforce the rules, but people still choose the rules — governance design is the product.",
-    "s3-dao-structures": "Each building block trades speed for legitimacy — a multisig moves fast, a token vote looks fair, a timelock protects both.",
+    "s3-nft-honest": "Royalties and floor prices were promises by marketplaces and founders; only what the contract enforces survived.",
+    "s3-dao-intro": "Code enforces the rules, but people still choose them; governance design is the product.",
+    "s3-dao-structures": "Each building block trades speed for legitimacy: a multisig is fast, a token vote is fair, a timelock protects both.",
     "s3-dao-vote": "Ask who holds power after launch — not who promised what before it.",
-    "s3-dao-examples": "Successful DAOs manage billions with a small active group — low turnout and whale votes are the norm, not the exception.",
+    "s3-dao-examples": "Even successful DAOs are run by a small active group; low turnout and whale votes are the norm.",
     "s3-dao-prosCons": "A DAO buys transparency and global participation at the cost of speed, legal clarity and attack surface.",
-    "s3-rwa-spectrum": "The simpler the legal claim, the easier the token — treasuries went first, real estate and infrastructure come last.",
+    "s3-rwa-spectrum": "The simpler the legal claim, the easier the token; treasuries went first, real estate comes last.",
     "s3-rwa-real": "BlackRock and a national land registry are on-chain because settlement time and reconciliation cost are measurable.",
-    "s3-rwa-prosCons": "A token moves in seconds; the legal title it represents still moves at the speed of the law — the wrapper is the risk.",
-    "s3-sc-provenance": "The chain proves who recorded what and when — it cannot prove the goods are what the record says.",
-    "s3-sc-real": "LVMH, Carrefour and GSBN work because rivals agreed to share one record — the hard part was the consortium, not the code.",
-    "s3-sc-prosCons": "Traceability pays when recalls, counterfeits or paperwork are expensive — and only if every partner actually uploads.",
-    "s3-cert-howitworks": "Store the fingerprint, not the document — a hash proves a record existed unchanged without revealing it.",
-    "s3-cert-real": "Estonia, MIT and the luxury brands use the chain for one thing: letting anyone verify a record without calling the issuer.",
+    "s3-rwa-prosCons": "A token moves in seconds, but the legal title it represents moves at the speed of the law.",
+    "s3-sc-provenance": "The chain proves who recorded what and when; it cannot prove the goods match the record.",
+    "s3-sc-real": "These work because rivals agreed to share one record; the hard part was the consortium, not the code.",
+    "s3-sc-prosCons": "Traceability pays when recalls, counterfeits or paperwork are expensive, and only if every partner uploads.",
+    "s3-cert-howitworks": "Store the fingerprint, not the document: a hash proves a record existed unchanged without revealing it.",
+    "s3-cert-real": "The chain lets anyone verify a record without calling the issuer.",
     "s3-cert-prosCons": "Verification becomes instant and free; the issuer's honesty when creating the record is still the weak point.",
     "s3-case-gallery": "Five production deployments share one pattern: many parties, one shared record, and a measurable cost that disappeared.",
-    "s3-tradelens": "Great technology, wrong owner — rivals would not join a platform run by their biggest competitor.",
-    "s3-exercise": "Pain point, parties, trigger, output, risk — if you can't fill all five in a sentence each, it isn't a smart-contract brief yet."
+    "s3-tradelens": "Rivals would not join a platform owned by their biggest competitor.",
+    "s3-exercise": "Pain point, parties, trigger, output, risk: fill all five in a sentence each."
   }
 }

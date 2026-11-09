@@ -22,10 +22,10 @@
   "title": {
     "sectionNumber": "SECTION 02",
     "title": "How Smart Contracts Work",
-    "subtitle": "What actually happens when a smart contract runs — the Web3 stack, gas, token standards — told for decision-makers, with the code kept optional"
+    "subtitle": "What happens when a smart contract runs: the Web3 stack, gas and token standards, with the code kept optional"
   },
   "gasExercise": {
-    "badge": "🧩 Exercise",
+    "badge": "Exercise",
     "heading": "Gas Estimation Challenge",
     "instructionA": "Click the 5 operations in order from ",
     "cheapest": "cheapest",
@@ -36,10 +36,10 @@
     "operationsLabel": "Operations — click to rank",
     "correctRanking": "Correct ranking",
     "placed": "{{count}} / {{total}} placed",
-    "hideHint": "🙈 Hide hint",
-    "hint": "💡 Hint",
-    "perfect": "🏆 Perfect!",
-    "reviewOrder": "📚 Review the order above",
+    "hideHint": "Hide hint",
+    "hint": "Hint",
+    "perfect": "Correct order",
+    "reviewOrder": "Review the order above",
     "explanation": "Storage writes are expensive because they modify global state on every full node permanently.",
     "ops": [
       { "label": "Read a public variable",      "detail": "View call — never hits the chain",            "gasLabel": "FREE" },
@@ -50,7 +50,7 @@
     ]
   },
   "stackExercise": {
-    "badge": "🧩 Exercise",
+    "badge": "Exercise",
     "heading": "Build the dApp Stack",
     "promptIdle": "Click a component, then click its layer to place it.",
     "promptSelectedA": "Now click a layer to place ",
@@ -59,7 +59,7 @@
     "infoHovered": "Hover any placed component to see what it is.",
     "infoIdle": "Click (or hover) a component to read what it does, then click a layer to place it.",
     "componentsLabel": "Components",
-    "allPlaced": "All placed!",
+    "allPlaced": "All placed",
     "clickHereToPlace": "← Click here to place",
     "empty": "Empty",
     "clickToUnplace": "Click to unplace",
@@ -82,14 +82,14 @@
   },
   "web3": {
     "heading": "The Web3 Landscape",
-    "subtitle": "Not just a technology shift — a paradigm shift in how trust is established.",
+    "subtitle": "A shift in where trust is placed.",
     "before": {
       "tag": "BEFORE — Web2",
       "title": "Trust intermediaries",
       "points": [
-        "🏦 Banks — custody of your money",
-        "🏛️ Institutions — custody of your data",
-        "🏢 Platforms — custody of your identity"
+        "Banks hold your money",
+        "Institutions hold your data",
+        "Platforms hold your identity"
       ],
       "note": "You trust that the intermediary is honest, solvent, and won't be hacked or censored."
     },
@@ -97,28 +97,28 @@
       "tag": "AFTER — Web3",
       "title": "Trust mathematics and transparent code",
       "points": [
-        "📐 Math — cryptographic proofs can't lie",
-        "📖 Code — open-source, auditable logic",
-        "🔗 Blockchain — shared, tamper-proof record"
+        "Cryptographic proofs verify claims",
+        "Open-source, auditable code",
+        "A shared, tamper-evident record"
       ],
       "note": "You trust the protocol — not the people running it."
     },
     "implication": {
       "title": "Implication: Disintermediation",
-      "body": "When trust is enforced by code rather than institutions, middlemen become optional. Smart contracts can replace escrow agents, brokers, settlement systems, and notaries — automatically, 24/7, globally."
+      "body": "When code enforces the rules, middlemen become optional. Smart contracts can replace escrow agents, brokers, settlement systems and notaries."
     },
     "buildingBlocksLabel": "The Web3 building blocks",
     "buildingBlocks": [
       { "label": "dApps",           "desc": "Front-ends that interact with smart contracts via wallets" },
       { "label": "Smart Contracts", "desc": "Business logic deployed on-chain, permanently executable" },
       { "label": "Blockchain",      "desc": "Shared ledger and VM — Ethereum, Solana, BNB Chain…" },
-      { "label": "Wallets",         "desc": "Identity + private key management — your passport to Web3" },
+      { "label": "Wallets",         "desc": "Holds your keys and signs transactions" },
       { "label": "Oracles",         "desc": "Bridges between on-chain logic and real-world data" }
     ]
   },
   "dapp": {
     "heading": "dApps & Smart Contracts",
-    "subtitle": "A dApp is not just a smart contract — it's a full stack where blockchain is one layer.",
+    "subtitle": "A dApp is a full stack; the blockchain is one layer of it.",
     "pillars": [
       {
         "title": "Smart Contracts",
@@ -154,22 +154,22 @@
     "stackLabel": "Full dApp stack",
     "stackAlt": "dApp stack: User → Browser → Web Server (Front-end) → Smart Contracts → Ethereum Virtual Machine → Ethereum Blockchain",
     "insightLabel": "Key insight:",
-    "insightBody": " only the blockchain layer is decentralized. Most dApps still rely on centralized hosting (Vercel, AWS) for their frontend — a nuance that's often overlooked."
+    "insightBody": " only the blockchain layer is decentralised. Most dApps host their frontend on ordinary servers (Vercel, AWS)."
   },
   "vsApp": {
     "kicker": "Web3 vs Traditional · 1 of 2",
     "heading": "The App: Web2 vs Web3",
     "subtitle": "The same product, built on two very different foundations.",
     "propertyLabel": "Property",
-    "colA": "🏛️ Traditional App",
-    "colB": "⛓️ dApp",
+    "colA": "Traditional app",
+    "colB": "dApp",
     "rows": [
-      { "prop": "🏗️ Infrastructure", "a": "Centralised servers (AWS, GCP)", "b": "Distributed nodes worldwide" },
-      { "prop": "🔐 Trust model",     "a": "Trust the company",             "b": "Trust the protocol & code" },
-      { "prop": "⏱️ Uptime",          "a": "SLA-based, can go down",        "b": "Protocol runs 24/7/365" },
-      { "prop": "🗄️ Data storage",    "a": "Private databases",             "b": "On-chain state + IPFS" },
-      { "prop": "💰 Cost model",      "a": "Subscription / ads",            "b": "Gas per transaction" },
-      { "prop": "🚫 Censorship",      "a": "Platform can ban users",        "b": "No one can block valid txs" }
+      { "prop": "Infrastructure", "a": "Centralised servers (AWS, GCP)", "b": "Distributed nodes worldwide" },
+      { "prop": "Trust model",     "a": "Trust the company",             "b": "Trust the protocol & code" },
+      { "prop": "Uptime",          "a": "SLA-based, can go down",        "b": "Runs as long as the network does" },
+      { "prop": "Data storage",    "a": "Private databases",             "b": "On-chain state + IPFS" },
+      { "prop": "Cost model",      "a": "Subscription / ads",            "b": "Gas per transaction" },
+      { "prop": "Censorship",      "a": "Platform can ban users",        "b": "Valid transactions cannot be blocked" }
     ],
     "takeawayLabel": "Takeaway: ",
     "takeaway": "a dApp trades a company you must trust for a protocol anyone can verify — at the cost of paying gas per action."
@@ -179,15 +179,15 @@
     "heading": "The Agreement: Traditional vs Smart Contract",
     "subtitle": "Same intent — enforced by people and courts, or by code.",
     "propertyLabel": "Property",
-    "colA": "📜 Traditional Contract",
-    "colB": "⚙️ Smart Contract",
+    "colA": "Traditional contract",
+    "colB": "Smart contract",
     "rows": [
-      { "prop": "⚙️ Execution",     "a": "Manual — requires human action", "b": "Automatic when conditions met" },
-      { "prop": "⏱️ Speed",         "a": "Days to weeks",                  "b": "Seconds to minutes" },
-      { "prop": "💸 Cost",          "a": "Legal fees, intermediaries",     "b": "Gas fee only" },
-      { "prop": "🔐 Trust",         "a": "Trust both parties + courts",    "b": "Trust the code only" },
-      { "prop": "👁️ Transparency",  "a": "Private, often ambiguous",       "b": "Public, deterministic code" },
-      { "prop": "🌍 Geography",     "a": "Jurisdiction-dependent",         "b": "Borderless, always enforceable" }
+      { "prop": "Execution",     "a": "Manual — requires human action", "b": "Automatic when conditions met" },
+      { "prop": "Speed",         "a": "Days to weeks",                  "b": "Seconds to minutes" },
+      { "prop": "Cost",          "a": "Legal fees, intermediaries",     "b": "Gas fee only" },
+      { "prop": "Trust",         "a": "Trust both parties + courts",    "b": "Trust the code only" },
+      { "prop": "Transparency",  "a": "Private, often ambiguous",       "b": "Public, deterministic code" },
+      { "prop": "Geography",     "a": "Jurisdiction-dependent",         "b": "Borderless" }
     ],
     "takeawayLabel": "Takeaway: ",
     "takeaway": "a smart contract removes lawyers, delay and ambiguity — but only for logic that can be expressed in code."
@@ -197,7 +197,7 @@
     "heading": "Token Standards",
     "subtitleA": "A standard is just a ",
     "subtitleStrong": "shared interface",
-    "subtitleB": " — an agreed set of behaviours every token of that type promises, so any wallet, exchange or app can handle it with zero custom work. For business: standards are why a token launched today works in millions of wallets tomorrow.",
+    "subtitleB": ": an agreed set of functions every token of that type exposes, so any wallet, exchange or app can handle it without custom work.",
     "erc20": {
       "title": "Fungible — every unit identical",
       "desc": "Money-like tokens. 1 unit = 1 unit — always interchangeable."
@@ -223,7 +223,7 @@
   },
   "components": {
     "heading": "Anatomy of a Smart Contract",
-    "subtitle": "Every smart contract is made of five building blocks. You don't need to read the code — the five words on the left are the vocabulary you need in meetings.",
+    "subtitle": "Five building blocks. You do not need to read the code; the five terms are the vocabulary.",
     "cards": [
       { "title": "Code",                "desc": "The business logic and conditional statements. Written in Solidity (Ethereum), Rust (Solana), or Vyper. Once deployed, the code is immutable." },
       { "title": "State",               "desc": "Stored data that the contract maintains and modifies over time. Examples: token balances, ownership records, vote counts. Persisted on-chain." },
@@ -238,16 +238,16 @@
       "function": "// ─── Function ────────────────────"
     },
     "tags": {
-      "state": "💾 State",
-      "event": "📡 Event",
-      "function": "⚙️ Function"
+      "state": "State",
+      "event": "Event",
+      "function": "Function"
     },
     "platformLabel": "Platform matters:",
     "platformBody": " this Solidity contract deploys to Ethereum, Polygon, Arbitrum, Base, and any EVM-compatible chain with zero code changes."
   },
   "workflow": {
     "heading": "How Smart Contracts Work",
-    "subtitle": "Five steps from deployment to notification — all on-chain, all automatic.",
+    "subtitle": "Five steps from deployment to notification.",
     "steps": [
       { "label": "Deploy",  "desc": "Contract code is compiled and uploaded to the blockchain. It gets a permanent address — immutable from this point on." },
       { "label": "Trigger", "desc": "A user or system sends a transaction to the contract address, calling a function with the required inputs." },
@@ -265,7 +265,7 @@
   "solidity": {
     "kicker": "Section 02",
     "heading": "Reading a Smart Contract",
-    "subtitle": "Optional for this course. You will never write Solidity here — but seeing one annotated contract demystifies every slide that follows. Skim it; come back if you are curious.",
+    "subtitle": "Optional. You will not write Solidity in this course; one annotated contract shows that it is readable code, not a black box.",
     "annotations": [
       { "title": "Contract Declaration",       "desc": "Like a class in OOP. All state and functions live inside. Once deployed, this code is immutable at its address on the blockchain." },
       { "title": "State Variables",            "desc": "Stored permanently on-chain. public creates a getter function automatically. Every write costs gas — reads are free." },
@@ -279,12 +279,12 @@
   },
   "execution": {
     "heading": "Execution Environment",
-    "subtitle": "Why smart contracts run the same way, everywhere, every time — and why that forces some surprising constraints.",
+    "subtitle": "Why contracts run the same way on every node, and what that rules out.",
     "properties": [
       {
         "title": "Virtual Machines",
         "subtitle": "Isolated execution environments",
-        "desc": "The EVM (Ethereum), SVM (Solana), WASM (Polkadot, Near)… Each VM is a sandboxed environment that cannot access the host machine's filesystem, network, or memory. Code runs in isolation — securely and predictably.",
+        "desc": "The EVM (Ethereum), SVM (Solana), WASM (Polkadot, Near)… Each VM is a sandbox that cannot reach the host machine's files, network or memory.",
         "examples": [
           "EVM — Ethereum, Polygon, Arbitrum",
           "SVM — Solana",
@@ -338,7 +338,7 @@
   },
   "capabilities": {
     "heading": "New Capabilities",
-    "subtitle": "Five things smart contracts make possible that no prior technology could.",
+    "subtitle": "Five things that were not possible before.",
     "realExample": "Real example",
     "items": [
       {
@@ -374,21 +374,21 @@
     "coreLabel": "Core reasons to build",
     "core": [
       { "title": "Eliminate Intermediaries", "desc": "No bank, notary, or escrow agent needed. The contract enforces the rules and releases funds automatically — reducing cost and counterparty risk." },
-      { "title": "Global by Default",        "desc": "Deploy once, accessible to anyone on Earth with an internet connection. No geographic restrictions, no foreign exchange friction, no banking requirements." },
-      { "title": "Radical Transparency",     "desc": "Every rule is public, readable, and auditable. Users don't have to trust a company's promises — they can verify the code themselves." },
-      { "title": "Always-On Automation",     "desc": "Code executes the moment conditions are met — no office hours, no approval queues, no human latency. Payouts, transfers, and state changes happen in seconds." }
+      { "title": "Global by Default",        "desc": "Deploy once; anyone with an internet connection can use it, without a bank account." },
+      { "title": "Transparency",             "desc": "Every rule is public and auditable; users can verify the code instead of trusting a promise." },
+      { "title": "Always-On Automation",     "desc": "Code executes the moment conditions are met, with no office hours or approval queues." }
     ],
     "impactLabel": "Business impact",
     "impact": [
       { "title": "Programmable Money",     "desc": "Revenue splits, royalties, and conditional payments execute automatically on every transaction. Superfluid streams salary per second. Mirror splits publication revenue by ownership." },
-      { "title": "Composable Ecosystem",  "desc": "Your contract can instantly integrate with Uniswap, Aave, Chainlink — no partnerships, no API keys. This \"money lego\" model accelerates product development exponentially." },
-      { "title": "Immutable Commitments", "desc": "Once deployed, the rules cannot be changed by any party — not even you. This removes the risk of unilateral platform changes that destroy user trust overnight." },
-      { "title": "DAO Governance",        "desc": "Smart contracts enable token-weighted voting, on-chain treasuries, and automatic execution of governance proposals — organisations without a legal entity or board." }
+      { "title": "Composable Ecosystem",  "desc": "Your contract can call Uniswap, Aave or Chainlink directly, with no partnership or API key." },
+      { "title": "Immutable Commitments", "desc": "Once deployed, the rules cannot be changed by any party, including you." },
+      { "title": "DAO Governance",        "desc": "Token-weighted voting, on-chain treasuries and automatic execution of proposals." }
     ]
   },
   "gas": {
     "heading": "Gas & Transaction Economics",
-    "subtitle": "Every computation costs gas. Understanding this is essential for building real applications.",
+    "subtitle": "Every computation costs gas.",
     "fundamentalsLabel": "Gas system fundamentals",
     "fundamentals": [
       { "term": "Gas",       "def": "Unit measuring the computational work required for an operation. Every EVM opcode has a fixed gas cost — storing data costs more than reading it." },
@@ -403,7 +403,7 @@
     "formulaExample": "e.g. 21,000 gas × 15 Gwei = 0.000315 ETH (~$0.80)",
     "incentivesLabel": "Why gas? — economic incentives",
     "incentives": [
-      { "who": "Users",      "why": "Pay for the computation and storage they consume — no free lunch, prevents spam." },
+      { "who": "Users",      "why": "Pay for the computation and storage they use, which prevents spam." },
       { "who": "Validators", "why": "Receive fees for processing transactions — economic incentive to keep the network running." },
       { "who": "Network",    "why": "Higher fees during congestion create natural throttling — the market self-regulates throughput." },
       { "who": "EIP-1559",   "why": "Base fee is burned, not paid to validators. Deflationary pressure on ETH supply during high usage." }
@@ -417,17 +417,17 @@
   },
   "reshape": {
     "heading": "How Smart Contracts Reshape Traditional Business",
-    "subtitle": "Five structural shifts that distinguish smart-contract-native businesses from traditional ones.",
+    "subtitle": "Five structural shifts.",
     "imgAlt": "Two people exchanging documents directly — disintermediation",
     "cards": [
       { "title": "Disintermediation",       "desc": "Peer-to-peer execution. No banks, brokers, or escrow services needed for the agreement to clear." },
       { "title": "Process Automation",      "desc": "Autonomous \"if X, then Y\" rules execute the moment conditions are met — no manual approval step." },
       { "title": "Trustless & Transparent", "desc": "Trust shifts from people to code + consensus. All actions are verifiable, auditable, and global." },
       { "title": "Cost Reduction",          "desc": "Eliminates middlemen, manual paperwork, and ongoing legal oversight. Cuts escrow, reconciliation, and compliance costs." },
-      { "title": "New Value Chains",        "desc": "Entirely new business models, products, and ecosystems become possible — DAOs, tokenized assets, M2M payments." }
+      { "title": "New Value Chains",        "desc": "New models: DAOs, tokenised assets, machine-to-machine payments." }
     ],
     "patternLabel": "The pattern:",
-    "patternBody": " traditional businesses centralize trust in an intermediary. Smart-contract-native businesses distribute that trust into code + consensus, then build new economic primitives on top — composability, atomicity, and global reach. The next section explores where this works in practice."
+    "patternBody": " traditional businesses centralise trust in an intermediary; smart-contract businesses move it into code and consensus. The next section shows where this works in practice."
   },
   "quiz": {
     "question": "In the smart contract execution workflow, what triggers a contract to run?",
@@ -443,7 +443,7 @@
     "title": "Section 02 — Key Takeaways",
     "items": [
       "Smart contracts run inside a deterministic virtual machine (EVM) — every node gets the same result",
-      "Core components: state variables, functions, events, modifiers, and ABI",
+      "Core components: code, state, functions, events and the platform it runs on",
       "Web3 dApps combine a front-end with a wallet and on-chain smart contract logic",
       "Gas is the cost of computation — every operation has a price in ETH",
       "Smart contracts enable programmable money, automated settlement, and trustless governance"
@@ -451,32 +451,32 @@
   },
   "summary": {
     "heading": "Section Summary",
-    "subtitle": "Everything covered in this section — at a glance",
+    "subtitle": "At a glance",
     "cards": [
       { "title": "Smart Contract Workflow", "summary": "Write → Compile → Deploy → Interact — four irreversible steps on an immutable ledger" },
       { "title": "Gas & Tx Economics",      "summary": "Gas = execution units · Gas price (Gwei) = market rate · EIP-1559: base fee burned + priority tip" },
       { "title": "dApp Stack",              "summary": "Smart contract (logic) + IPFS (storage) + Infura RPC (access) + Wallet (Rabby / Zerion / MetaMask) + React (UI)" },
-      { "title": "Web3 vs Traditional",     "summary": "Stateless vs stateful · Trustless vs trusted server · Public ledger vs private database" },
-      { "title": "New Capabilities",        "summary": "Flash loans, composability, atomic settlement, programmable money, DAO governance — impossible in TradFi" },
+      { "title": "Web3 vs Traditional",     "summary": "Trust the protocol vs trust the company · public ledger vs private database · gas per action vs subscription" },
+      { "title": "New Capabilities",        "summary": "Composability, atomic settlement, shared state, programmable money, censorship resistance" },
       { "title": "Why Build with SC?",      "summary": "Use when: multiple parties + conditional logic + no trusted intermediary + need for auditability" }
     ],
-    "footer": "Proceed to Section 3 for real-world case studies and de-hype analysis →"
+    "footer": "Next: Section 3 — industries and case studies"
   },
   "keyPoints": {
-    "s2-web3": "Web3 moves trust from the company running the service to the rules running the network — that is the product change.",
+    "s2-web3": "Web3 moves trust from the company running the service to the rules running the network.",
     "s2-dapp": "The blockchain is one layer of a dApp; the website, data feeds and storage are ordinary servers that someone controls.",
-    "s2-ex-stack": "Only the contract is decentralised by default — every other box in the stack is a vendor you still depend on.",
-    "s2-vs": "Web2 apps can change the rules on you overnight; Web3 apps make the rules public and hard to change — for better and worse.",
-    "s2-vs-2": "A traditional contract is enforced after a breach; a smart contract makes the breach impossible — or the bug permanent.",
-    "s2-standards": "Standards are why one wallet works with thousands of tokens — interoperability is the business value, not the token itself.",
-    "s2-components": "State, functions, conditions, events, addresses — five words that let you follow any contract summary in a meeting.",
-    "s2-workflow": "Once deployed, nobody triggers the contract — a transaction does, and the result is final on every node at once.",
-    "s2-solidity": "You will never write this — but knowing a contract is readable code, not a black box, changes how you question a vendor.",
-    "s2-execution": "Thousands of machines compute the same result, so the result is trustworthy — and slow, expensive and public.",
-    "s2-capabilities": "The new capability is not automation — it is automation that no single party, including the operator, can override.",
-    "s2-why": "Choose smart contracts when many parties must share one truth without a referee — otherwise choose a database.",
+    "s2-ex-stack": "Only the contract is decentralised by default; every other box is a vendor you depend on.",
+    "s2-vs": "Web2 apps can change the rules overnight; Web3 apps make the rules public and hard to change.",
+    "s2-vs-2": "A traditional contract is enforced after a breach; a smart contract prevents the breach, and preserves the bug.",
+    "s2-standards": "Standards are why one wallet works with thousands of tokens.",
+    "s2-components": "Code, state, functions, events, platform: five words that let you follow any contract summary.",
+    "s2-workflow": "A transaction, not a person, triggers the contract, and the result is final on every node.",
+    "s2-solidity": "A contract is readable code, not a black box; you can ask a vendor to show it.",
+    "s2-execution": "Thousands of machines compute the same result, which makes it trustworthy, slow, expensive and public.",
+    "s2-capabilities": "The new capability is automation that no single party, including the operator, can override.",
+    "s2-why": "Choose a smart contract when many parties must share one record without a referee; otherwise choose a database.",
     "s2-gas": "Every step costs real money, so good design keeps computation and data off-chain and puts only the proof on-chain.",
-    "s2-ex-gas": "Storage is the budget killer — writing data costs orders of magnitude more than reading it or sending value.",
-    "s2-reshape": "Smart-contract businesses earn from protocols and tokens, not from being the trusted middleman — the revenue model moves."
+    "s2-ex-gas": "Writing data costs far more than reading it or sending value.",
+    "s2-reshape": "Smart-contract businesses stop earning as the trusted middleman; the revenue model moves."
   }
 }

@@ -1,8 +1,8 @@
 {
   "groups": {
-    "g-brief": "🎯 The Assignment",
-    "g-work": "🛠 Work Session",
-    "g-wrap": "💬 Wrap"
+    "g-brief": "The Assignment",
+    "g-work": "Work Session",
+    "g-wrap": "Wrap"
   },
   "chapters": {
     "s7-brief": "At a Glance",
@@ -16,12 +16,12 @@
   "title": {
     "sectionNumber": "SECTION 07",
     "title": "In-class Assignment & Discussion",
-    "subtitle": "Pick a real-world problem, debate it in small groups, and argue — in one page — whether it deserves a blockchain."
+    "subtitle": "Pick a real-world problem, debate it in a small group, and argue in one page whether it needs a blockchain."
   },
   "brief": {
     "badge": "In-class assignment",
     "heading": "The assignment at a glance",
-    "subtitle": "A consulting exercise, not a coding one. Your job is to think clearly about a real problem and give an honest recommendation.",
+    "subtitle": "A consulting exercise, not a coding one: analyse a real problem and give an honest recommendation.",
     "linkLine": "This is the second of two graded in-class assignments; the first was in Fundamentals §3.",
     "stats": [
       { "label": "Groups", "value": "3–4 people", "note": "form them in the room" },
@@ -32,15 +32,15 @@
     "flowLabel": "How the session runs",
     "flow": [
       { "step": "Form groups & pick a problem", "time": "10 min", "desc": "Use a starter from the next slide or bring a problem from your own work or studies." },
-      { "step": "Discuss & draft", "time": "25 min", "desc": "Work through the three parts. Run the blockchain lens. Disagree — then write down why." },
+      { "step": "Discuss & draft", "time": "25 min", "desc": "Work through the three parts and run the blockchain lens." },
       { "step": "Share back", "time": "2 min / group", "desc": "One sentence per part. The class pushes back; you refine." },
       { "step": "Submit the 1-pager", "time": "end of session", "desc": "PDF, one page, group names at the top. Your instructor confirms the exact deadline." }
     ],
     "mindsetLabel": "The mindset:",
-    "mindsetBody": " you are the consultant a company hired to tell them whether blockchain is worth it. \"No, and here is why\" is a perfectly good answer — if it is well argued."
+    "mindsetBody": " you are the consultant hired to say whether blockchain is worth it. \"No, and here is why\" is a good answer if it is well argued."
   },
   "parts": {
-    "heading": "Exactly three parts — nothing else",
+    "heading": "Three parts",
     "subtitle": "A reader with five minutes should get the problem, the proposal, and an honest verdict. Headings in the report must match these three.",
     "wordsLabel": "≈ {{words}} words",
     "items": [
@@ -77,23 +77,23 @@
           "At least two genuine advantages and two genuine disadvantages.",
           "Cost, privacy, governance, legal recognition, user experience — pick the ones that bite here.",
           "What would the non-blockchain alternative look like, and why is it worse (or better)?",
-          "End with a verdict: ✅ smart contract · ⚠️ hybrid · ❌ database — in one sentence."
+          "End with a one-sentence verdict: smart contract, hybrid or database."
         ]
       }
     ],
-    "footer": "Diagrams count toward the page. Appendices do not exist. If it doesn't fit on one page, it isn't sharp enough yet."
+    "footer": "Diagrams count toward the page. No appendices."
   },
   "problemBank": {
-    "badge": "🧩 Problem starters",
+    "badge": "Problem starters",
     "heading": "Pick a problem — or bring your own",
-    "subtitle": "Click a card to see the actors, the friction, one blockchain angle and one honest alternative. Use them as a springboard, not an answer key.",
+    "subtitle": "Click a card to see the actors, the friction, one blockchain angle and one alternative.",
     "selectPrompt": "Select a problem to see the starter notes",
     "actorsLabel": "Actors",
     "frictionLabel": "Where trust breaks today",
     "angleLabel": "A blockchain angle",
     "alternativeLabel": "The honest alternative",
     "ownLabel": "Bring your own:",
-    "ownBody": " any problem where several parties exchange value or records and at least one of them is not fully trusted. Your workplace, your sports club, your student association — all fair game.",
+    "ownBody": " any problem where several parties exchange value or records and at least one is not fully trusted.",
     "items": [
       {
         "title": "Diploma verification",
@@ -162,7 +162,7 @@
     ]
   },
   "lens": {
-    "badge": "🧩 Critical lens",
+    "badge": "Critical lens",
     "heading": "Should this problem earn a blockchain?",
     "subtitle": "Tick what is true for your group's problem. The verdict updates live — bring it to Part 3 of your report.",
     "checks": [
@@ -175,16 +175,16 @@
     ],
     "scoreLabel": "{{count}} of {{total}} ticked",
     "verdicts": {
-      "sc": { "title": "✅ Strong case for a smart contract", "desc": "Multi-party, shared truth, stable rules. Your Part 3 should still name the two biggest risks — audits and governance." },
-      "hybrid": { "title": "⚠️ Hybrid — justify every on-chain piece", "desc": "Some of the pattern fits. Most real deployments live here: hashes or ownership on-chain, data and discretion off-chain." },
-      "db": { "title": "❌ Probably a database", "desc": "A well-run database with audit logs is cheaper, faster and legally clearer. Saying so, with reasons, is a strong report." }
+      "sc": { "title": "Strong case for a smart contract", "desc": "Multi-party, shared truth, stable rules. Your Part 3 should still name the two biggest risks — audits and governance." },
+      "hybrid": { "title": "Hybrid: justify every on-chain piece", "desc": "Some of the pattern fits. Most real deployments live here: hashes or ownership on-chain, data and discretion off-chain." },
+      "db": { "title": "Probably a database", "desc": "A well-run database with audit logs is cheaper, faster and legally clearer. Saying so, with reasons, is a strong report." }
     },
     "reset": "↺ Reset",
-    "footnote": "This is a conversation starter, not a formula. Section 4's decision tree is the full version — use both."
+    "footnote": "A conversation starter, not a formula; Section 4's decision tree is the full version."
   },
   "report": {
     "heading": "The 1-page report",
-    "subtitle": "A template you can copy. Three headings, a verdict line, your names. Nothing else.",
+    "subtitle": "A template: three headings, a verdict line, your names.",
     "pageTitle": "Smart Contracts · In-class Assignment",
     "pageGroup": "Group: names · date",
     "pageProblemTitle": "1 · Problem statement",
@@ -193,7 +193,7 @@
     "pageProsLabel": "Pros",
     "pageConsLabel": "Cons",
     "pageVerdictLabel": "Verdict:",
-    "pageVerdictPlaceholder": "✅ / ⚠️ / ❌ — one sentence",
+    "pageVerdictPlaceholder": "smart contract / hybrid / database — one sentence",
     "submissionLabel": "Submission",
     "submission": [
       { "label": "Format", "value": "PDF", "note": "one page, portrait" },
@@ -215,14 +215,14 @@
     "prompt": "Which of today's problems genuinely needs a blockchain — and which just needs a better database?",
     "questions": [
       "Where did your group disagree most: the problem, the solution, or the verdict? What evidence would settle it?",
-      "For a ❌ verdict: what would have to change (regulation, user tools, cost) for it to become ✅?",
-      "For a ✅ verdict: who runs it, who pays the gas, and who gets blamed when it goes wrong?",
+      "For a database verdict: what would have to change (regulation, user tools, cost) to make it a smart contract?",
+      "For a smart-contract verdict: who runs it, who pays the gas, and who is liable when it goes wrong?",
       "Which real case from the course does your problem most resemble — Estonia, Walmart, The DAO, ASX, TradeLens, ConstitutionDAO?"
     ]
   },
   "rubric": {
     "heading": "How it's assessed",
-    "subtitle": "Four equal criteria. Critical thinking is rewarded as much as enthusiasm — a well-argued \"no\" scores as high as a well-argued \"yes\".",
+    "subtitle": "Four equal criteria. A well-argued \"no\" scores as high as a well-argued \"yes\".",
     "criteria": [
       { "label": "Clarity of the problem", "weight": "25%", "desc": "Actors, friction and today's cost are concrete. A reader knows who is not trusted and why it matters." },
       { "label": "Fit of the solution", "weight": "25%", "desc": "The contract's trigger, action and on/off-chain split are plain and plausible. It connects to a real pattern from the course." },

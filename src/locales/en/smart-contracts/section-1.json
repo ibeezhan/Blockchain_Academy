@@ -14,12 +14,12 @@
   "title": {
     "sectionNumber": "SECTION 01",
     "title": "Introduction to Smart Contracts",
-    "subtitle": "What a smart contract is in business terms, where the idea came from, and an honest first look at what it can and cannot do"
+    "subtitle": "What a smart contract is, where the idea came from, and what it can and cannot do"
   },
   "warmup": {
-    "badge": "🧩 Warm-up · from Course 02",
+    "badge": "Warm-up · Course 02",
     "heading": "Bitcoin or Ethereum?",
-    "subtitle": "Recall before we build. Tag each statement, then see the answer.",
+    "subtitle": "Tag each statement as Bitcoin, Ethereum or both.",
     "scoreLabel": "correct",
     "reset": "↺ Reset",
     "chainMeta": {
@@ -41,11 +41,11 @@
     ]
   },
   "recap": {
-    "badge": "Warm-up · from Course 02",
-    "heading": "Quick Recap — Ethereum, the World Computer",
+    "badge": "Recap · Course 02",
+    "heading": "Ethereum recap",
     "leadA": "You met all of this in ",
     "leadStrong": "Course 02 → Ethereum",
-    "leadB": ". A 60-second refresher in plain language before we look at the contracts themselves — the technical names are in the pills if you want them.",
+    "leadB": ". A short refresher before we look at the contracts themselves; the technical names are in the pills.",
     "cards": [
       {
         "title": "Addresses",
@@ -71,16 +71,16 @@
     "footerLabel": "Where this course picks up: ",
     "footerA": "a contract account ",
     "footerEm": "is",
-    "footerB": " a smart contract. The next sections are all about what that code can do, how to read it, and when it's the right tool."
+    "footerB": " a smart contract. The rest of the course is about what that code can do and when it is the right tool."
   },
   "what": {
     "heading": "What is a Smart Contract?",
-    "subtitle": "A program that lives on a blockchain — and runs exactly as written, every time. Think of it as an agreement that enforces itself.",
+    "subtitle": "A program stored on a blockchain that runs exactly as written.",
     "definitionLabel": "Definition",
     "defLeadA": "A ",
     "defTerm": "smart contract",
     "defLeadB": " is a self-executing program stored on a blockchain whose terms are written directly in code — not in natural language.",
-    "defBody": "When predefined conditions are met, the contract executes automatically. No intermediary. No manual trigger. No possibility of censorship or tampering.",
+    "defBody": "When its conditions are met, the contract executes automatically, with no intermediary and no manual trigger.",
     "compareLabel": "Traditional contract vs Smart contract",
     "compareRows": [
       {
@@ -106,16 +106,16 @@
     ],
     "propsLabel": "Key properties",
     "props": [
-      { "title": "Autonomous", "desc": "Executes automatically when conditions are satisfied. No human needs to trigger or approve anything after deployment." },
-      { "title": "Immutable", "desc": "Once deployed to the blockchain, the code cannot be changed. What you deploy is what runs — forever." },
-      { "title": "Transparent", "desc": "Anyone can read the contract code on-chain. There are no hidden clauses — the logic is fully public and auditable." },
-      { "title": "Deterministic", "desc": "Given the same inputs, a smart contract always produces the same output. Every node on the network agrees on the result." },
-      { "title": "Trustless", "desc": "Parties do not need to trust each other — they only need to trust the code. The protocol enforces every term." }
+      { "title": "Autonomous", "desc": "Executes when conditions are met; nobody approves it after deployment." },
+      { "title": "Immutable", "desc": "Once deployed, the code cannot be changed." },
+      { "title": "Transparent", "desc": "Anyone can read the code on-chain; there are no hidden clauses." },
+      { "title": "Deterministic", "desc": "Same inputs always give the same output, so every node agrees on the result." },
+      { "title": "Trustless", "desc": "Parties need to trust the code, not each other." }
     ]
   },
   "szabo": {
     "heading": "Nick Szabo's Vending Machine",
-    "subtitle": "The original analogy — and the mind behind the concept, 30 years before DeFi.",
+    "subtitle": "The original analogy, from 1994.",
     "role": "Computer Scientist · Legal Scholar · Cryptographer",
     "quote": "\"A smart contract is a set of promises, specified in digital form, including protocols within which the parties perform on these promises.\"",
     "quoteAttribution": "— Nick Szabo, 1994",
@@ -135,14 +135,14 @@
       { "label": "Condition not met", "detail": "Returns coins · no item" }
     ],
     "insightLabel": "Key insight:",
-    "insightA": " the machine doesn't care who you are. No trust, no negotiation, no middleman. The code ",
+    "insightA": " the machine does not care who you are: no negotiation, no middleman. The code ",
     "insightEm": "is",
     "insightB": " the contract."
   },
   "history": {
     "badge": "Section 01",
     "heading": "Historical Evolution of Smart Contracts",
-    "subtitle": "From an idea with no computer to run it, to $100B+ in live contracts — and the first expensive lessons.",
+    "subtitle": "From an idea with nothing to run it on to $100B+ in live contracts.",
     "events": [
       { "year": "1994", "tag": "The idea", "title": "Szabo coins \"smart contract\"", "desc": "Promises enforced by code — the vending-machine analogy, 15 years before any chain could run it." },
       { "year": "2009", "tag": "First chain", "title": "Bitcoin — first on-chain contracts", "desc": "Script does conditional spending (multisig, timelocks) — deliberately non-Turing-complete." },
@@ -160,9 +160,9 @@
     ]
   },
   "exercise": {
-    "badge": "🧩 Interactive",
+    "badge": "Interactive",
     "heading": "Contract or not?",
-    "subtitle": "Six everyday agreements. Tap: could this run as code, or does it still need a person or an institution?",
+    "subtitle": "Six everyday agreements. Could each run as code, or does it need a person or an institution?",
     "scoreLabel": "correct so far",
     "reset": "↺ Reset",
     "yes": "Could be a smart contract",
@@ -210,35 +210,35 @@
       "A court of law — an authority that resolves disputes and enforces contractual obligations after the fact.",
       "A bank vault — a secure system that holds assets until conditions agreed by both parties are met."
     ],
-    "explanation": "Szabo used the vending machine as his canonical analogy: you insert money, select an item, and the machine automatically verifies the payment and delivers the product — no cashier, no trust, no dispute. The machine's logic is the contract. Szabo's insight was that this same principle — conditional logic enforced by a mechanism rather than a person — could be embedded in digital protocols. This became the intellectual foundation for Ethereum's smart contract model two decades later."
+    "explanation": "Szabo's analogy was the vending machine: insert money, select an item, and the machine checks the payment and delivers the product with no cashier and no dispute. His insight was that conditional logic enforced by a mechanism rather than a person could be built into digital protocols. Ethereum made that possible two decades later."
   },
   "takeaways": {
     "title": "Section 01 — Key Takeaways",
     "items": [
-      "A smart contract is self-executing code on a blockchain — once deployed, no single party can stop or alter it",
+      "A smart contract is self-executing code on a blockchain; once deployed, no single party can alter it",
       "Nick Szabo described the concept in 1994; Bitcoin (2009) and Ethereum (2015) made it real",
       "Key properties: autonomous, immutable, transparent, deterministic, trustless",
-      "The vending machine model: conditions → automatic execution, no human judgment needed",
-      "It is not a legal contract, not smart, not free and not unstoppable — the value is in removing trusted middlemen, locking rules and settling fast",
-      "DeFi, NFTs and DAOs are all smart contracts at different scales — $6B+ lost to exploits shows the power cuts both ways"
+      "Vending machine model: conditions met, automatic execution, no human judgement",
+      "Not a legal contract, not smart, not free, not unstoppable; the value is removing middlemen, locking rules and settling fast",
+      "DeFi, NFTs and DAOs are all smart contracts; $6B+ lost to exploits shows the same code enforces bugs"
     ]
   },
   "summary": {
     "heading": "Section Summary",
-    "subtitle": "Everything covered in this section — at a glance",
+    "subtitle": "At a glance",
     "cards": [
       { "title": "Nick Szabo (1994)", "summary": "\"Contractual clauses embedded in hardware and software\" — the original idea, 20 years before Ethereum" },
       { "title": "Bitcoin Scripts", "summary": "Limited but valid smart contracts: multi-sig, time locks, HTLCs — intentionally not Turing-complete" },
       { "title": "Ethereum (2015)", "summary": "Turing-complete EVM enabled arbitrary smart contracts, opening DeFi, NFTs, and DAOs" },
       { "title": "Key Properties", "summary": "Immutable, autonomous, transparent, trust-minimized, deterministic — all enforced by the protocol" },
-      { "title": "Code is Law Limits", "summary": "Bugs (The DAO: $60M), oracle failure, no legal standing — code is law until it isn't" },
+      { "title": "Code is Law Limits", "summary": "Bugs (The DAO: $60M), oracle failure, no legal standing" },
       { "title": "When to Use", "summary": "Multiple untrusting parties + conditional logic + no trusted intermediary = smart contract territory" }
     ],
-    "footer": "Proceed to Section 2 to explore the Smart Contract ecosystem →"
+    "footer": "Next: Section 2 — how smart contracts work"
   },
   "hype": {
     "heading": "Hype vs value: four things a smart contract is not",
-    "subtitle": "The name oversells it. Clearing these up now makes every case study later easier to judge.",
+    "subtitle": "The name oversells it. These four limits matter for every case study later.",
     "cards": [
       {
         "title": "Not a legal contract",
@@ -246,11 +246,11 @@
       },
       {
         "title": "Not smart",
-        "body": "It does exactly what is written — no judgement, no exceptions, no \"obviously that's not what we meant\". A bug executes as faithfully as a feature."
+        "body": "It does exactly what is written, with no judgement and no exceptions. A bug executes as faithfully as a feature."
       },
       {
         "title": "Not free",
-        "body": "Every step costs a network fee and on-chain storage is extraordinarily expensive. Storing one megabyte on Ethereum costs more than a laptop."
+        "body": "Every step costs a network fee, and on-chain storage is very expensive: one megabyte on Ethereum costs more than a laptop."
       },
       {
         "title": "Not unstoppable",
@@ -263,15 +263,15 @@
       "Making a rule impossible to bend after the fact — for everyone, including the operator",
       "Settling across borders in seconds, around the clock, with a public audit trail"
     ],
-    "footer": "Keep this lens for the rest of the course: does this use case need one of these three things? If not, a database will usually win."
+    "footer": "Ask of every use case: does it need one of these three things? If not, a database will usually win."
   },
   "keyPoints": {
-    "s1-warmup": "Bitcoin is a ledger for one asset; Ethereum is a shared computer — smart contracts only make sense on the second.",
-    "s1-recap": "A smart contract is just an account controlled by code instead of a person — everything else follows from that.",
-    "s1-what": "A smart contract turns an agreement into a rule that runs itself — no one has to be trusted to honour it.",
-    "s1-hype": "Not legal, not smart, not free, not unstoppable — the value is removing a middleman, locking a rule and settling fast.",
-    "s1-szabo": "The vending machine is the whole idea: fixed rules, instant verification, no negotiation — and no one to appeal to.",
-    "s1-history": "Thirty years from idea to $100B in live contracts — and every expensive lesson came from code doing exactly what it was told.",
+    "s1-warmup": "Bitcoin is a ledger for one asset; Ethereum is a shared computer that can run contracts.",
+    "s1-recap": "A smart contract is an account controlled by code instead of a person.",
+    "s1-what": "A smart contract turns an agreement into a rule that runs itself.",
+    "s1-hype": "Not legal, not smart, not free, not unstoppable; the value is removing a middleman, locking a rule and settling fast.",
+    "s1-szabo": "The vending machine is the whole idea: fixed rules, instant verification, no one to appeal to.",
+    "s1-history": "Every expensive lesson in thirty years came from code doing exactly what it was told.",
     "s1-exercise": "If one trusted institution already runs the process well, a smart contract adds cost, not trust."
   }
 }

@@ -15,11 +15,11 @@
   "title": {
     "sectionNumber": "SECTION 05",
     "title": "Limitations & Risks",
-    "subtitle": "An honest look at the oracle problem, real limitations, and where smart contracts fall short"
+    "subtitle": "The oracle problem, technical limits, and where smart contracts fall short"
   },
   "oracle": {
     "heading": "The Oracle Problem",
-    "subtitle": "Smart contracts are closed and deterministic — reaching the outside world is the hard part.",
+    "subtitle": "Contracts cannot see outside the chain; getting data in is the hard part.",
     "cards": [
       {
         "label": "The Problem",
@@ -78,7 +78,7 @@
       },
       {
         "title": "Storage Cost",
-        "what": "On-chain bytes are extraordinarily pricey",
+        "what": "On-chain storage is very expensive",
         "why": "Every full node stores it forever, so the protocol prices storage to discourage bloat.",
         "fix": "Keep only a hash on-chain; put the data on IPFS / Arweave.",
         "stat": "~$1,000/MB on-chain vs ~$0.02 on S3 — 50,000×"
@@ -129,15 +129,15 @@
     ]
   },
   "exercise": {
-    "badge": "🧩 Exercise",
+    "badge": "Exercise",
     "title": "Oracle Attack — Step by Step",
-    "subtitle": "A crop insurance contract is hacked via its oracle. Click through each step — and see how to prevent it.",
+    "subtitle": "A crop insurance contract is attacked through its oracle. Click through each step.",
     "stepsLabel": "steps",
     "reset": "↺ Reset",
     "whatHappened": "What happened",
     "howToPrevent": "How to prevent it",
     "unknownEvent": "···",
-    "revealNext": "Reveal next step →",
+    "revealNext": "Reveal next step",
     "rows": [
       {
         "actor": "Farmer",
@@ -232,7 +232,7 @@
   },
   "cost": {
     "heading": "Cost Risks",
-    "subtitle": "Smart contracts are not plug-and-play — budget for the upfront and the ongoing.",
+    "subtitle": "Budget for the upfront and the ongoing costs.",
     "whyLabel": "Why",
     "fixLabel": "Manage it",
     "items": [
@@ -264,7 +264,7 @@
   },
   "regulatory": {
     "heading": "Regulatory Risks",
-    "subtitle": "Smart contracts blur code and law — and the law has not caught up.",
+    "subtitle": "Code and law overlap, and the law has not caught up.",
     "items": [
       {
         "title": "Legal Adjudication",
@@ -303,15 +303,15 @@
       "Immutability is a double-edged sword — bugs are permanent unless upgrade patterns are used",
       "\"Code is law\" means users have no recourse when code behaves correctly but harmfully",
       "Gas costs make complex on-chain logic economically impractical for many use cases",
-      "Smart contracts are not always the answer — a database is faster, cheaper, and easier in many contexts",
-      "Keys, votes, oracles and economic design fail as often as code — Ronin, Beanstalk, Mango and Terra lost ~$41B between them without a single \"hack\" of the contract logic",
-      "Security audits are not optional — $6B+ lost since 2016; treat smart contract security as a discipline",
+      "A database is faster, cheaper and easier in many contexts",
+      "Keys, votes, oracles and economic design fail as often as code; Ronin, Beanstalk, Mango and Terra lost ~$41B without a bug in the contract logic",
+      "Audits are the entry ticket; $6B+ lost since 2016",
       "Regulatory uncertainty: laws move in years, contracts move in months — privacy, enforceability, and jurisdiction all matter"
     ]
   },
   "summary": {
     "heading": "Section Summary",
-    "subtitle": "Limitations and risks — at a glance",
+    "subtitle": "At a glance",
     "cards": [
       { "title": "Reentrancy", "summary": "Attacker re-enters function before state updates — The DAO hack ($60M, 2016). Fix: Checks-Effects-Interactions pattern" },
       { "title": "Oracle Attacks", "summary": "Flash loan → manipulate AMM price → drain protocol — Harvest Finance ($34M, 2020). Fix: multi-oracle, TWAP" },
@@ -323,9 +323,9 @@
   },
   "failures": {
     "heading": "When it went wrong — six real incidents",
-    "subtitle": "Each maps to one risk from the previous slides. Notice how often the contract did exactly what it was told.",
+    "subtitle": "Each maps to one risk from the previous slides. In most, the contract did exactly what it was told.",
     "lessonLabel": "Lesson: ",
-    "footer": "Pattern: keys, votes, data feeds and economic design fail at least as often as the code itself. Security is a property of the whole system — not of the contract alone.",
+    "footer": "Keys, votes, data feeds and economic design fail at least as often as the code. Security is a property of the whole system.",
     "items": [
       {
         "name": "Ronin Bridge (Axie Infinity)",
@@ -378,13 +378,13 @@
     ]
   },
   "keyPoints": {
-    "s5-oracle": "A contract is only as trustworthy as the data feed that triggers it — the oracle is where the middleman comes back in.",
-    "s5-challenges": "Slow, expensive, public and permanent — every design decision is a trade against one of these four.",
-    "s5-technical": "The fixes exist — layer 2s, bridges, upgradeable proxies, privacy tech — but each one reintroduces a party you must trust.",
-    "s5-ex-oracle": "Attack the input, not the code: a perfect contract pays out on a corrupted price feed without hesitation.",
-    "s5-risks-security": "Bugs are public, permanent and exploited within hours — an audit is not optional, it is the entry ticket.",
-    "s5-failures": "In most of these incidents the contract did exactly what it was told — the failure was in the design, the data or the people.",
+    "s5-oracle": "A contract is only as trustworthy as the data feed that triggers it.",
+    "s5-challenges": "Slow, expensive, public and permanent: every design decision trades against one of these.",
+    "s5-technical": "The fixes exist, but each one reintroduces a party you must trust.",
+    "s5-ex-oracle": "A perfect contract pays out on a corrupted data feed without hesitation.",
+    "s5-risks-security": "Bugs are public, permanent and exploited within hours; an audit is the entry ticket.",
+    "s5-failures": "In most incidents the contract did what it was told; the failure was in the design, the data or the people.",
     "s5-risks-cost": "The cheap part is the deployment; audits, monitoring, upgrades and gas during peaks are the real budget.",
-    "s5-risks-regulatory": "When code and law disagree, the law wins — plan for jurisdiction, data protection and who is liable when it breaks."
+    "s5-risks-regulatory": "When code and law disagree, the law wins; plan for jurisdiction, data protection and liability."
   }
 }
