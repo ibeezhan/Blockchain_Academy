@@ -1,33 +1,30 @@
 {
   "groups": {
     "g-s1-arch": "🏗️ Arquitetura",
-    "g-s1-consensus": "⛏️ Consenso",
+    "g-s1-tradeoffs": "⚖️ Trade-offs",
     "g-s1-apps": "💼 Apps & L2",
     "g-s1-fit": "🎯 Análise de Encaixe",
     "g-s1-wrap": "✅ Síntese"
   },
   "chapters": {
+    "s1-handoff": "↩ Handoff",
     "s1-architecture": "Arquitetura",
-    "s1-transaction": "Transação",
     "s1-tx-lifecycle": "🧩 Ciclo de Vida da Tx",
-    "s1-utxo-exercise": "Exercício UTXO",
-    "s1-pow": "Proof of Work",
     "s1-trilemma": "Trilema",
+    "s1-quiz-trilemma": "Quiz: Trilemma",
     "s1-apps": "Apps",
     "s1-lightning": "🧩 Lightning Network",
     "s1-bestfits": "🎯 Melhores Encaixes",
     "s1-worstfits": "🚫 Piores Encaixes",
-    "s1-quiz": "Questionário",
-    "s1-takeaways": "Conclusões",
-    "s1-summary": "Resumo",
-    "s1-handoff": "↩ Handoff"
+    "s1-quiz-fit": "Quiz: Right tool?",
+    "s1-takeaways": "Conclusões"
   },
   "title": {
-    "sectionNumber": "SECÇÃO 01",
-    "title": "Bitcoin: A Primeira Blockchain Sem Permissão",
-    "subtitle": "Arquitetura, transações, Proof of Work e o Trilema da Blockchain"
+    "sectionNumber": "SECTION 01",
+    "title": "Bitcoin: The First Permissionless Blockchain",
+    "subtitle": "Bitcoin as one platform: architecture, the transaction flow end to end, the Trilemma, and where it wins or loses"
   },
-  "lightning": {
+"lightning": {
     "badge": "🧩 Animado",
     "heading": "Lightning Network — O Modelo do Cofre",
     "layer2": "LAYER 2",
@@ -81,35 +78,75 @@
     "keyPoint": "Lightning moves everyday payments off-chain and uses Bitcoin only to open and settle — speed without giving up base-layer security."
   },
   "txLifecycle": {
-    "badge": "🧩 Animado",
-    "heading": "A Vida de uma Transação Bitcoin",
-    "intro": "Observa um único pagamento a percorrer todas as fases — carteira → mempool → mining → blockchain — até se tornar economicamente irreversível. Reproduz automaticamente; repete quando quiseres.",
-    "replay": "↻ Repetir",
-    "starting": "A começar…",
+    "badge": "🧩 Systemisation · recap",
+    "heading": "Blockchain transaction flow — end to end",
+    "intro": "You met every stage separately in Fundamentals — here is the whole journey once, start to finish. Ethereum follows the same flow with validators instead of miners.",
+    "replay": "↻ Replay",
+    "starting": "Starting…",
     "stageCaption": "{{n}}. {{title}} — {{what}}",
     "stages": [
-      { "title": "Construir & Assinar", "what": "A carteira escolhe UTXOs como inputs, define outputs (destinatário + troco) e assina cada input com a tua chave privada (ECDSA).",                  "note": "Ainda 100% local — nada on-chain ainda." },
-      { "title": "Difusão",            "what": "A transação raw assinada é enviada para os ~8 nós completos a que a tua carteira está ligada.",                                                       "note": "txid = duplo SHA-256 dos bytes da tx." },
-      { "title": "Retransmitir & Validar", "what": "Cada nó verifica as assinaturas, se os inputs existem e estão por gastar, ausência de duplo gasto e a sanidade da fee — e depois propaga-a.",            "note": "Chega a ~50k nós em menos de um segundo." },
-      { "title": "Mempool",            "what": "Válida mas não confirmada. A tx aguarda na mempool de cada nó, ordenada pela taxa de fee (sat/vByte).",                                            "note": "Fee maior → escolhida mais cedo." },
-      { "title": "Mining",             "what": "Um mineiro seleciona as txs de maior fee, constrói um bloco candidato (raiz de Merkle) e itera o nonce até blockHash < target.",                       "note": "Proof of Work · ~10 min em média." },
-      { "title": "Bloco Propagado",    "what": "O mineiro vencedor difunde o bloco. Cada nó reverifica a PoW e todas as txs, e depois acrescenta-o à sua chain local.",                              "note": "A tua tx tem agora 1 confirmação." },
-      { "title": "Confirmações",       "what": "Cada novo bloco empilhado por cima enterra-a mais fundo. Reescrevê-la implica superar o hashing de toda a rede a partir deste ponto.",                "note": "~6 confirmações (~60 min)." },
-      { "title": "Liquidada — Final",  "what": "O pagamento é economicamente irreversível. O destinatário pode libertar os bens ou o serviço em segurança.",                                          "note": "Fim da jornada." }
+      {
+        "title": "Wallet signs",
+        "what": "Your wallet builds the payment and signs it with your private key.",
+        "note": "Nothing on-chain yet."
+      },
+      {
+        "title": "Broadcast",
+        "what": "The signed transaction is handed to the handful of nodes your wallet is connected to.",
+        "note": "It has left your device."
+      },
+      {
+        "title": "Relay & check",
+        "what": "Every node checks the signature and that the coins are unspent, then passes it on.",
+        "note": "Invalid ones stop here."
+      },
+      {
+        "title": "Mempool",
+        "what": "Valid but unconfirmed — the transaction waits in a queue ranked by the fee it offers.",
+        "note": "Higher fee, sooner pick."
+      },
+      {
+        "title": "Block proposal",
+        "what": "A miner (Bitcoin) or a chosen validator (Ethereum) bundles waiting transactions into a block.",
+        "note": "Mining here · staking on Ethereum."
+      },
+      {
+        "title": "Block accepted",
+        "what": "The block is broadcast; every node re-checks it and adds it to its own copy of the chain.",
+        "note": "Your tx has 1 confirmation."
+      },
+      {
+        "title": "Confirmations",
+        "what": "Each new block on top makes rewriting yours more expensive — or, on Ethereum, formally final.",
+        "note": "Bitcoin ~6 blocks · Ethereum ~13 min."
+      },
+      {
+        "title": "Irreversible",
+        "what": "The payment is final for all practical purposes — the recipient can release the goods.",
+        "note": "End of the journey."
+      }
     ],
     "timing": {
-      "label": "⏱️ Tempos típicos",
-      "signLabel": "Assinar & difundir:",
+      "label": "⏱️ Typical timing",
+      "signLabel": "Sign & broadcast:",
       "signValue": "< 1 s",
-      "mempoolLabel": "Espera na mempool:",
-      "mempoolValue": "segundos → horas",
-      "mempoolSuffix": " (depende da fee)",
-      "blockLabel": "1 bloco:",
-      "blockValue": "~10 min",
-      "confLabel": "6 confirmações:",
-      "confValue": "~1 h ≈ liquidado"
+      "mempoolLabel": "Queue wait:",
+      "mempoolValue": "seconds → hours",
+      "mempoolSuffix": " (fee-driven)",
+      "blockLabel": "1 block:",
+      "blockValue": "~10 min Bitcoin · ~12 s Ethereum",
+      "confLabel": "Irreversible:",
+      "confValue": "~1 h Bitcoin · ~13 min Ethereum"
     },
-    "keyPoint": "A Bitcoin payment becomes final by probability, not by decree — wait six blocks (about an hour) before releasing high-value goods."
+    "hood": [
+      "txid = double-SHA256",
+      "ECDSA / Schnorr signature",
+      "sat/vByte fee rate",
+      "Merkle root",
+      "longest chain",
+      "Casper finality"
+    ],
+    "keyPoint": "Every blockchain payment makes the same journey — sign, broadcast, queue, block, confirm. Platforms differ in who proposes the block and how fast it becomes final."
   },
   "architecture": {
     "heading": "Arquitetura da Bitcoin",
@@ -118,28 +155,44 @@
     "emptyHint": "↑ Clica numa camada acima para a explorares",
     "layers": {
       "app": {
-        "label": "Camada de Aplicação",
-        "sublabel": "Carteiras · Exchanges · Block explorers",
-        "description": "A camada virada ao utilizador. Carteiras (MetaMask, Ledger), exchanges e exploradores traduzem dados brutos da blockchain em interfaces legíveis. Comunicam com a rede através de chamadas RPC aos nós.",
-        "examples": ["Carteira Bitcoin Core", "Electrum", "Mempool.space"]
+        "label": "Application Layer",
+        "sublabel": "Wallets · Exchanges · Block explorers",
+        "description": "The user-facing layer. Wallets (Electrum, Ledger, Bitcoin Core), exchanges and explorers translate raw blockchain data into readable interfaces. They talk to the network via RPC calls to nodes.",
+        "examples": [
+          "Bitcoin Core wallet",
+          "Electrum",
+          "Mempool.space"
+        ]
       },
       "p2p": {
         "label": "Camada de Rede (P2P)",
         "sublabel": "Protocolo de gossip · Descoberta de nós · Mempool",
         "description": "Os nós encontram-se uns aos outros usando DNS seeds e um protocolo de gossip. Cada transação não confirmada é difundida peer-to-peer e mantida na mempool de cada nó até ser minerada num bloco.",
-        "examples": ["~50.000 nós alcançáveis", "Porta TCP 8333", "Mensagens INV / GETDATA"]
+        "examples": [
+          "~50.000 nós alcançáveis",
+          "Porta TCP 8333",
+          "Mensagens INV / GETDATA"
+        ]
       },
       "consensus": {
-        "label": "Camada de Consenso",
-        "sublabel": "Proof of Work · Ajuste de dificuldade · Chain mais longa",
-        "description": "Os mineiros competem para encontrar um nonce que faça o hash do bloco começar com zeros à esquerda suficientes. A dificuldade ajusta-se a cada 2.016 blocos (~2 semanas) para manter o tempo de bloco em ~10 minutos. Vence a chain com mais trabalho acumulado.",
-        "examples": ["Hashing SHA-256", "Dificuldade-alvo", "Consenso de Nakamoto"]
+        "label": "Consensus Layer",
+        "sublabel": "Proof of Work · who may add the next block",
+        "description": "Proof of Work (Fundamentals §2): adding a block costs real electricity, so rewriting history costs more than it pays. For a business this layer is the security budget — and the reason blocks arrive every ~10 minutes, not every second.",
+        "examples": [
+          "~10-minute blocks",
+          "Security paid in energy",
+          "Nakamoto consensus"
+        ]
       },
       "data": {
         "label": "Camada de Dados",
         "sublabel": "Blocos · Conjunto UTXO · Árvores de Merkle",
         "description": "Os blocos encadeiam-se através de ponteiros de hash. Cada bloco contém uma raiz de Merkle das suas transações, permitindo provas SPV leves. O conjunto UTXO é o estado mínimo necessário para validar novas transações.",
-        "examples": ["~600 GB de chain completa", "Prova de Merkle em O(log n)", "Conjunto UTXO ~6 GB"]
+        "examples": [
+          "~600 GB de chain completa",
+          "Prova de Merkle em O(log n)",
+          "Conjunto UTXO ~6 GB"
+        ]
       }
     },
     "dataVisual": {
@@ -150,174 +203,70 @@
     "p2pVisual": {
       "title": "Propagação da transação",
       "steps": [
-        { "emoji": "👩", "label": "Alice", "desc": "Assina & difunde a tx para 8 pares" },
-        { "emoji": "🔁", "label": "Pares", "desc": "Cada um retransmite aos seus próprios pares" },
-        { "emoji": "🌐", "label": "Rede", "desc": "Chega a ~50k nós em <1 seg" },
-        { "emoji": "⛏️", "label": "Mineiro", "desc": "Escolhe da mempool & minera o bloco" }
+        {
+          "emoji": "👩",
+          "label": "Alice",
+          "desc": "Assina & difunde a tx para 8 pares"
+        },
+        {
+          "emoji": "🔁",
+          "label": "Pares",
+          "desc": "Cada um retransmite aos seus próprios pares"
+        },
+        {
+          "emoji": "🌐",
+          "label": "Rede",
+          "desc": "Chega a ~50k nós em <1 seg"
+        },
+        {
+          "emoji": "⛏️",
+          "label": "Mineiro",
+          "desc": "Escolhe da mempool & minera o bloco"
+        }
       ]
     },
     "consensusVisual": {
-      "title": "Mining: encontrar o nonce",
-      "nonce": "nonce",
-      "targetNote": "Tem de começar com zeros à esquerda suficientes para cumprir a dificuldade-alvo atual",
-      "facts": ["Ajusta a cada 2.016 blocos", "~2 semanas por ajuste", "Alvo de 10 min por bloco"]
+      "title": "Consensus as a cost, not a puzzle",
+      "body": "You are not paying miners to process payments — you are paying them to make rewriting history unaffordable. The bill is the point: the bigger it is, the safer the record.",
+      "buys": [
+        {
+          "label": "What it buys",
+          "text": "Finality without a referee — nobody can be asked to reverse a payment."
+        },
+        {
+          "label": "What it costs",
+          "text": "Slow blocks, limited throughput and a large energy bill carried by fees and new coins."
+        }
+      ],
+      "hood": [
+        "nonce",
+        "target",
+        "SHA-256d",
+        "2,016-block retarget",
+        "51% attack"
+      ]
     },
     "appVisual": {
       "title": "Aplicações na Bitcoin",
       "apps": [
-        { "name": "Carteiras", "ex": "Electrum, Ledger, Bitcoin Core" },
-        { "name": "Exploradores", "ex": "mempool.space, blockstream.info" },
-        { "name": "Exchanges", "ex": "Coinbase, Kraken, Binance" }
+        {
+          "name": "Carteiras",
+          "ex": "Electrum, Ledger, Bitcoin Core"
+        },
+        {
+          "name": "Exploradores",
+          "ex": "mempool.space, blockstream.info"
+        },
+        {
+          "name": "Exchanges",
+          "ex": "Coinbase, Kraken, Binance"
+        }
       ],
       "caption": "As apps comunicam com a rede através de chamadas RPC aos nós Bitcoin Core (porta 8332)."
     },
     "keyPoint": "A business touches the app layer; the other three layers are what make the record trustworthy without a bank."
   },
-  "transaction": {
-    "heading": "Transação Bitcoin & Modelo UTXO",
-    "subtitle": "Unspent Transaction Outputs — a primitiva contabilística por detrás de cada transferência de bitcoin.",
-    "whatLabel": "O que é um UTXO?",
-    "whatA": "Um ",
-    "whatTerm": "UTXO (Unspent Transaction Output)",
-    "whatB": " é um pedaço discreto de bitcoin que foi recebido mas ainda não gasto. Não existem \"saldos de conta\" — o software da tua carteira soma todos os UTXOs bloqueados ao teu endereço.",
-    "ioTitle": "Como funcionam os inputs & outputs",
-    "inputsTerm": "Os inputs",
-    "inputsBody": " referenciam um UTXO anterior pelo seu ID de transação e índice de output (vout), e fornecem um scriptSig para provar a posse.",
-    "outputsTerm": "Os outputs",
-    "outputsBody": " criam novos UTXOs — cada um bloqueado ao hash da chave pública de um destinatário. Uma vez gasto, um UTXO é consumido por inteiro.",
-    "visualTitle": "Visual: combinar UTXOs",
-    "utxo1": "UTXO #1",
-    "utxo2": "UTXO #2",
-    "fee": "fee: 0,1 BTC",
-    "bobNewUtxo": "Bob (novo UTXO)",
-    "aliceChange": "Alice (troco)",
-    "equation": "Inputs (0,8 BTC) = Outputs (0,7 BTC) + Fee (0,1 BTC)",
-    "anatomyTitle": "Anatomia de uma Transação Bitcoin",
-    "anatomy": [
-      { "field": "Version",     "desc": "Versão do protocolo — determina que regras se aplicam (ex. suporte de SegWit)." },
-      { "field": "Inputs [ ]",  "desc": "Array de referências aos UTXOs anteriores a serem consumidos. O scriptSig (ou witness) prova a posse." },
-      { "field": "Outputs [ ]", "desc": "Array de novos UTXOs criados. O scriptPubKey bloqueia as moedas ao endereço do destinatário." },
-      { "field": "Locktime",    "desc": "Momento/bloco mais cedo em que a transação pode ser minerada. 0 significa sem atraso." }
-    ],
-    "whyTitle": "Porquê UTXO?",
-    "whyBenefits": [
-      { "label": "Sem saldo global", "desc": "Sem um estado de conta mutável único — reduz a contenção" },
-      { "label": "Validação sem estado", "desc": "Cada UTXO pode ser verificado de forma independente" },
-      { "label": "Processamento paralelo", "desc": "UTXOs não sobrepostos podem ser validados em simultâneo" }
-    ],
-    "businessTitle": "What the UTXO model means for a business",
-    "business": [
-      {
-        "emoji": "💵",
-        "title": "Cash-like, not account-like",
-        "desc": "You spend whole \"notes\" and receive change. Wallets hide this — but treasury software must track many UTXOs, not one balance."
-      },
-      {
-        "emoji": "🧾",
-        "title": "Fees price bytes, not value",
-        "desc": "A €50 and a €50M payment can cost the same fee. Many small inputs make a transaction bigger — and pricier — to send."
-      },
-      {
-        "emoji": "🔍",
-        "title": "Every coin has a history",
-        "desc": "Each UTXO traces back to the block it was mined in. Auditors and compliance teams can follow provenance — Bitcoin is pseudonymous, not anonymous."
-      }
-    ],
-    "hood": ["txid", "vout", "scriptSig", "scriptPubKey", "locktime"],
-    "keyPoint": "Bitcoin keeps cash-like notes, not account balances — fees price bytes, and every coin carries its history."
-  },
-  "utxoExercise": {
-    "heading": "Exercício: Construir uma Transação Bitcoin",
-    "subtitle": "Seleciona UTXOs para cobrir o pagamento + fee. A carteira tem de gastar UTXOs inteiros — o excesso torna-se troco.",
-    "scenarioLabel": "Cenário {{id}} de {{total}}",
-    "next": "Seguinte →",
-    "send": "Enviar: ",
-    "fee": "Fee: ",
-    "need": "Preciso: ",
-    "needTotal": "{{amount}} BTC no total",
-    "pickerLabel": "UTXOs da Alice — clica para selecionar",
-    "preview": "Pré-visualização da transação",
-    "inputs": "Inputs",
-    "noInputs": "Ainda não há UTXOs selecionados",
-    "totalInputs": "Total de inputs",
-    "outputs": "Outputs",
-    "recipient": "→ Destinatário",
-    "changeToAlice": "← Troco para a Alice",
-    "minerFee": "⛏️ Fee do mineiro",
-    "valid": "✓ Válido — os inputs cobrem os {{needed}} BTC necessários",
-    "insufficient": "✗ Insuficiente — preciso de {{needed}} BTC, tenho {{have}} BTC",
-    "checkSolution": "Verificar solução ótima",
-    "optimalAnswer": "Resposta ótima",
-    "scenarios": [
-      {
-        "title": "Pagamento simples",
-        "context": "A Alice quer enviar 0,4 BTC ao Bob. Fee: 0,01 BTC. Que UTXOs deve usar?",
-        "utxos": [
-          { "label": "UTXO A — 0,3 BTC", "from": "Recompensa de mining (2023)" },
-          { "label": "UTXO B — 0,5 BTC", "from": "Pagamento recebido (2024)" },
-          { "label": "UTXO C — 0,1 BTC", "from": "Output de troco (2024)" }
-        ],
-        "explanation": "O UTXO B (0,5 BTC) sozinho cobre 0,4 + 0,01 BTC. Troco = 0,5 − 0,4 − 0,01 = 0,09 BTC de volta à Alice. Usar apenas 1 input mantém as fees baixas."
-      },
-      {
-        "title": "Combinar UTXOs pequenos",
-        "context": "A Alice quer enviar 0,6 BTC à Carol. Fee: 0,01 BTC. Nenhum UTXO isolado o cobre.",
-        "utxos": [
-          { "label": "UTXO A — 0,35 BTC", "from": "Venda anterior (2024)" },
-          { "label": "UTXO B — 0,40 BTC", "from": "Recompensa de mining (2024)" },
-          { "label": "UTXO C — 0,15 BTC", "from": "Gorjeta recebida (2023)" }
-        ],
-        "explanation": "UTXO A + B = 0,75 BTC. Cobre 0,6 + 0,01 BTC. Troco = 0,75 − 0,6 − 0,01 = 0,14 BTC de volta à Alice. O UTXO C não é necessário."
-      }
-    ],
-    "keyPoint": "Spend whole notes and take change back — wallets hide this, treasury systems cannot."
-  },
-  "pow": {
-    "heading": "Proof of Work",
-    "subtitle": "O puzzle criptográfico que torna o consenso da Bitcoin à prova de adulteração.",
-    "puzzleLabel": "O Puzzle do Hash",
-    "puzzleA": "A Bitcoin usa ",
-    "puzzleSha": "SHA-256",
-    "puzzleB": " (aplicado duas vezes) para produzir um digest de 256 bits. Os mineiros têm de encontrar um ",
-    "puzzleNonce": "nonce",
-    "puzzleC": " tal que o hash do bloco resultante fique abaixo do target atual — ou seja, comece com zeros à esquerda suficientes. Isto exige tentativa e erro por força bruta.",
-    "headerTitle": "Campos do Cabeçalho do Bloco",
-    "hashLabel": "SHA256(SHA256(header)) =",
-    "cards": {
-      "hardware": {
-        "title": "Evolução do Hardware de Mining",
-        "note": "Cada geração ~1000× mais eficiente. Os ASICs dominam agora."
-      },
-      "reward": {
-        "title": "Recompensa de Bloco & Halvings",
-        "note": "Halving a cada 210.000 blocos. Oferta limitada a um máximo rígido de 21 milhões de BTC."
-      },
-      "energy": {
-        "title": "O Debate Energético",
-        "bodyA": "A PoW converte eletricidade em segurança — atacar é caro no mundo real. Os críticos apontam o consumo energético da Bitcoin (~150 TWh/ano). A Ethereum resolveu isto migrando para ",
-        "bodyStrong": "Proof of Stake",
-        "bodyB": ", reduzindo o consumo de energia em ",
-        "bodyPercent": "~99,95%",
-        "bodyC": "."
-      },
-      "attack": {
-        "title": "Porque Funciona: Custo de um Ataque de 51%",
-        "body": "Para reescrever a história, um atacante precisa de >50% do hashrate global. Com a dificuldade atual isso custaria milhares de milhões em hardware ASIC + eletricidade, e qualquer ataque bem-sucedido destruiria o valor das moedas roubadas — tornando a honestidade a estratégia dominante."
-      }
-    },
-    "stepsTitle": "How a block gets made — in four moves",
-    "steps": [
-      { "emoji": "📥", "label": "Collect", "desc": "A miner gathers waiting transactions into a candidate block." },
-      { "emoji": "🎲", "label": "Guess", "desc": "It changes one number (the nonce) and hashes the block — trillions of times per second." },
-      { "emoji": "🎯", "label": "Hit the target", "desc": "If the hash lands below the network's target, the block is valid — and anyone can verify that in a millisecond." },
-      { "emoji": "💰", "label": "Get paid", "desc": "The winner broadcasts the block and earns the block reward plus fees. The race restarts immediately." }
-    ],
-    "buyLabel": "What a business is buying",
-    "buyBody": "Rewriting history means redoing all that work faster than the rest of the world combined. PoW turns electricity into a cost of attack — and that cost is the security.",
-    "hood": ["block header", "nonce", "target", "SHA-256d", "2,016-block retarget"],
-    "keyPoint": "You are not paying miners to process payments — you are paying them to make rewriting history unaffordable."
-  },
-  "trilemma": {
+"trilemma": {
     "heading": "O Trilema da Blockchain",
     "subtitle": "Uma blockchain pode destacar-se em quaisquer duas destas — a terceira torna-se um compromisso.",
     "chooseLabel": "ESCOLHE",
@@ -362,7 +311,7 @@
     "hood": ["Nakamoto consensus", "block size", "validator count", "Layer 2"],
     "keyPoint": "Bitcoin chose security and decentralisation and paid with speed — good for settling high-value transfers, not for coffee at the till."
   },
-  "apps": {
+"apps": {
     "heading": "Para além dos pagamentos — a camada de apps da Bitcoin",
     "subtitle": "Durante a maior parte da sua vida, a Bitcoin fazia apenas uma coisa: enviar valor. Desde 2018 — e acelerando desde 2023 — emergiu uma verdadeira camada de aplicação sobre, em torno de e por cima da chain de base.",
     "whereLabel": "Onde as apps realmente vivem",
@@ -411,44 +360,7 @@
     "caveatBody": "A camada de apps da Bitcoin é debatida dentro da comunidade Bitcoin. Os puristas querem a chain de base minimalista (\"ouro digital\"); os construtores defendem usá-la como camada de liquidação para apps mais ricas. Sê cético quanto ao hype de ambos os lados — os dois campos têm preocupações legítimas.",
     "keyPoint": "Bitcoin's base layer stays deliberately simple — applications live around it, each with its own trust model and its own risks."
   },
-  "lightningWhy": {
-    "heading": "Lightning Network — Porque é Importante",
-    "subtitle": "A camada de base da Bitcoin processa ~7 transações por segundo e demora ~10 minutos a confirmar. A Lightning resolve isto sem alterar a própria Bitcoin.",
-    "stats": {
-      "settlement": { "value": "~1ms", "label": "Liquidação", "sub": "vs ~10 min on-chain" },
-      "fee": { "value": "<0,001 $", "label": "Fee por pagamento", "sub": "vs 1–50 $ on-chain" },
-      "tps": { "value": "∞", "label": "TPS teórico", "sub": "limitado apenas pelos nós" }
-    },
-    "adoption": {
-      "title": "🌍 Adoção no Mundo Real",
-      "items": [
-        { "strong": "El Salvador", "text": " — a carteira Bitcoin nacional (Chivo) corre sobre Lightning" },
-        { "strong": "Strike & Cash App", "text": " — milhões de utilizadores enviam pagamentos Lightning" },
-        { "strong": "Remessas", "text": " — fee <0,1% vs 10–15% via Western Union" }
-      ]
-    },
-    "useCases": {
-      "title": "⚡ Novos Casos de Uso",
-      "items": [
-        { "strong": "Dinheiro em streaming", "text": " — pagar ao segundo por conteúdo ou serviços" },
-        { "strong": "Micropagamentos", "text": " — dar gorjeta de 1 sat por um artigo ou um tweet" },
-        { "strong": "Pagamentos entre máquinas", "text": " — dispositivos IoT a pagarem-se uns aos outros de forma autónoma" }
-      ]
-    },
-    "security": {
-      "title": "🔐 Garantias de Segurança",
-      "items": [
-        { "preA": "Os canais são impostos por ", "strong": "smart contracts Bitcoin", "preB": " — sem intermediário" },
-        { "preA": "Uma parte que tente fazer batota com um estado antigo vê os seus fundos ", "strong": "penalizados", "preB": "" },
-        { "preA": "Os HTLCs garantem que os intermediários podem encaminhar mas ", "strong": "nunca roubar", "preB": "" }
-      ]
-    },
-    "callout": {
-      "title": "Ideia-Chave",
-      "body": "A Lightning não substitui a Bitcoin — assenta por cima dela. A camada de base fornece a confiança; a Lightning fornece a velocidade. O mesmo modelo da internet: TCP/IP por baixo, HTTP por cima."
-    }
-  },
-  "bestFits": {
+"bestFits": {
     "badge": "🎯 Melhores Encaixes",
     "heading": "Onde a Bitcoin Vence — Os Casos de Uso que Realmente Domina",
     "subtitle": "As escolhas de desenho da Bitcoin (oferta fixa, modelo UTXO, Script intencionalmente limitado, segurança PoW) tornam-na espetacularmente boa num conjunto restrito de tarefas — e explicitamente não a ferramenta certa para muitas outras.",
@@ -464,7 +376,7 @@
     "notFitBody": " smart contracts ricos (usa Ethereum), point-of-sale de retalho de alto débito na camada de base (usa Lightning ou outra chain), consórcios empresariais privados (usa Fabric), identidade / governação / composabilidade DeFi on-chain.",
     "keyPoint": "Bitcoin wins where neutrality and scarcity matter more than features: reserves, settlement, censorship-resistant value."
   },
-  "worstFits": {
+"worstFits": {
     "badge": "🚫 Piores Encaixes",
     "headingA": "Onde a Bitcoin é a Ferramenta ",
     "headingEm": "Errada",
@@ -482,71 +394,49 @@
     "rightToolBody": " se a resposta for \"reserva de valor\", \"camada de liquidação neutra\" ou \"resistência à censura\" — a Bitcoin vence. Para literalmente qualquer coisa programável, escolhe uma chain diferente (e tudo bem).",
     "keyPoint": "If you find yourself fighting the protocol, you have picked the wrong chain — Bitcoin is not a general-purpose computer."
   },
-  "quiz": {
-    "question": "A Alice tem dois UTXOs: 0,35 BTC e 0,40 BTC. Quer enviar 0,60 BTC ao Bob e pagar uma fee de mineiro de 0,01 BTC. O que tem de acontecer nesta transação?",
+  "quizTrilemma": {
+    "question": "A payments app needs 5,000 transactions per second and must never go down. Which corner of the trilemma does Bitcoin give you least of — and what does that imply?",
     "options": [
-      "Usar apenas o UTXO de 0,40 BTC e pedir ao Bob que cubra ele próprio os restantes 0,21 BTC.",
-      "Combinar ambos os UTXOs (0,75 BTC no total), enviar 0,60 BTC ao Bob, pagar 0,01 BTC de fee e receber 0,14 BTC de troco de volta à carteira da Alice.",
-      "Dividir o UTXO de 0,40 BTC em dois outputs de 0,20 BTC cada para cobrir o pagamento em duas transações.",
-      "Esperar por um novo UTXO de recompensa de mining antes de fazer a transação, já que os UTXOs individuais são demasiado pequenos."
+      "Security — Bitcoin's small blocks make it easy to attack, so the app should pick a chain with more validators.",
+      "Scalability — Bitcoin's base layer handles single-digit transactions per second, so the app must move payments to a Layer 2 like Lightning or pick a platform that made a different trade.",
+      "Decentralization — Bitcoin is run by a handful of mining pools, so the app should move to a consortium chain instead.",
+      "None — difficulty adjustment speeds blocks up when demand rises, so 5,000 tx/s is reachable on the base layer."
     ],
-    "explanation": "O modelo UTXO da Bitcoin exige consumir UTXOs inteiros como inputs. A Alice precisa de 0,61 BTC no total (0,60 + 0,01 de fee) — nenhum UTXO sozinho cobre isto, por isso ambos têm de ser combinados. A transação gasta ambos os UTXOs (0,35 + 0,40 = 0,75 BTC) como inputs, cria um output de 0,60 BTC para o Bob e cria um output de troco de 0,14 BTC de volta à carteira da Alice. A diferença de 0,01 BTC entre inputs e outputs é implicitamente reclamada pelo mineiro. É por isto que o software de carteira controla o teu conjunto de UTXOs em vez de um único saldo."
+    "explanation": "Bitcoin chose security and decentralization and paid with throughput: roughly 7 transactions per second on the base layer and 10-minute blocks. That is a design choice, not a bug. A high-volume app either batches payments off-chain on Lightning and settles on Bitcoin, or picks a platform that made a different trade — Ethereum rollups, or a permissioned chain when the participants are known. Difficulty adjustment only keeps blocks near 10 minutes; it never makes them faster."
   },
-  "quiz2": {
-    "question": "Um mineiro encontra um bloco cujo hash SHA-256 satisfaz a dificuldade-alvo. Mesmo antes de o difundir, outro mineiro publica um bloco válido diferente à mesma altura. A rede tem brevemente duas chains concorrentes. Como é resolvido o conflito?",
+  "quizFit": {
+    "question": "Which of these is Bitcoin actually the right tool for?",
     "options": [
-      "Ambos os blocos são mantidos lado a lado; os nós honestos escolhem o que chegou primeiro e uma transação coordenadora funde as histórias em 10 minutos.",
-      "O fork é resolvido pelo consenso de Nakamoto: os nós seguem a chain com mais proof-of-work cumulativa. O lado que primeiro estender com outro bloco vence; o outro bloco fica órfão e as suas transações regressam à mempool.",
-      "O bloco órfão é incluído num bloco futuro como \"tio\" (uncle) e o mineiro continua a ganhar uma recompensa parcial de bloco, semelhante à Ethereum pré-Merge.",
-      "Os dois mineiros têm de difundir uma transação coordenada de desempate assinada por uma maioria de 51% do hash rate dentro da próxima epoch."
+      "A retail loyalty-points programme run by one supermarket chain.",
+      "A decade-long treasury reserve that no government or company can freeze, inflate or reverse.",
+      "An in-game economy with thousands of micro-trades per minute.",
+      "Private invoices between four B2B partners who already know each other."
     ],
-    "explanation": "A Bitcoin usa o consenso de Nakamoto — vence sempre a chain com a maior proof-of-work cumulativa. Quando dois blocos válidos são encontrados à mesma altura, a rede faz fork temporariamente; o lado que primeiro estender com outro bloco torna-se a chain canónica, e as transações do bloco órfão regressam à mempool para serem reincluídas mais tarde. A Bitcoin não tem recompensa de bloco-tio (isso foi o protocolo GHOST da Ethereum pré-Merge); um bloco obsoleto não dá nada ao mineiro. Não há transação coordenadora nem sinalização — a latência de propagação e a probabilidade decidem os forks naturalmente."
-  },
-  "quiz3": {
-    "question": "O hash rate da rede Bitcoin duplica ao longo de seis meses à medida que novos mineiros instalam ASICs mais rápidos. O que mantém automaticamente os intervalos entre blocos perto do alvo de 10 minutos?",
-    "options": [
-      "A recompensa de bloco é reduzida para metade mais cedo para desencorajar a adesão de novos mineiros à rede.",
-      "A cada 2.016 blocos (~2 semanas) cada nó recalcula independentemente a dificuldade-alvo a partir do tempo que os 2.016 blocos anteriores demoraram. Com o dobro do hash rate, o target encolhe (mais zeros à esquerda exigidos) por isso encontrar um bloco válido torna-se proporcionalmente mais difícil.",
-      "Os nós Bitcoin votam em tempo real numa nova dificuldade usando sinalização dos mineiros codificada nas transações coinbase.",
-      "Uma regra de timestamp rejeita qualquer bloco publicado menos de 10 minutos após o seu pai, impondo a cadência diretamente."
-    ],
-    "explanation": "O ajuste de dificuldade da Bitcoin é automático, sem necessidade de confiança, e corre a cada 2.016 blocos (~2 semanas). Cada nó compara o tempo real decorrido com os 14 dias × 24 h × 6 blocos/h = 20.160 minutos esperados e escala o target em conformidade: blocos mais rápidos → target mais difícil. Os halvings ocorrem a cada 210.000 blocos mas não estão relacionados com variações do hash rate. Não há votação dos mineiros sobre a dificuldade nem um tempo mínimo entre blocos — só o target os restringe probabilisticamente."
+    "explanation": "Bitcoin wins where neutrality and scarcity matter more than features: a fixed supply, no issuer, and a security budget that makes rewriting history unaffordable — exactly what a long-term reserve needs. Loyalty points have one trusted issuer who must be able to change the rules — a database. A game economy needs fast, cheap, programmable trades — a smart-contract platform. Private B2B invoices need confidentiality between known parties — a permissioned chain (Section 3)."
   },
   "takeaways": {
-    "title": "Secção 01 — Conclusões",
+    "title": "Section 01 — Key Takeaways",
     "items": [
-      "A Bitcoin é uma blockchain pública e sem permissão — qualquer pessoa pode participar",
-      "A sua arquitetura combina transações UTXO, árvores de Merkle e cabeçalhos de bloco encadeados",
-      "A Proof of Work torna os ataques proibitivamente caros — segurança através do custo energético do mundo real",
-      "O Trilema da Blockchain: descentralização, segurança e escalabilidade não podem ser todas maximizadas em simultâneo",
-      "A Bitcoin prioriza a segurança e a descentralização — a escalabilidade é tratada pela Layer 2 (Lightning)",
-      "Right tool, right job: Bitcoin for value storage and neutral settlement — not for programmable business logic"
+      "Bitcoin is a permissionless platform: anyone can join, nobody can be excluded — and nobody can undo",
+      "Its four layers (apps, network, consensus, data) each buy a business something: reach, auditability, finality",
+      "Every blockchain payment makes the same journey — sign, broadcast, queue, block, confirm; platforms differ in who proposes blocks and how fast finality comes",
+      "The Trilemma: Bitcoin chose security and decentralization and paid with throughput — speed lives on Layer 2 (Lightning) or on another platform",
+      "Bitcoin's app layer — Lightning, inscriptions, sidechains, staking — lives around the chain, each piece with its own trust model",
+      "Where it wins: reserves, neutral settlement, censorship-resistant value. Where it loses: programmable logic, private data, high-volume retail — the next platforms make those trades differently"
     ]
-  },
-  "summary": {
-    "heading": "Resumo da Secção",
-    "subtitle": "Tudo o que foi abordado nesta secção — num relance",
-    "cards": [
-      { "icon": "💼", "title": "Camada de Aplicação", "summary": "Carteiras, exchanges, block explorers — comunicam com a rede através de chamadas RPC aos nós completos na porta 8332" },
-      { "icon": "🌐", "title": "Rede P2P", "summary": "~50k nós alcançáveis · Protocolo de gossip · A mempool guarda as txs não confirmadas · Porta TCP 8333" },
-      { "icon": "⛏️", "title": "Proof of Work", "summary": "Puzzle de hash SHA-256 · Ajuste de dificuldade a 2016 blocos · Alvo de 10 minutos por bloco · Vence quem encontra primeiro o nonce" },
-      { "icon": "🗄️", "title": "Modelo UTXO", "summary": "Os inputs referenciam UTXOs anteriores · Os outputs criam novos UTXOs · Sem saldo global · O troco é um novo output" },
-      { "icon": "📊", "title": "Calendário de Halvings", "summary": "50 → 25 → 12,5 → 6,25 BTC por bloco · Oferta máxima 21M · Próximo halving ~2028 · Última moeda minerada ~2140" },
-      { "icon": "⚖️", "title": "Compromisso do Trilema", "summary": "Bitcoin: Segurança + Descentralização · Escalabilidade tratada pela Lightning Network (Layer 2) com pagamentos off-chain" }
-    ],
-    "footer": "Avança para a Secção 2 para explorar a Ethereum e as blockchains programáveis →"
   },
   "handoff": {
     "badge": "↩ Recap handoff · Blockchain Fundamentals",
-    "heading": "You already know how Bitcoin works — now look at it as a platform",
-    "lead": "You learned Bitcoin’s mechanics in Fundamentals §2 — here we look at it as a platform: what did its designers optimise for, what did they give up, and what is it actually good for in business?",
+    "heading": "Mechanics done in Fundamentals §2 — today, Bitcoin as a platform",
+    "lead": "You know how Bitcoin works. Today we ask a different question: what did its designers optimise for, what did they give up, and what does that make it good for in business?",
     "coveredLabel": "Already covered — we won't re-teach it",
     "covered": [
-      "Hashing & SHA-256",
-      "Blocks, chains & Merkle trees",
-      "Wallets, keys & signatures",
-      "Mining & Proof of Work basics",
-      "UTXOs & change"
+      "Hashing, blocks & chain",
+      "Wallets, keys & seed",
+      "Mining & Proof of Work",
+      "UTXOs & how a spend works",
+      "Supply & halving",
+      "Security model"
     ],
     "lensLabel": "Today's lens",
     "lens": [
@@ -555,14 +445,7 @@
         "title": "Architecture",
         "desc": "Four layers — and what each one buys a business: reach, auditability, finality.",
         "question": "Which of the four layers does your business actually touch?",
-        "where": "→ Architecture · Transaction"
-      },
-      {
-        "emoji": "⛏️",
-        "title": "Proof of Work as a cost",
-        "desc": "What you pay for security, who pays it, and why the size of the bill is the point.",
-        "question": "Who pays for Bitcoin's security — and what would an attack cost?",
-        "where": "→ Proof of Work"
+        "where": "→ Architecture · Tx Flow"
       },
       {
         "emoji": "⚖️",
@@ -570,10 +453,23 @@
         "desc": "No platform gets everything. Bitcoin chose security and decentralization — and lives with the consequences.",
         "question": "Which corner of the triangle can your use case afford to lose?",
         "where": "→ Trilemma · Best & Worst Fits"
+      },
+      {
+        "emoji": "💼",
+        "title": "The app layer",
+        "desc": "What gets built on a chain that cannot run programs: payment channels, inscriptions, sidechains, staking.",
+        "question": "Where does an application live when the base chain stays minimal?",
+        "where": "→ Apps · Lightning"
       }
     ],
     "questionLabel": "The question we'll answer",
-    "hood": ["SHA-256", "UTXO", "nonce", "difficulty", "longest chain"],
+    "hood": [
+      "SHA-256",
+      "UTXO",
+      "nonce",
+      "difficulty",
+      "longest chain"
+    ],
     "keyPoint": "Same Bitcoin, different question: not how it works, but what it is for — and what it costs."
   }
 }

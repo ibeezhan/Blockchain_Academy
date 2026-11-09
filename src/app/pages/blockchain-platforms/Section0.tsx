@@ -11,7 +11,7 @@ import { RefreshCw } from 'lucide-react';
 
 // Language-neutral shape — only IDs. Labels come from t() at render time.
 const chapterIds = [
-  's0-centralization',
+  's0-recap',
   's0-types',
   's0-spectrum',
   's0-sorter',
@@ -26,67 +26,62 @@ interface ComparisonRow {
   option3?: string;
 }
 
-interface UsecaseDriver {
-  label: string;
-  text: string;
-}
-
 interface DecisionItem {
   q: string;
   lean: string;
 }
 
-// ─── Topology mini-diagrams (language-neutral) ───────────────────────────────
-
-function CentralizedDiagram() {
-  const spokes = [[22, 16], [90, 16], [22, 64], [90, 64]];
-  return (
-    <svg viewBox="0 0 112 80" className="w-28 h-20">
-      {spokes.map(([x, y], i) => (
-        <line key={i} x1="56" y1="40" x2={x} y2={y} stroke="#ED1C24" strokeWidth="1.5" strokeOpacity="0.5" />
-      ))}
-      {spokes.map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r="7" fill="none" stroke="#ED1C24" strokeWidth="1.5" opacity="0.6" />
-      ))}
-      <circle cx="56" cy="40" r="11" fill="#ED1C2430" stroke="#ED1C24" strokeWidth="2" />
-      <text x="56" y="44" textAnchor="middle" fontSize="10" fontWeight="900" fill="#ED1C24">C</text>
-    </svg>
-  );
+interface RecapItem {
+  ref: string;
+  text: string;
 }
 
-function DecentralizedDiagram() {
-  const hubs: [number, number][] = [[56, 22], [26, 58], [86, 58]];
-  const leaves: [number, number, number, number][] = [[56, 22, 40, 8], [56, 22, 72, 8], [26, 58, 10, 72], [86, 58, 102, 72]];
-  return (
-    <svg viewBox="0 0 112 80" className="w-28 h-20">
-      <line x1="56" y1="22" x2="26" y2="58" stroke="#f59e0b" strokeWidth="1.5" strokeOpacity="0.4" />
-      <line x1="56" y1="22" x2="86" y2="58" stroke="#f59e0b" strokeWidth="1.5" strokeOpacity="0.4" />
-      <line x1="26" y1="58" x2="86" y2="58" stroke="#f59e0b" strokeWidth="1.5" strokeOpacity="0.4" />
-      {leaves.map(([x1, y1, x2, y2], i) => (
-        <g key={i}>
-          <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#f59e0b" strokeWidth="1.2" strokeOpacity="0.4" />
-          <circle cx={x2} cy={y2} r="4" fill="none" stroke="#f59e0b" strokeWidth="1.5" opacity="0.6" />
-        </g>
-      ))}
-      {hubs.map(([cx, cy], i) => (
-        <circle key={i} cx={cx} cy={cy} r="8" fill="#f59e0b25" stroke="#f59e0b" strokeWidth="2" opacity="0.8" />
-      ))}
-    </svg>
-  );
-}
+// ─── Recap in key points ─────────────────────────────────────────────────────
 
-function DistributedDiagram() {
-  const nodes: [number, number][] = [[56, 20], [28, 40], [84, 40], [42, 64], [70, 64], [14, 60], [98, 60]];
-  const edges: [number, number, number, number][] = [[56, 20, 28, 40], [56, 20, 84, 40], [28, 40, 42, 64], [84, 40, 70, 64], [28, 40, 14, 60], [84, 40, 98, 60], [42, 64, 70, 64], [28, 40, 84, 40]];
+// Accent per recap line — walks from the Fundamentals red to the Platforms green.
+const RECAP_COLORS = ['#ED1C24', '#ED1C24', '#f59e0b', '#f59e0b', '#6366f1', '#39B54A'];
+
+function RecapSlide() {
+  const { t } = useTranslation('blockchain-platforms/section-0');
+  const items = t('recap.items', { returnObjects: true }) as RecapItem[];
+  const next = t('recap.next', { returnObjects: true }) as string[];
+
   return (
-    <svg viewBox="0 0 112 80" className="w-28 h-20">
-      {edges.map(([x1, y1, x2, y2], i) => (
-        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#39B54A" strokeWidth="1.5" strokeOpacity="0.35" />
-      ))}
-      {nodes.map(([cx, cy], i) => (
-        <circle key={i} cx={cx} cy={cy} r="7" fill="#39B54A20" stroke="#39B54A" strokeWidth="2" opacity="0.8" />
-      ))}
-    </svg>
+    <div className="h-full flex flex-col p-5 lg:p-8">
+      <div className="shrink-0 mb-3">
+        <span className="inline-flex px-2.5 py-0.5 rounded-full bg-[#6366f1]/15 border border-[#6366f1]/40 text-[#6366f1] text-[10px] font-black uppercase tracking-widest mb-2">
+          {t('recapBadge')}
+        </span>
+        <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('recap.heading')}</h2>
+        <p className="text-sm text-muted-foreground mt-1 max-w-4xl">{t('recap.subtitle')}</p>
+      </div>
+
+      {/* Six bullets, each with a pointer back to the Fundamentals section that taught it */}
+      <div className="flex-1 min-h-0 flex flex-col justify-center gap-2">
+        {items.map((item, i) => {
+          const color = RECAP_COLORS[i] ?? '#6366f1';
+          return (
+            <div key={i} className="flex items-center gap-3 rounded-xl border bg-card px-4 py-2.5" style={{ borderColor: color + '40' }}>
+              <span className="size-7 shrink-0 rounded-full flex items-center justify-center text-xs font-black text-white" style={{ backgroundColor: color }}>{i + 1}</span>
+              <p className="flex-1 text-sm lg:text-base text-foreground leading-snug">{item.text}</p>
+              <span className="shrink-0 whitespace-nowrap text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-full border" style={{ color, borderColor: color + '60', backgroundColor: color + '10' }}>
+                {t('recap.refPrefix')} {item.ref}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* What this section adds */}
+      <div className="shrink-0 mt-3 flex flex-wrap items-center gap-2">
+        <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{t('recap.nextLabel')}</span>
+        {next.map((n) => (
+          <span key={n} className="px-2.5 py-1 rounded-full text-xs font-semibold border" style={{ borderColor: '#39B54A60', color: '#39B54A', backgroundColor: '#39B54A10' }}>✦ {n}</span>
+        ))}
+      </div>
+
+      <KeyPointBar text={t('recap.keyPoint')} className="shrink-0 mt-3 lg:mr-20" />
+    </div>
   );
 }
 
@@ -338,24 +333,10 @@ export function Section0() {
     [t]
   );
 
-  const centralizedPoints = t('centralization.centralized.points', { returnObjects: true }) as string[];
-  const decentralizedPoints = t('centralization.decentralized.points', { returnObjects: true }) as string[];
-  const distributedPoints = t('centralization.distributed.points', { returnObjects: true }) as string[];
-  const centralizationHood = t('centralization.hood', { returnObjects: true }) as string[];
-
   const typesItems = t('types.items', { returnObjects: true }) as ComparisonRow[];
-
   const useItems = t('usecases.use.items', { returnObjects: true }) as string[];
   const dontUseItems = t('usecases.dontUse.items', { returnObjects: true }) as string[];
-  const driverItems = t('usecases.drivers.items', { returnObjects: true }) as UsecaseDriver[];
-
   const takeawayItems = t('takeaways.items', { returnObjects: true }) as string[];
-
-  const topologies = [
-    { key: 'centralized', color: '#ED1C24', emoji: '🏛️', points: centralizedPoints, diagram: <CentralizedDiagram /> },
-    { key: 'decentralized', color: '#f59e0b', emoji: '🕸️', points: decentralizedPoints, diagram: <DecentralizedDiagram /> },
-    { key: 'distributed', color: '#39B54A', emoji: '🌐', points: distributedPoints, diagram: <DistributedDiagram /> },
-  ];
 
   return (
     <div className="h-full w-full flex overflow-hidden">
@@ -374,37 +355,9 @@ export function Section0() {
           />
         </div>
 
-        {/* ═══════ CENTRALIZATION ═══════ */}
-        <div id="s0-centralization" className="h-full flex flex-col p-5 lg:p-8">
-          <div className="shrink-0 mb-4">
-            <span className="inline-flex px-2.5 py-0.5 rounded-full bg-[#6366f1]/15 border border-[#6366f1]/40 text-[#6366f1] text-[10px] font-black uppercase tracking-widest mb-2">
-              {t('recapBadge')}
-            </span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{t('centralization.heading')}</h2>
-            <p className="text-sm text-muted-foreground max-w-4xl">{t('centralization.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4">
-            {topologies.map((tp) => (
-              <div
-                key={tp.key}
-                className="bg-card border rounded-xl p-5 flex flex-col items-center text-center gap-3"
-                style={{ borderColor: tp.color + '60' }}
-              >
-                <div className="text-4xl">{tp.emoji}</div>
-                <h3 className="font-bold text-base" style={{ color: tp.color }}>{t(`centralization.${tp.key}.title`)}</h3>
-                <div className="shrink-0">{tp.diagram}</div>
-                <ul className="flex flex-col justify-between flex-1 text-sm text-muted-foreground text-center space-y-2">
-                  {tp.points.map((point, i) => (
-                    <li key={i} className={i === tp.points.length - 1 ? 'font-medium text-foreground' : undefined}>{point}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-          <div className="shrink-0 mt-3 flex flex-col gap-2 lg:pr-20">
-            <KeyPointBar text={t('centralization.keyPoint')} />
-            <UnderTheHood items={centralizationHood} />
-          </div>
+        {/* ═══════ RECAP IN KEY POINTS ═══════ */}
+        <div id="s0-recap" className="h-full">
+          <RecapSlide />
         </div>
 
         {/* ═══════ BLOCKCHAIN TYPES ═══════ */}
@@ -419,7 +372,13 @@ export function Section0() {
               items={typesItems}
             />
           </div>
-          <KeyPointBar text={t('types.keyPoint')} className="shrink-0 mx-5 mb-5 lg:ml-8 lg:mr-28 lg:mb-8" />
+          <div className="shrink-0 px-5 pb-5 lg:pl-8 lg:pr-28 lg:pb-8 flex flex-col gap-2">
+            <div className="rounded-xl border border-[#6366f1]/40 bg-[#6366f1]/5 px-3.5 py-2 text-sm text-foreground leading-snug">
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#6366f1] mr-2">{t('types.governanceLabel')}</span>
+              {t('types.governance')}
+            </div>
+            <KeyPointBar text={t('types.keyPoint')} />
+          </div>
         </div>
 
         {/* ═══════ THE SPECTRUM ═══════ */}
@@ -432,39 +391,27 @@ export function Section0() {
           <WhoWritesSorter />
         </div>
 
-        {/* ═══════ USE OF BLOCKCHAIN ═══════ */}
+        {/* ═══════ DOES IT EARN A BLOCKCHAIN? ═══════ */}
         <div id="s0-usecases" className="h-full flex items-center justify-center p-5 lg:p-8">
-          <div className="w-full max-w-6xl">
+          <div className="w-full max-w-5xl">
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-1 text-center">{t('usecases.heading')}</h2>
-            <p className="text-sm text-muted-foreground text-center mb-6">{t('usecases.subtitle')}</p>
+            <p className="text-sm text-muted-foreground text-center mb-6 max-w-3xl mx-auto">{t('usecases.subtitle')}</p>
 
-            <div className="grid grid-cols-3 gap-5">
-              <div className="bg-card border border-[#39B54A]/40 rounded-xl p-7">
-                <div className="font-bold text-[#39B54A] text-base mb-5">{t('usecases.use.title')}</div>
-                <ul className="space-y-4 text-sm text-muted-foreground">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              <div className="bg-card border border-[#39B54A]/40 rounded-xl p-6">
+                <div className="font-bold text-[#39B54A] text-base mb-4">{t('usecases.use.title')}</div>
+                <ul className="space-y-3 text-sm text-muted-foreground">
                   {useItems.map((item, i) => (
                     <li key={i} className="flex gap-2"><span className="text-[#39B54A] shrink-0">•</span>{item}</li>
                   ))}
                 </ul>
               </div>
 
-              <div className="bg-card border border-[#ED1C24]/40 rounded-xl p-7">
-                <div className="font-bold text-[#ED1C24] text-base mb-5">{t('usecases.dontUse.title')}</div>
-                <ul className="space-y-4 text-sm text-muted-foreground">
+              <div className="bg-card border border-[#ED1C24]/40 rounded-xl p-6">
+                <div className="font-bold text-[#ED1C24] text-base mb-4">{t('usecases.dontUse.title')}</div>
+                <ul className="space-y-3 text-sm text-muted-foreground">
                   {dontUseItems.map((item, i) => (
                     <li key={i} className="flex gap-2"><span className="text-[#ED1C24] shrink-0">•</span>{item}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="bg-card border border-[#f59e0b]/40 rounded-xl p-7">
-                <div className="font-bold text-[#f59e0b] text-base mb-5">{t('usecases.drivers.title')}</div>
-                <ul className="space-y-4 text-sm text-muted-foreground">
-                  {driverItems.map((driver, i) => (
-                    <li key={i} className="flex gap-2">
-                      <span className="text-[#f59e0b] shrink-0">•</span>
-                      <span><span className="font-medium text-foreground">{driver.label}</span>{driver.text}</span>
-                    </li>
                   ))}
                 </ul>
               </div>

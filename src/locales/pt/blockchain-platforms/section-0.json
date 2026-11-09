@@ -1,90 +1,48 @@
 {
   "chapters": {
-    "s0-centralization":  "Centralização",
-    "s0-types":           "Tipos de Blockchain",
-    "s0-permissioned":    "Permissionadas",
-    "s0-comparison":      "Comparação",
-    "s0-usecases":        "Uso da Blockchain",
-    "s0-takeaways":       "Conclusões",
+    "s0-recap": "↩ Recap",
+    "s0-types": "Tipos de Blockchain",
     "s0-spectrum": "The Spectrum",
-    "s0-sorter": "🧩 Who may write?"
+    "s0-sorter": "🧩 Who may write?",
+    "s0-usecases": "Uso da Blockchain",
+    "s0-takeaways": "Conclusões"
   },
   "title": {
-    "sectionNumber": "SECÇÃO 00",
-    "title": "Revisão",
-    "subtitle": "Centralização, tipos de blockchain e o espetro permissionada vs sem permissão"
-  },
-  "centralization": {
-    "heading": "Centralizada vs Descentralizada vs Distribuída",
-    "subtitle": "Três topologias de rede — descritas pela primeira vez por Paul Baran (1964). A blockchain situa-se no extremo distribuído do espetro.",
-    "centralized": {
-      "title": "Centralizada",
-      "points": [
-        "Uma única autoridade controla tudo — um centro, muitos pontos",
-        "Ponto único de falha — comprometer o centro derruba todo o sistema",
-        "Eficiente e fácil de governar, mas exige confiança total na autoridade",
-        "Exemplos: Visa, bancos centrais, AWS, Facebook"
-      ]
-    },
-    "decentralized": {
-      "title": "Descentralizada",
-      "points": [
-        "Múltiplos centros de controlo — cada um gere o seu próprio cluster de nós",
-        "Mais resiliente que a centralizada — mas cada subcentro continua a ser um ponto de falha",
-        "A governação é federada — regras negociadas entre centros",
-        "Exemplos: DNS da Internet, blockchains de consórcio, redes bancárias"
-      ]
-    },
-    "distributed": {
-      "title": "Distribuída",
-      "points": [
-        "Sem centro — cada nó é igual e liga-se diretamente aos pares",
-        "Sem ponto único de falha — remover qualquer nó não quebra a rede",
-        "Sem necessidade de confiança — o consenso substitui a autoridade. As regras estão no código.",
-        "Exemplos: Bitcoin, Ethereum, IPFS, Tor"
-      ]
-    },
-    "hood": ["Paul Baran (1964)", "network topology", "single point of failure", "consensus"],
-    "keyPoint": "Centralisation buys efficiency; distribution buys resilience — the business question is who you must trust, and what happens when they fail."
+    "sectionNumber": "SECTION 00",
+    "title": "Recap",
+    "subtitle": "Six things you already know, one new idea: the permissioned vs permissionless spectrum"
   },
   "types": {
-    "title": "Tipos de Blockchain",
-    "featureLabel": "Critério",
-    "option1Label": "Pública Sem Permissão",
-    "option2Label": "Consórcio / Semi-privada",
-    "option3Label": "Privada Permissionada",
+    "title": "Types of Blockchain",
+    "featureLabel": "Criteria",
+    "option1Label": "Public Permissionless",
+    "option2Label": "Consortium / Semi-private",
+    "option3Label": "Private Permissioned",
     "items": [
       {
-        "feature": "👁️ Quem pode ler?",
-        "option1": "Qualquer pessoa — registo totalmente público",
-        "option2": "Apenas participantes autorizados",
-        "option3": "Restrito à organização"
+        "feature": "👁️ Who can read?",
+        "option1": "Anyone — fully public ledger",
+        "option2": "Authorized participants only",
+        "option3": "Restricted to the organization"
       },
       {
-        "feature": "✍️ Quem pode transacionar?",
-        "option1": "Qualquer pessoa com uma carteira",
-        "option2": "Membros validados do consórcio",
-        "option3": "Colaboradores / entidades aprovadas"
+        "feature": "✍️ Who can transact?",
+        "option1": "Anyone with a wallet",
+        "option2": "Vetted members of the consortium",
+        "option3": "Employees / approved parties"
       },
       {
-        "feature": "⚙️ Quem valida?",
-        "option1": "Qualquer nó (mineiros/validadores)",
-        "option2": "Nós pré-selecionados do consórcio",
-        "option3": "Autoridade central ou nós internos"
+        "feature": "⚙️ Who validates?",
+        "option1": "Any node (miners/validators)",
+        "option2": "Pre-selected consortium nodes",
+        "option3": "Central authority or internal nodes"
       },
       {
-        "feature": "🔍 Transparência",
-        "option1": "Total — todas as transações são visíveis",
-        "option2": "Parcial — entre os membros",
-        "option3": "Mínima — apenas interna"
+        "feature": "🔍 Transparency",
+        "option1": "Full — every tx visible",
+        "option2": "Partial — among members",
+        "option3": "Minimal — internal only"
       },
-      {
-        "feature": "📌 Exemplos",
-        "option1": "Bitcoin, Ethereum, Solana",
-        "option2": "Quorum (JPMorgan), R3 Corda",
-        "option3": "Hyperledger Fabric, chains privadas"
-      },
-      { "feature": "🤝 Trust comes from", "option1": "Maths + economics (PoW / PoS)", "option2": "Known identities + consortium rules", "option3": "The owning organisation" },
       {
         "feature": "📌 Examples",
         "option1": "Bitcoin, Ethereum, Solana",
@@ -92,125 +50,84 @@
         "option3": "Hyperledger Fabric (single org), private chains"
       }
     ],
+    "governanceLabel": "Governance intuition",
+    "governance": "Permissioned = known members agree the rules and can fix mistakes. Permissionless = nobody can be excluded, and nobody can undo.",
     "keyPoint": "The three types differ in who may read, write and validate — not in the cryptography underneath."
   },
-  "permissioned": {
-    "title": "Blockchains Permissionadas",
-    "description": "As blockchains privadas e de consórcio foram desenhadas para confiança entre conjuntos de participantes conhecidos — não para ausência de confiança à escala global.",
-    "cards": {
-      "what": {
-        "title": "🔐 O que as torna permissionadas?",
-        "body": "Os participantes são conhecidos e têm a identidade verificada antes de aderirem. O controlo de acessos define quem pode ler, escrever ou validar. O consenso é mais rápido (variantes BFT) — não há necessidade de mining. A governação é acordada off-chain pelo consórcio."
-      },
-      "private": {
-        "title": "🏢 Blockchains Privadas",
-        "body": "Controladas por uma única organização — apenas para uso interno. Desempenho máximo, descentralização mínima. Usadas para trilhos de auditoria internos e partilha de dados entre departamentos. Exemplo: Hyperledger Fabric em modo de organização única."
-      },
-      "consortium": {
-        "title": "🤝 Blockchains de Consórcio",
-        "body": "Governadas por um grupo de organizações com interesses partilhados. Cada membro corre nós — validação partilhada. Usadas em financiamento ao comércio, dados de saúde e cadeias de abastecimento. Exemplos: R3 Corda, TradeLens (Maersk + IBM)."
-      },
-      "tradeoff": {
-        "title": "⚖️ A Troca face às Chains Públicas",
-        "gainLabel": "Ganha-se:",
-        "gain": " privacidade, desempenho e conformidade regulatória. ",
-        "loseLabel": "Perde-se:",
-        "lose": " resistência à censura, acesso aberto e ausência de confiança necessária. Nenhuma é melhor — resolvem problemas diferentes."
-      }
-    },
-    "keyPoints": [
-      "Os participantes são conhecidos — a identidade substitui os incentivos económicos como mecanismo de confiança",
-      "O consenso BFT é várias ordens de grandeza mais rápido que PoW/PoS — sem desperdício energético",
-      "As chains privadas maximizam o desempenho; as de consórcio equilibram privacidade com governação partilhada",
-      "Blockchains permissionadas não são \"menos blockchain\" — são otimizadas para restrições diferentes"
-    ]
-  },
-  "comparison": {
-    "title": "Sem Permissão vs Permissionada",
-    "featureLabel": "Propriedade",
-    "option1Label": "Sem Permissão",
-    "option2Label": "Permissionada",
-    "items": [
-      {
-        "feature": "🔓 Acesso",
-        "option1": "Aberto a qualquer pessoa — sem necessidade de identidade",
-        "option2": "Restrito — participantes são validados e conhecidos"
-      },
-      {
-        "feature": "⚙️ Consenso",
-        "option1": "PoW / PoS — competição aberta",
-        "option2": "Variantes BFT — validadores pré-selecionados, muito mais rápido"
-      },
-      {
-        "feature": "🚀 Débito",
-        "option1": "7–30 TPS (Bitcoin/Ethereum L1)",
-        "option2": "1.000–10.000+ TPS dependendo da configuração"
-      },
-      {
-        "feature": "🔍 Transparência",
-        "option1": "Total — qualquer pessoa pode auditar cada transação",
-        "option2": "Seletiva — a visibilidade depende do papel"
-      },
-      {
-        "feature": "🛡️ Modelo de Confiança",
-        "option1": "Sem necessidade de confiança — matemática e economia impõem as regras",
-        "option2": "Confiança na governação do consórcio e na identidade"
-      },
-      {
-        "feature": "📌 Caso de Uso",
-        "option1": "Finanças públicas, resistência à censura, dApps abertas",
-        "option2": "Cadeias de abastecimento empresariais, finanças reguladas, saúde"
-      }
-    ]
-  },
   "usecases": {
-    "heading": "O Uso da Blockchain",
-    "subtitle": "Quando é que a blockchain acrescenta valor — e quando não acrescenta?",
+    "heading": "Does this problem earn a blockchain?",
+    "subtitle": "The question we will ask of every platform in this course. Fundamentals §3 covered the industries — here is the checklist.",
     "use": {
-      "title": "✅ Usa blockchain quando…",
+      "title": "✅ Use a blockchain when…",
       "items": [
-        "Múltiplas partes partilham dados sem confiarem umas nas outras",
-        "É necessário um trilho de auditoria imutável",
-        "Os intermediários acrescentam custo sem acrescentar valor",
-        "É necessário impor regras automaticamente (smart contracts)",
-        "É necessária resistência à censura ou acesso sem permissão"
+        "Several parties must share one record and none of them is trusted to keep it alone",
+        "The record must be tamper-evident and auditable by outsiders",
+        "An intermediary adds cost or delay without adding trust",
+        "Rules must run automatically, or no participant may be excludable"
       ]
     },
     "dontUse": {
-      "title": "❌ Não uses blockchain quando…",
+      "title": "❌ Don't use a blockchain when…",
       "items": [
-        "Já existe uma autoridade central em quem todas as partes confiam",
-        "A privacidade dos dados é fundamental — as chains públicas expõem tudo",
-        "São precisas transações de elevado volume e baixa latência",
-        "Controlas todos os participantes — usa simplesmente uma base de dados",
-        "A integridade dos dados on-chain não pode ser garantida (problema do oráculo)"
+        "One organisation controls every participant — a database is cheaper and faster",
+        "All parties already trust a central party — a regulator, a bank, a registry",
+        "Data must stay private and move in high volume — public chains expose everything and are slow",
+        "The truth lives off-chain — a blockchain cannot verify what it is told (the oracle problem)"
       ]
     },
-    "drivers": {
-      "title": "🏭 Geradores de Valor no Mundo Real",
-      "items": [
-        { "label": "Finanças:", "text": " DeFi, pagamentos transfronteiriços, ativos tokenizados" },
-        { "label": "Cadeia de abastecimento:", "text": " proveniência, anti-contrafação, conformidade" },
-        { "label": "Saúde:", "text": " portabilidade de registos clínicos, rastreabilidade de medicamentos" },
-        { "label": "Identidade:", "text": " credenciais auto-soberanas, KYC uma só vez" },
-        { "label": "Governo:", "text": " registos prediais, votação, contratação pública" }
-      ]
-    },
-    "keyPoint": "Blockchain earns its place only when several parties who do not fully trust each other must share one record."
+    "keyPoint": "Carry this question into every platform: does this problem earn a blockchain — and if so, which one?"
   },
   "takeaways": {
-    "title": "Secção 00 — Conclusões",
+    "title": "Section 00 — Key Takeaways",
     "items": [
-      "A centralização oferece eficiência; a descentralização oferece resiliência e ausência de necessidade de confiança",
-      "A blockchain existe num espetro — desde totalmente pública/sem permissão até totalmente privada/permissionada",
-      "A blockchain acrescenta valor quando múltiplas partes que não confiam entre si partilham dados, ou quando intermediários podem ser substituídos por código",
-      "As blockchains permissionadas trocam resistência à censura por privacidade, desempenho e conformidade",
-      "As blockchains de consórcio permitem que organizações concorrentes colaborem em infraestrutura partilhada",
-      "Não existe uma blockchain universalmente melhor — cada uma é otimizada para restrições diferentes"
+      "Fundamentals gave you one platform family — Bitcoin and Ethereum are both public, permissionless chains",
+      "Permissioned ↔ permissionless is one spectrum: the question is who may write and validate, not how fast it runs",
+      "Moving towards permissioned trades open access and censorship resistance for privacy, control and compliance",
+      "Governance trade-off: known members can agree rules and fix mistakes; permissionless means nobody can be excluded — and nobody can undo",
+      "Consortium chains let competing organisations share infrastructure without handing control to any one of them",
+      "The recurring question for every platform: does this problem earn a blockchain — and if so, which one?"
     ]
   },
-  "recapBadge": "↩ Recap · from Blockchain Fundamentals",
-  "spectrum": {
+"recapBadge": "↩ Recap · from Blockchain Fundamentals",
+  "recap": {
+    "heading": "Recap in key points",
+    "subtitle": "No teaching here — just the thread that runs from Fundamentals into this course. Each line points back to where you learned it.",
+    "refPrefix": "↩ Fundamentals",
+    "items": [
+      {
+        "ref": "Prologue",
+        "text": "The trust problem: strangers need one record they all believe, without a referee who can cheat or disappear."
+      },
+      {
+        "ref": "§1",
+        "text": "A shared ledger of hashed, chained blocks, copied to every participant, makes that record tamper-evident."
+      },
+      {
+        "ref": "§1",
+        "text": "Decentralization is about who controls — who can change or censor the record. The shape of the network is a separate question."
+      },
+      {
+        "ref": "§2",
+        "text": "Bitcoin was the first permissionless chain: fixed supply, Proof of Work, nobody to ask for permission."
+      },
+      {
+        "ref": "§2",
+        "text": "Bitcoin cannot run programs — its scripting is deliberately limited to moving value."
+      },
+      {
+        "ref": "§3",
+        "text": "Ethereum added smart contracts, accounts, gas and tokens — a programmable platform."
+      }
+    ],
+    "nextLabel": "New in this section",
+    "next": [
+      "Permissioned ↔ permissionless spectrum",
+      "Consortium chains",
+      "The recurring question: does this problem earn a blockchain?"
+    ],
+    "keyPoint": "Everything so far was one platform family — now we compare platforms."
+  },
+"spectrum": {
     "heading": "Permissionless ↔ Permissioned: one spectrum, not two camps",
     "subtitle": "Every platform in this course sits somewhere on this line. Placing a project on it starts with two business questions: who is allowed in, and who needs to see what?",
     "leftLabel": "Permissionless",
@@ -253,11 +170,10 @@
     "hood": ["PoW / PoS", "BFT / Raft", "MSP identity", "channels"],
     "keyPoint": "Permissioned vs permissionless is a question of WHO may write — not how fast it is."
   },
-  "sorter": {
+"sorter": {
     "heading": "Who may write to this ledger?",
     "subtitle": "Drag each card into a bucket — or tap a card, then a bucket. You get feedback instantly. One question decides everything: who is allowed to add entries?",
     "cardsLabel": "Cards to sort",
-    "allSorted": "All sorted — read the feedback on each card.",
     "dropHint": "Drop here",
     "reset": "↺ Reset",
     "scorePrefix": "Score: ",

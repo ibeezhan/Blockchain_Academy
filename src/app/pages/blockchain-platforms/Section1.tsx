@@ -17,13 +17,11 @@ const chapterShape = [
 
   { kind: 'group' as const, id: 'g-s1-arch' },
   { id: 's1-architecture' },
-  { id: 's1-transaction' },
   { id: 's1-tx-lifecycle' },
-  { id: 's1-utxo-exercise' },
 
-  { kind: 'group' as const, id: 'g-s1-consensus' },
-  { id: 's1-pow' },
+  { kind: 'group' as const, id: 'g-s1-tradeoffs' },
   { id: 's1-trilemma' },
+  { id: 's1-quiz-trilemma' },
 
   { kind: 'group' as const, id: 'g-s1-apps' },
   { id: 's1-apps' },
@@ -32,9 +30,9 @@ const chapterShape = [
   { kind: 'group' as const, id: 'g-s1-fit' },
   { id: 's1-bestfits' },
   { id: 's1-worstfits' },
+  { id: 's1-quiz-fit' },
 
   { kind: 'group' as const, id: 'g-s1-wrap' },
-  { id: 's1-quiz' },
   { id: 's1-takeaways' },
 ] as const;
 
@@ -409,11 +407,10 @@ function LightningVaultDemo() {
   );
 }
 
-/* ─────────────── Bitcoin Tx Lifecycle — live animated walkthrough ───────────────
-   8 stages from wallet to settled finality. A single tx packet rides through
-   each stage; the current step caption updates as it enters each. Auto-plays
-   on scroll-in. ↻ Replay always available.
-   ───────────────────────────────────────────────────────────────────────────── */
+/* ─────────── Transaction flow, end to end — animated systemisation recap ───────────
+   8 platform-neutral stages from wallet to irreversible. A single tx packet rides
+   through each stage; auto-plays on scroll-in, ↻ Replay always available.
+   ──────────────────────────────────────────────────────────────────────────────── */
 
 // Language-neutral stage metadata. Text (title/what/note) comes from t() by index.
 const TX_STAGES = [
@@ -595,7 +592,10 @@ function TxLifecycleAnimated() {
         <span className="text-muted-foreground">{t('txLifecycle.timing.blockLabel')} <span className="font-bold text-foreground">{t('txLifecycle.timing.blockValue')}</span></span>
         <span className="text-muted-foreground">{t('txLifecycle.timing.confLabel')} <span className="font-bold text-foreground">{t('txLifecycle.timing.confValue')}</span></span>
       </div>
-      <KeyPointBar text={t('txLifecycle.keyPoint')} className="shrink-0 mt-2 lg:mr-20" />
+      <div className="shrink-0 mt-2 flex flex-col gap-2 lg:pr-20">
+        <KeyPointBar text={t('txLifecycle.keyPoint')} />
+        <UnderTheHood items={t('txLifecycle.hood', { returnObjects: true }) as string[]} />
+      </div>
     </div>
   );
 }
@@ -757,16 +757,18 @@ function BitcoinArchitectureSlide() {
                   {activeLayer.id === 'consensus' && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} className="flex flex-col gap-3">
                       <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('architecture.consensusVisual.title')}</p>
-                      <div className="font-mono text-sm p-4 rounded-xl border border-border bg-card">
-                        <div className="text-muted-foreground">SHA256( block_header + <span className="text-[#f59e0b] font-bold">{t('architecture.consensusVisual.nonce')}</span> )</div>
-                        <div className="text-[#f59e0b] mt-2 font-bold">= 0000000000000000000abc… ✓</div>
-                        <div className="text-muted-foreground text-xs mt-2">{t('architecture.consensusVisual.targetNote')}</div>
+                      <div className="rounded-xl border-2 p-4" style={{ borderColor: '#f59e0b50', backgroundColor: '#f59e0b0a' }}>
+                        <p className="text-sm text-foreground leading-relaxed">{t('architecture.consensusVisual.body')}</p>
                       </div>
-                      <div className="grid grid-cols-3 gap-2">
-                        {(t('architecture.consensusVisual.facts', { returnObjects: true }) as string[]).map(fact => (
-                          <div key={fact} className="p-2 rounded-lg border border-[#f59e0b]/40 text-center text-xs font-medium" style={{ backgroundColor: '#f59e0b0d', color: '#f59e0b' }}>{fact}</div>
+                      <div className="grid grid-cols-2 gap-2">
+                        {(t('architecture.consensusVisual.buys', { returnObjects: true }) as { label: string; text: string }[]).map(item => (
+                          <div key={item.label} className="p-2.5 rounded-lg border border-[#f59e0b]/40 text-xs" style={{ backgroundColor: '#f59e0b0d' }}>
+                            <div className="font-bold text-[#f59e0b]">{item.label}</div>
+                            <div className="text-muted-foreground leading-snug mt-0.5">{item.text}</div>
+                          </div>
                         ))}
                       </div>
+                      <UnderTheHood items={t('architecture.consensusVisual.hood', { returnObjects: true }) as string[]} />
                     </motion.div>
                   )}
                   {activeLayer.id === 'app' && (
@@ -802,230 +804,6 @@ function BitcoinArchitectureSlide() {
 
       </div>
       <KeyPointBar text={t('architecture.keyPoint')} className="shrink-0 mt-3 lg:mr-20" />
-    </div>
-  );
-}
-
-// ─── UTXO Exercise ────────────────────────────────────────────────────────────
-
-// Language-neutral scenario metadata. Text (title/context/labels/explanation) from t() by index.
-const UTXO_SCENARIOS = [
-  {
-    id: 1,
-    target: 0.4,
-    fee: 0.01,
-    utxos: [
-      { id: 'u1', amount: 0.3 },
-      { id: 'u2', amount: 0.5 },
-      { id: 'u3', amount: 0.1 },
-    ],
-    bestInputs: ['u2'],
-  },
-  {
-    id: 2,
-    target: 0.6,
-    fee: 0.01,
-    utxos: [
-      { id: 'u1', amount: 0.35 },
-      { id: 'u2', amount: 0.4 },
-      { id: 'u3', amount: 0.15 },
-    ],
-    bestInputs: ['u1', 'u2'],
-  },
-];
-
-interface UtxoText { label: string; from: string; }
-interface ScenarioText { title: string; context: string; utxos: UtxoText[]; explanation: string; }
-
-function UTXOExercise() {
-  const { t } = useTranslation('blockchain-platforms/section-1');
-  const [scenarioIdx, setScenarioIdx] = useState(0);
-  const [selected, setSelected] = useState<string[]>([]);
-  const [revealed, setRevealed] = useState(false);
-
-  const scenarios = t('utxoExercise.scenarios', { returnObjects: true }) as ScenarioText[];
-  const scenario = UTXO_SCENARIOS[scenarioIdx];
-  const scenarioText = scenarios[scenarioIdx];
-  const utxoText = (uid: string) => scenarioText.utxos[scenario.utxos.findIndex(x => x.id === uid)];
-  const total = selected.reduce((acc, id) => {
-    const u = scenario.utxos.find(x => x.id === id);
-    return acc + (u ? u.amount : 0);
-  }, 0);
-  const needed = scenario.target + scenario.fee;
-  const sufficient = total >= needed;
-  const change = sufficient ? Math.round((total - scenario.target - scenario.fee) * 1000) / 1000 : 0;
-
-  function toggleUTXO(id: string) {
-    if (revealed) return;
-    setSelected(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
-  }
-
-  function nextScenario() {
-    setScenarioIdx(i => (i + 1) % UTXO_SCENARIOS.length);
-    setSelected([]);
-    setRevealed(false);
-  }
-
-  return (
-    <div className="h-full flex flex-col p-6 lg:p-10">
-      <div className="shrink-0 mb-4">
-        <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('utxoExercise.heading')}</h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          {t('utxoExercise.subtitle')}
-        </p>
-      </div>
-
-      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-        {/* Left — scenario + UTXO picker */}
-        <div className="flex flex-col gap-4">
-          {/* Scenario header */}
-          <div className="shrink-0 p-4 rounded-xl border-2 border-[#f59e0b]/40" style={{ backgroundColor: '#f59e0b08' }}>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#f59e0b]">{t('utxoExercise.scenarioLabel', { id: scenario.id, total: UTXO_SCENARIOS.length })}</span>
-              <button
-                onClick={nextScenario}
-                className="text-xs px-2 py-1 rounded-lg border border-border text-muted-foreground hover:bg-card cursor-pointer transition-all"
-              >
-                {t('utxoExercise.next')}
-              </button>
-            </div>
-            <div className="font-bold text-base text-foreground mb-1">{scenarioText.title}</div>
-            <div className="text-sm text-muted-foreground">{scenarioText.context}</div>
-            <div className="flex gap-4 mt-3 text-sm">
-              <div><span className="text-muted-foreground">{t('utxoExercise.send')}</span><span className="font-bold text-foreground">{scenario.target} BTC</span></div>
-              <div><span className="text-muted-foreground">{t('utxoExercise.fee')}</span><span className="font-bold text-foreground">{scenario.fee} BTC</span></div>
-              <div><span className="text-muted-foreground">{t('utxoExercise.need')}</span><span className="font-bold text-[#f59e0b]">{t('utxoExercise.needTotal', { amount: needed })}</span></div>
-            </div>
-          </div>
-
-          {/* UTXO cards */}
-          <div className="flex flex-col gap-2 flex-1">
-            <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{t('utxoExercise.pickerLabel')}</div>
-            {scenario.utxos.map(u => {
-              const isSelected = selected.includes(u.id);
-              const ut = utxoText(u.id);
-              return (
-                <button
-                  key={u.id}
-                  onClick={() => toggleUTXO(u.id)}
-                  className="flex items-center gap-3 p-4 rounded-xl border-2 text-left cursor-pointer transition-all flex-1"
-                  style={{
-                    borderColor: isSelected ? '#f59e0b' : 'var(--border)',
-                    backgroundColor: isSelected ? '#f59e0b14' : 'var(--card)',
-                  }}
-                >
-                  <div
-                    className="size-5 rounded border-2 shrink-0 flex items-center justify-center"
-                    style={{ borderColor: isSelected ? '#f59e0b' : 'var(--border)', backgroundColor: isSelected ? '#f59e0b' : 'transparent' }}
-                  >
-                    {isSelected && <span className="text-white text-xs font-bold">✓</span>}
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-bold text-base text-foreground">{ut.label}</div>
-                    <div className="text-xs text-muted-foreground">{ut.from}</div>
-                  </div>
-                  <span className="font-mono font-bold text-sm" style={{ color: isSelected ? '#f59e0b' : 'var(--muted-foreground)' }}>
-                    {u.amount} BTC
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Right — transaction summary */}
-        <div className="flex flex-col gap-4">
-          <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider shrink-0">{t('utxoExercise.preview')}</div>
-
-          {/* Inputs */}
-          <div className="p-4 rounded-xl border border-border bg-card flex-1">
-            <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">{t('utxoExercise.inputs')}</div>
-            {selected.length === 0 ? (
-              <div className="text-sm text-muted-foreground italic">{t('utxoExercise.noInputs')}</div>
-            ) : (
-              <div className="flex flex-col gap-2">
-                {selected.map(id => {
-                  const u = scenario.utxos.find(x => x.id === id)!;
-                  return (
-                    <div key={id} className="flex items-center justify-between p-2 rounded-lg" style={{ backgroundColor: '#f59e0b0a', border: '1px solid #f59e0b30' }}>
-                      <span className="text-sm text-foreground">{utxoText(u.id).label}</span>
-                      <span className="font-mono text-sm font-bold text-[#f59e0b]">+{u.amount} BTC</span>
-                    </div>
-                  );
-                })}
-                <div className="flex justify-between pt-2 border-t border-border">
-                  <span className="text-xs font-bold text-muted-foreground">{t('utxoExercise.totalInputs')}</span>
-                  <span className="font-mono font-bold text-sm text-foreground">{Math.round(total * 1000) / 1000} BTC</span>
-                </div>
-              </div>
-            )}
-
-            {/* Outputs */}
-            {selected.length > 0 && (
-              <div className="mt-4 pt-4 border-t border-border">
-                <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">{t('utxoExercise.outputs')}</div>
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center justify-between p-2 rounded-lg" style={{ backgroundColor: '#39B54A0a', border: '1px solid #39B54A30' }}>
-                    <span className="text-sm text-foreground">{t('utxoExercise.recipient')}</span>
-                    <span className="font-mono text-sm font-bold text-[#39B54A]">{scenario.target} BTC</span>
-                  </div>
-                  <div className="flex items-center justify-between p-2 rounded-lg" style={{ backgroundColor: '#6366f10a', border: '1px solid #6366f130' }}>
-                    <span className="text-sm text-foreground">{t('utxoExercise.changeToAlice')}</span>
-                    <span className="font-mono text-sm font-bold text-[#6366f1]">
-                      {sufficient ? `${change} BTC` : '—'}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between p-2 rounded-lg" style={{ backgroundColor: '#ED1C240a', border: '1px solid #ED1C2430' }}>
-                    <span className="text-sm text-foreground">{t('utxoExercise.minerFee')}</span>
-                    <span className="font-mono text-sm font-bold text-[#ED1C24]">{scenario.fee} BTC</span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Status + reveal */}
-          {selected.length > 0 && (
-            <div className="shrink-0 flex flex-col gap-2">
-              <div
-                className="p-3 rounded-xl border text-sm font-semibold text-center"
-                style={{
-                  borderColor: sufficient ? '#39B54A60' : '#ED1C2460',
-                  backgroundColor: sufficient ? '#39B54A0d' : '#ED1C240d',
-                  color: sufficient ? '#39B54A' : '#ED1C24',
-                }}
-              >
-                {sufficient
-                  ? t('utxoExercise.valid', { needed })
-                  : t('utxoExercise.insufficient', { needed, have: Math.round(total * 1000) / 1000 })
-                }
-              </div>
-              {sufficient && !revealed && (
-                <button
-                  onClick={() => setRevealed(true)}
-                  className="py-2 px-4 rounded-xl border-2 font-bold text-sm cursor-pointer transition-all"
-                  style={{ borderColor: '#39B54A', backgroundColor: '#39B54A18', color: '#39B54A' }}
-                >
-                  {t('utxoExercise.checkSolution')}
-                </button>
-              )}
-              {revealed && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="p-3 rounded-xl border border-[#6366f1]/40"
-                  style={{ backgroundColor: '#6366f10d' }}
-                >
-                  <div className="text-xs font-bold text-[#6366f1] mb-1">{t('utxoExercise.optimalAnswer')}</div>
-                  <div className="text-xs text-muted-foreground">{scenarioText.explanation}</div>
-                </motion.div>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-      <KeyPointBar text={t('utxoExercise.keyPoint')} className="shrink-0 mt-3 lg:mr-20" />
     </div>
   );
 }
@@ -1410,278 +1188,23 @@ export function BP_Section1() {
           <BitcoinArchitectureSlide />
         </div>
 
-        {/* ═══════ TRANSACTION ═══════ */}
-        <div id="s1-transaction" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('transaction.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('transaction.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 flex gap-6">
-
-            {/* ── Left: UTXO concept ── */}
-            <div className="flex-1 min-w-0 flex flex-col gap-4">
-              <div className="rounded-xl border-2 p-4" style={{ borderColor: '#f59e0b40', backgroundColor: '#f59e0b08' }}>
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: '#f59e0b' }} />
-                  <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#f59e0b' }}>{t('transaction.whatLabel')}</span>
-                </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t('transaction.whatA')}<span className="font-semibold text-foreground">{t('transaction.whatTerm')}</span>{t('transaction.whatB')}
-                </p>
-              </div>
-
-              <div className="rounded-xl border p-4 bg-card">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">{t('transaction.ioTitle')}</p>
-                <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-                  <div className="flex items-start gap-2">
-                    <div className="w-4 h-4 rounded shrink-0 mt-0.5" style={{ backgroundColor: '#f59e0b20', border: '1px solid #f59e0b60' }} />
-                    <span><span className="font-semibold text-foreground">{t('transaction.inputsTerm')}</span>{t('transaction.inputsBody')}</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <div className="w-4 h-4 rounded shrink-0 mt-0.5" style={{ backgroundColor: '#39B54A20', border: '1px solid #39B54A60' }} />
-                    <span><span className="font-semibold text-foreground">{t('transaction.outputsTerm')}</span>{t('transaction.outputsBody')}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* UTXO visual */}
-              <div className="rounded-xl border p-4 bg-card flex-1 min-h-0 flex flex-col justify-center">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-4">{t('transaction.visualTitle')}</p>
-                <div className="flex items-center justify-center gap-3 flex-wrap">
-                  {/* Inputs */}
-                  <div className="flex flex-col gap-2">
-                    <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.1 }}
-                      className="rounded-lg px-4 py-2 text-center text-sm font-bold"
-                      style={{ backgroundColor: '#f59e0b20', border: '2px solid #f59e0b60', color: '#f59e0b' }}
-                    >
-                      0.3 BTC
-                      <div className="text-xs font-normal text-muted-foreground">{t('transaction.utxo1')}</div>
-                    </motion.div>
-                    <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.2 }}
-                      className="rounded-lg px-4 py-2 text-center text-sm font-bold"
-                      style={{ backgroundColor: '#f59e0b20', border: '2px solid #f59e0b60', color: '#f59e0b' }}
-                    >
-                      0.5 BTC
-                      <div className="text-xs font-normal text-muted-foreground">{t('transaction.utxo2')}</div>
-                    </motion.div>
-                  </div>
-
-                  {/* Arrow & tx box */}
-                  <div className="flex flex-col items-center gap-1">
-                    <motion.div
-                      initial={{ opacity: 0, scaleX: 0 }}
-                      animate={{ opacity: 1, scaleX: 1 }}
-                      transition={{ delay: 0.35 }}
-                      className="flex items-center gap-1"
-                    >
-                      <div className="h-px w-6" style={{ backgroundColor: '#f59e0b' }} />
-                      <div className="rounded-md px-2 py-1 text-xs font-bold text-white" style={{ backgroundColor: '#f59e0b' }}>TX</div>
-                      <div className="h-px w-6" style={{ backgroundColor: '#f59e0b' }} />
-                    </motion.div>
-                    <div className="text-xs text-muted-foreground">{t('transaction.fee')}</div>
-                  </div>
-
-                  {/* Outputs */}
-                  <div className="flex flex-col gap-2">
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.45 }}
-                      className="rounded-lg px-4 py-2 text-center text-sm font-bold"
-                      style={{ backgroundColor: '#39B54A20', border: '2px solid #39B54A60', color: '#39B54A' }}
-                    >
-                      0.6 BTC
-                      <div className="text-xs font-normal text-muted-foreground">{t('transaction.bobNewUtxo')}</div>
-                    </motion.div>
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.55 }}
-                      className="rounded-lg px-4 py-2 text-center text-sm font-bold"
-                      style={{ backgroundColor: '#6366f120', border: '2px solid #6366f160', color: '#6366f1' }}
-                    >
-                      0.1 BTC
-                      <div className="text-xs font-normal text-muted-foreground">{t('transaction.aliceChange')}</div>
-                    </motion.div>
-                  </div>
-                </div>
-                <p className="text-xs text-muted-foreground text-center mt-3">{t('transaction.equation')}</p>
-              </div>
-            </div>
-
-            {/* ── Right: what UTXO means for a business ── */}
-            <div className="flex-1 min-w-0 flex flex-col gap-3">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('transaction.businessTitle')}</p>
-
-              {(t('transaction.business', { returnObjects: true }) as { emoji: string; title: string; desc: string }[]).map((item, i) => (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + i * 0.1 }}
-                  className="rounded-xl border-l-4 p-4 bg-card flex-1 min-h-0 flex items-start gap-3"
-                  style={{ borderLeftColor: ['#f59e0b', '#6366f1', '#39B54A'][i] }}
-                >
-                  <span className="text-2xl shrink-0 leading-none mt-0.5">{item.emoji}</span>
-                  <div className="min-w-0">
-                    <div className="text-sm font-bold text-foreground">{item.title}</div>
-                    <p className="text-xs text-muted-foreground leading-relaxed mt-1">{item.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
-
-              <UnderTheHood items={t('transaction.hood', { returnObjects: true }) as string[]} className="shrink-0" />
-            </div>
-          </div>
-          <KeyPointBar text={t('transaction.keyPoint')} className="shrink-0 mt-3 lg:mr-20" />
-        </div>
-
-        {/* ═══════ TRANSACTION LIFECYCLE — animated walkthrough, moved here from later ═══════ */}
+        {/* ═══════ TRANSACTION FLOW — end-to-end systemisation recap ═══════ */}
         <div id="s1-tx-lifecycle" className="h-full">
           <TxLifecycleAnimated />
-        </div>
-
-        {/* ═══════ UTXO EXERCISE ═══════ */}
-        <div id="s1-utxo-exercise" className="h-full">
-          <UTXOExercise />
-        </div>
-
-        {/* ═══════ PROOF OF WORK ═══════ */}
-        <div id="s1-pow" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('pow.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('pow.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 flex gap-6">
-
-            {/* ── Left: how a block gets made ── */}
-            <div className="flex-1 min-w-0 flex flex-col gap-3">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('pow.stepsTitle')}</p>
-              <div className="flex-1 min-h-0 grid auto-rows-fr gap-2">
-                {(t('pow.steps', { returnObjects: true }) as { emoji: string; label: string; desc: string }[]).map((step, i, arr) => (
-                  <motion.div
-                    key={step.label}
-                    initial={{ opacity: 0, x: -14 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.05 + i * 0.1 }}
-                    className="relative rounded-xl border p-3 bg-card flex items-center gap-3 min-h-0"
-                    style={{ borderColor: '#f59e0b40' }}
-                  >
-                    <div className="size-9 shrink-0 rounded-full flex items-center justify-center text-lg" style={{ backgroundColor: '#f59e0b20' }}>{step.emoji}</div>
-                    <div className="min-w-0">
-                      <div className="text-sm font-bold text-foreground"><span className="text-[#f59e0b] mr-1.5">{i + 1}.</span>{step.label}</div>
-                      <p className="text-xs text-muted-foreground leading-snug mt-0.5">{step.desc}</p>
-                    </div>
-                    {i < arr.length - 1 && (
-                      <div className="absolute -bottom-2.5 left-7 text-[#f59e0b] text-xs leading-none z-10">▼</div>
-                    )}
-                  </motion.div>
-                ))}
-              </div>
-              <div className="shrink-0 rounded-xl p-3" style={{ background: 'linear-gradient(135deg, #f59e0b18, #f59e0b08)', border: '2px solid #f59e0b50' }}>
-                <div className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: '#f59e0b' }}>{t('pow.buyLabel')}</div>
-                <p className="text-xs text-foreground leading-relaxed">{t('pow.buyBody')}</p>
-              </div>
-              <UnderTheHood items={t('pow.hood', { returnObjects: true }) as string[]} className="shrink-0" />
-            </div>
-            {/* ── Right: 4 cards ── */}
-            <div className="flex-1 min-w-0 flex flex-col gap-3">
-              {[
-                {
-                  icon: '⛏️',
-                  title: t('pow.cards.hardware.title'),
-                  color: '#f59e0b',
-                  content: (
-                    <div className="flex items-center gap-2 flex-wrap mt-1">
-                      {['CPU', 'GPU', 'FPGA', 'ASIC'].map((hw, i, arr) => (
-                        <span key={hw} className="flex items-center gap-1">
-                          <span className="text-xs font-bold px-2 py-0.5 rounded" style={{ backgroundColor: '#f59e0b20', color: '#f59e0b' }}>{hw}</span>
-                          {i < arr.length - 1 && <span className="text-muted-foreground text-xs">→</span>}
-                        </span>
-                      ))}
-                      <span className="text-xs text-muted-foreground ml-1">{t('pow.cards.hardware.note')}</span>
-                    </div>
-                  ),
-                },
-                {
-                  icon: '₿',
-                  title: t('pow.cards.reward.title'),
-                  color: '#f59e0b',
-                  content: (
-                    <div className="mt-1">
-                      <div className="flex items-end gap-1 flex-wrap">
-                        {[
-                          { era: '2009', reward: '50' },
-                          { era: '2012', reward: '25' },
-                          { era: '2016', reward: '12.5' },
-                          { era: '2020', reward: '6.25' },
-                          { era: '2024', reward: '3.125' },
-                          { era: '~2028', reward: '1.5625', dim: true },
-                        ].map(h => (
-                          <div key={h.era} className="flex flex-col items-center gap-0.5" style={{ opacity: h.dim ? 0.5 : 1 }}>
-                            <span className="text-xs font-bold" style={{ color: '#f59e0b' }}>{h.reward}</span>
-                            <div className="w-8 rounded-t" style={{ height: `${(parseFloat(h.reward) / 50) * 36 + 4}px`, backgroundColor: '#f59e0b' + (h.dim ? '40' : '80') }} />
-                            <span className="text-[9px] text-muted-foreground">{h.era}</span>
-                          </div>
-                        ))}
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-1">{t('pow.cards.reward.note')}</p>
-                    </div>
-                  ),
-                },
-                {
-                  icon: '🌍',
-                  title: t('pow.cards.energy.title'),
-                  color: '#ED1C24',
-                  content: (
-                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                      {t('pow.cards.energy.bodyA')}<span className="font-semibold text-foreground">{t('pow.cards.energy.bodyStrong')}</span>{t('pow.cards.energy.bodyB')}<span className="font-semibold" style={{ color: '#ED1C24' }}>{t('pow.cards.energy.bodyPercent')}</span>{t('pow.cards.energy.bodyC')}
-                    </p>
-                  ),
-                },
-                {
-                  icon: '🔒',
-                  title: t('pow.cards.attack.title'),
-                  color: '#ED1C24',
-                  content: (
-                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                      {t('pow.cards.attack.body')}
-                    </p>
-                  ),
-                },
-              ].map((card, i) => (
-                <motion.div
-                  key={card.title}
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + i * 0.1 }}
-                  className="rounded-xl border-l-4 p-3 bg-card flex-1 min-h-0"
-                  style={{ borderLeftColor: card.color }}
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-base">{card.icon}</span>
-                    <span className="text-sm font-bold text-foreground">{card.title}</span>
-                  </div>
-                  {card.content}
-                </motion.div>
-              ))}
-            </div>
-
-          </div>
-          <KeyPointBar text={t('pow.keyPoint')} className="shrink-0 mt-3 lg:mr-20" />
         </div>
 
         {/* ═══════ TRILEMMA ═══════ */}
         <div id="s1-trilemma" className="h-full">
           <TrilemmaSlide />
+        </div>
+
+        {/* ═══════ QUIZ — trilemma scenario ═══════ */}
+        <div id="s1-quiz-trilemma" className="h-full">
+          <QuizSlide
+            question={t('quizTrilemma.question')}
+            options={(t('quizTrilemma.options', { returnObjects: true }) as string[]).map((text, i) => ({ text, correct: i === 1 }))}
+            explanation={t('quizTrilemma.explanation')}
+          />
         </div>
 
         {/* ═══════ APPS — Bitcoin's app layer ═══════ */}
@@ -1817,30 +1340,12 @@ export function BP_Section1() {
           <KeyPointBar text={t('worstFits.keyPoint')} className="shrink-0 mt-2 lg:mr-20" />
         </div>
 
-        {/* ═══════ QUIZ ═══════ */}
-        <div id="s1-quiz" className="h-full">
+        {/* ═══════ QUIZ — best/worst fit judgement ═══════ */}
+        <div id="s1-quiz-fit" className="h-full">
           <QuizSlide
-            question={t('quiz.question')}
-            options={(t('quiz.options', { returnObjects: true }) as string[]).map((text, i) => ({ text, correct: i === 1 }))}
-            explanation={t('quiz.explanation')}
-          />
-        </div>
-
-        {/* ═══════ QUIZ 2 — Nakamoto consensus ═══════ */}
-        <div id="s1-quiz-2" className="h-full">
-          <QuizSlide
-            question={t('quiz2.question')}
-            options={(t('quiz2.options', { returnObjects: true }) as string[]).map((text, i) => ({ text, correct: i === 1 }))}
-            explanation={t('quiz2.explanation')}
-          />
-        </div>
-
-        {/* ═══════ QUIZ 3 — Difficulty adjustment ═══════ */}
-        <div id="s1-quiz-3" className="h-full">
-          <QuizSlide
-            question={t('quiz3.question')}
-            options={(t('quiz3.options', { returnObjects: true }) as string[]).map((text, i) => ({ text, correct: i === 1 }))}
-            explanation={t('quiz3.explanation')}
+            question={t('quizFit.question')}
+            options={(t('quizFit.options', { returnObjects: true }) as string[]).map((text, i) => ({ text, correct: i === 1 }))}
+            explanation={t('quizFit.explanation')}
           />
         </div>
 

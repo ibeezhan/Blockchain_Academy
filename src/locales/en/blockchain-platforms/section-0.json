@@ -1,50 +1,33 @@
 {
   "chapters": {
-    "s0-centralization":  "Centralization",
-    "s0-types":           "Blockchain Types",
-    "s0-spectrum":        "The Spectrum",
-    "s0-usecases":        "Use of Blockchain",
-    "s0-takeaways":       "Takeaways",
-    "s0-sorter": "🧩 Who may write?"
+    "s0-recap":      "↩ Recap",
+    "s0-types":      "Blockchain Types",
+    "s0-spectrum":   "The Spectrum",
+    "s0-sorter":     "🧩 Who may write?",
+    "s0-usecases":   "Does it earn a blockchain?",
+    "s0-takeaways":  "Takeaways"
   },
   "title": {
     "sectionNumber": "SECTION 00",
     "title": "Recap",
-    "subtitle": "Centralization, blockchain types, and the permissioned vs permissionless spectrum"
+    "subtitle": "Six things you already know, one new idea: the permissioned vs permissionless spectrum"
   },
   "recapBadge": "↩ Recap · from Blockchain Fundamentals",
-  "centralization": {
-    "heading": "Centralized vs Decentralized vs Distributed",
-    "subtitle": "Three ways to wire a network (Paul Baran, 1964). The question for a business: where does control sit, and what happens when that point fails?",
-    "hood": ["Paul Baran (1964)", "network topology", "single point of failure", "consensus"],
-    "centralized": {
-      "title": "Centralized",
-      "points": [
-        "One authority controls everything — one hub, many spokes",
-        "Single point of failure — take out the centre and the whole system stops",
-        "Efficient and easy to govern, but you must trust the authority fully",
-        "Examples: Visa, central banks, AWS, Facebook"
-      ]
-    },
-    "decentralized": {
-      "title": "Decentralized",
-      "points": [
-        "Several control centres — each runs its own cluster",
-        "More resilient — but each centre is still a point of failure",
-        "Governance is federated — the rules are negotiated between centres",
-        "Examples: Internet DNS, consortium blockchains, banking networks"
-      ]
-    },
-    "distributed": {
-      "title": "Distributed",
-      "points": [
-        "No centre — every node is equal and talks directly to its peers",
-        "No single point of failure — remove any node and the network carries on",
-        "Trustless — consensus replaces authority; the rules live in the code",
-        "Examples: Bitcoin, Ethereum, IPFS, Tor"
-      ]
-    },
-    "keyPoint": "Centralisation buys efficiency; distribution buys resilience — the business question is who you must trust, and what happens when they fail."
+  "recap": {
+    "heading": "Recap in key points",
+    "subtitle": "No teaching here — just the thread that runs from Fundamentals into this course. Each line points back to where you learned it.",
+    "refPrefix": "↩ Fundamentals",
+    "items": [
+      { "ref": "Prologue", "text": "The trust problem: strangers need one record they all believe, without a referee who can cheat or disappear." },
+      { "ref": "§1", "text": "A shared ledger of hashed, chained blocks, copied to every participant, makes that record tamper-evident." },
+      { "ref": "§1", "text": "Decentralization is about who controls — who can change or censor the record. The shape of the network is a separate question." },
+      { "ref": "§2", "text": "Bitcoin was the first permissionless chain: fixed supply, Proof of Work, nobody to ask for permission." },
+      { "ref": "§2", "text": "Bitcoin cannot run programs — its scripting is deliberately limited to moving value." },
+      { "ref": "§3", "text": "Ethereum added smart contracts, accounts, gas and tokens — a programmable platform." }
+    ],
+    "nextLabel": "New in this section",
+    "next": ["Permissioned ↔ permissionless spectrum", "Consortium chains", "The recurring question: does this problem earn a blockchain?"],
+    "keyPoint": "Everything so far was one platform family — now we compare platforms."
   },
   "types": {
     "title": "Types of Blockchain",
@@ -78,24 +61,14 @@
         "option3": "Minimal — internal only"
       },
       {
-        "feature": "⚡ Speed",
-        "option1": "~7–30 tx/s on the base layer",
-        "option2": "1,000s of tx/s — no mining",
-        "option3": "Database-like performance"
-      },
-      {
-        "feature": "🤝 Trust comes from",
-        "option1": "Maths + economics (PoW / PoS)",
-        "option2": "Known identities + consortium rules",
-        "option3": "The owning organisation"
-      },
-      {
         "feature": "📌 Examples",
         "option1": "Bitcoin, Ethereum, Solana",
         "option2": "Quorum (JPMorgan), R3 Corda, Fabric multi-org",
         "option3": "Hyperledger Fabric (single org), private chains"
       }
     ],
+    "governanceLabel": "Governance intuition",
+    "governance": "Permissioned = known members agree the rules and can fix mistakes. Permissionless = nobody can be excluded, and nobody can undo.",
     "keyPoint": "The three types differ in who may read, write and validate — not in the cryptography underneath."
   },
   "spectrum": {
@@ -136,56 +109,43 @@
     "keyPoint": "Permissioned vs permissionless is a question of WHO may write — not how fast it is."
   },
   "usecases": {
-    "heading": "The Use of Blockchain",
-    "subtitle": "When does blockchain actually add value — and when doesn't it?",
+    "heading": "Does this problem earn a blockchain?",
+    "subtitle": "The question we will ask of every platform in this course. Fundamentals §3 covered the industries — here is the checklist.",
     "use": {
-      "title": "✅ Use blockchain when…",
+      "title": "✅ Use a blockchain when…",
       "items": [
-        "Multiple parties share data without trusting each other",
-        "An immutable audit trail is required",
-        "Intermediaries add cost without adding value",
-        "Rules need to be enforced automatically (smart contracts)",
-        "Censorship resistance or permissionless access is required"
+        "Several parties must share one record and none of them is trusted to keep it alone",
+        "The record must be tamper-evident and auditable by outsiders",
+        "An intermediary adds cost or delay without adding trust",
+        "Rules must run automatically, or no participant may be excludable"
       ]
     },
     "dontUse": {
-      "title": "❌ Don't use blockchain when…",
+      "title": "❌ Don't use a blockchain when…",
       "items": [
-        "A central authority is already trusted by all parties",
-        "Data privacy is paramount — public chains expose everything",
-        "High-volume, low-latency transactions are needed",
-        "You control all participants — just use a database",
-        "On-chain data integrity can't be guaranteed (oracle problem)"
+        "One organisation controls every participant — a database is cheaper and faster",
+        "All parties already trust a central party — a regulator, a bank, a registry",
+        "Data must stay private and move in high volume — public chains expose everything and are slow",
+        "The truth lives off-chain — a blockchain cannot verify what it is told (the oracle problem)"
       ]
     },
-    "drivers": {
-      "title": "🏭 Real-World Value Drivers",
-      "items": [
-        { "label": "Finance:", "text": " DeFi, cross-border payments, tokenised assets" },
-        { "label": "Supply chain:", "text": " provenance, anti-counterfeiting, compliance" },
-        { "label": "Healthcare:", "text": " patient records portability, drug traceability" },
-        { "label": "Identity:", "text": " self-sovereign credentials, KYC once" },
-        { "label": "Government:", "text": " land registries, voting, procurement" }
-      ]
-    },
-    "keyPoint": "Blockchain earns its place only when several parties who do not fully trust each other must share one record."
+    "keyPoint": "Carry this question into every platform: does this problem earn a blockchain — and if so, which one?"
   },
   "takeaways": {
     "title": "Section 00 — Key Takeaways",
     "items": [
-      "Centralization buys efficiency; decentralization buys resilience and removes the need to trust one party",
-      "Blockchains sit on a spectrum — from fully public and permissionless to fully private and permissioned",
-      "Blockchain adds value when several parties that don't trust each other must share one record, or when code can replace an intermediary",
-      "Moving towards permissioned trades open access and censorship resistance for privacy, speed and compliance",
-      "Consortium chains let competing organisations run shared infrastructure without handing control to any one of them",
-      "There is no universally best blockchain — the rest of this course matches problems to platforms"
+      "Fundamentals gave you one platform family — Bitcoin and Ethereum are both public, permissionless chains",
+      "Permissioned ↔ permissionless is one spectrum: the question is who may write and validate, not how fast it runs",
+      "Moving towards permissioned trades open access and censorship resistance for privacy, control and compliance",
+      "Governance trade-off: known members can agree rules and fix mistakes; permissionless means nobody can be excluded — and nobody can undo",
+      "Consortium chains let competing organisations share infrastructure without handing control to any one of them",
+      "The recurring question for every platform: does this problem earn a blockchain — and if so, which one?"
     ]
   },
   "sorter": {
     "heading": "Who may write to this ledger?",
     "subtitle": "Drag each card into a bucket — or tap a card, then a bucket. You get feedback instantly. One question decides everything: who is allowed to add entries?",
     "cardsLabel": "Cards to sort",
-    "allSorted": "All sorted — read the feedback on each card.",
     "dropHint": "Drop here",
     "reset": "↺ Reset",
     "scorePrefix": "Score: ",
