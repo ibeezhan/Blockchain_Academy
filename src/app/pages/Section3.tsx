@@ -28,11 +28,14 @@ const section3ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
   { id: 's3-ethereum' },
   { id: 's3-smartcontract' },
   { id: 's3-accounts' },
+  { id: 's3-limits' },
   { id: 's3-gas' },
+  { id: 's3-gas-why' },
   { id: 's3-defi' },
   { id: 's3-nfts' },
   { id: 's3-daos' },
   { id: 's3-tokens' },
+  { id: 's3-tokens-sort' },
 
   { kind: 'group', id: 'g-s3-world' },
   { id: 's3-usecases-trust' },
@@ -204,6 +207,106 @@ function AccountsArrow() {
         <line x1="2" y1="10" x2="112" y2="10" stroke={C} strokeWidth="3" strokeLinecap="round" markerEnd="url(#acc-arrow)" />
       </svg>
       <p className="text-[11px] text-muted-foreground leading-snug">{t('ethAccounts.arrowSub')}</p>
+    </div>
+  );
+}
+
+// ─── Limits: what a contract can't do ───────────────────────────────────────
+
+interface LimitCopy { title: string; example: string; body: string; catch: string; svg: Record<string, string> }
+
+function LimitCard({ color, emoji, copy, children }: { color: string; emoji: string; copy: LimitCopy; children: ReactNode }) {
+  return (
+    <div className="flex-1 min-w-0 min-h-0 rounded-2xl border-2 bg-card flex flex-col overflow-hidden" style={{ borderColor: color + '66' }}>
+      <div className="px-4 py-3 flex items-center gap-3 shrink-0" style={{ background: `linear-gradient(to right, ${color}2e, transparent)` }}>
+        <div className="size-12 rounded-xl flex items-center justify-center text-2xl shrink-0" style={{ backgroundColor: color + '26' }}>{emoji}</div>
+        <div className="min-w-0">
+          <div className="text-[10px] font-black uppercase tracking-widest" style={{ color }}>{copy.example}</div>
+          <div className="font-bold text-foreground text-base lg:text-lg leading-tight">{copy.title}</div>
+        </div>
+      </div>
+      <div className="flex-1 min-h-0 px-4 py-2 flex items-center justify-center">{children}</div>
+      <div className="shrink-0 px-4 pb-4 space-y-1.5">
+        <p className="text-sm lg:text-base text-muted-foreground leading-snug">{copy.body}</p>
+        <p className="text-xs lg:text-sm font-bold" style={{ color }}>{copy.catch}</p>
+      </div>
+    </div>
+  );
+}
+
+/** The chain is a closed room: an outside fact (the flight was late) only gets in when an oracle writes it on-chain. */
+function OracleSvg({ v, color }: { v: Record<string, string>; color: string }) {
+  const WORLD = '#f59e0b';
+  return (
+    <svg viewBox="0 0 320 156" className="w-full h-full max-h-56" role="img" aria-label={v.alt}>
+      <ArrowDefs id="lim-oracle" color={color} />
+      <rect x="8" y="14" width="124" height="128" rx="12" fill={color + '12'} stroke={color} strokeWidth="2" />
+      <text x="70" y="32" fontSize="9" fontWeight="800" textAnchor="middle" fill={color}>{v.chain}</text>
+      <text x="70" y="76" fontSize="30" textAnchor="middle">⚙️</text>
+      <text x="70" y="94" fontSize="8.5" fontWeight="700" textAnchor="middle" fill="var(--foreground)">{v.contract}</text>
+      <line x1="160" y1="6" x2="160" y2="150" stroke="var(--muted-foreground)" strokeWidth="3" strokeDasharray="6 4" />
+      <text x="250" y="32" fontSize="9" fontWeight="800" textAnchor="middle" fill={WORLD}>{v.world}</text>
+      <text x="250" y="76" fontSize="30" textAnchor="middle">✈️</text>
+      <rect x="198" y="84" width="104" height="18" rx="9" fill={WORLD + '1f'} stroke={WORLD} strokeWidth="1.2" />
+      <text x="250" y="96.5" fontSize="8.5" fontWeight="700" textAnchor="middle" fill={WORLD}>{v.fact}</text>
+      <line x1="250" y1="102" x2="250" y2="122" stroke={color} strokeWidth="2" />
+      <line x1="250" y1="122" x2="182" y2="122" stroke={color} strokeWidth="2" />
+      <path d="M138,122 L70,122 L70,104" fill="none" stroke={color} strokeWidth="2" markerEnd="url(#lim-oracle)" />
+      <rect x="138" y="110" width="44" height="24" rx="8" fill="var(--card)" stroke={color} strokeWidth="2" />
+      <text x="160" y="126.5" fontSize="13" textAnchor="middle">📡</text>
+      <text x="160" y="152" fontSize="8.5" fontWeight="800" textAnchor="middle" fill={color}>{v.oracle}</text>
+      <circle r="3.5" fill={WORLD}><animateMotion dur="2.6s" repeatCount="indefinite" path="M250,102 L250,122 L70,122 L70,104" /></circle>
+    </svg>
+  );
+}
+
+/** No clock inside: the contract sits idle until a wallet's transaction reaches it. */
+function TriggerSvg({ v, color }: { v: Record<string, string>; color: string }) {
+  const WALLET = '#627EEA', RED = '#ef4444';
+  return (
+    <svg viewBox="0 0 320 156" className="w-full h-full max-h-56" role="img" aria-label={v.alt}>
+      <ArrowDefs id="lim-trigger" color={color} />
+      <text x="62" y="92" fontSize="30" textAnchor="middle">🔑</text>
+      <text x="62" y="112" fontSize="8.5" fontWeight="700" textAnchor="middle" fill="var(--foreground)">{v.wallet}</text>
+      <line x1="92" y1="84" x2="206" y2="84" stroke={color} strokeWidth="2.5" strokeLinecap="round" markerEnd="url(#lim-trigger)" />
+      <text x="150" y="76" fontSize="8.5" fontWeight="800" textAnchor="middle" fill={color}>{v.tx}</text>
+      <circle r="3.5" fill={WALLET}><animateMotion dur="2.2s" repeatCount="indefinite" path="M92,84 L204,84" /></circle>
+      <rect x="212" y="54" width="100" height="62" rx="12" fill={color + '12'} stroke={color} strokeWidth="2" />
+      <text x="262" y="88" fontSize="30" textAnchor="middle">⚙️</text>
+      <text x="262" y="108" fontSize="8.5" fontWeight="700" textAnchor="middle" fill="var(--foreground)">{v.contract}</text>
+      <text x="262" y="30" fontSize="20" textAnchor="middle">⏰</text>
+      <circle cx="262" cy="23" r="15" fill="none" stroke={RED} strokeWidth="2.5" />
+      <line x1="251" y1="12" x2="273" y2="34" stroke={RED} strokeWidth="2.5" strokeLinecap="round" />
+      <text x="262" y="48" fontSize="8" fontWeight="800" textAnchor="middle" fill={RED}>{v.noClock}</text>
+      <text x="160" y="146" fontSize="8.5" fontStyle="italic" textAnchor="middle" fill="var(--muted-foreground)">{v.caption}</text>
+    </svg>
+  );
+}
+
+function ContractLimitsSlide() {
+  const { t } = useTranslation(NS);
+  const oracle = t('contractLimits.oracle', { returnObjects: true }) as LimitCopy;
+  const trigger = t('contractLimits.trigger', { returnObjects: true }) as LimitCopy;
+  const ORACLE = '#39B54A', TRIGGER = '#f59e0b';
+  return (
+    <div id="s3-limits" className="h-full flex flex-col p-5 lg:p-8">
+      <div className="shrink-0 mb-3">
+        <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
+          <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] font-bold shrink-0 whitespace-nowrap">{t('contractLimits.recapBadge')}</span>
+          <span className="truncate">{t('contractLimits.recapBody')}</span>
+          <TechHint body={t('contractLimits.hood')} className="ml-auto" />
+        </div>
+        <div className="flex items-center gap-3 mb-1">
+          <Ban className="size-7 shrink-0" style={{ color: '#ef4444' }} />
+          <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('contractLimits.heading')}</h2>
+        </div>
+        <p className="text-sm text-muted-foreground">{t('contractLimits.lead')}</p>
+      </div>
+      <div className="flex-1 min-h-0 flex items-stretch gap-4">
+        <LimitCard color={ORACLE} emoji="📡" copy={oracle}><OracleSvg v={oracle.svg} color={ORACLE} /></LimitCard>
+        <LimitCard color={TRIGGER} emoji="⏰" copy={trigger}><TriggerSvg v={trigger.svg} color={TRIGGER} /></LimitCard>
+      </div>
+      <SlideFooter keyPoint={t('contractLimits.keyPoint')} peek={t('contractLimits.peek')} />
     </div>
   );
 }
@@ -415,35 +518,33 @@ function TokenSorter() {
   const done = Object.keys(picks).length;
   const correct = s.cards.filter((c, i) => picks[i] === c.answer).length;
   return (
-    <div className="shrink-0 rounded-xl border border-border bg-card p-3 flex flex-col gap-2">
-      <div className="flex items-center gap-3">
-        <span className="px-2 py-0.5 rounded-full bg-[#f59e0b]/15 border border-[#f59e0b]/40 text-[#f59e0b] text-[10px] font-bold shrink-0">{s.title}</span>
-        <span className="text-[11px] text-muted-foreground truncate">{s.hint}</span>
+    <div className="flex-1 min-h-0 flex flex-col gap-3">
+      <div className="shrink-0 h-5 flex items-center justify-end">
         {done > 0 && (
-          <span className="ml-auto text-[11px] font-bold shrink-0" style={{ color: correct === done ? OK : 'var(--muted-foreground)' }}>
+          <span className="text-sm font-bold" style={{ color: correct === done ? OK : 'var(--muted-foreground)' }}>
             {t('tokens.sorter.score', { correct, total: done })}
           </span>
         )}
       </div>
-      <div className="grid grid-cols-6 gap-2">
+      <div className="flex-1 min-h-0 grid grid-cols-3 grid-rows-2 gap-3">
         {s.cards.map((c, i) => {
           const pick = picks[i];
           const right = pick === c.answer;
           const tone = pick ? (right ? OK : RED) : 'var(--border)';
           return (
-            <div key={i} className="rounded-xl border-2 px-2 py-2 flex flex-col items-center text-center gap-1.5 transition-colors"
+            <div key={i} className="min-h-0 rounded-2xl border-2 bg-card px-4 py-3 flex flex-col items-center justify-center text-center gap-2 transition-colors"
               style={{ borderColor: tone, backgroundColor: pick ? tone + '12' : undefined }}>
-              <span className="text-2xl leading-none">{c.emoji}</span>
-              <span className="text-[11px] font-bold text-foreground leading-tight">{c.label}</span>
+              <span className="text-4xl leading-none">{c.emoji}</span>
+              <span className="text-sm lg:text-base font-bold text-foreground leading-tight">{c.label}</span>
               {pick ? (
-                <p className="text-[10px] leading-snug" style={{ color: tone }}>
+                <p className="text-xs lg:text-sm leading-snug" style={{ color: tone }}>
                   <strong>{right ? s.right : s.wrong}</strong> {c.why}
                 </p>
               ) : (
-                <div className="grid grid-cols-2 gap-1 w-full mt-auto">
+                <div className="grid grid-cols-2 gap-2 w-full max-w-xs mt-1">
                   {([['fungible', F, s.countBtn], ['unique', U, s.nameBtn]] as const).map(([shape, color, label]) => (
                     <button key={shape} type="button" onClick={() => setPicks(p => ({ ...p, [i]: shape }))}
-                      className="px-1 py-1 rounded-md border text-[10px] font-bold transition-all hover:-translate-y-0.5"
+                      className="px-2 py-1.5 rounded-lg border text-xs font-bold transition-all hover:-translate-y-0.5"
                       style={{ borderColor: color + '80', backgroundColor: color + '14', color }}>{label}</button>
                   ))}
                 </div>
@@ -452,6 +553,27 @@ function TokenSorter() {
           );
         })}
       </div>
+    </div>
+  );
+}
+
+function TokenSorterSlide() {
+  const { t } = useTranslation(NS);
+  return (
+    <div id="s3-tokens-sort" className="h-full flex flex-col p-5 lg:p-8">
+      <div className="shrink-0 mb-3">
+        <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
+          <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] font-bold shrink-0 whitespace-nowrap">{t('tokens.sorter.badge')}</span>
+          <span className="truncate">{t('tokens.sorter.recap')}</span>
+        </div>
+        <div className="flex items-center gap-3 mb-1">
+          <span className="text-2xl">🪙</span>
+          <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('tokens.sorter.title')}</h2>
+        </div>
+        <p className="text-sm text-muted-foreground max-w-4xl">{t('tokens.sorter.hint')}</p>
+      </div>
+      <TokenSorter />
+      <SlideFooter keyPoint={t('tokens.sorter.keyPoint')} />
     </div>
   );
 }
@@ -515,7 +637,6 @@ function TokensSlide() {
         })}
       </div>
 
-      <div className="shrink-0 mt-3"><TokenSorter /></div>
       <SlideFooter keyPoint={t('tokens.keyPoint')} peek={t('tokens.peek')} />
     </div>
   );
@@ -1492,6 +1613,9 @@ export function Section3() {
           <SlideFooter keyPoint={t('ethAccounts.keyPoint')} peek={t('ethAccounts.peek')} />
         </div>
 
+        {/* ═══════ LIMITS — WHAT A CONTRACT CAN'T DO ═══════ */}
+        <ContractLimitsSlide />
+
         {/* ═══════ GAS — INTERACTIVE FEE CALCULATOR ═══════ */}
         <div id="s3-gas" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-3">
@@ -1506,29 +1630,48 @@ export function Section3() {
             </div>
             <p className="text-sm text-muted-foreground">{t('ethGas.lead')}</p>
           </div>
-          <div className="flex-1 min-h-0 grid grid-cols-5 gap-4">
-            <div className="col-span-3 min-h-0"><GasFeeDemo /></div>
-            <div className="col-span-2 min-h-0 flex flex-col gap-3">
-              <FuelAnalogy />
+          <div className="flex-1 min-h-0 flex justify-center">
+            <div className="w-full max-w-5xl min-h-0 flex flex-col"><GasFeeDemo /></div>
+          </div>
+          <SlideFooter keyPoint={t('ethGas.demoKeyPoint')} peek={t('ethGas.peek')} />
+        </div>
+
+        {/* ═══════ GAS — WHY IT EXISTS (fuel analogy, surge pricing, the brake on spam) ═══════ */}
+        <div id="s3-gas-why" className="h-full flex flex-col p-5 lg:p-8">
+          <div className="shrink-0 mb-3">
+            <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
+              <span className="px-1.5 py-0.5 rounded bg-[#627EEA]/15 text-[#627EEA] font-bold shrink-0 whitespace-nowrap">{t('ethGas.whySlide.recapBadge')}</span>
+              <span className="truncate">{t('ethGas.whySlide.recapBody')}</span>
+              <TechHint body={t('ethGas.hood')} className="ml-auto" />
+            </div>
+            <div className="flex items-center gap-3 mb-1">
+              <span className="text-2xl">⛽</span>
+              <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('ethGas.whySlide.heading')}</h2>
+            </div>
+            <p className="text-sm text-muted-foreground">{t('ethGas.whySlide.lead')}</p>
+          </div>
+          <div className="flex-1 min-h-0 grid grid-cols-2 gap-4">
+            <div className="min-h-0 flex flex-col"><FuelAnalogy /></div>
+            <div className="min-h-0 flex flex-col gap-4">
               {/* Surge-pricing analogy for the gas-price slider */}
-              <div className="shrink-0 px-3 py-2 rounded-xl border flex items-center gap-3" style={{ borderColor: '#f59e0b55', backgroundColor: '#f59e0b10' }}>
-                <span className="text-2xl shrink-0">🚕</span>
+              <div className="flex-1 min-h-0 px-5 py-4 rounded-2xl border-2 flex items-center gap-4" style={{ borderColor: '#f59e0b66', backgroundColor: '#f59e0b10' }}>
+                <span className="text-4xl shrink-0">🚕</span>
                 <div className="min-w-0">
-                  <div className="text-xs font-bold text-foreground">{t('ethGas.surge.title')}</div>
-                  <div className="text-[11px] text-muted-foreground leading-snug">{t('ethGas.surge.body')}</div>
+                  <div className="text-base lg:text-lg font-bold text-foreground leading-tight">{t('ethGas.surge.title')}</div>
+                  <div className="text-sm lg:text-base text-muted-foreground leading-snug mt-1">{t('ethGas.surge.body')}</div>
                 </div>
               </div>
               {/* Why a per-step fee exists at all: the brake on endless loops and spam */}
-              <div className="shrink-0 px-3 py-2 rounded-xl border flex items-center gap-3" style={{ borderColor: '#ef444455', backgroundColor: '#ef444410' }}>
-                <span className="text-2xl shrink-0">🔁</span>
+              <div className="flex-1 min-h-0 px-5 py-4 rounded-2xl border-2 flex items-center gap-4" style={{ borderColor: '#ef444466', backgroundColor: '#ef444410' }}>
+                <span className="text-4xl shrink-0">🔁</span>
                 <div className="min-w-0">
-                  <div className="text-xs font-bold text-foreground">{t('ethGas.why.title')}</div>
-                  <div className="text-[11px] text-muted-foreground leading-snug">{t('ethGas.why.body')}</div>
+                  <div className="text-base lg:text-lg font-bold text-foreground leading-tight">{t('ethGas.why.title')}</div>
+                  <div className="text-sm lg:text-base text-muted-foreground leading-snug mt-1">{t('ethGas.why.body')}</div>
                 </div>
               </div>
             </div>
           </div>
-          <SlideFooter keyPoint={t('ethGas.keyPoint')} peek={t('ethGas.peek')} />
+          <SlideFooter keyPoint={t('ethGas.keyPoint')} />
         </div>
 
         {/* ═══════ SNEAK PEEKS: DeFi · NFTs · DAOs ═══════ */}
@@ -1538,6 +1681,7 @@ export function Section3() {
 
         {/* ═══════ TOKENS — THE BUSINESS PRIMITIVE ═══════ */}
         <TokensSlide />
+        <TokenSorterSlide />
 
         {/* ═══════ 2. BLOCKCHAIN USE CASES — ONE SLIDE PER PATTERN ═══════ */}
         <UseCasePatternSlide id="s3-usecases-trust" index={0} />
@@ -1851,14 +1995,6 @@ export function Section3() {
             question={t('quizWeb3.question')}
             options={(t('quizWeb3.options', { returnObjects: true }) as string[]).map((text, i) => ({ text, correct: i === 1 }))}
             explanation={t('quizWeb3.explanation')}
-          />
-        </div>
-
-        <div className="h-full">
-          <QuizSlide
-            question={t('quizDapp.question')}
-            options={(t('quizDapp.options', { returnObjects: true }) as string[]).map((text, i) => ({ text, correct: i === 1 }))}
-            explanation={t('quizDapp.explanation')}
           />
         </div>
 
