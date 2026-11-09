@@ -89,7 +89,7 @@
       "Provenance query · SKU A123 → full history in 2.2 s"
     ],
     "hood": ["chaincode invoke", "recordHarvest()", "queryProvenance()", "endorsement policy"],
-    "keyPoint": "A shared ledger does not make partners trust each other — it makes them stop reconciling each other’s spreadsheets."
+    "keyPoint": "A shared ledger does not make partners trust each other; it stops them reconciling each other’s spreadsheets."
   },
   "overview": {
     "title": "Hyperledger Fabric",
@@ -106,7 +106,7 @@
       "Os channels criam sub-redes privadas dentro da mesma rede Fabric",
       "Usado por IBM Food Trust, TradeLens, HSBC, Maersk, Walmart"
     ],
-    "keyPoint": "Fabric is blockchain rebuilt for companies: known members, private channels, no token, no mining."
+    "keyPoint": "Fabric is blockchain for companies: known members, private channels, no token, no mining."
   },
   "channels": {
     "heading": "Channels: Partilha Seletiva de Dados",
@@ -191,7 +191,7 @@
     "policyTitle": "Endorsement policy = the business rule",
     "policyBody": "The consortium decides who must sign each kind of transaction — e.g. a delivery needs Producer AND Distributor. The platform enforces that rule on every transaction, automatically.",
     "hood": ["endorsement policy", "read/write set", "ordering service · Raft", "world state", "MVCC check"],
-    "keyPoint": "Nothing reaches the ledger until the organisations the policy names have counter-signed — the business rule is enforced by the platform, not by goodwill."
+    "keyPoint": "Nothing reaches the ledger until the organisations named in the policy have counter-signed; the platform enforces the rule."
   },
   "exerciseSupply": {
     "heading": "Exercício: O Que Vai Para a Chain?",
@@ -283,7 +283,7 @@
     "dataFlowLabel": "Fluxo de dados",
     "outcomeLabel": "Resultado",
     "lessonLabel": "Lição",
-    "keyPoint": "Permissioned networks succeed when someone can require participation and the old process is visibly broken — not when the tech is best."
+    "keyPoint": "Permissioned networks succeed when someone can require participation and the old process is visibly broken, not when the tech is best."
   },
   "comparison": {
     "title": "Ethereum vs Hyperledger Fabric",
@@ -304,7 +304,6 @@
     "keyPoint": "Ethereum sells openness to strangers; Fabric sells privacy and control to partners — choose by who your participants are."
   },
   "bestfits": {
-    "badge": "🎯 Melhores Encaixes",
     "heading": "Onde o Hyperledger Fabric Vence — Os Casos de Uso Que Realmente Domina",
     "intro": {
       "a": "As escolhas de desenho do Fabric (adesão permissionada, channels para privacidade, consenso conectável, sem token nativo) tornam-no a opção por defeito sempre que os participantes são ",
@@ -321,10 +320,9 @@
     ],
     "notAFitLabel": "Não encaixa em:",
     "notAFitBody": " DeFi sem permissão (usa Ethereum), escassez digital / reserva de valor (usa Bitcoin), apps de consumo que exijam auto-custódia aberta, qualquer coisa em que a resistência à censura contra o próprio consórcio seja um requisito.",
-    "keyPoint": "Fabric fits when the participants are known, regulated and need to share selectively — supply chains, interbank rails, health exchanges."
+    "keyPoint": "Fabric fits when participants are known, regulated and need to share selectively: supply chains, interbank rails, health exchanges."
   },
   "worstfits": {
-    "badge": "🚫 Piores Encaixes",
     "headingA": "Onde o Hyperledger Fabric é a Ferramenta ",
     "headingEm": "Errada",
     "headingB": "",
@@ -350,7 +348,6 @@
     "keyPoint": "Anything that must stay open to strangers or outlive its consortium belongs on a public chain, not on Fabric."
   },
   "vocab": {
-    "badge": "🧩 Tradução",
     "heading": "Fabric ↔ Blockchain Pública — Mesmo Mecanismo, Vocabulário Diferente",
     "intro": {
       "a": "A maior parte do Fabric são as primitivas de blockchain pública que já conheces, ",
@@ -373,7 +370,7 @@
       { "pub": "Layer 2 / Sidechain", "fab": "Channel (sub-ledger privado)", "note": "Um channel é um ledger autocontido com os seus próprios membros, chaincode e histórico — completamente invisível para os não-membros na mesma rede." },
       { "pub": "Governação on-chain / DAO", "fab": "Atualização da config do channel (voto do consórcio)", "note": "Os membros votam off-chain ou via transações de config assinadas. O Fabric nunca adotou governação on-chain por voto de token." }
     ],
-    "keyPoint": "Fabric is the blockchain you already know with new brand names — relearn the vocabulary, not the cryptography."
+    "keyPoint": "Fabric reuses the mechanisms you already know under new names; relearn the vocabulary, not the cryptography."
   },
   "quiz": {
     "question": "Em Hyperledger Fabric, três empresas farmacêuticas (PharmaA, PharmaB e um Hospital) estão na mesma rede. A PharmaA e a PharmaB querem partilhar dados de preço que o Hospital NÃO pode ver. Que funcionalidade do Fabric permite isto?",
@@ -412,14 +409,14 @@
       "O Hyperledger Fabric é a blockchain empresarial líder — modular, flexível e comprovada em produção",
       "Os channels permitem que diferentes subconjuntos de participantes partilhem dados privados na mesma rede",
       "Os smart contracts (chaincode) no Fabric automatizam a lógica de negócio entre parceiros da cadeia de abastecimento",
-      "Fabric agrees without mining: known orderers sequence, named organisations counter-sign — fast and final because every participant is identified",
-      "Raft when the orderer operators trust each other, BFT when they are competitors — the consensus choice follows the governance, not the other way round",
-      "Networks fail on economics and governance, not technology — a credible convener and a funding model matter more than TPS"
+      "Fabric agrees without mining: known orderers sequence and named organisations counter-sign",
+      "Raft when orderer operators trust each other, BFT when they are competitors; consensus follows governance",
+      "Networks fail on economics and governance, not technology; a credible convener and funding matter more than TPS"
     ]
   },
   "tradeoffs": {
     "heading": "Permissioned vs public — what a business gains and gives up",
-    "subtitle": "Choosing a permissioned platform is a trade, not an upgrade. Here is the trade in business terms, with the networks that proved each point.",
+    "subtitle": "A permissioned platform is a trade, not an upgrade. Each point below names a network that proved it.",
     "gainTitle": "You gain",
     "gains": [
       {
@@ -458,7 +455,7 @@
       {
         "emoji": "🛡️",
         "label": "Censorship resistance",
-        "desc": "The consortium can remove members, reverse entries or change rules. Great for compliance — fatal for neutrality.",
+        "desc": "The consortium can remove members, reverse entries or change rules. Good for compliance, fatal for neutrality.",
         "example": "Unsuitable for neutral money or assets that must outlive the consortium."
       },
       {
@@ -480,7 +477,7 @@
   },
   "usecases": {
     "heading": "Where permissioned chains earn their keep",
-    "subtitle": "Three families of enterprise use cases — with the real networks, including the ones that closed and why.",
+    "subtitle": "Three families of enterprise use cases, with the real networks, including the ones that closed and why.",
     "painLabel": "Pain today",
     "changeLabel": "What a shared ledger changes",
     "examplesLabel": "Real networks",
@@ -524,11 +521,11 @@
       }
     ],
     "hood": ["channels", "chaincode", "endorsement policy", "private data collections"],
-    "keyPoint": "A permissioned network lives or dies on its convener and its funding — technology was rarely why one closed."
+    "keyPoint": "A permissioned network lives or dies on its convener and its funding; technology was rarely why one closed."
   },
   "howAgrees": {
     "heading": "Under the hood: how Fabric agrees",
-    "subtitle": "No miners, no token. Three mechanisms replace Proof of Work — each in one sentence, then what it buys the business.",
+    "subtitle": "No miners, no token. Three mechanisms replace Proof of Work.",
     "oneLineLabel": "In one sentence",
     "businessLabel": "For the business",
     "mechanisms": [
@@ -558,7 +555,7 @@
       { "platform": "Fabric", "who": "A handful of known orderers sequence", "time": "Seconds", "finality": "Final on commit — no forks" }
     ],
     "chooseLabel": "Which ordering to choose",
-    "chooseRaft": { "term": "Raft", "body": " — orderer operators are trusted partners (most consortiums). Fastest, simplest, lightest." },
+    "chooseRaft": { "term": "Raft", "body": " — orderer operators are trusted partners (most consortiums). Fastest and simplest." },
     "chooseBft": {
       "term": "SmartBFT (Fabric v3)",
       "body": " — operators are competitors, or regulation demands tolerating a malicious node. Needs 4+ orderers to survive one bad one, and runs slower."
@@ -571,6 +568,6 @@
       "Kafka ordering (removed in v3)",
       "crash vs Byzantine faults"
     ],
-    "keyPoint": "Fabric replaces mining with known orderers and counter-signatures — fast and final because everyone at the table is already identified."
+    "keyPoint": "Fabric replaces mining with known orderers and counter-signatures; fast and final because every participant is identified."
   }
 }

@@ -1298,7 +1298,6 @@ export function BP_Section3() {
         {/* ═══════ BEST FITS — WHERE FABRIC WINS ═══════ */}
         <div id="s3-bestfits" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#0EA5E9]/15 border border-[#0EA5E9]/40 text-[#0EA5E9] text-xs font-bold">{t('bestfits.badge')}</span>
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('bestfits.heading')}</h2>
             <p className="text-sm text-muted-foreground max-w-3xl">
               {t('bestfits.intro.a')}<strong className="text-foreground">{t('bestfits.intro.strong')}</strong>{t('bestfits.intro.b')}
@@ -1331,7 +1330,6 @@ export function BP_Section3() {
         {/* ═══════ WORST FITS — WHERE FABRIC IS WRONG ═══════ */}
         <div id="s3-worstfits" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#ef4444]/15 border border-[#ef4444]/40 text-[#ef4444] text-xs font-bold">{t('worstfits.badge')}</span>
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('worstfits.headingA')}<em>{t('worstfits.headingEm')}</em>{t('worstfits.headingB')}</h2>
             <p className="text-sm text-muted-foreground max-w-3xl">
               {t('worstfits.intro')}
@@ -1364,7 +1362,6 @@ export function BP_Section3() {
         {/* ═══════ FABRIC ↔ PUBLIC-CHAIN GLOSSARY ═══════ */}
         <div id="s3-vocab" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#0EA5E9]/15 border border-[#0EA5E9]/40 text-[#0EA5E9] text-xs font-bold">{t('vocab.badge')}</span>
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('vocab.heading')}</h2>
             <p className="text-sm text-muted-foreground max-w-3xl">
               {t('vocab.intro.a')}<strong className="text-foreground">{t('vocab.intro.strong')}</strong>{t('vocab.intro.b')}

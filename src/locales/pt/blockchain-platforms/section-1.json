@@ -75,12 +75,12 @@
       "trickLabel": "O truque:",
       "trickBody": " o cofre guarda os fundos. Cada pagamento é um acordo assinado sobre como o conteúdo do cofre deve ser dividido. A blockchain on-chain só alguma vez vê DUAS transações — OPEN e CLOSE — independentemente de quantos pagamentos ocorreram pelo meio."
     },
-    "keyPoint": "Lightning moves everyday payments off-chain and uses Bitcoin only to open and settle — speed without giving up base-layer security."
+    "keyPoint": "Lightning moves everyday payments off-chain and uses Bitcoin only to open and settle."
   },
   "txLifecycle": {
-    "badge": "🧩 Systemisation · recap",
+    "badge": "Recap",
     "heading": "Blockchain transaction flow — end to end",
-    "intro": "You met every stage separately in Fundamentals — here is the whole journey once, start to finish. Ethereum follows the same flow with validators instead of miners.",
+    "intro": "You met each stage separately in Fundamentals; here is the whole journey once. Ethereum follows the same flow with validators instead of miners.",
     "replay": "↻ Replay",
     "starting": "Starting…",
     "stageCaption": "{{n}}. {{title}} — {{what}}",
@@ -146,7 +146,7 @@
       "longest chain",
       "Casper finality"
     ],
-    "keyPoint": "Every blockchain payment makes the same journey — sign, broadcast, queue, block, confirm. Platforms differ in who proposes the block and how fast it becomes final."
+    "keyPoint": "Every blockchain payment makes the same journey; platforms differ in who proposes the block and how fast it becomes final."
   },
   "architecture": {
     "heading": "Arquitetura da Bitcoin",
@@ -227,7 +227,7 @@
     },
     "consensusVisual": {
       "title": "Consensus as a cost, not a puzzle",
-      "body": "You are not paying miners to process payments — you are paying them to make rewriting history unaffordable. The bill is the point: the bigger it is, the safer the record.",
+      "body": "You are not paying miners to process payments; you are paying them to make rewriting history unaffordable. The bigger the bill, the safer the record.",
       "buys": [
         {
           "label": "What it buys",
@@ -309,7 +309,7 @@
       }
     },
     "hood": ["Nakamoto consensus", "block size", "validator count", "Layer 2"],
-    "keyPoint": "Bitcoin chose security and decentralisation and paid with speed — good for settling high-value transfers, not for coffee at the till."
+    "keyPoint": "Bitcoin chose security and decentralisation and paid with speed: good for settling high-value transfers, not for small retail payments."
   },
 "apps": {
     "heading": "Para além dos pagamentos — a camada de apps da Bitcoin",
@@ -358,10 +358,9 @@
     ],
     "caveatLabel": "Ressalva pedagógica — ",
     "caveatBody": "A camada de apps da Bitcoin é debatida dentro da comunidade Bitcoin. Os puristas querem a chain de base minimalista (\"ouro digital\"); os construtores defendem usá-la como camada de liquidação para apps mais ricas. Sê cético quanto ao hype de ambos os lados — os dois campos têm preocupações legítimas.",
-    "keyPoint": "Bitcoin's base layer stays deliberately simple — applications live around it, each with its own trust model and its own risks."
+    "keyPoint": "Bitcoin's base layer stays deliberately simple; applications live around it, each with its own trust model and risks."
   },
 "bestFits": {
-    "badge": "🎯 Melhores Encaixes",
     "heading": "Onde a Bitcoin Vence — Os Casos de Uso que Realmente Domina",
     "subtitle": "As escolhas de desenho da Bitcoin (oferta fixa, modelo UTXO, Script intencionalmente limitado, segurança PoW) tornam-na espetacularmente boa num conjunto restrito de tarefas — e explicitamente não a ferramenta certa para muitas outras.",
     "whyLabel": "Porquê",
@@ -377,7 +376,6 @@
     "keyPoint": "Bitcoin wins where neutrality and scarcity matter more than features: reserves, settlement, censorship-resistant value."
   },
 "worstFits": {
-    "badge": "🚫 Piores Encaixes",
     "headingA": "Onde a Bitcoin é a Ferramenta ",
     "headingEm": "Errada",
     "headingB": "",
@@ -392,7 +390,7 @@
     ],
     "rightToolLabel": "Ferramenta certa, tarefa certa:",
     "rightToolBody": " se a resposta for \"reserva de valor\", \"camada de liquidação neutra\" ou \"resistência à censura\" — a Bitcoin vence. Para literalmente qualquer coisa programável, escolhe uma chain diferente (e tudo bem).",
-    "keyPoint": "If you find yourself fighting the protocol, you have picked the wrong chain — Bitcoin is not a general-purpose computer."
+    "keyPoint": "Bitcoin is not a general-purpose computer; anything programmable belongs on another chain."
   },
   "quizTrilemma": {
     "question": "A payments app needs 5,000 transactions per second and must never go down. Which corner of the trilemma does Bitcoin give you least of — and what does that imply?",
@@ -417,19 +415,19 @@
   "takeaways": {
     "title": "Section 01 — Key Takeaways",
     "items": [
-      "Bitcoin is a permissionless platform: anyone can join, nobody can be excluded — and nobody can undo",
-      "Its four layers (apps, network, consensus, data) each buy a business something: reach, auditability, finality",
-      "Every blockchain payment makes the same journey — sign, broadcast, queue, block, confirm; platforms differ in who proposes blocks and how fast finality comes",
-      "The Trilemma: Bitcoin chose security and decentralization and paid with throughput — speed lives on Layer 2 (Lightning) or on another platform",
-      "Bitcoin's app layer — Lightning, inscriptions, sidechains, staking — lives around the chain, each piece with its own trust model",
-      "Where it wins: reserves, neutral settlement, censorship-resistant value. Where it loses: programmable logic, private data, high-volume retail — the next platforms make those trades differently"
+      "Bitcoin is permissionless: anyone can join, nobody can be excluded, nobody can undo",
+      "Four layers (apps, network, consensus, data); a business touches the app layer, the rest make the record trustworthy",
+      "Every payment makes the same journey (sign, broadcast, queue, block, confirm); platforms differ in who proposes blocks and how fast they become final",
+      "Trilemma: Bitcoin chose security and decentralization and paid with throughput; speed lives on Lightning or another platform",
+      "Bitcoin's app layer (Lightning, inscriptions, sidechains, staking) lives around the chain, each piece with its own trust model",
+      "Wins: reserves, neutral settlement, censorship-resistant value. Loses: programmable logic, private data, high-volume retail"
     ]
   },
   "handoff": {
     "badge": "↩ Recap handoff · Blockchain Fundamentals",
     "heading": "Mechanics done in Fundamentals §2 — today, Bitcoin as a platform",
     "lead": "You know how Bitcoin works. Today we ask a different question: what did its designers optimise for, what did they give up, and what does that make it good for in business?",
-    "coveredLabel": "Already covered — we won't re-teach it",
+    "coveredLabel": "Already covered in Fundamentals",
     "covered": [
       "Hashing, blocks & chain",
       "Wallets, keys & seed",
@@ -470,6 +468,6 @@
       "difficulty",
       "longest chain"
     ],
-    "keyPoint": "Same Bitcoin, different question: not how it works, but what it is for — and what it costs."
+    "keyPoint": "Same Bitcoin, different question: not how it works, but what it is for and what it costs."
   }
 }

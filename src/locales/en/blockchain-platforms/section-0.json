@@ -15,7 +15,7 @@
   "recapBadge": "↩ Recap · from Blockchain Fundamentals",
   "recap": {
     "heading": "Recap in key points",
-    "subtitle": "No teaching here — just the thread that runs from Fundamentals into this course. Each line points back to where you learned it.",
+    "subtitle": "The thread from Fundamentals into this course. Each line points back to where you learned it.",
     "refPrefix": "↩ Fundamentals",
     "items": [
       { "ref": "Prologue", "text": "The trust problem: strangers need one record they all believe, without a referee who can cheat or disappear." },
@@ -37,31 +37,31 @@
     "option3Label": "Private Permissioned",
     "items": [
       {
-        "feature": "👁️ Who can read?",
+        "feature": "Who can read?",
         "option1": "Anyone — fully public ledger",
         "option2": "Authorized participants only",
         "option3": "Restricted to the organization"
       },
       {
-        "feature": "✍️ Who can transact?",
+        "feature": "Who can transact?",
         "option1": "Anyone with a wallet",
         "option2": "Vetted members of the consortium",
         "option3": "Employees / approved parties"
       },
       {
-        "feature": "⚙️ Who validates?",
+        "feature": "Who validates?",
         "option1": "Any node (miners/validators)",
         "option2": "Pre-selected consortium nodes",
         "option3": "Central authority or internal nodes"
       },
       {
-        "feature": "🔍 Transparency",
+        "feature": "Transparency",
         "option1": "Full — every tx visible",
         "option2": "Partial — among members",
         "option3": "Minimal — internal only"
       },
       {
-        "feature": "📌 Examples",
+        "feature": "Examples",
         "option1": "Bitcoin, Ethereum, Solana",
         "option2": "Quorum (JPMorgan), R3 Corda, Fabric multi-org",
         "option3": "Hyperledger Fabric (single org), private chains"
@@ -73,7 +73,7 @@
   },
   "spectrum": {
     "heading": "Permissionless ↔ Permissioned: one spectrum, not two camps",
-    "subtitle": "Every platform in this course sits somewhere on this line. Placing a project on it starts with two business questions: who is allowed in, and who needs to see what?",
+    "subtitle": "Every platform in this course sits somewhere on this line. Two business questions place a project: who is allowed in, and who needs to see what?",
     "leftLabel": "Permissionless",
     "leftSub": "anyone can join, read and validate",
     "rightLabel": "Permissioned",
@@ -106,13 +106,13 @@
       ]
     },
     "hood": ["PoW / PoS", "BFT / Raft", "MSP identity", "channels"],
-    "keyPoint": "Permissioned vs permissionless is a question of WHO may write — not how fast it is."
+    "keyPoint": "Permissioned vs permissionless is a question of who may write, not how fast it runs."
   },
   "usecases": {
     "heading": "Does this problem earn a blockchain?",
-    "subtitle": "The question we will ask of every platform in this course. Fundamentals §3 covered the industries — here is the checklist.",
+    "subtitle": "The question we ask of every platform in this course. Fundamentals §3 covered the industries; this is the checklist.",
     "use": {
-      "title": "✅ Use a blockchain when…",
+      "title": "Use a blockchain when…",
       "items": [
         "Several parties must share one record and none of them is trusted to keep it alone",
         "The record must be tamper-evident and auditable by outsiders",
@@ -121,7 +121,7 @@
       ]
     },
     "dontUse": {
-      "title": "❌ Don't use a blockchain when…",
+      "title": "Don't use a blockchain when…",
       "items": [
         "One organisation controls every participant — a database is cheaper and faster",
         "All parties already trust a central party — a regulator, a bank, a registry",
@@ -129,28 +129,28 @@
         "The truth lives off-chain — a blockchain cannot verify what it is told (the oracle problem)"
       ]
     },
-    "keyPoint": "Carry this question into every platform: does this problem earn a blockchain — and if so, which one?"
+    "keyPoint": "Ask of every platform: does this problem earn a blockchain, and if so, which one?"
   },
   "takeaways": {
     "title": "Section 00 — Key Takeaways",
     "items": [
-      "Fundamentals gave you one platform family — Bitcoin and Ethereum are both public, permissionless chains",
-      "Permissioned ↔ permissionless is one spectrum: the question is who may write and validate, not how fast it runs",
-      "Moving towards permissioned trades open access and censorship resistance for privacy, control and compliance",
-      "Governance trade-off: known members can agree rules and fix mistakes; permissionless means nobody can be excluded — and nobody can undo",
-      "Consortium chains let competing organisations share infrastructure without handing control to any one of them",
-      "The recurring question for every platform: does this problem earn a blockchain — and if so, which one?"
+      "Bitcoin and Ethereum are both public, permissionless chains: one platform family",
+      "Permissioned ↔ permissionless is one spectrum, defined by who may write and validate",
+      "Moving towards permissioned trades open access for privacy, control and compliance",
+      "Known members can agree rules and fix mistakes; on a permissionless chain nobody can be excluded and nobody can undo",
+      "Consortium chains let competitors share infrastructure without handing control to any one of them",
+      "For every platform, ask: does this problem earn a blockchain, and if so, which one?"
     ]
   },
   "sorter": {
     "heading": "Who may write to this ledger?",
-    "subtitle": "Drag each card into a bucket — or tap a card, then a bucket. You get feedback instantly. One question decides everything: who is allowed to add entries?",
+    "subtitle": "Drag each card into a bucket, or tap a card, then a bucket. The question: who is allowed to add entries?",
     "cardsLabel": "Cards to sort",
     "dropHint": "Drop here",
     "reset": "↺ Reset",
     "scorePrefix": "Score: ",
-    "scorePerfect": " — Perfect! 🎉",
-    "scoreGreat": " — Great work!",
+    "scorePerfect": " — All correct.",
+    "scoreGreat": " — Nearly there.",
     "scoreReview": " — Move the red cards and try again.",
     "buckets": [
       { "id": "permissionless", "label": "Permissionless", "hint": "anyone can write and validate" },

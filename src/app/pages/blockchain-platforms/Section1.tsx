@@ -1277,7 +1277,6 @@ export function BP_Section1() {
         {/* ═══════ BEST FITS — WHERE BITCOIN WINS ═══════ */}
         <div id="s1-bestfits" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#f7931a]/15 border border-[#f7931a]/40 text-[#f7931a] text-xs font-bold">{t('bestFits.badge')}</span>
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('bestFits.heading')}</h2>
             <p className="text-sm text-muted-foreground max-w-3xl">
               {t('bestFits.subtitle')}
@@ -1310,7 +1309,6 @@ export function BP_Section1() {
         {/* ═══════ WORST FITS — WHERE BITCOIN IS WRONG ═══════ */}
         <div id="s1-worstfits" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#ef4444]/15 border border-[#ef4444]/40 text-[#ef4444] text-xs font-bold">{t('worstFits.badge')}</span>
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('worstFits.headingA')}<em>{t('worstFits.headingEm')}</em>{t('worstFits.headingB')}</h2>
             <p className="text-sm text-muted-foreground max-w-3xl">
               {t('worstFits.subtitle')}

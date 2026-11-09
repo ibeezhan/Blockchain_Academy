@@ -25,12 +25,12 @@
     "subtitle": "Bitcoin as one platform: architecture, the transaction flow end to end, the Trilemma, and where it wins or loses"
   },
 "lightning": {
-    "badge": "🧩 Animated",
+    "badge": "Interactive demo",
     "heading": "Lightning Network — The Vault Model",
     "layer2": "LAYER 2",
     "introA": "Alice + Bob open a ",
     "introStrong": "2-of-2 multisig vault",
-    "introB": " on Bitcoin. Inside the vault they trade unlimited times instantly, off-chain. Closing the vault is the ",
+    "introB": " on Bitcoin. Inside the vault they pay each other instantly, off-chain. Closing the vault is the ",
     "introEm": "only",
     "introC": " other on-chain tx.",
     "openChannel": "🔓 Open Channel",
@@ -73,14 +73,14 @@
       "noPayments": "Open the channel and start paying.",
       "offChain": "off-chain",
       "trickLabel": "The trick:",
-      "trickBody": " the vault holds the funds. Every payment is a signed agreement on how the vault's contents should be split. The on-chain blockchain only ever sees TWO transactions — OPEN and CLOSE — no matter how many payments happened in between."
+      "trickBody": " the vault holds the funds. Each payment is a signed agreement on how to split the vault. The blockchain only ever sees two transactions, open and close, however many payments happened in between."
     },
-    "keyPoint": "Lightning moves everyday payments off-chain and uses Bitcoin only to open and settle — speed without giving up base-layer security."
+    "keyPoint": "Lightning moves everyday payments off-chain and uses Bitcoin only to open and settle."
   },
   "txLifecycle": {
-    "badge": "🧩 Systemisation · recap",
+    "badge": "Recap",
     "heading": "Blockchain transaction flow — end to end",
-    "intro": "You met every stage separately in Fundamentals — here is the whole journey once, start to finish. Ethereum follows the same flow with validators instead of miners.",
+    "intro": "You met each stage separately in Fundamentals; here is the whole journey once. Ethereum follows the same flow with validators instead of miners.",
     "replay": "↻ Replay",
     "starting": "Starting…",
     "stageCaption": "{{n}}. {{title}} — {{what}}",
@@ -146,13 +146,13 @@
       "longest chain",
       "Casper finality"
     ],
-    "keyPoint": "Every blockchain payment makes the same journey — sign, broadcast, queue, block, confirm. Platforms differ in who proposes the block and how fast it becomes final."
+    "keyPoint": "Every blockchain payment makes the same journey; platforms differ in who proposes the block and how fast it becomes final."
   },
   "handoff": {
     "badge": "↩ Recap handoff · Blockchain Fundamentals",
     "heading": "Mechanics done in Fundamentals §2 — today, Bitcoin as a platform",
     "lead": "You know how Bitcoin works. Today we ask a different question: what did its designers optimise for, what did they give up, and what does that make it good for in business?",
-    "coveredLabel": "Already covered — we won't re-teach it",
+    "coveredLabel": "Already covered in Fundamentals",
     "covered": [
       "Hashing, blocks & chain",
       "Wallets, keys & seed",
@@ -193,11 +193,11 @@
       "difficulty",
       "longest chain"
     ],
-    "keyPoint": "Same Bitcoin, different question: not how it works, but what it is for — and what it costs."
+    "keyPoint": "Same Bitcoin, different question: not how it works, but what it is for and what it costs."
   },
   "architecture": {
     "heading": "Bitcoin Architecture",
-    "subtitle": "Four layers power the Bitcoin network — click any layer to explore it in detail.",
+    "subtitle": "Four layers. Click a layer to see what it does.",
     "facts": "Facts",
     "emptyHint": "↑ Click a layer above to explore it",
     "layers": {
@@ -274,7 +274,7 @@
     },
     "consensusVisual": {
       "title": "Consensus as a cost, not a puzzle",
-      "body": "You are not paying miners to process payments — you are paying them to make rewriting history unaffordable. The bill is the point: the bigger it is, the safer the record.",
+      "body": "You are not paying miners to process payments; you are paying them to make rewriting history unaffordable. The bigger the bill, the safer the record.",
       "buys": [
         {
           "label": "What it buys",
@@ -356,11 +356,11 @@
         "detail": "High hardware requirements concentrate the validator set. The network has experienced multiple outages."
       }
     },
-    "keyPoint": "Bitcoin chose security and decentralisation and paid with speed — good for settling high-value transfers, not for coffee at the till."
+    "keyPoint": "Bitcoin chose security and decentralisation and paid with speed: good for settling high-value transfers, not for small retail payments."
   },
 "apps": {
     "heading": "Beyond payments — Bitcoin's app layer",
-    "subtitle": "For most of its life Bitcoin only did one thing: send value. Since 2018 — and accelerating since 2023 — a real application layer has emerged on, around, and atop the base chain.",
+    "subtitle": "For most of its life Bitcoin did one thing: send value. Since 2018 an application layer has grown around the base chain.",
     "whereLabel": "Where the apps actually live",
     "whereBodyA": "Bitcoin's base chain handles ~7 TPS and has no smart-contract VM. Apps live in ",
     "whereChannels": "payment channels",
@@ -403,43 +403,41 @@
         "limit": "New and unproven at scale · breaks the long-held \"Bitcoin doesn't pay yield\" tradition."
       }
     ],
-    "caveatLabel": "Pedagogical caveat — ",
-    "caveatBody": "Bitcoin's app layer is debated within the Bitcoin community. Purists want the base chain minimal (\"digital gold\"); builders push to use it as a settlement layer for richer apps. Be skeptical of hype on either side — both camps have legitimate concerns.",
-    "keyPoint": "Bitcoin's base layer stays deliberately simple — applications live around it, each with its own trust model and its own risks."
+    "caveatLabel": "Caveat — ",
+    "caveatBody": "Bitcoin's app layer is contested inside the Bitcoin community. Purists want the base chain minimal (\"digital gold\"); builders want a settlement layer for richer apps. Both camps have legitimate concerns.",
+    "keyPoint": "Bitcoin's base layer stays deliberately simple; applications live around it, each with its own trust model and risks."
   },
 "bestFits": {
-    "badge": "🎯 Best Fits",
-    "heading": "Where Bitcoin Wins — The Use Cases It Actually Owns",
-    "subtitle": "Bitcoin's design choices (fixed supply, UTXO model, intentionally limited Script, PoW security) make it spectacularly good at a narrow set of jobs — and explicitly not the right tool for many others.",
+    "heading": "Where Bitcoin wins",
+    "subtitle": "Bitcoin's design choices (fixed supply, limited scripting, Proof of Work) make it good at a narrow set of jobs and a poor fit for many others.",
     "whyLabel": "Why",
     "wildLabel": "In the wild",
     "items": [
       { "emoji": "🏦", "name": "Store of Value / Digital Gold",  "why": "Fixed 21M supply + 15+ years of uptime + PoW security make it the most credible scarce digital asset.", "example": "MicroStrategy holds 450k+ BTC as treasury · El Salvador national reserve · BlackRock IBIT ETF ($50B+ AUM)." },
       { "emoji": "💸", "name": "Cross-border settlement",         "why": "Censorship-resistant, no intermediary, available 24/7. Settles in minutes vs days for SWIFT.", "example": "Used in inflationary economies (Argentina, Venezuela, Turkey) as USD-adjacent settlement rails." },
       { "emoji": "⚡", "name": "Micropayments via Lightning",     "why": "L2 payment channels deliver instant, near-zero-fee payments without touching the base chain.", "example": "Strike, Cash App, Wallet of Satoshi · streaming sats per second for content (Fountain podcasts)." },
-      { "emoji": "🛡️", "name": "Strategic reserve asset",         "why": "Verifiable scarcity + jurisdiction-neutral + carrier-grade infrastructure → attractive as a \"neutral\" reserve.", "example": "US Strategic Bitcoin Reserve (2025) · sovereign wealth fund allocations · corporate treasury policies." }
+      { "emoji": "🛡️", "name": "Strategic reserve asset",         "why": "Verifiable scarcity and no issuing jurisdiction make it attractive as a neutral reserve.", "example": "US Strategic Bitcoin Reserve (2025) · sovereign wealth fund allocations · corporate treasury policies." }
     ],
     "notFitLabel": "Not a fit for:",
     "notFitBody": " rich smart contracts (use Ethereum), high-throughput retail point-of-sale on the base layer (use Lightning or another chain), private enterprise consortia (use Fabric), on-chain identity / governance / DeFi composability.",
     "keyPoint": "Bitcoin wins where neutrality and scarcity matter more than features: reserves, settlement, censorship-resistant value."
   },
 "worstFits": {
-    "badge": "🚫 Worst Fits",
     "headingA": "Where Bitcoin is the ",
     "headingEm": "Wrong",
     "headingB": " Tool",
-    "subtitle": "The same design choices that make Bitcoin great at digital scarcity make it actively bad at other jobs. If you find yourself fighting the protocol, you're using the wrong chain.",
+    "subtitle": "The same design choices that make Bitcoin good at digital scarcity make it a poor fit for other jobs.",
     "whyNotLabel": "Why not",
     "useInsteadLabel": "Use instead",
     "items": [
       { "emoji": "🤖", "name": "Complex smart contracts / dApps", "why": "Bitcoin Script is intentionally not Turing-complete — no loops, no persistent state, no rich logic. Workarounds (Counterparty, RGB) hit the same ceiling.", "alt": "Use Ethereum (EVM) · Solana · Cosmos SDK · Starknet for any kind of programmable money or app." },
       { "emoji": "🚀", "name": "High-throughput retail payments (on L1)", "why": "L1 sustains ~7 TPS with ~10-minute blocks. Even moderate adoption pushes fees into double digits; you cannot run a card-network on the base layer.", "alt": "Use Lightning (BTC L2) for sats-level payments · Solana / Base / Avalanche for stablecoin retail." },
       { "emoji": "🏥", "name": "Private B2B consortia (healthcare, KYC, RWA)", "why": "Public on-chain visibility + no built-in identity = a non-starter for regulated data sharing between named organisations.", "alt": "Use Hyperledger Fabric (channels) · R3 Corda · permissioned Ethereum forks (Quorum)." },
-      { "emoji": "🌾", "name": "DeFi / NFTs / DAOs", "why": "No native tokens, no on-chain identity, no programmable governance. Every \"Bitcoin DeFi\" project ends up requiring Ethereum or a federated sidechain to actually compose.", "alt": "Use Ethereum + L2s · Solana · Sui for DeFi composability and rich asset standards." }
+      { "emoji": "🌾", "name": "DeFi / NFTs / DAOs", "why": "No native tokens, no on-chain identity, no programmable governance. \"Bitcoin DeFi\" projects end up on Ethereum or a federated sidechain.", "alt": "Use Ethereum + L2s · Solana · Sui for DeFi composability and rich asset standards." }
     ],
     "rightToolLabel": "Right tool, right job:",
-    "rightToolBody": " if the answer is \"store of value\", \"neutral settlement layer\", or \"censorship resistance\" — Bitcoin wins. For literally anything programmable, pick a different chain (and that's fine).",
-    "keyPoint": "If you find yourself fighting the protocol, you have picked the wrong chain — Bitcoin is not a general-purpose computer."
+    "rightToolBody": " if the answer is \"store of value\", \"neutral settlement layer\" or \"censorship resistance\", Bitcoin wins. For anything programmable, pick a different chain.",
+    "keyPoint": "Bitcoin is not a general-purpose computer; anything programmable belongs on another chain."
   },
   "quizTrilemma": {
     "question": "A payments app needs 5,000 transactions per second and must never go down. Which corner of the trilemma does Bitcoin give you least of — and what does that imply?",
@@ -464,12 +462,12 @@
   "takeaways": {
     "title": "Section 01 — Key Takeaways",
     "items": [
-      "Bitcoin is a permissionless platform: anyone can join, nobody can be excluded — and nobody can undo",
-      "Its four layers (apps, network, consensus, data) each buy a business something: reach, auditability, finality",
-      "Every blockchain payment makes the same journey — sign, broadcast, queue, block, confirm; platforms differ in who proposes blocks and how fast finality comes",
-      "The Trilemma: Bitcoin chose security and decentralization and paid with throughput — speed lives on Layer 2 (Lightning) or on another platform",
-      "Bitcoin's app layer — Lightning, inscriptions, sidechains, staking — lives around the chain, each piece with its own trust model",
-      "Where it wins: reserves, neutral settlement, censorship-resistant value. Where it loses: programmable logic, private data, high-volume retail — the next platforms make those trades differently"
+      "Bitcoin is permissionless: anyone can join, nobody can be excluded, nobody can undo",
+      "Four layers (apps, network, consensus, data); a business touches the app layer, the rest make the record trustworthy",
+      "Every payment makes the same journey (sign, broadcast, queue, block, confirm); platforms differ in who proposes blocks and how fast they become final",
+      "Trilemma: Bitcoin chose security and decentralization and paid with throughput; speed lives on Lightning or another platform",
+      "Bitcoin's app layer (Lightning, inscriptions, sidechains, staking) lives around the chain, each piece with its own trust model",
+      "Wins: reserves, neutral settlement, censorship-resistant value. Loses: programmable logic, private data, high-volume retail"
     ]
   }
 }
