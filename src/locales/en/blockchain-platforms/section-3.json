@@ -2,7 +2,6 @@
   "groups": {
     "g-s3-why": "🤔 Why Permissioned?",
     "g-s3-arch": "🏗️ Architecture",
-    "g-s3-consensus": "⚙️ Consensus",
     "g-s3-privacy": "🔐 Privacy & Flow",
     "g-s3-exercises": "🧩 Exercises",
     "g-s3-prod": "🏭 Production & Comparison",
@@ -11,13 +10,9 @@
   },
   "chapters": {
     "s3-why": "Why Permissioned?",
-    "s3-supplychains": "Supply Chains",
+    "s3-tradeoffs": "Public vs Permissioned",
+    "s3-usecases": "Enterprise Use Cases",
     "s3-overview": "Fabric Overview",
-    "s3-fabricx": "Fabric Deep Dive",
-    "s3-consensus-evo": "Consensus Evolution",
-    "s3-consensus": "Pluggable Consensus",
-    "s3-raft": "Raft Mechanics",
-    "s3-bft": "BFT",
     "s3-channels": "Channels",
     "s3-txflow": "Transaction Flow",
     "s3-exercise-supply": "Exercise: Supply Chain",
@@ -25,7 +20,6 @@
     "s3-production": "In Production",
     "s3-comparison": "ETH vs Fabric",
     "s3-bestfits": "🎯 Best Fits",
-    "s3-worstfits": "🚫 Worst Fits",
     "s3-vocab": "🧩 Fabric ↔ Public-chain glossary",
     "s3-quiz": "Quiz",
     "s3-takeaways": "Takeaways"
@@ -37,7 +31,7 @@
   },
   "why": {
     "heading": "Why Permissioned Blockchains?",
-    "subtitle": "Public chains fall short for enterprise — here is why permissioned networks exist.",
+    "subtitle": "Public chains solve a problem most companies don't have: strangers transacting without trust. Enterprises need something else.",
     "problemsHeading": "When public chains fall short",
     "problems": [
       { "emoji": "🔒", "label": "Privacy", "desc": "Transaction data is visible to all competitors on public networks" },
@@ -49,183 +43,98 @@
     "solutions": [
       { "label": "Known participants", "desc": "All members are verified with legal accountability — no anonymity" },
       { "label": "Configurable privacy", "desc": "Channels isolate sensitive data so only relevant parties can see it" },
-      { "label": "High throughput", "desc": "No mining required — 3,000+ TPS is achievable with Raft consensus" }
+      { "label": "High throughput", "desc": "No mining required — 3,000+ TPS is achievable with Raft consensus" },
+      { "label": "Predictable cost & governance", "desc": "No token, no gas — the consortium agrees the rules, pays for the nodes and can correct mistakes" }
     ],
-    "adoptersLabel": "Real-world adopters"
+    "adoptersLabel": "Real-world adopters",
+    "hood": ["MSP identity", "channels", "Raft / BFT ordering"],
+    "keyPoint": "When the participants already know each other, you can trade openness for throughput and privacy."
   },
-  "supplychains": {
-    "heading": "Supply Chains: The Perfect Use Case",
-    "subtitle": "Multi-party data sharing with no single point of trust — exactly what blockchain solves.",
-    "deployments": [
-      { "label": "Walmart × IBM Food Trust", "detail": "Live since 2018 — pork, leafy greens, mangoes · 100+ suppliers" },
-      { "label": "De Beers Tracr", "detail": "Diamond provenance · conflict-free certification" },
-      { "label": "Maersk TradeLens", "detail": "⚠ Shut down 2022 — network-effect lesson, not tech failure" }
+  "tradeoffs": {
+    "heading": "Permissioned vs public — what a business gains and gives up",
+    "subtitle": "A permissioned platform is a trade, not an upgrade. Each point below names a network that proved it.",
+    "gainTitle": "You gain",
+    "gains": [
+      { "emoji": "🔒", "label": "Privacy by design", "desc": "Channels and private data keep prices, volumes and contracts between the parties concerned.", "example": "Walmart Canada's carriers each see only their own invoices." },
+      { "emoji": "⚡", "label": "Enterprise throughput", "desc": "No mining and known validators — thousands of transactions per second, final in seconds.", "example": "DL Freight settles hundreds of thousands of freight invoices a year." },
+      { "emoji": "📋", "label": "Compliance & accountability", "desc": "Every participant is a legal entity with a certificate. GDPR, KYC and audit rules become configuration.", "example": "EU EBSI issues cross-border diplomas under eIDAS rules." },
+      { "emoji": "💶", "label": "No token, predictable cost", "desc": "No gas fees and no crypto exposure. The consortium runs and pays for nodes like any shared IT.", "example": "Fabric networks run on ordinary cloud infrastructure." }
     ],
-    "steps": [
-      { "label": "Farmer", "preTool": "Paper logbook + fax", "preIssue": "No timestamps · easy to forge · lost in transit" },
-      { "label": "Processor", "preTool": "Excel + email attachments", "preIssue": "Re-keyed data · dropped fields · version drift" },
-      { "label": "Distributor", "preTool": "ERP system (SAP)", "preIssue": "Internal codes don’t match upstream IDs" },
-      { "label": "Retailer", "preTool": "POS — SKU only", "preIssue": "No provenance · no upstream queries" },
-      { "label": "Consumer", "preTool": "Paper receipt", "preIssue": "No origin info · must trust labels" }
+    "loseTitle": "You give up",
+    "losses": [
+      { "emoji": "🚪", "label": "Open access", "desc": "Nobody joins without an invitation. Every new partner means onboarding, legal agreements and certificates.", "example": "TradeLens never convinced rival carriers to join." },
+      { "emoji": "🛡️", "label": "Censorship resistance", "desc": "The consortium can remove members, reverse entries or change rules. Good for compliance, fatal for neutrality.", "example": "Unsuitable for neutral money or assets that must outlive the consortium." },
+      { "emoji": "🌐", "label": "Network effects", "desc": "No shared user base, liquidity or developer ecosystem. Every network starts from zero and must recruit its members.", "example": "we.trade had working technology and never reached critical mass." },
+      { "emoji": "🤝", "label": "Trustlessness", "desc": "Trust moves from maths to governance: you rely on the consortium agreement and on whoever runs the ordering nodes.", "example": "Hence BFT ordering when the operators are competitors." }
     ],
-    "siloedBadge": "✕ Today — siloed",
-    "siloedNote": "Each party hoards data in its own system",
-    "walmartCaseLabel": "Walmart 2008 case — ",
-    "walmartCaseBody": "tracing one contaminated mango required phoning 7 different systems and took ~7 days. Most of that was reconciling formats, not searching.",
-    "fabricBadge": "✓ On a Fabric channel",
-    "fabricNote": "Every step writes to one shared, append-only ledger",
-    "chaincodeInvoke": "→ chaincode invoke",
-    "results": [
-      { "metric": "7 days → 2.2 s", "label": "mango recall (Walmart)" },
-      { "metric": "100%", "label": "traceability across partners" },
-      { "metric": "~$30B", "label": "food fraud prevented / yr" }
-    ]
+    "exampleLabel": "e.g.",
+    "hood": ["MSP / X.509", "channels", "Raft vs BFT", "no gas"],
+    "keyPoint": "Known participants, regulated data and selective sharing point to permissioned; open participation or a neutral asset points to public."
+  },
+  "usecases": {
+    "heading": "Where permissioned chains earn their keep",
+    "subtitle": "Three families of enterprise use cases, with the real networks, including the ones that closed and why.",
+    "painLabel": "Pain today",
+    "changeLabel": "What a shared ledger changes",
+    "examplesLabel": "Real networks",
+    "consortiumLabel": "Who sits at the table",
+    "cases": [
+      {
+        "emoji": "🚚",
+        "title": "Supply chain & provenance",
+        "pain": "Every partner keeps its own records. A recall means phoning seven systems; a disputed invoice means weeks of reconciliation.",
+        "change": "One timeline every partner writes to and can prove — with selective visibility so prices stay between the pairs concerned.",
+        "examples": [
+          { "name": "IBM Food Trust", "status": "live", "note": "Walmart, Carrefour, Nestlé — mango trace cut from 7 days to 2.2 seconds" },
+          { "name": "Walmart Canada DL Freight", "status": "live", "note": "Freight invoices on Fabric — disputes fell from ~70% of invoices to under 2%" },
+          { "name": "Maersk TradeLens", "status": "closed 2022", "note": "Rival carriers would not feed data to a Maersk-branded network" }
+        ],
+        "consortium": "Retailer or shipper as convener · suppliers · carriers · inspectors"
+      },
+      {
+        "emoji": "🏦",
+        "title": "Trade finance & interbank",
+        "pain": "Letters of credit and invoices still travel as documents. Each bank re-checks the same deal, and fraud hides in the gaps between them.",
+        "change": "Every bank sees the same state of the deal, and payment conditions execute as chaincode when the documents arrive.",
+        "examples": [
+          { "name": "we.trade", "status": "closed 2022", "note": "12 European banks + IBM on Fabric — the technology worked; the banks stopped funding it" },
+          { "name": "Contour · Marco Polo", "status": "closed 2023", "note": "Corda-based rivals — the same network-effect problem" },
+          { "name": "JPMorgan Kinexys (ex-Onyx)", "status": "live", "note": "Permissioned Ethereum — works because one bank owns it and its own clients use it" }
+        ],
+        "consortium": "Banks · corporate buyers and sellers · insurers · logistics"
+      },
+      {
+        "emoji": "🏛️",
+        "title": "Health, identity & public records",
+        "pain": "Institutions re-verify the same facts — a diploma, a prescription, a licence — because nobody trusts anyone else's database.",
+        "change": "One verifiable record, issued once and checked anywhere, with the regulator on the channel from day one.",
+        "examples": [
+          { "name": "EU EBSI", "status": "live", "note": "27 member states — verifiable diplomas & credentials (Hyperledger Besu; Fabric also supported)" },
+          { "name": "Change Healthcare", "status": "launched 2018", "note": "US claims network on Fabric — claim status shared across payers and providers" },
+          { "name": "MediLedger", "status": "live", "note": "US drug serialisation (DSCSA) on a permissioned network run by pharma and wholesalers" }
+        ],
+        "consortium": "Regulator or public body as convener · institutions · service providers"
+      }
+    ],
+    "hood": ["channels", "chaincode", "endorsement policy", "private data collections"],
+    "keyPoint": "A permissioned network lives or dies on its convener and its funding; technology was rarely why one closed."
   },
   "overview": {
     "title": "Hyperledger Fabric",
-    "description": "An enterprise-grade permissioned blockchain framework by the Linux Foundation. Modular, private, and designed for business networks.",
+    "description": "A permissioned blockchain framework hosted by the Linux Foundation, designed for business networks.",
     "cards": [
-      { "emoji": "🏛️", "title": "Linux Foundation", "desc": "Open source, governed by a consortium: IBM, Intel, SAP and many more." },
+      { "emoji": "🏛️", "title": "Linux Foundation", "desc": "Open source, with IBM, Intel, SAP and others as members." },
       { "emoji": "🔧", "title": "Modular Architecture", "desc": "Swap consensus, membership services, and storage independently." },
       { "emoji": "🔐", "title": "Identity-First", "desc": "Every participant holds a verified certificate issued by an MSP/CA." },
-      { "emoji": "⚡", "title": "High Performance", "desc": "Execute-order-validate enables parallel execution — 3,000+ TPS." }
+      { "emoji": "⚡", "title": "High Performance", "desc": "Execute-order-validate allows parallel execution: 3,000+ TPS." }
     ],
     "keyPoints": [
       "No mining — consensus by designated orderer nodes",
       "Chaincode (smart contracts) written in Go, JavaScript, or Java",
       "Channels create private sub-networks within the same Fabric network",
-      "Used by IBM Food Trust, TradeLens, HSBC, Maersk, Walmart"
-    ]
-  },
-  "fabricx": {
-    "heading": "Fabric Architecture Deep Dive",
-    "subtitle": "The five components and how they connect inside a single channel.",
-    "inOneLineLabel": "In one line",
-    "inOneLine": {
-      "a": "A Fabric network = several ",
-      "organizations": "organizations",
-      "b": ", each running their own ",
-      "peers": "peers",
-      "c": " and ",
-      "mspca": "MSP/CA",
-      "d": ", sharing one or more ",
-      "channels": "channels",
-      "e": " whose transactions are sequenced by an external ",
-      "ordering": "ordering service",
-      "f": "."
-    },
-    "components": [
-      { "emoji": "👥", "label": "Organizations", "desc": "Member companies — each with their own peers and MSP." },
-      { "emoji": "🖥️", "label": "Peer Nodes", "desc": "Hold ledger copies, execute chaincode, and endorse transactions." },
-      { "emoji": "📮", "label": "Orderer", "desc": "Creates block order via Raft/BFT — the consensus service." },
-      { "emoji": "🔑", "label": "MSP / CA", "desc": "Certificate Authority — issues identities, proves who you are." },
-      { "emoji": "📁", "label": "Ledger", "desc": "World State DB + blockchain log — the persistent record." }
+      "Used by IBM Food Trust (Walmart, Carrefour), Walmart Canada DL Freight, we.trade (2018–22), TradeLens (2018–22)"
     ],
-    "componentsHeading": "Key components",
-    "diagramHeading": "Network diagram — one channel",
-    "channelBadge": "📡 Channel · supply-chain",
-    "orderingServiceTitle": "Ordering Service",
-    "orderingServiceSub": "Raft · 3-node cluster · sequences blocks",
-    "flowUp": "↑ proposals",
-    "flowDown": "↓ ordered blocks",
-    "orgs": [
-      { "name": "Producer" },
-      { "name": "Distributor" },
-      { "name": "Retailer" }
-    ],
-    "peerLabel": "Peer",
-    "peerTitle": "Chaincode + Ledger replica",
-    "mspCaLabel": "🔑 MSP / CA",
-    "channelFooter": {
-      "a": "Every peer in the channel holds an ",
-      "identical": "identical ledger copy",
-      "b": " + ",
-      "binary": "chaincode binary",
-      "c": ". Each org's MSP issues its own identities; cross-org identities are validated via the channel's trust roots."
-    },
-    "chaincodeNoteTitle": "Chaincode (Smart Contracts)",
-    "chaincodeNoteBody": "Go / JavaScript / Java programs deployed to peers. Executed during endorsement; their read/write set is signed and forwarded to the orderer for sequencing."
-  },
-  "consensus": {
-    "heading": "Pluggable Consensus",
-    "subtitle": "Different enterprise environments need different trust models — Fabric adapts.",
-    "whyHeading": "Why pluggable?",
-    "whyBody": "A bank consortium with fully trusted members has very different needs from a supply chain with competing companies. Fabric's pluggable orderer means you pick the right tool.",
-    "options": [
-      { "label": "Raft", "badge": "Default · CFT", "desc": "Crash Fault Tolerant. Simple leader-follower model — ideal for trusted, known environments." },
-      { "label": "SmartBFT", "badge": "Optional · BFT", "desc": "Byzantine Fault Tolerant. Handles malicious nodes — heavier but necessary in hostile networks." },
-      { "label": "Custom", "badge": "Pluggable", "desc": "An open interface allows future consensus algorithms to be plugged in without rebuilding." }
-    ],
-    "tableHeading": "Raft vs SmartBFT",
-    "propertyLabel": "Property",
-    "raftLabel": "Raft",
-    "bftLabel": "SmartBFT",
-    "table": [
-      { "prop": "Fault type tolerated", "raft": "Crashes", "bft": "Byzantine (malicious)" },
-      { "prop": "Minimum nodes", "raft": "3", "bft": "4" },
-      { "prop": "Performance", "raft": "High", "bft": "Medium" },
-      { "prop": "Trust assumption", "raft": "No malicious nodes", "bft": "Up to 1/3 malicious" },
-      { "prop": "Use case", "raft": "Consortium (known parties)", "bft": "High-security enterprise" }
-    ]
-  },
-  "bft": {
-    "heading": "Byzantine Fault Tolerance in Fabric",
-    "subtitle": "How distributed systems survive malicious — not just crashed — participants.",
-    "donutCenter": "≤ ⅓",
-    "donutSub": "malicious max",
-    "defLabel": "The Byzantine Generals Problem · Lamport, Shostak & Pease, 1982",
-    "def": {
-      "a": "A system is ",
-      "bftTerm": "Byzantine Fault Tolerant",
-      "b": " if it stays correct even when up to ",
-      "f": "F",
-      "c": " nodes lie, collude, or send ",
-      "different": "different answers to different peers",
-      "d": " — not just go silent."
-    },
-    "thresholdLabel": "The 1/3 threshold",
-    "formulaLabel": "The formula",
-    "formulaNote": {
-      "honest": "Honest ⅔",
-      "a": " must out-vote ",
-      "malicious": "malicious ⅓",
-      "b": " twice — once to detect lying, once to converge. If ",
-      "fgt": "F > N/3",
-      "c": ", BFT breaks."
-    },
-    "tableFCol": "F malicious",
-    "tableNCol": "N nodes needed",
-    "tableUseCol": "use case",
-    "table": [
-      { "hint": "minimum to tolerate 1 traitor" },
-      { "hint": "most enterprise deployments" },
-      { "hint": "large public consortiums" }
-    ],
-    "faultLookLabel": "What does a Byzantine fault look like?",
-    "equivocationNote": {
-      "term": "Equivocation",
-      "body": " — one node sends conflicting facts to different peers. CFT (Raft) cannot detect this; BFT can."
-    },
-    "honestLabel": "honest",
-    "byzantineLabel": "byzantine",
-    "enterpriseLabel": "Why it matters for enterprise",
-    "scenarios": [
-      { "emoji": "🏢", "label": "Competitor on the network", "desc": "Two rivals sharing one ledger. BFT prevents either from feeding manipulated data into shared state." },
-      { "emoji": "💻", "label": "Compromised peer", "desc": "A hacked node sending different read/write sets to different validators is detected and outvoted." },
-      { "emoji": "📋", "label": "Regulatory mandate", "desc": "Finance, defense, and cross-jurisdiction networks often require BFT guarantees by compliance." }
-    ],
-    "raftStripLabel": "Raft (CFT) — default in Fabric",
-    "raftStrip": {
-      "a": "Tolerates ",
-      "crashes": "crashes only",
-      "b": ". Trusts orderer operators not to lie. Lighter, faster, simpler — fits most consortiums."
-    },
-    "bftStripLabel": "SmartBFT — Fabric v3 opt-in",
-    "bftStrip": {
-      "a": "Tolerates ",
-      "malicious": "malicious orderers",
-      "b": ". Required when operators are competitors, regulated, or untrusted at the protocol level."
-    }
+    "keyPoint": "Fabric is blockchain for companies: known members, private channels, no token, no mining."
   },
   "channels": {
     "heading": "Channels: Selective Data Sharing",
@@ -246,151 +155,47 @@
     "canRead": "✓ Can read & write",
     "noAccess": "✗ No access",
     "whyPrefix": "Why this channel? ",
-    "emptyHint": "← Click a channel to see who has access"
+    "emptyHint": "← Click a channel to see who has access",
+    "hood": ["channel config", "private data collections", "anchor peers"],
+    "keyPoint": "A channel is a private ledger inside the shared network — only its members see it."
   },
   "txflow": {
     "heading": "Transaction Flow in Fabric",
-    "subtitle": "Five stages from proposal to confirmation — execute-order-validate model.",
-    "steps": [
-      { "label": "Propose", "desc": "Client sends a transaction proposal to the designated endorsing peers." },
-      { "label": "Endorse", "desc": "Peers simulate chaincode execution and return a signed endorsement. No ledger write yet." },
-      { "label": "Order", "desc": "Client submits the endorsed transaction to the Orderer. Orderer batches transactions into a block." },
-      { "label": "Validate & Commit", "desc": "All peers validate endorsement signatures and commit the block to their ledger copy." },
-      { "label": "Notify", "desc": "Events are emitted to the client confirming the transaction has been committed." }
+    "subtitle": "Five stages from proposal to confirmation. Click a stage or step through. The analogy: a contract that must be counter-signed before it is filed.",
+    "stages": [
+      { "label": "Propose", "who": "Client application — e.g. the retailer's ERP system", "what": "Sends a transaction proposal — \"record delivery of lot L42\" — to the peers named in the endorsement policy.", "analogy": "Draft the contract and send it to the parties who must sign.", "why": "The client never writes to the ledger directly — no single company can slip an entry in unnoticed." },
+      { "label": "Endorse", "who": "Endorsing peers of the required organisations", "what": "Each simulates the chaincode, checks the result and returns a signed read/write set. Nothing is written to the ledger yet.", "analogy": "The counter-parties initial the draft — the books don't change until everyone required has signed.", "why": "Simulating without writing means a bad or disputed transaction costs nothing and changes nothing." },
+      { "label": "Order", "who": "Ordering service — a Raft cluster run by the consortium", "what": "Collects endorsed transactions from all channel members and sequences them into a block. It never looks at the business content.", "analogy": "The registry clerk stamps every filing with a sequence number — order, not content.", "why": "Separating ordering from execution is why Fabric handles thousands of transactions per second." },
+      { "label": "Validate & Commit", "who": "Every peer on the channel", "what": "Checks that the signatures satisfy the policy and that nothing it read has changed since; then writes the block to its own ledger copy.", "analogy": "Each party's bookkeeper checks the signatures and files the contract in its own records.", "why": "Every organisation re-checks the signatures itself — a faulty orderer cannot forge content." },
+      { "label": "Notify", "who": "Peers → client application", "what": "An event confirms the transaction is committed — or flags it invalid. The ERP updates its screen.", "analogy": "The confirmation email: filed, final, visible to everyone on the channel.", "why": "Finality in seconds, not after six confirmations — the ERP can act on it immediately." }
     ],
+    "whoLabel": "Who",
+    "whatLabel": "What happens",
+    "analogyLabel": "Business analogy",
+    "whyLabel": "Why it matters for the business",
+    "next": "Next step →",
+    "restart": "↺ Restart",
+    "policyTitle": "Endorsement policy = the business rule",
+    "policyBody": "The consortium decides who must sign each kind of transaction — e.g. a delivery needs Producer AND Distributor. The platform enforces that rule on every transaction, automatically.",
+    "hood": ["endorsement policy", "read/write set", "ordering service · Raft / SmartBFT", "world state", "MVCC check"],
     "eovTitle": "Execute-Order-Validate",
     "eovBodyA": "Fabric runs chaincode ",
     "eovBefore": "before",
-    "eovBodyB": " ordering. This means multiple transactions can be simulated in parallel by different peers simultaneously — unlocking high throughput.",
-    "oeTitle": "vs. Order-Execute",
-    "oeBody": "Traditional blockchains (Ethereum) order first, then all nodes execute sequentially. This creates a bottleneck. Fabric's approach avoids this entirely.",
-    "resultLabel": "Result: ",
-    "resultBody": "3,000+ TPS achievable without sacrificing Byzantine resilience when SmartBFT is enabled."
-  },
-  "consensusEvo": {
-    "heading": "Consensus Evolution in Fabric",
-    "subtitle": "Fabric's ordering layer evolved in three major steps — each removing the previous version's biggest constraint.",
-    "versions": [
-      {
-        "name": "Apache Kafka",
-        "status": "Deprecated (2.5+)",
-        "stats": [
-          { "label": "Min nodes", "value": "5+" },
-          { "label": "Fault tol.", "value": "CFT" },
-          { "label": "Throughput", "value": "~1k TPS" }
-        ],
-        "desc": "External Kafka cluster handled block ordering, with Zookeeper for coordination. Reliable but operationally heavy — a non-blockchain dependency that consortiums had to provision and patch separately.",
-        "limit": "Not BFT · Kafka + ZK = a central operational chokepoint outside the blockchain layer.",
-        "solved": "First stable ordering after the v0.6 PBFT prototype — proved Fabric's execute-order-validate model worked at scale.",
-        "adoption": "Removed entirely in Fabric v2.5 (2021). Legacy networks only."
-      },
-      {
-        "name": "Raft (CFT)",
-        "status": "Current default",
-        "stats": [
-          { "label": "Min nodes", "value": "3" },
-          { "label": "Fault tol.", "value": "⌊(N-1)/2⌋ crashes" },
-          { "label": "Throughput", "value": "~3k TPS" }
-        ],
-        "desc": "Built-in Crash Fault Tolerant consensus. Orderer nodes elect a leader; the leader replicates an append-only log of blocks to followers. Simple, fast, and requires zero external infrastructure.",
-        "limit": "Assumes no malicious orderers — tolerates crashes, not Byzantine behavior.",
-        "solved": "Eliminated the Kafka + Zookeeper dependency · single binary deployment.",
-        "adoption": "Used by virtually every production Fabric consortium today (IBM Food Trust, we.trade, TradeLens, government registries)."
-      },
-      {
-        "name": "SmartBFT",
-        "status": "Production-ready",
-        "stats": [
-          { "label": "Min nodes", "value": "4 (N ≥ 3F+1)" },
-          { "label": "Fault tol.", "value": "⌊(N-1)/3⌋ Byzantine" },
-          { "label": "Throughput", "value": "~1.5–2k TPS" }
-        ],
-        "desc": "Byzantine Fault Tolerant ordering service. Handles both crashes AND malicious orderer nodes. Designed for adversarial consortiums where parties don't trust each other to operate orderers honestly.",
-        "limit": "Heavier than Raft · 3-phase consensus · need at least 4 orderers to tolerate 1 malicious one.",
-        "solved": "Removes the trust-the-orderer-operator assumption — enables truly adversarial enterprise networks.",
-        "adoption": "Picked when orderer operators are competitors or regulated entities (cross-bank settlement, defense, multi-jurisdiction)."
-      }
-    ],
-    "diagram": {
-      "kafkaCluster": "Kafka cluster",
-      "kafkaSub": "+ Zookeeper · external",
-      "raftLead": "LEAD",
-      "raftLogReplication": "log replication",
-      "bftHonestAgree": "≥ 2f+1 honest agree"
-    },
-    "limitLabel": "Limit: ",
-    "solvedLabel": "Solved: ",
-    "decisionLabel": "How to choose today",
-    "decisionRaft": {
-      "term": "Raft",
-      "a": " — when orderer operators are ",
-      "trusted": "trusted partners",
-      "b": " (most consortiums). Fastest, simplest, lightest."
-    },
-    "decisionBft": {
-      "term": "SmartBFT",
-      "a": " — when orderer operators are ",
-      "competitors": "competitors or regulated",
-      "b": ". Pay the throughput cost for true Byzantine resilience."
-    }
-  },
-  "raft": {
-    "heading": "Raft: How It Works",
-    "subtitle": "Raft breaks consensus into three phases — click each to explore.",
-    "phases": [
-      {
-        "label": "Leader Election",
-        "desc": "On startup or after a leader crash, nodes become Candidates and request votes. The first to reach a majority becomes the new Leader.",
-        "details": [
-          "Each node starts as a Follower",
-          "If no heartbeat from leader → becomes Candidate",
-          "Candidate sends RequestVote to all peers",
-          "First to get ⌊N/2⌋+1 votes wins the election",
-          "Term counter increments with every election"
-        ]
-      },
-      {
-        "label": "Log Replication",
-        "desc": "The Leader receives all client requests and appends them to its log. It then replicates this entry to all Followers before acknowledging the client.",
-        "details": [
-          "Client sends transaction to Leader only",
-          "Leader appends entry to its own log",
-          "Leader sends AppendEntries RPC to all Followers",
-          "Followers append to their own logs and reply",
-          "Leader waits for majority acknowledgement"
-        ]
-      },
-      {
-        "label": "Commit",
-        "desc": "Once a majority of followers have written the entry, the Leader marks it as committed and notifies all followers. The entry is now permanent.",
-        "details": [
-          "Majority ACK received by Leader",
-          "Leader commits the entry in its state machine",
-          "Leader broadcasts commit in next AppendEntries",
-          "Followers also commit their copy",
-          "Client receives confirmation"
-        ]
-      }
-    ],
-    "clusterLabel": "5-node Raft cluster",
-    "roleLeader": "Leader",
-    "roleFollower": "Follower",
-    "roleCandidate": "Candidate",
-    "stepsSuffix": " — steps",
-    "quorumTitle": "Quorum rule",
-    "quorumFormula": "majority = ⌊N/2⌋ + 1",
-    "quorumNote": "5 nodes → needs 3 votes · 3 nodes → needs 2 votes · Tolerates ⌊(N−1)/2⌋ failures"
+    "eovBodyB": " ordering, so different peers can simulate many transactions in parallel. That is where the throughput comes from.",
+    "orderingTitle": "Ordering choice: ",
+    "orderingBody": "Raft (the default) when the orderer operators trust each other; SmartBFT (Fabric v3) when they are competitors or a faulty orderer must be tolerated, at the cost of more orderers and lower speed.",
+    "keyPoint": "Nothing reaches the ledger until the organisations named in the policy have counter-signed; the platform enforces the rule."
   },
   "exerciseSupply": {
     "heading": "Exercise: What Goes On Chain?",
     "subtitle": "Walmart wants to trace lettuce from farm to store on Hyperledger Fabric. For each event, decide: should it be recorded on the blockchain?",
     "events": [
-      { "label": "Batch ID assigned at harvest", "context": "A farm assigns a unique batch number to a crate of lettuce before it leaves the field.", "reason": "Immutable origin record — enables full provenance traceability from field to store. This is the anchor for the entire chain." },
+      { "label": "Batch ID assigned at harvest", "context": "A farm assigns a unique batch number to a crate of lettuce before it leaves the field.", "reason": "Immutable origin record; the anchor for provenance from field to store." },
       { "label": "Farmer negotiates price with processor", "context": "The farm owner and the processing plant agree on a price per kilogram over email.", "reason": "Commercial negotiation is private and off-chain. Pricing data is competitive information and does not require multi-party immutability." },
       { "label": "Temperature logged during refrigerated transport", "context": "IoT sensors record temperature every 30 minutes inside the refrigerated truck.", "reason": "Cold-chain integrity evidence is critical for food safety and liability. Any tampering with this data could conceal contamination." },
-      { "label": "Processing plant quality inspection passed", "context": "A third-party inspector certifies the batch meets food safety standards.", "reason": "Certification of compliance must be tamper-proof and instantly auditable by retailers and regulators — a perfect blockchain use case." },
+      { "label": "Processing plant quality inspection passed", "context": "A third-party inspector certifies the batch meets food safety standards.", "reason": "Certification must be tamper-proof and auditable by retailers and regulators." },
       { "label": "Retail price set by supermarket", "context": "The supermarket updates its POS system with the sale price for the product.", "reason": "Pricing is a unilateral commercial decision. Competitors on the same supply network should not see each other's retail margins." },
-      { "label": "Product recalled due to contamination alert", "context": "A contamination is detected. A recall notice needs to reach all supply chain partners immediately.", "reason": "Recall events must be immutable, timestamped, and instantly visible across all participants — blockchain enables 2.2-second full-chain alerts (Walmart case)." },
+      { "label": "Product recalled due to contamination alert", "context": "A contamination is detected. A recall notice needs to reach all supply chain partners immediately.", "reason": "Recall events must be immutable, timestamped and visible to all participants at once (Walmart: 2.2-second full-chain trace)." },
       { "label": "Distributor updates internal ERP system", "context": "The distributor enters the delivery into their own SAP system after the truck arrives.", "reason": "Internal ERP updates are siloed operations. They do not require multi-party verification and may contain sensitive business data." },
       { "label": "Consumer scans QR code to verify product origin", "context": "A shopper at the store scans the product QR code on their phone.", "reason": "Reading from the ledger is always valid. The blockchain provides a public-facing provenance window while writing remains controlled." }
     ],
@@ -400,9 +205,10 @@
     "correctPrefix": "✓ Correct — ",
     "incorrectPrefix": "✗ Incorrect — ",
     "scorePrefix": "Score: ",
-    "scorePerfect": " — Perfect! 🎉",
-    "scoreGreat": " — Great work!",
-    "scoreReview": " — Review the explanations above."
+    "scorePerfect": " — All correct.",
+    "scoreGreat": " — Nearly there.",
+    "scoreReview": " — Review the explanations above.",
+    "keyPoint": "Put shared facts that others must verify on chain; keep prices, margins and internal records off it."
   },
   "exerciseHealth": {
     "heading": "Exercise: Design the Channel Structure",
@@ -429,13 +235,14 @@
     "dropHere": "Drop here",
     "checkAnswers": "Check answers",
     "scorePrefix": "Score: ",
-    "scorePerfect": " — Perfect! 🎉",
-    "scoreGreat": " — Great work!",
-    "scoreReview": " — Check the correct channels above."
+    "scorePerfect": " — All correct.",
+    "scoreGreat": " — Nearly there.",
+    "scoreReview": " — Check the correct channels above.",
+    "keyPoint": "Design channels around who is allowed to see what — membership, not technology, is the privacy control."
   },
   "production": {
-    "heading": "Fabric in production — three honest case studies",
-    "subtitle": "What real Fabric networks look like at scale — including one that succeeded, one that shut down, and one quietly becoming critical infrastructure.",
+    "heading": "Fabric in production: three case studies",
+    "subtitle": "One that succeeded, one that shut down, one becoming public infrastructure.",
     "cases": [
       {
         "statusLabel": "✓ Live · expanding",
@@ -453,24 +260,23 @@
         "members": "Maersk + IBM · select carriers · 50+ ports · 200M+ events / yr at peak",
         "flow": "Shipping events (load, unload, customs, transhipment) written to the channel by carriers, ports, and customs authorities.",
         "outcome": "Reduced docs processing time. But: rival carriers (MSC, CMA CGM, Hapag-Lloyd) refused to join a Maersk-branded network. Network effects collapsed. Both partners exited Q1 2022.",
-        "lesson": "Permissioned blockchain needs neutral governance OR a regulator mandate. A consortium owned by one competitor is a contradiction in terms — others won't feed data to a rival's ledger."
+        "lesson": "Permissioned blockchain needs neutral governance or a regulator mandate. Competitors will not feed data to a rival's ledger."
       },
       {
         "statusLabel": "◉ Critical infrastructure",
         "name": "EU EBSI",
         "sub": "European Blockchain Services Infrastructure · 2018+",
         "members": "27 EU member states + EEA · cross-border verifiable credentials · part of EU Digital Identity Wallet",
-        "flow": "Issues and verifies cross-border credentials: diplomas, professional licences, eIDAS attestations, customs documents — backed by member-state validators.",
-        "outcome": "Becomes mandatory infrastructure for the EU Digital Identity Wallet (eIDAS 2.0, member-state mandate by 2026). Universities issue Fabric-anchored diplomas verifiable across borders.",
-        "lesson": "Government-led consortiums sidestep the network-effect problem — participation is a regulatory obligation, not a market choice. The most boring Fabric deployments may end up the most consequential."
+        "flow": "Issues and verifies cross-border credentials: diplomas, professional licences, eIDAS attestations, customs documents — backed by member-state validator nodes.",
+        "outcome": "Becomes mandatory infrastructure for the EU Digital Identity Wallet (eIDAS 2.0, member-state mandate by 2026). Universities issue EBSI-anchored diplomas verifiable across borders — on Hyperledger Besu, with Fabric also supported.",
+        "lesson": "Government-led consortiums sidestep the network-effect problem: participation is a regulatory obligation, not a market choice."
       }
     ],
     "consortiumLabel": "Consortium",
     "dataFlowLabel": "Data flow",
     "outcomeLabel": "Outcome",
     "lessonLabel": "Lesson",
-    "patternLabel": "The pattern — ",
-    "patternBody": "Permissioned blockchain succeeds where (a) a credible authority can require participation (Walmart's market power, the EU's regulatory mandate), and (b) the alternative process — paper, EDI, faxes, siloed ERP — has been demonstrably broken for years. Where the alternative is \"good enough Excel\", consortiums fail quietly."
+    "keyPoint": "Permissioned networks succeed when someone can require participation and the old process is visibly broken, not when the tech is best."
   },
   "comparison": {
     "title": "Ethereum vs Hyperledger Fabric",
@@ -487,11 +293,11 @@
       { "feature": "Token required", "option1": "Yes — ETH for gas", "option2": "No native token" },
       { "feature": "Governance", "option1": "Decentralized (EIP process)", "option2": "Consortium members" },
       { "feature": "Best for", "option1": "DeFi, NFTs, public dApps", "option2": "Enterprise B2B, supply chain, finance" }
-    ]
+    ],
+    "keyPoint": "Ethereum sells openness to strangers; Fabric sells privacy and control to partners — choose by who your participants are."
   },
   "bestfits": {
-    "badge": "🎯 Best Fits",
-    "heading": "Where Hyperledger Fabric Wins — The Use Cases It Actually Owns",
+    "heading": "Where Fabric wins",
     "intro": {
       "a": "Fabric's design choices (permissioned membership, channels for privacy, pluggable consensus, no native token) make it the default whenever the participants are ",
       "strong": "known organisations who need to share a ledger without sharing all their data publicly",
@@ -500,46 +306,21 @@
     "whyLabel": "Why",
     "inTheWildLabel": "In the wild",
     "cases": [
-      { "emoji": "🚚", "name": "Multi-party supply chain provenance", "why": "Every step (manufacturer → distributor → retailer) is recorded; channels keep commercial pricing private between specific pairs.", "example": "IBM Food Trust (Walmart, Carrefour, Nestlé) · Maersk TradeLens (deprecated but proof of pattern) · GSBN ocean shipping." },
-      { "emoji": "🏦", "name": "Inter-bank settlement & trade finance", "why": "KYC-by-design, regulator-friendly, ordering service guarantees finality without PoW costs.", "example": "we.trade · Marco Polo · Santander Onyx · Eurosystem TIPS pilots." },
-      { "emoji": "🏥", "name": "Healthcare records & pharma serialisation", "why": "Permissioned access + channels match HIPAA/GDPR requirements. Drug pedigree provable without exposing patient data.", "example": "MediLedger (US drug serialisation) · Change Healthcare claims · regional patient-record exchanges." },
+      { "emoji": "🚚", "name": "Multi-party supply chain provenance", "why": "Every step (manufacturer → distributor → retailer) is recorded; channels keep commercial pricing private between specific pairs.", "example": "IBM Food Trust (Walmart, Carrefour, Nestlé) · Maersk TradeLens (closed 2022) · GSBN ocean shipping." },
+      { "emoji": "🏦", "name": "Inter-bank settlement & trade finance", "why": "KYC-by-design, regulator-friendly, ordering service guarantees finality without PoW costs.", "example": "we.trade (Fabric, 12 banks, 2018–22) · Marco Polo & Contour (Corda, wound down 2023) · JPMorgan Kinexys (permissioned Ethereum, live). The pattern works; consortium economics are the hard part." },
+      { "emoji": "🏥", "name": "Healthcare records & pharma serialisation", "why": "Permissioned access + channels match HIPAA/GDPR requirements. Drug pedigree provable without exposing patient data.", "example": "Change Healthcare claims network (Fabric) · MediLedger US drug serialisation (permissioned network) · regional patient-record exchanges." },
       { "emoji": "🪪", "name": "Identity & credential consortia", "why": "No anonymous participants — every party signs with a credential issued by a trusted MSP. Fits regulated identity frameworks.", "example": "Sovrin-style verifiable credentials · government B2B portals · CBDC interbank rails (pilots)." }
     ],
     "notAFitLabel": "Not a fit for:",
-    "notAFitBody": " permissionless DeFi (use Ethereum), digital scarcity / SoV (use Bitcoin), consumer apps requiring open self-custody, anything where censorship-resistance against the consortium itself is a requirement."
-  },
-  "worstfits": {
-    "badge": "🚫 Worst Fits",
-    "headingA": "Where Hyperledger Fabric is the ",
-    "headingEm": "Wrong",
-    "headingB": " Tool",
-    "intro": "Fabric's permissioned, no-token, channel-based design is brilliant for B2B consortia — and almost useless for anything that needs an open, public, value-bearing network.",
-    "whyNotLabel": "Why not",
-    "useInsteadLabel": "Use instead",
-    "cases": [
-      { "emoji": "🌍", "name": "Public consumer apps / dApps", "why": "Every participant needs an MSP-issued identity. No anonymous users, no permissionless onboarding — incompatible with the public-internet UX.", "alt": "Use Ethereum (+ L2s) · Solana · Sui for open consumer apps and wallet-based onboarding." },
-      { "emoji": "💎", "name": "Censorship-resistant value / SoV", "why": "A consortium can vote to remove members, freeze assets, or change rules. By design — and exactly what you don't want for neutral money.", "alt": "Use Bitcoin for trust-minimised, jurisdiction-neutral value storage." },
-      { "emoji": "💰", "name": "Composable DeFi / liquidity", "why": "No native token, no open liquidity pools, no shared accounts across organisations. DeFi composability requires permissionless writers + a public AMM.", "alt": "Use Ethereum + L2s · Solana · Sui · Cosmos for DeFi composability and shared liquidity." },
-      { "emoji": "🎨", "name": "NFT marketplaces / open creator economy", "why": "No global token standards (ERC-721/1155 don't exist), no public discoverability, no anonymous buyer/seller pairings. Cultural fit is wrong.", "alt": "Use Ethereum · Polygon · Solana · Base for NFTs, marketplaces, royalties." }
-    ],
-    "rightToolLabel": "Right tool, right job:",
-    "rightToolBody": {
-      "a": " Fabric shines when participants are ",
-      "known": "known",
-      "b": ", ",
-      "regulated": "regulated",
-      "c": ", and need ",
-      "selective": "selective data sharing",
-      "d": " — supply chain consortia, inter-bank rails, healthcare exchanges. For everything else, pick a public chain."
-    }
+    "notAFitBody": " open consumer apps, DeFi or NFTs (use Ethereum or another public chain), neutral store of value (use Bitcoin), and anything that must resist the consortium itself: members can vote to freeze assets or change the rules.",
+    "keyPoint": "Fabric fits when participants are known, regulated and need to share selectively: supply chains, interbank rails, health exchanges."
   },
   "vocab": {
-    "badge": "🧩 Translation",
-    "heading": "Fabric ↔ Public Blockchain — Same Mechanism, Different Vocabulary",
+    "heading": "Fabric ↔ public blockchain: same mechanism, different vocabulary",
     "intro": {
       "a": "Most of Fabric is the public-blockchain primitives you already know, ",
-      "strong": "renamed for enterprise marketing",
-      "b": ". Read the right column once and Fabric stops feeling like a different planet."
+      "strong": "under enterprise names",
+      "b": ". Read the right column once and the rest follows."
     },
     "pubLabel": "Public blockchain",
     "fabLabel": "Hyperledger Fabric",
@@ -557,8 +338,7 @@
       { "pub": "Layer 2 / Sidechain", "fab": "Channel (private sub-ledger)", "note": "A channel is a self-contained ledger with its own members, chaincode, and history — completely invisible to non-members on the same network." },
       { "pub": "On-chain governance / DAO", "fab": "Channel config update (consortium vote)", "note": "Members vote off-chain or via signed config transactions. Fabric never adopted on-chain token-vote governance." }
     ],
-    "bottomLineLabel": "Bottom line:",
-    "bottomLineBody": " Fabric is mostly the same primitives, packaged for a different buyer. Don't relearn cryptography — relearn the brand names. The pedagogical move is just to keep this glossary open the first few times you read a Fabric tutorial."
+    "keyPoint": "Fabric reuses the mechanisms you already know under new names; relearn the vocabulary, not the cryptography."
   },
   "quiz": {
     "question": "In Hyperledger Fabric, three pharmaceutical companies (PharmaA, PharmaB, and a Hospital) are on the same network. PharmaA and PharmaB want to share pricing data that the Hospital must NOT see. What Fabric feature enables this?",
@@ -593,12 +373,13 @@
   "takeaways": {
     "title": "Section 03 — Key Takeaways",
     "items": [
-      "Permissioned blockchains exist for regulated, multi-party environments where participants are known",
-      "Hyperledger Fabric is the leading enterprise blockchain — modular, flexible, and production-proven",
-      "Channels allow different subsets of participants to share private data on the same network",
-      "Smart contracts (chaincode) in Fabric automate business logic across supply chain partners",
-      "Pluggable consensus means Fabric can swap its ordering mechanism without rebuilding the network",
-      "BFT consensus tolerates Byzantine (malicious) failures — essential in adversarial environments"
+      "Permissioned blockchains serve regulated, multi-party settings where participants are known",
+      "Hyperledger Fabric is the most widely deployed enterprise framework: modular, no token, private channels",
+      "Channels let subsets of participants share private data on the same network",
+      "Chaincode automates business rules across partners, and the endorsement policy decides who must sign",
+      "Fabric agrees without mining: known orderers sequence and named organisations counter-sign",
+      "Raft when orderer operators trust each other, BFT when they are competitors; consensus follows governance",
+      "Networks fail on economics and governance, not technology; a credible convener and funding matter more than TPS"
     ]
   }
 }
