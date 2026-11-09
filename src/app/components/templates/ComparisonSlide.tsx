@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 interface ComparisonItem {
   feature: string;
   option1: string;
@@ -12,9 +14,11 @@ interface ComparisonSlideProps {
   option2Label: string;
   option3Label?: string;
   items: ComparisonItem[];
+  /** Optional strip rendered under the table (e.g. a key-point footer). */
+  footer?: ReactNode;
 }
 
-export function ComparisonSlide({ title, featureLabel = 'Feature', option1Label, option2Label, option3Label, items }: ComparisonSlideProps) {
+export function ComparisonSlide({ title, featureLabel = 'Feature', option1Label, option2Label, option3Label, items, footer }: ComparisonSlideProps) {
   const hasThreeOptions = !!option3Label;
   const cols = hasThreeOptions ? 'grid-cols-4' : 'grid-cols-3';
 
@@ -65,6 +69,7 @@ export function ComparisonSlide({ title, featureLabel = 'Feature', option1Label,
             </div>
           ))}
         </div>
+        {footer && <div className="shrink-0 mt-3">{footer}</div>}
       </div>
     </div>
   );

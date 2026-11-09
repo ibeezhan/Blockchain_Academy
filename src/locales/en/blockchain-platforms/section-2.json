@@ -3,8 +3,8 @@
     "g-s2-intro": "🚪 Why Ethereum?",
     "g-s2-accounts": "👤 Accounts",
     "g-s2-machine": "⚙️ The Machine",
-    "g-s2-consensus": "🔄 Consensus & Ecosystem",
-    "g-s2-scaling": "📈 Scaling",
+    "g-s2-consensus": "🔄 Consensus & ETH Economics",
+    "g-s2-scaling": "📈 Scaling & Ecosystem",
     "g-s2-apps": "💰 DeFi & Apps",
     "g-s2-compare": "🆚 Comparison",
     "g-s2-fit": "🎯 Fit Analysis",
@@ -12,17 +12,20 @@
   },
   "chapters": {
     "s2-why": "Why Ethereum?",
+    "s2-turing": "Turing-complete",
+    "s2-wallet": "Wallets",
     "s2-accounts-visual": "Accounts Visual",
-    "s2-accounts": "Accounts",
     "s2-evm": "EVM",
     "s2-transaction": "Transaction",
     "s2-gas": "🧩 Gas",
     "s2-eip1559": "🧩 EIP-1559",
     "s2-smartcontracts": "Smart Contracts",
     "s2-consensus": "PoW → PoS",
+    "s2-staking": "🧩 Staking",
+    "s2-issuance": "🧩 ETH Issuance",
     "s2-evmecosystem": "EVM Everywhere",
     "s2-rollups": "Rollups & L2s",
-    "s2-rollups-anim": "🧩 L1 ↔ L2 Flow",
+    "s2-rollups-2": "Optimistic vs ZK",
     "s2-defi": "DeFi Mechanics",
     "s2-stablecoins": "Stablecoins",
     "s2-apps": "Apps Beyond DeFi (1)",
@@ -31,57 +34,62 @@
     "s2-bestfits": "🎯 Best Fits",
     "s2-worstfits": "🚫 Worst Fits",
     "s2-quiz": "Quiz",
-    "s2-takeaways": "Takeaways",
-    "s2-summary": "Summary"
-  },
-  "rollupsAnim": {
-    "steps": [
-      "1. Users send L2 transactions — fast, cheap, confirmed in ~1 s",
-      "2. The Sequencer orders + executes them in a batch",
-      "3. The batch is COMPRESSED (calldata → blob) ~10–100× smaller",
-      "4. Compressed blob + new state root posted to L1 (EIP-4844 blob lane)",
-      "5. L1 verifies the proof and finalises — L2 inherits Ethereum security"
-    ],
-    "liveLabel": "Live animation",
-    "heading": "L2 user txs → Sequencer → Compression → L1 finalisation",
-    "replay": "↻ Replay",
-    "svg": {
-      "l2Title": "LAYER 2 — ROLLUP",
-      "l2Sub": "Where your txs actually run · fast · cheap",
-      "sequencer": "SEQUENCER",
-      "sequencerSub": "orders + executes",
-      "batch": "BATCH",
-      "blob": "blob",
-      "compressLabel": "↓ compress + post ↓",
-      "l1Title": "LAYER 1 — ETHEREUM",
-      "l1Sub": "Settlement + data availability · slow · expensive · secure",
-      "verifiedBlob": "✓ blob"
-    },
-    "legend": {
-      "l2txTerm": "L2 tx",
-      "l2txDesc": "— user op on the rollup",
-      "sequencerTerm": "Sequencer",
-      "sequencerDesc": "— orders + batches",
-      "compressTerm": "Compress",
-      "compressDesc": "— blob, ~10-100× smaller",
-      "finaliseTerm": "L1 finalise",
-      "finaliseDesc": "— inherits Ethereum security"
-    }
+    "s2-takeaways": "Takeaways"
   },
   "title": {
     "sectionNumber": "SECTION 02",
     "title": "Ethereum: From Money to Programmable Blockchain",
-    "subtitle": "Accounts, EVM, smart contracts, consensus evolution, and the EVM ecosystem"
+    "subtitle": "Accounts, EVM, smart contracts, Proof of Stake, staking & ETH issuance, and the EVM ecosystem"
+  },
+  "hood": {
+    "label": "under the hood →",
+    "why": "state machine · Turing-completeness · world state · EVM bytecode",
+    "turing": "Turing completeness · halting problem · gas limit",
+    "wallet": "BIP-39 seed · secp256k1 key pair · address = last 20 bytes of keccak256(public key) · ECDSA signature",
+    "accounts": "ECDSA key pairs · nonce · code hash · storage root · msg.sender",
+    "gas": "opcode gas table · gasLimit vs gasUsed · revert · block gas limit (~30M)",
+    "smartContracts": "Solidity → bytecode · ABI · CREATE / CREATE2 · immutability vs proxies",
+    "consensus": "RANDAO (random picker) · committees · BLS signature aggregation · slots (12 s) / epochs · Casper FFG finality",
+    "staking": "validator keys · withdrawal credentials · slashing conditions · churn limit · stETH / rETH",
+    "issuance": "EIP-1559 base-fee burn · PoS issuance curve (∝ √ staked ETH) · ultrasound.money",
+    "defi": "x·y=k · collateral ratio · liquidation bots · LP tokens · composability",
+    "stablecoins": "ERC-20 mint/redeem · proof of reserves · liquidation ratio · delta-neutral hedge",
+    "apps": "ERC-20 · ERC-721 · ERC-1155 · tokenURI · governor contracts · ENS · SIWE"
+  },
+  "keyPoint": {
+    "label": "🔑 Key point",
+    "why": "Bitcoin moves one asset by one rule; Ethereum runs any rule you can write.",
+    "turing": "Turing-complete = can compute anything computable, given enough gas.",
+    "wallet": "A wallet manages keys, not coins: the coins live on-chain and whoever holds the key controls them.",
+    "accountsVisual": "Only wallets can start a transaction; contracts only react.",
+    "evm": "Thousands of machines run the same program and must agree on one result.",
+    "transaction": "Every change on Ethereum starts as a signed message from a wallet, and that wallet pays for it.",
+    "gas": "Gas prices every step of computation and guarantees every program stops.",
+    "eip1559": "The network sets the price and burns it; the tip is the only part you negotiate.",
+    "smartContracts": "Once deployed, a contract gives the same output for the same input, and nobody can quietly edit it.",
+    "consensus": "Security moved from burning electricity to risking capital.",
+    "staking": "The return is real, but getting in and out takes time.",
+    "issuance": "Bitcoin sells scarcity by rule; Ethereum sells scarcity by usage.",
+    "evmEcosystem": "The EVM is the shared standard: build once, deploy on many chains.",
+    "rollups": "Rollups move execution off Ethereum while security stays on it.",
+    "rollups2": "Optimistic rollups wait a week to be sure; ZK rollups prove it up front. Either way users pay cents.",
+    "defi": "Swap, lend and earn recombine into almost every DeFi product.",
+    "stablecoins": "A stablecoin is only as stable as what backs it.",
+    "apps1": "Tokens prove who owns what and who gets to decide.",
+    "apps2": "Identity and gaming work technically; adoption is the open question.",
+    "comparison": "Bitcoin is a settlement asset; Ethereum is a settlement platform.",
+    "bestFits": "Choose Ethereum when composability and shared liquidity are the product.",
+    "worstFits": "If you don't need programmability or openness, a public chain is a cost, not a feature."
   },
   "why": {
     "heading": "Why Ethereum?",
-    "subtitle": "Bitcoin's Limits → Vitalik's Insight",
+    "subtitle": "Bitcoin's limits and Vitalik's response",
     "limitsHeading": "What Bitcoin couldn't do",
     "limits": [
-      { "title": "No loops in Script", "detail": "Intentional — prevents infinite loops but limits expressiveness" },
+      { "title": "No loops in Script", "detail": "Deliberate: prevents infinite loops, but limits what you can write" },
       { "title": "No state beyond UTXO", "detail": "Can't store arbitrary data or run stateful applications" },
       { "title": "No custom logic", "detail": "Every transaction follows the same spend-output model" },
-      { "title": "Every dApp needs its own chain", "detail": "No shared environment — each project must bootstrap security from scratch" }
+      { "title": "Every app needs its own chain", "detail": "No shared environment; each project must build its own security" }
     ],
     "insightHeadingA": "Vitalik's insight ",
     "insightHeadingB": "(2013, age 19)",
@@ -89,27 +97,66 @@
     "quoteHighlight": "ANY program",
     "quoteB": "?\"",
     "properties": [
-      { "label": "Turing-complete scripting language", "desc": "Smart contracts can express any computation" },
+      { "label": "Turing-complete scripting language", "desc": "Can run any program, not just payments" },
       { "label": "Global shared state (accounts)", "desc": "One universal ledger for all addresses and contracts" },
       { "label": "Ethereum Virtual Machine (EVM)", "desc": "A sandboxed runtime replicated on every node worldwide" }
     ],
-    "callout": "Ethereum = Bitcoin's security model + programmable state machine",
-    "teaserTextA": "…and in 2022, Ethereum did something Bitcoin can't: ",
+    "teaserTextA": "In 2022 Ethereum ",
     "teaserHighlight": "switched off mining entirely.",
-    "teaserNote": "we'll cover The Merge in detail later ↓",
-    "powLabel": "⛏️ PoW (pre-2022)",
+    "powLabel": "PoW (pre-2022)",
     "powValue": "~73 TWh/yr",
-    "posLabel": "🌿 PoS (since Sep 2022)",
+    "posLabel": "PoS (since Sep 2022)",
     "posValueA": "~0.01 TWh/yr ",
     "posValueHighlight": "(−99.95%)"
   },
+  "turing": {
+    "heading": "What “Turing-complete” means",
+    "subtitle": "Bitcoin's scripting language is a fixed menu. Ethereum's machine is a kitchen.",
+    "menu": {
+      "title": "Bitcoin Script",
+      "tag": "A vending machine — like a calculator",
+      "buttons": ["Send coins", "Lock coins", "Multi-signature", "Time lock"],
+      "display": "one button → one fixed result",
+      "body": "Press a button, get the matching result. Predictable, and nothing else is possible by design."
+    },
+    "kitchen": {
+      "title": "Ethereum Virtual Machine",
+      "tag": "A kitchen — like a computer",
+      "tools": [
+        { "label": "Repeat", "desc": "Loops — do a step again and again" },
+        { "label": "Remember", "desc": "Memory — keep values between steps" },
+        { "label": "Decide", "desc": "Conditions — if this, then that" }
+      ],
+      "body": "Any recipe you can write down, it can cook: an auction, a loan, a token, a voting system."
+    },
+    "catchLabel": "The catch: ",
+    "catchBody": "a recipe can also say “repeat forever”. That is why every step costs gas — when the gas runs out, the program stops."
+  },
+  "wallet": {
+    "heading": "What a Wallet Actually Is",
+    "subtitle": "The app, the key and the address are three different things",
+    "layers": [
+      { "label": "Seed phrase", "sub": "12 or 24 words", "detail": "The master backup. It regenerates every key in the wallet. Anyone who has it controls the funds." },
+      { "label": "Private key", "sub": "a secret number", "detail": "Signs transactions on your device. The signature proves the account owner approved the action." },
+      { "label": "Address", "sub": "0x… (20 bytes)", "detail": "Derived from the key and safe to share. Others send to it; it cannot be worked back into the key." }
+    ],
+    "derives": "derives",
+    "appHeading": "What MetaMask holds",
+    "appPoints": [
+      "Your keys, encrypted behind a password",
+      "Not your ETH: balances live on the blockchain, the app only reads them",
+      "Lose the app and keep the seed phrase: nothing is lost. Lose the seed phrase: nothing is recoverable."
+    ],
+    "gasLabel": "Who pays gas",
+    "gasBody": "The account that signs the transaction pays the fee in ETH, even when it only calls a contract."
+  },
   "accountsVisual": {
     "heading": "EOA vs Contract Account",
-    "subtitle": "The key architectural difference — who initiates, who responds",
+    "subtitle": "Who initiates, who responds",
     "eoa": {
       "title": "EOA",
-      "tag": "= your Wallet 👛",
-      "subtitle": "Externally Owned Account — the everyday wallet you control (Rabby, Zerion, MetaMask, a hardware wallet, …)",
+      "tag": "= your wallet",
+      "subtitle": "Externally Owned Account: the wallet you control (MetaMask, Rabby, a hardware wallet)",
       "points": [
         "Controlled by a private key (a human or software)",
         "The ONLY type that can initiate a transaction",
@@ -139,21 +186,6 @@
       { "label": "🔑 EOA", "sub": "receives ETH/token" }
     ]
   },
-  "accounts": {
-    "title": "Two Types of Accounts",
-    "featureLabel": "Property",
-    "option1Label": "EOA (Externally Owned)",
-    "option2Label": "Contract Account",
-    "items": [
-      { "feature": "Controlled by", "option1": "Private key", "option2": "Code / logic" },
-      { "feature": "Has ETH balance", "option1": "Yes", "option2": "Yes" },
-      { "feature": "Has code", "option1": "No", "option2": "Yes" },
-      { "feature": "Has storage", "option1": "No", "option2": "Yes" },
-      { "feature": "Created by", "option1": "Generating a key pair", "option2": "Deploying a transaction" },
-      { "feature": "Can initiate tx", "option1": "Yes", "option2": "No — only respond" },
-      { "feature": "Gas payer", "option1": "The EOA", "option2": "The calling EOA" }
-    ]
-  },
   "evm": {
     "heading": "The Ethereum Virtual Machine",
     "subtitle": "A deterministic, sandboxed runtime replicated on every Ethereum node",
@@ -163,17 +195,17 @@
     "jvmP1B": "? Since the 90s, Java's promise has been ",
     "jvmP1Em": "write once, run anywhere",
     "jvmP1C": " — you compile your ",
-    "jvmP1D": " file to bytecode, and any device with a JVM runs it identically. Windows, Mac, Linux, ATMs, set-top boxes — same bytecode, same result.",
-    "jvmP2Strong": "The EVM is exactly the same idea — but every node in the world is the JVM, and the program is your smart contract.",
-    "jvmP2A": " You compile Solidity to EVM bytecode, the network runs it identically on tens of thousands of machines, and they all agree on the result. JVM solved portability; EVM adds ",
+    "jvmP1D": " file to bytecode, and any device with a JVM runs it identically.",
+    "jvmP2Strong": "The EVM is the same idea: every node is the JVM, and the program is your smart contract.",
+    "jvmP2A": " Solidity compiles to EVM bytecode, every node runs it identically, and all agree on the result. JVM solved portability; EVM adds ",
     "jvmP2Em": "trustless consensus",
     "jvmP2B": " on top.",
     "whatHeading": "What is the EVM?",
     "properties": [
-      { "label": "Sandboxed", "detail": "Completely isolated from the host machine — no file system, no network access" },
-      { "label": "Deterministic", "detail": "Same input → same output everywhere, on every node, every time" },
+      { "label": "Sandboxed", "detail": "Isolated from the host machine: no file system, no network access" },
+      { "label": "Deterministic", "detail": "Same input gives the same output on every node" },
       { "label": "Turing-complete", "detail": "Can run any computable program (within gas limits)" },
-      { "label": "Gas-metered", "detail": "Every opcode has a fixed gas cost — prevents infinite loops and spam" }
+      { "label": "Gas-metered", "detail": "Every opcode has a fixed gas cost, which prevents infinite loops and spam" }
     ],
     "stackHeading": "EVM Stack",
     "stack": [
@@ -214,7 +246,7 @@
   },
   "gas": {
     "heading": "Gas — Paying for Computation",
-    "subtitle": "Every operation costs gas. Gas links computation to economics — and stops infinite loops cold.",
+    "subtitle": "Every operation costs gas. Gas puts a price on computation and stops infinite loops.",
     "whatLabel": "What is gas?",
     "whatBodyA": "A ",
     "whatBodyStrong": "unit of computational work.",
@@ -225,15 +257,15 @@
     "whatBodyD": " costs ~20,000. The harder the work, the more gas it burns.",
     "whyLabel": "Why gas exists",
     "why": [
-      { "strong": "Halts the halting problem:", "rest": " the EVM is Turing-complete — gas guarantees every transaction terminates." },
-      { "strong": "Anti-spam:", "rest": " a free chain would be flooded instantly." },
+      { "strong": "Guarantees termination:", "rest": " the EVM is Turing-complete, so gas is what makes every transaction stop." },
+      { "strong": "Anti-spam:", "rest": " a free chain would be flooded." },
       { "strong": "Prices scarce block space:", "rest": " only ~30M gas per block." }
     ],
     "formulaLabel": "The formula",
     "formula": "cost = gasUsed × (baseFee + tip)",
     "formulaGasUsed": "gasUsed",
     "formulaGasUsedSub": "work done",
-    "formulaBaseFee": "baseFee 🔥",
+    "formulaBaseFee": "baseFee",
     "formulaBaseFeeSub": "set by network, burned",
     "formulaTip": "tip",
     "formulaTipSub": "paid to validator",
@@ -241,18 +273,18 @@
     "footnoteGwei": "Gwei",
     "footnoteB": " (10⁻⁹ ETH). Run out mid-execution and your tx ",
     "footnoteReverts": "reverts",
-    "footnoteC": " — but you still pay for the gas already burned."
+    "footnoteC": ", but you still pay for the gas already used."
   },
   "eip1559": {
     "heading": "EIP-1559 — Making Fees Predictable",
-    "subtitle": "London hard fork · August 2021 · the upgrade that fixed Ethereum's fee market",
+    "subtitle": "London hard fork · August 2021",
     "beforeTitle": "Before — First-Price Auction",
-    "beforeBody": "Users blindly guessed how much to bid. The top fees won block space. Everyone overpaid out of fear of being stuck.",
-    "beforeOverpayTitle": "😰 Overpay",
+    "beforeBody": "Users guessed how much to bid. The highest fees won block space, so most people overpaid to avoid getting stuck.",
+    "beforeOverpayTitle": "Overpay",
     "beforeOverpaySub": "\"better safe…\"",
-    "beforeStuckTitle": "⏳ Stuck",
+    "beforeStuckTitle": "Stuck",
     "beforeStuckSub": "bid too low",
-    "beforeMinerTitle": "💸 Miner-only",
+    "beforeMinerTitle": "Miner-only",
     "beforeMinerSub": "100% to miner",
     "afterTitle": "After — Base Fee + Tip",
     "baseFeeLabel": "Base fee",
@@ -260,16 +292,16 @@
     "baseFeeBodyPct": "±12.5%",
     "baseFeeBodyB": " per block to hit 50% fullness. ",
     "baseFeeBodyBurned": "Burned",
-    "baseFeeBodyC": " — no one collects it.",
+    "baseFeeBodyC": "; no one collects it.",
     "tipLabel": "Priority tip",
     "tipBodyA": "Optional. Paid by user, kept by the ",
     "tipBodyValidator": "validator",
-    "tipBodyB": ". Usually 1–2 Gwei — only spikes for urgent inclusion.",
+    "tipBodyB": ". Usually 1–2 Gwei; higher only for urgent inclusion.",
     "whyWorksLabel": "Why it works",
     "whyWorks": [
-      { "strong": "Predictable:", "rest": " wallets show base fee in real time — no blind bidding." },
-      { "strong": "Deflationary pressure:", "rest": " burned ETH offsets new issuance — sometimes net negative." },
-      { "strong": "Validators stay honest:", "rest": " can't pocket base fee, so no incentive to manipulate it." }
+      { "strong": "Predictable:", "rest": " wallets show the base fee in real time, so no blind bidding." },
+      { "strong": "Deflationary pressure:", "rest": " burned ETH offsets new issuance, sometimes fully." },
+      { "strong": "No manipulation:", "rest": " validators can't pocket the base fee, so they have no reason to push it up." }
     ]
   },
   "smartContracts": {
@@ -285,14 +317,14 @@
     ],
     "propertiesLabel": "Key properties",
     "properties": [
-      "Immutable after deploy — code cannot be changed once on-chain",
-      "Deterministic — same inputs always produce same outputs",
-      "Transparent — source code verifiable on Etherscan"
+      "Immutable: code cannot be changed once deployed",
+      "Deterministic: same inputs, same outputs",
+      "Transparent: source code verifiable on Etherscan"
     ]
   },
   "consensus": {
     "heading": "The Merge: PoW → PoS",
-    "subtitle": "September 15, 2022 — Ethereum's biggest upgrade",
+    "subtitle": "September 15, 2022",
     "before": {
       "title": "Before (Proof of Work)",
       "items": [
@@ -313,47 +345,120 @@
     },
     "howHeading": "How Proof of Stake works",
     "steps": [
-      { "label": "Deposit", "detail": "Validator locks 32 ETH in the official beacon-chain deposit contract. Each validator runs its own keys and client.", "metric": "32 ETH min · withdrawals live since Shapella (Apr 2023)" },
-      { "label": "Propose", "detail": "Pseudo-randomly selected via RANDAO to build the next block. Slots run on a fixed 12-second clock — 32 slots = 1 epoch.", "metric": "1 slot = 12s · 1 epoch ≈ 6.4 min" },
-      { "label": "Attest", "detail": "Committees of ~128 validators sign BLS-aggregated votes on the head of the chain and on the epoch checkpoint.", "metric": "Supermajority ≥ 2/3 required" },
-      { "label": "Finalize", "detail": "Casper FFG finalises a checkpoint after two consecutive justified epochs. Reverting it would require slashing ≥ 1/3 of all staked ETH.", "metric": "Finality ≈ 12.8 min · economically irreversible" }
+      { "label": "Deposit", "detail": "You lock 32 ETH as a security deposit. That deposit is what you stand to lose if you cheat.", "metric": "32 ETH security deposit" },
+      { "label": "Propose", "detail": "Every 12 seconds one validator is picked at random to build the next block.", "metric": "a new block every 12 s" },
+      { "label": "Attest", "detail": "The other validators check the block and vote on it.", "metric": "needs 2/3 of votes" },
+      { "label": "Finalize", "detail": "After enough votes the block is final. Undoing it would mean burning a third of all staked ETH.", "metric": "final in ~13 min" }
+    ]
+  },
+  "staking": {
+    "heading": "Staking — ETH's Interest Rate",
+    "subtitleA": "Lock ETH as a security deposit, help validate blocks, and earn ",
+    "subtitleRate": "~3–4% a year",
+    "subtitleB": " in new ETH. Cheat and you get ",
+    "subtitleSlash": "slashed",
+    "subtitleC": " (part of your deposit is burned). You cannot get in or out instantly.",
+    "instructorLabel": "From the instructor:",
+    "instructorBody": " Ether Capital (Toronto, publicly listed) was one of the first public companies to run its own ETH staking operation, reporting validator yield as a line item.",
+    "sim": {
+      "step1": "Your choice",
+      "step2": "What happens",
+      "amountLabel": "Amount",
+      "amountMeaning": {
+        "1": "A small saver — below the 32 ETH minimum for running a validator.",
+        "32": "Exactly one validator's security deposit.",
+        "1000": "A treasury or fund — 31 validators' worth."
+      },
+      "pathLabel": "Path",
+      "paths": { "solo": "Solo", "liquid": "Liquid staking", "etf": "ETF" },
+      "pathMeaning": {
+        "solo": "Run your own validator: 32 ETH per validator, a machine online 24/7, full rewards and full responsibility.",
+        "liquid": "Deposit any amount with Lido or Rocket Pool and receive a tradable token (stETH, rETH) that represents your stake.",
+        "etf": "Buy shares of a staked-ETH fund in a brokerage account. US spot-ETH ETFs were cleared to stake in 2025."
+      },
+      "canLabel": "Can you stake this way?",
+      "can": {
+        "soloNo": "✗ No — solo staking needs 32 ETH per validator; {{amount}} ETH is below the minimum.",
+        "soloOne": "✓ Yes — exactly one validator.",
+        "soloMany": "✓ Yes — enough for {{validators}} validators (or one large validator since the 2025 Pectra upgrade).",
+        "liquid": "✓ Yes — any amount. The pool runs the validators; your token keeps earning in your wallet.",
+        "etf": "✓ Yes — any amount. The fund stakes the ETH and holds the keys, not you."
+      },
+      "earnLabel": "What you earn",
+      "earn": "≈ {{eth}} ETH a year at ~{{pct}}%",
+      "earnNone": "— nothing is staked",
+      "earnNote": {
+        "solo": "Full rewards. You carry the uptime and slashing risk yourself.",
+        "liquid": "After the pool's ~10% fee. Smart-contract risk; Lido alone holds ≈25–30% of all staked ETH.",
+        "etf": "After the fund's fee. Counterparty and regulatory risk sit with the fund."
+      },
+      "exitLabel": "How long to get your ETH back",
+      "exit": {
+        "solo": "Join the exit queue: hours to weeks, depending on how many others are leaving. Then about a day until the ETH is back in your wallet.",
+        "liquid": "Sell the token instantly on the market — but when many want out at once it can trade below 1:1 (≈0.94 in June 2022). Redeeming 1:1 takes days.",
+        "etf": "Sell your shares any trading day; cash arrives the next business day — you never hold ETH. The fund itself waits in the same exit queue, so it keeps part of its ETH unstaked."
+      },
+      "stops": ["Enter", "Earning", "Exit", "Back in wallet"],
+      "waits": {
+        "solo": ["entry queue · hours to weeks", "~3.5% a year", "exit queue · hours to weeks", "about a day later"],
+        "liquid": ["instant — token minted", "~3.1% a year after fee", "sell instantly, or redeem in days", "instant if sold"],
+        "etf": ["next business day", "~3.0% a year after fee", "sell shares any trading day", "cash, next business day"]
+      }
+    }
+  },
+  "issuance": {
+    "heading": "ETH Issuance: No Hard Cap, Nearly Flat Supply",
+    "subtitle": "Bitcoin's supply follows a fixed schedule. Ethereum's is what the protocol issues minus what it burns.",
+    "facts": [
+      { "title": "No hard cap", "detail": "Nothing in the protocol limits total ETH. The policy has changed by upgrade." },
+      { "title": "The Merge cut issuance ~88%", "detail": "Miners earned ~13,000 ETH/day. Validators earned ~1,700/day right after the Merge (≈2,600 today, rising slowly with the amount staked)." },
+      { "title": "EIP-1559 burns the base fee", "detail": "Every transaction destroys its base fee. Busy network → more burned than issued → supply shrinks (“ultrasound money”)." }
     ],
-    "stats": [
-      { "value": "~1M+", "label": "active validators" },
-      { "value": "~3–5%", "label": "staking APR" },
-      { "value": "~28% of supply", "label": "ETH staked (~34M ETH)" },
-      { "value": "−99.95%", "label": "energy vs PoW" }
-    ],
-    "slashingTitle": "Slashing",
-    "slashingBody": "Double-signing or surround voting triggers an immediate burn (1 ETH minimum) plus a correlation penalty proportional to other slashings nearby — making coordinated attacks economically catastrophic.",
-    "liquidTitle": "Liquid Staking",
-    "liquidBody": "Lido (stETH), Rocket Pool (rETH) and others let users stake any ETH amount via derivative tokens. Lido alone secures ~30% of all staked ETH — boosting access at the cost of validator-set concentration."
+    "chart": {
+      "title": "Total ETH supply, 2015 → 2030 (millions of ETH)",
+      "liveLink": "Live data: ultrasound.money ↗",
+      "genesis": "2015 genesis ≈72M",
+      "powLabel": "Proof of Work · +4–5% a year",
+      "powSub": "new coins paid to miners",
+      "merge": "The Merge · Sep 2022",
+      "mergeSub": "≈120.5M · new issuance −88%",
+      "projection": "projection",
+      "quiet": "quiet network · slight growth",
+      "busy": "busy network · slight shrink",
+      "zoomTitle": "Zoom · since the Merge",
+      "issuedLegend": "▲ issued to validators (+) · ≈2,600 ETH/day",
+      "burnLegend": "▼ EIP-1559 burn (−) · rises with usage",
+      "mergeDot": "≈120.5M",
+      "dipLabel": "2024 low ≈120.1M",
+      "footnote": "Stylised curve; dashed lines are projections, not forecasts. Quiet network: issuance beats burn, supply drifts up. Busy network: burn beats issuance, supply shrinks. Either way, well under 1% a year."
+    },
+    "btcLabel": "₿ Bitcoin, for contrast",
+    "btcBody": "Fixed 21M · new coins halve every ~4 years (halvings) · nothing is ever burned · last coin ≈2140. Predictable by rule."
   },
   "evmEcosystem": {
     "heading": "EVM Everywhere",
-    "subtitle": "The EVM has become the de-facto standard virtual machine for blockchains",
+    "subtitle": "The EVM has become the default virtual machine for blockchains",
     "whyHeading": "Why EVM won",
     "reasons": [
-      { "label": "Network effects", "detail": "Largest developer community in the blockchain space — millions of Solidity developers, the most audited contracts, the richest ecosystem of protocols" },
-      { "label": "Tooling", "detail": "Hardhat, Foundry, Remix, a wallet, Ethers.js, Viem, OpenZeppelin — a complete, mature developer stack" },
-      { "label": "Composability", "detail": "All EVM chains share open standards: ERC-20 (tokens), ERC-721 (NFTs), ERC-4626 (vaults) — protocols can interoperate seamlessly" }
+      { "label": "Network effects", "detail": "The largest developer community and the most audited contracts" },
+      { "label": "Tooling", "detail": "Hardhat, Foundry, Remix, OpenZeppelin: a mature developer stack" },
+      { "label": "Composability", "detail": "All EVM chains share standards such as ERC-20 (tokens) and ERC-721 (NFTs), so protocols interoperate" }
     ],
     "ecosystemHeading": "The EVM ecosystem",
     "l2Label": "Layer 2 Rollups",
-    "l1Label": "EVM-Compatible L1s",
-    "callout": "\"The EVM is becoming the standard instruction set for blockchains — like x86 for computers\""
+    "l1Label": "EVM-Compatible L1s"
   },
   "rollups": {
-    "heading": "Rollups — Scaling Without Trusting",
+    "heading": "Rollups: Scaling Without New Trust",
     "subtitleA": "Ethereum's L1 caps at ~15–30 TPS. ",
     "subtitleStrong": "Rollups",
-    "subtitleB": " batch thousands of transactions off-chain and post a single compressed update to L1 — inheriting its security.",
+    "subtitleB": " batch thousands of transactions off-chain and post one compressed update to L1, inheriting its security.",
     "howHeading": "How a rollup works",
     "steps": [
-      { "label": "Users transact on L2", "detail": "You send a transaction to the rollup — same wallet, same UX. Confirmed in ~1–2 seconds. Fees: cents." },
-      { "label": "Sequencer batches them", "detail": "Hundreds-to-thousands of L2 transactions get ordered and executed by the rollup's sequencer." },
-      { "label": "Compressed data posted to L1", "detail": "Compressed batch + new state root → posted to Ethereum (via blobs since EIP-4844). L1 stores the data so anyone can verify." },
-      { "label": "L1 verifies and finalises", "detail": "A proof (validity / fraud) tells L1 the batch is correct. Once accepted on L1, the rollup state is as secure as Ethereum itself." }
+      { "label": "Users transact on L2", "detail": "Same wallet, same experience. Confirmed in ~1–2 seconds for cents." },
+      { "label": "Sequencer batches them", "detail": "The rollup's sequencer orders and executes hundreds to thousands of transactions." },
+      { "label": "Compressed data posted to L1", "detail": "The compressed batch and new state root are posted to Ethereum (as blobs since EIP-4844), so anyone can verify." },
+      { "label": "L1 verifies and finalises", "detail": "A proof (validity or fraud) tells L1 the batch is correct. Once accepted, the rollup state is as secure as Ethereum." }
     ],
     "securityNoteStrong": "Security inherited from L1",
     "securityNoteRest": " · execution moved off-chain · data still on-chain",
@@ -372,7 +477,7 @@
       { "pre": "Each batch carries a ", "strong": "zero-knowledge proof", "post": "" },
       { "pre": "Withdrawal: ", "code": "~hours", "post": " (proof-bound)" },
       { "text": "L1 verifies math — no challenge needed" },
-      { "text": "Heavier prover · cutting-edge cryptography" }
+      { "text": "Heavier prover · newer cryptography" }
     ],
     "zkLiveLabel": "Live:",
     "zkLive": " zkSync · Starknet · Linea · Scroll",
@@ -385,24 +490,22 @@
     "eip4844Label": "EIP-4844 (Dencun, Mar 2024) ",
     "eip4844A": "introduced ",
     "eip4844Code": "blob",
-    "eip4844B": " data — a cheap, ephemeral lane on L1 dedicated to rollups. L2 fees dropped ~10× overnight."
+    "eip4844B": " data: a cheap, short-lived lane on L1 for rollups. L2 fees dropped ~10×."
   },
-  "rollupsAnimSlide": {
-    "badge": "🧩 Animated",
-    "heading": "What Actually Happens Between L1 and L2",
-    "subtitle": "You just read the steps. Now watch them: user tx → sequencer → batch → compressed blob → L1 finalisation."
+  "rollups2": {
+    "heading": "Rollups: Two Flavours and What Users Notice",
+    "subtitle": "Optimistic and ZK rollups differ in how L1 checks the batch. Both move fees from dollars to cents."
   },
   "defi": {
-    "sectionLabel": "Section 02",
-    "heading": "DeFi — Three Primitives, One Idea",
-    "subtitleA": "DeFi replaces financial intermediaries with smart contracts. Three primitives explain ~90% of what's out there. ",
-    "subtitleHighlight": "We'll go deeper in Course 03 (Smart Contracts) — this is the lay of the land.",
+    "heading": "DeFi: Three Primitives",
+    "subtitleA": "DeFi replaces financial intermediaries with smart contracts. Three primitives cover most of it. ",
+    "subtitleHighlight": "Details in the Smart Contracts course.",
     "amm": {
       "title": "AMM",
       "subtitle": "Automated Market Maker",
       "replacesPre": "Replaces ",
       "replaces": "order-book exchanges",
-      "body": "Two tokens sit in a pool. A formula sets the price automatically — no buyers and sellers to match.",
+      "body": "Two tokens sit in a pool. A formula sets the price; no buyers and sellers to match.",
       "formula": "x · y = k",
       "formulaSub": "constant-product formula",
       "liveLabel": "Live: ",
@@ -413,7 +516,7 @@
       "subtitle": "Over-Collateralised Loans",
       "replacesPre": "Replaces ",
       "replaces": "banks (savings + loans)",
-      "body": "Supply crypto to earn interest. Borrow against collateral worth more than your loan. No credit score, no KYC. If your collateral falls below threshold, a bot liquidates you.",
+      "body": "Supply crypto to earn interest, or borrow against collateral worth more than the loan. No credit score. If collateral falls below the threshold, a bot liquidates you.",
       "supplyTitle": "Supply",
       "supplySub": "earn yield",
       "borrowTitle": "Borrow",
@@ -428,152 +531,126 @@
       "replaces": "market-makers + asset managers",
       "bodyA": "Anyone can ",
       "bodyStrong": "provide liquidity",
-      "bodyB": " to an AMM, stake ETH for validator rewards, or deposit into auto-compounding vaults — earning a share of the fees.",
+      "bodyB": " to an AMM, stake ETH, or deposit into vaults, and earn a share of the fees.",
       "ilStrong": "Impermanent loss",
-      "ilRest": " · price divergence can leave LPs worse off than just holding.",
+      "ilRest": ": price divergence can leave LPs worse off than holding.",
       "liveLabel": "Live: ",
       "live": "Lido · Yearn · Convex"
-    },
-    "hook": "Almost every DeFi product you'll hear about is a composition of these three. Course 03 covers the contract-level mechanics, attacks, and case studies."
+    }
   },
   "stablecoins": {
-    "heading": "Stablecoins — the most-used app category",
-    "subtitle": "Tokens engineered to track a stable reference (almost always 1 USD). Quietly the largest dApp category by volume — and the bridge between traditional finance and crypto.",
-    "whatLabel": "What is a stablecoin?",
-    "whatBodyA": "An on-chain token whose value tracks an external reference — almost always the US dollar. The interesting question is ",
-    "whatBodyStrong": "what backs the peg",
-    "whatBodyB": ": actual dollars in a bank, on-chain crypto collateral, or pure algorithm. Each model fails differently.",
-    "mechanismLabel": "How the peg works",
-    "examplesLabel": "Real examples",
-    "breakLabel": "How it can break",
+    "heading": "Stablecoins: the most-used app on Ethereum",
+    "subtitle": "A token that tracks 1 USD. The key question is what backs the peg. Three answers, three failure modes.",
+    "mechanismLabel": "What backs it",
+    "breakLabel": "Breaks when",
     "cards": [
       {
         "title": "Fiat-backed",
         "sub": "Custodial · 1:1 reserve",
-        "mechanism": "A regulated issuer holds USD (or short-dated treasuries) 1:1 in a bank account. Users mint tokens by depositing fiat; redeem by burning tokens. Pegged because the issuer guarantees redemption.",
-        "examples": "USDT (Tether) · ~$140B — largest, opaque attestations · USDC (Circle) · ~$60B — monthly Big-Four attestations · PYUSD (PayPal) · ~$1B — newer, regulated.",
+        "mechanism": "A regulated issuer holds dollars and T-bills 1:1. Deposit fiat to mint, burn to redeem.",
         "logos": [
-          { "sym": "USDT", "tag": "~$140B" },
-          { "sym": "USDC", "tag": "~$60B" },
+          { "sym": "USDT", "tag": "~$180B" },
+          { "sym": "USDC", "tag": "~$75B" },
           { "sym": "RLUSD", "tag": "Ripple" },
           { "sym": "PYUSD", "tag": "PayPal" }
         ],
-        "risk": "You're trusting the issuer. USDC briefly depegged to $0.87 in March 2023 when Circle had $3.3B locked in collapsed Silicon Valley Bank. Tether has settled multiple lawsuits over reserve disclosures."
+        "risk": "The issuer's bank fails. USDC hit $0.87 in March 2023 with $3.3B stuck at Silicon Valley Bank."
       },
       {
         "title": "Crypto-backed",
         "sub": "Decentralised · over-collateralised",
-        "mechanism": "Users lock crypto (ETH, wBTC) into a smart contract at a 150-200% collateral ratio and mint stablecoins. If collateral value drops, the contract auto-liquidates positions. No human issuer.",
-        "examples": "DAI (MakerDAO/Sky) · ~$5B — the original, since 2017 · GHO (Aave) · LUSD (Liquity) · crvUSD (Curve) — each with slightly different liquidation mechanics.",
+        "mechanism": "Lock ~$150 of ETH in a contract to mint $100. Fall below the ratio and you are liquidated. No issuer.",
         "logos": [
-          { "sym": "DAI", "tag": "MakerDAO" },
+          { "sym": "DAI", "tag": "MakerDAO / Sky" },
           { "sym": "GHO", "tag": "Aave" },
           { "sym": "LUSD", "tag": "Liquity" },
           { "sym": "crvUSD", "tag": "Curve" }
         ],
-        "risk": "Capital-inefficient (need $150 of crypto to mint $100). Collateral itself is volatile — a fast crash can outrun liquidations (DAI briefly traded over $1 in March 2020). Modern DAI now holds significant USDC reserves, partially re-introducing custodial risk."
+        "risk": "A crash outruns the liquidators (March 2020). Capital-inefficient by design."
       },
       {
         "title": "Algorithmic & hybrid",
         "sub": "No (or partial) collateral",
-        "mechanism": "Maintain the peg via supply-mint/burn algorithms or delta-neutral derivatives positions. Pure algorithmic versions have a documented failure mode; hybrids (Frax, Ethena) blend collateral with synthetic strategies.",
-        "examples": "TerraUSD (UST) · collapsed May 2022, wiped out ~$60B — death-spiral case study · Frax · ~$650M, partially-collateralised hybrid · Ethena USDe · synthetic delta-neutral, ~$5B+ in 2024.",
+        "mechanism": "Peg held by mint/burn incentives or a delta-neutral hedge rather than full reserves.",
         "logos": [
-          { "sym": "UST", "tag": "💀 collapsed" },
+          { "sym": "UST", "tag": "collapsed" },
           { "sym": "FRAX", "tag": "hybrid" },
           { "sym": "USDe", "tag": "Ethena" }
         ],
-        "risk": "Pure algorithmic: every prior attempt has failed. Hybrid: Ethena depends on ETH-perp funding rates staying positive — works in bull markets, untested through a sustained bear cycle. Treat with extra caution."
+        "risk": "Confidence breaks and the peg spirals. TerraUSD erased ~$60B in May 2022. No pure algorithmic design has survived."
       }
     ],
-    "scaleLabel": "Scale",
-    "scaleBodyA": "Total stablecoin supply: ",
-    "scaleBodyStrong": "~$200B",
-    "scaleBodyB": " · daily settlement volume rivals Visa · USDT alone settles more on-chain volume than Bitcoin some days. Stablecoins are the most-used dApp by transaction count.",
-    "regLabel": "Regulation tightening",
-    "regBody": "EU MiCA (live 2024) restricts non-euro algorithmic stablecoins · US frameworks debated in Congress · Hong Kong sandbox active. Issuer transparency, reserve audits, and licensing are the new baseline."
+    "stats": [
+      { "value": "~$300B", "label": "total stablecoin supply" },
+      { "value": "Visa-scale", "label": "annual on-chain settlement" },
+      { "value": "MiCA · GENIUS Act", "label": "EU (2024) · US (2025) stablecoin laws" }
+    ]
   },
   "apps1": {
-    "heading": "Beyond DeFi — what else runs on Ethereum",
-    "subtitle": "DeFi is the most-discussed app category — but not the only one. The same EVM hosts ownership, governance, identity, and games at meaningful scale.",
-    "standardsLabel": "The token standards under everything",
-    "standardsA": "Most non-DeFi apps boil down to three token standards: ",
-    "standardsErc20": "ERC-20",
-    "standardsB": " (fungible — coins, shares, governance), ",
-    "standardsErc721": "ERC-721",
-    "standardsC": " (unique — NFTs, identity, deeds), ",
-    "standardsErc1155": "ERC-1155",
-    "standardsD": " (mixed — game items). The \"app\" is really a smart contract that mints, transfers, or queries these tokens.",
-    "moreExamplesLabel": "More examples: ",
-    "limitLabel": "Honest limit: ",
+    "heading": "Beyond DeFi — Ownership & Governance",
+    "subtitle": "Same token standards, different business: proving who owns what, and letting token-holders run a treasury.",
+    "limitLabel": "Limit: ",
     "cards": [
       {
         "title": "NFTs & digital ownership",
         "sub": "ERC-721 / ERC-1155",
-        "what": "A unique on-chain token whose tokenURI points to off-chain metadata (image, JSON). The token proves provenance; the bytes typically live on IPFS or a centralised server.",
-        "examples": "CryptoPunks (2017) · Bored Ape (2021) · Tickets: Liverpool FC, Coachella · Music: Sound.xyz · Brand IP: Nike RTFKT, Disney pilots.",
+        "what": "A unique token that proves ownership of one thing: art, a ticket, a domain, a music right. The token is on-chain; the file it points to usually isn't.",
         "projects": [
-          { "sym": "🟧 OpenSea", "tag": "largest marketplace" },
-          { "sym": "🐵 BAYC", "tag": "PFPs · culture" },
-          { "sym": "🟪 Sound.xyz", "tag": "music NFTs" },
-          { "sym": "👟 Nike RTFKT", "tag": "brand-IP" },
-          { "sym": "🎟️ POAP", "tag": "attendance proofs" }
+          { "sym": "OpenSea", "tag": "largest marketplace" },
+          { "sym": "BAYC", "tag": "PFPs · culture" },
+          { "sym": "Sound.xyz", "tag": "music NFTs" },
+          { "sym": "Nike RTFKT", "tag": "brand-IP" },
+          { "sym": "POAP", "tag": "attendance proofs" }
         ],
-        "limit": "Most metadata is off-chain — if the URL or IPFS pin disappears, the \"NFT\" is a broken pointer. The 2021-22 speculation cycle collapsed; survivors pivoted to utility (tickets, rights, identity) rather than JPEG flipping."
+        "limit": "If the off-chain file disappears, you own a broken pointer. The 2021–22 speculation collapsed; survivors sell utility (tickets, rights, identity)."
       },
       {
         "title": "DAOs & on-chain governance",
-        "sub": "ERC-20 voting · contract-controlled treasury",
-        "what": "A Decentralized Autonomous Organization is a smart contract that controls a treasury and executes proposals approved by token-holder votes. The contract — not a CEO — moves the funds.",
-        "examples": "MakerDAO (DAI issuance) · Uniswap DAO (controls $7B+ in UNI) · ENS DAO (.eth registry) · Optimism Citizen House · Gitcoin grants.",
+        "sub": "Token voting · contract-controlled treasury",
+        "what": "A smart contract holds the treasury and only moves funds when token-holders approve a proposal. The code, not a CEO, executes the decision.",
         "projects": [
-          { "sym": "🦄 Uniswap DAO", "tag": "$7B treasury" },
-          { "sym": "⚖️ MakerDAO", "tag": "DAI issuance" },
-          { "sym": "🌐 ENS DAO", "tag": ".eth registry" },
-          { "sym": "🔴 Optimism", "tag": "Citizen House" },
-          { "sym": "💚 Gitcoin", "tag": "public-goods grants" }
+          { "sym": "Uniswap DAO", "tag": "$6B+ treasury" },
+          { "sym": "MakerDAO / Sky", "tag": "DAI issuance" },
+          { "sym": "ENS DAO", "tag": ".eth registry" },
+          { "sym": "Optimism", "tag": "Citizen House" },
+          { "sym": "Gitcoin", "tag": "public-goods grants" }
         ],
-        "limit": "Voter turnout often 1–5%. Token-weighted votes mean whales decide. Most \"DAOs\" delegate decisions to small core teams. Legal status of DAOs is unsettled in most jurisdictions."
+        "limit": "Turnout often 1–5%, whales decide, and most “DAOs” delegate to a small core team. Legal status still unsettled."
       }
     ]
   },
   "apps2": {
     "heading": "Beyond DeFi — Identity & Gaming",
-    "subtitle": "Two more verticals where Ethereum's programmability opens possibilities that centralised systems cannot replicate — yet.",
-    "moreExamplesLabel": "More examples: ",
-    "limitLabel": "Honest limit: ",
+    "subtitle": "Two areas where programmable ownership works but is not yet mainstream.",
+    "limitLabel": "Limit: ",
     "cards": [
       {
-        "title": "Identity & decentralized social",
+        "title": "Identity & decentralised social",
         "sub": "ENS · SIWE · Lens · Farcaster",
-        "what": "Replace email logins with wallet-based identity. ENS gives you a human name (alice.eth) for your address. Sign-In With Ethereum (SIWE) authenticates without passwords. Lens and Farcaster build social graphs on-chain.",
-        "examples": "ENS: 3M+ names registered · SIWE: 200+ apps integrated · Farcaster: ~300k DAU (2024) · Worldcoin: 7M+ verified humans · Lens: built around composable feed graphs.",
+        "what": "Your wallet becomes your login. ENS gives it a readable name (alice.eth), Sign-In With Ethereum replaces passwords, and Farcaster and Lens put the social graph on-chain so no platform owns your followers.",
         "projects": [
-          { "sym": "🌐 ENS", "tag": "3M+ .eth names" },
-          { "sym": "🔑 SIWE", "tag": "wallet sign-in" },
-          { "sym": "🌿 Lens", "tag": "social graph" },
-          { "sym": "🟪 Farcaster", "tag": "~300k DAU" },
-          { "sym": "🌍 Worldcoin", "tag": "7M+ verified" }
+          { "sym": "ENS", "tag": "3M+ .eth names" },
+          { "sym": "SIWE", "tag": "wallet sign-in" },
+          { "sym": "Lens", "tag": "social graph" },
+          { "sym": "Farcaster", "tag": "on-chain social" },
+          { "sym": "World ID", "tag": "proof of personhood" }
         ],
-        "limit": "Still niche vs Web2 social. Wallet-and-gas onboarding blocks most users. ENS names cost gas to mint. Decentralised social hasn't solved spam or moderation as well as centralised platforms — yet."
+        "limit": "Niche next to Web2. Wallet + gas onboarding blocks most users; spam and moderation remain unsolved."
       },
       {
         "title": "On-chain gaming & metaverse",
         "sub": "Most assets now live on L2s",
-        "what": "Game assets (skins, characters, items) as tokens players actually own and can trade. Ranges from \"off-chain game with NFT cosmetics\" to \"fully on-chain games\" where every game state lives in contracts (Dojo engine).",
-        "examples": "Immutable (zkEVM for games) · Ronin (Axie Infinity peaked $3B GMV in 2021) · Decentraland · Realms / Loot Survivor on Starknet · DFK Chain (Avalanche L1).",
+        "what": "Game items as tokens players own and trade, from normal games with NFT cosmetics to fully on-chain games where every move is a transaction.",
         "projects": [
-          { "sym": "🟦 Immutable", "tag": "zkEVM for games" },
-          { "sym": "🐉 Axie · Ronin", "tag": "$3B GMV peak" },
-          { "sym": "🏝️ Decentraland", "tag": "metaverse / land" },
-          { "sym": "⚔️ Loot Survivor", "tag": "fully on-chain" },
-          { "sym": "🌌 The Sandbox", "tag": "voxel UGC" }
+          { "sym": "Immutable", "tag": "zkEVM for games" },
+          { "sym": "Axie · Ronin", "tag": "$3B GMV peak" },
+          { "sym": "Decentraland", "tag": "metaverse / land" },
+          { "sym": "Loot Survivor", "tag": "fully on-chain" },
+          { "sym": "The Sandbox", "tag": "voxel UGC" }
         ],
-        "limit": "Most \"Web3 games\" failed (poor gameplay, predatory tokenomics, Ponzi-shaped incentives). Wallet UX still blocks mainstream gaming. Serious studios increasingly land on \"game first, blockchain optional\"."
+        "limit": "Most Web3 games failed on gameplay and unsustainable tokenomics. Studios now go game first, blockchain optional."
       }
-    ],
-    "uriLabel": "The URI gotcha — ",
-    "uriBody": "ERC-721 NFTs typically store only a URL pointing to off-chain metadata. The token on-chain proves you own a pointer; the actual image/asset lives on IPFS, Arweave, or — too often — a single web server. If the host disappears, your NFT renders blank. Always check where the metadata is pinned before buying."
+    ]
   },
   "comparison": {
     "title": "Bitcoin vs Ethereum",
@@ -583,8 +660,8 @@
     "items": [
       { "feature": "Created", "option1": "2009", "option2": "2015" },
       { "feature": "Creator", "option1": "Satoshi Nakamoto", "option2": "Vitalik Buterin" },
-      { "feature": "Purpose", "option1": "Digital gold / store of value", "option2": "Programmable blockchain / world computer" },
-      { "feature": "Supply", "option1": "21M cap", "option2": "No hard cap, ~120M circulating" },
+      { "feature": "Purpose", "option1": "Digital gold / store of value", "option2": "Programmable blockchain" },
+      { "feature": "Supply", "option1": "21M cap · halvings", "option2": "No hard cap · ~120M, roughly flat (issuance − burn)" },
       { "feature": "Consensus", "option1": "Proof of Work", "option2": "Proof of Stake since 2022" },
       { "feature": "Smart contracts", "option1": "Limited Script", "option2": "Full Turing-complete EVM" },
       { "feature": "Block time", "option1": "~10 min", "option2": "~12 seconds" },
@@ -594,38 +671,32 @@
     ]
   },
   "bestFits": {
-    "badge": "🎯 Best Fits",
-    "heading": "Where Ethereum Wins — The Use Cases It Actually Owns",
-    "subtitleA": "Ethereum's design choices (Turing-complete EVM, account model, deep liquidity, ERC standards, the L2 stack) make it the default for anything that needs ",
+    "heading": "Where Ethereum Fits",
+    "subtitleA": "Ethereum is the default for anything that needs ",
     "subtitleStrong": "programmable state + composability + an open developer ecosystem",
     "subtitleB": ".",
     "whyLabel": "Why",
     "wildLabel": "In the wild",
     "items": [
-      { "name": "DeFi & on-chain finance", "why": "Composable money legos — Uniswap, Aave, Compound interoperate by default. ~$50B TVL across L1 + L2.", "example": "Uniswap (DEX), Aave (lending), MakerDAO (DAI), Lido (staking), Curve (stable swaps)." },
-      { "name": "NFTs & creator economy", "why": "ERC-721 / ERC-1155 are the de-facto standards. Royalty enforcement + provable provenance built in.", "example": "OpenSea, Blur, Sotheby's on-chain auctions · ENS domains · POAPs · proof-of-attendance." },
-      { "name": "DAOs & on-chain governance", "why": "Token-weighted voting, programmable treasuries, transparent proposals — battle-tested governance kits.", "example": "Uniswap DAO ($6B treasury), MakerDAO, Arbitrum DAO, Optimism, Gitcoin grants." },
-      { "name": "Stablecoins & tokenised RWAs", "why": "Deepest liquidity for USD-backed tokens; RWA issuance via institutional rails (BlackRock BUIDL, Franklin Templeton).", "example": "USDC, USDT, DAI, RLUSD, PYUSD on Ethereum · BlackRock BUIDL ($2B+ AUM) · Ondo Finance." }
-    ],
-    "notFitLabel": "Not a fit for:",
-    "notFitBody": " pure store-of-value at Bitcoin-level neutrality (use BTC), high-throughput retail payments without L2 (gas spikes), private enterprise consortia where data must stay off public view (use Fabric), use cases that don't need programmability or composability — extra cost for no benefit."
+      { "name": "DeFi & on-chain finance", "why": "Protocols interoperate by default. ~$50B locked across L1 and L2.", "example": "Uniswap (DEX), Aave (lending), MakerDAO (DAI), Lido (staking), Curve (stable swaps)." },
+      { "name": "NFTs & creator economy", "why": "ERC-721 / ERC-1155 are the standards; provenance is built in.", "example": "OpenSea, Blur, Sotheby's on-chain auctions · ENS domains · POAPs · proof-of-attendance." },
+      { "name": "DAOs & on-chain governance", "why": "Token-weighted voting, programmable treasuries, transparent proposals.", "example": "Uniswap DAO ($6B treasury), MakerDAO, Arbitrum DAO, Optimism, Gitcoin grants." },
+      { "name": "Stablecoins & tokenised RWAs", "why": "Deepest liquidity for USD-backed tokens; institutional RWA issuance (BlackRock, Franklin Templeton).", "example": "USDC, USDT, DAI, RLUSD, PYUSD on Ethereum · BlackRock BUIDL ($2B+ AUM) · Ondo Finance." }
+    ]
   },
   "worstFits": {
-    "badge": "🚫 Worst Fits",
     "headingA": "Where Ethereum is the ",
     "headingEm": "Wrong",
     "headingB": " Tool",
-    "subtitle": "Ethereum is the default for anything programmable — but defaults aren't free. There are jobs where its open programmability is the problem, not the solution.",
+    "subtitle": "Jobs where open programmability is the problem, not the solution.",
     "whyNotLabel": "Why not",
     "useInsteadLabel": "Use instead",
     "items": [
-      { "name": "Pure store of value / digital gold", "why": "ETH has no hard cap, monetary policy changes (Merge, EIP-1559), and a much smaller \"sound money\" credibility budget vs Bitcoin.", "alt": "Use Bitcoin for neutral, scarce, time-tested SoV." },
-      { "name": "Private B2B consortia, regulated data", "why": "Mainnet Ethereum is fully public — bad for KYC data, supplier contracts, healthcare records. Privacy layers (Aztec) help but add complexity and trust assumptions.", "alt": "Use Hyperledger Fabric · Quorum · R3 Corda for permissioned channels." },
-      { "name": "Consumer-grade payments on L1", "why": "L1 finalises in ~12 min and fees spike on demand. Even with L2s, withdrawal latency and bridge UX still bite for retail.", "alt": "Use Bitcoin Lightning · Solana · XRPL · Stellar for sub-second payment UX." },
-      { "name": "Latency-critical games / real-time apps", "why": "~12-second blocks on L1, ~1-2 s on most rollups — still too slow for tick-based gaming or live trading. Order-book matching at gas cost is brutal.", "alt": "Use Solana · Sui · Aptos · purpose-built order-book chains (dYdX v4) for latency-bound apps." }
-    ],
-    "rightToolLabel": "Right tool, right job:",
-    "rightToolBody": " Ethereum is unmatched for composable on-chain finance, NFTs, DAOs, identity, and stablecoin issuance. For anything else, ask whether you really need a public global VM — sometimes you don't."
+      { "name": "Pure store of value / digital gold", "why": "ETH has no hard cap and its monetary policy has changed by upgrade (Merge, EIP-1559).", "alt": "Use Bitcoin for neutral, scarce, time-tested SoV." },
+      { "name": "Private B2B consortia, regulated data", "why": "Mainnet is fully public: unsuitable for KYC data, supplier contracts, health records. Privacy layers add complexity and trust assumptions.", "alt": "Use Hyperledger Fabric · Quorum · R3 Corda for permissioned channels." },
+      { "name": "Consumer-grade payments on L1", "why": "L1 finalises in ~12 min and fees spike with demand. Even with L2s, withdrawals and bridges are slow for retail.", "alt": "Use Bitcoin Lightning · Solana · XRPL · Stellar for sub-second payment UX." },
+      { "name": "Latency-critical games / real-time apps", "why": "~12 s blocks on L1, ~1–2 s on rollups: too slow for real-time gaming or live trading, and order-book matching is expensive in gas.", "alt": "Use Solana · Sui · Aptos · purpose-built order-book chains (dYdX v4) for latency-bound apps." }
+    ]
   },
   "quiz": {
     "question": "What is the fundamental difference between an Externally Owned Account (EOA) and a Contract Account on Ethereum?",
@@ -635,7 +706,7 @@
       "EOAs are controlled by a private key and can initiate transactions; Contract Accounts are controlled by code and only execute when triggered by an EOA or another contract.",
       "EOAs exist only on Ethereum mainnet; Contract Accounts work across all EVM-compatible chains automatically."
     ],
-    "explanation": "This is the foundational distinction of Ethereum's account model. An EOA is what a human controls — it has a private key, can initiate transactions, and pays gas. A Contract Account has no private key — it is pure code deployed at a deterministic address, and it only runs when another account sends it a transaction. This means a Contract Account cannot spontaneously act on a schedule — it needs an EOA (or a keeper bot using an EOA) to trigger it. Every transaction on Ethereum ultimately originates from an EOA."
+    "explanation": "An EOA has a private key, can initiate transactions, and pays gas. A Contract Account has no key; it is code that runs only when another account calls it. A contract cannot act on its own schedule, so every transaction on Ethereum ultimately originates from an EOA."
   },
   "quiz2": {
     "question": "An EIP-1559 transaction sets maxFeePerGas = 30 Gwei and maxPriorityFeePerGas = 2 Gwei. The current base fee is 25 Gwei. What does the sender actually pay per gas, and where does each part go?",
@@ -645,26 +716,18 @@
       "25 Gwei base fee paid to the validator + 2 Gwei priority fee burned. Total 27 Gwei per gas.",
       "30 Gwei (max fee) + 2 Gwei (priority fee) = 32 Gwei per gas, paid entirely to the validator."
     ],
-    "explanation": "EIP-1559 split the gas price into two components. The protocol-determined base fee is BURNED (permanently destroyed — this is what makes ETH deflationary when activity is high). The priority fee is the tip the user offers the validator. Effective price per gas is min(maxFeePerGas, baseFee + maxPriorityFeePerGas) — here min(30, 25 + 2) = 27 Gwei. Any unused headroom is refunded. So the sender pays 27 Gwei × gasUsed: 25 burned, 2 to the validator. maxFeePerGas is a cap, not a target."
-  },
-  "quiz3": {
-    "question": "Bob deploys a smart contract by sending a transaction with to = null and the compiled bytecode in the data field. How is the new contract's address determined?",
-    "options": [
-      "Bob picks any unused 20-byte address and includes it in the transaction's value field.",
-      "The Ethereum protocol generates a random 20-byte address at deployment time, so the address is unpredictable until the transaction is mined.",
-      "For a regular CREATE deployment, the address is derived deterministically from keccak256(senderAddress, senderNonce) — Bob can compute the future contract address before sending the transaction.",
-      "The address equals keccak256(bytecode), so two deployments of identical contracts always share the same address."
-    ],
-    "explanation": "CREATE derives the contract address from rlp(senderAddress, senderNonce), then takes the last 20 bytes of its keccak256 hash. This means anyone can predict the future contract address before deployment — useful for state channels and counterfactual instantiation. CREATE2 (introduced in Constantinople) uses keccak256(0xff, deployer, salt, keccak256(initCode)) so the address depends on a salt and the init code, decoupling it from nonce — enabling address pre-commitment regardless of deployment order. Identical bytecode does NOT share an address with CREATE; CREATE2 distinguishes by salt."
+    "explanation": "The base fee (25 Gwei) is burned. The tip (2 Gwei) goes to the validator. Effective price is min(maxFeePerGas, baseFee + tip) = min(30, 27) = 27 Gwei per gas; the unused 3 Gwei is never charged. maxFeePerGas is a cap, not a target."
   },
   "takeaways": {
     "title": "Section 02 — Key Takeaways",
     "items": [
-      "Ethereum extends Bitcoin by adding a Turing-complete virtual machine — the EVM",
+      "Ethereum adds a Turing-complete virtual machine, the EVM, to the blockchain model",
       "Two account types: Externally Owned Accounts (EOAs) and Contract Accounts",
       "Smart contracts are programs stored on-chain that execute deterministically when triggered",
-      "The Merge (2022) replaced Proof of Work with Proof of Stake — cutting energy use by 99.95%",
-      "The EVM has become an industry standard — Polygon, Arbitrum, Base, Optimism, and more are EVM-compatible",
+      "The Merge (2022) replaced Proof of Work with Proof of Stake, cutting energy use by 99.95% and new issuance by ~88%",
+      "Staking pays ~3–4% a year (solo, liquid or via ETFs), but entry and exit go through queues",
+      "ETH has no hard cap: PoS issuance minus the EIP-1559 burn keeps supply roughly flat, and busy periods make it deflationary",
+      "The EVM is an industry standard; Polygon, Arbitrum, Base and Optimism are EVM-compatible",
       "Bitcoin is digital money; Ethereum is a programmable settlement layer"
     ]
   }

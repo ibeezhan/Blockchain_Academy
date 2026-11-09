@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import anime from 'animejs';
 import { motion } from 'motion/react';
 import { TitleSlide } from '../../components/templates/TitleSlide';
 import { TakeawaySlide } from '../../components/templates/TakeawaySlide';
@@ -8,7 +7,7 @@ import { ComparisonSlide } from '../../components/templates/ComparisonSlide';
 import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
 import { QuizSlide } from '../../components/templates/QuizSlide';
-import { Layers } from 'lucide-react';
+import { Fuel, Hash, KeyRound, Layers, ScrollText, Wallet } from 'lucide-react';
 import { GasCalculator } from '../../components/ethereum/GasCalculator';
 import { Eip1559Demo } from '../../components/ethereum/Eip1559Demo';
 
@@ -16,10 +15,11 @@ import { Eip1559Demo } from '../../components/ethereum/Eip1559Demo';
 const chapterShape = [
   { kind: 'group' as const, id: 'g-s2-intro' },
   { id: 's2-why' },
+  { id: 's2-turing' },
 
   { kind: 'group' as const, id: 'g-s2-accounts' },
+  { id: 's2-wallet' },
   { id: 's2-accounts-visual' },
-  { id: 's2-accounts' },
 
   { kind: 'group' as const, id: 'g-s2-machine' },
   { id: 's2-evm' },
@@ -30,11 +30,13 @@ const chapterShape = [
 
   { kind: 'group' as const, id: 'g-s2-consensus' },
   { id: 's2-consensus' },
-  { id: 's2-evmecosystem' },
+  { id: 's2-staking' },
+  { id: 's2-issuance' },
 
   { kind: 'group' as const, id: 'g-s2-scaling' },
+  { id: 's2-evmecosystem' },
   { id: 's2-rollups' },
-  { id: 's2-rollups-anim' },
+  { id: 's2-rollups-2' },
 
   { kind: 'group' as const, id: 'g-s2-apps' },
   { id: 's2-defi' },
@@ -52,11 +54,233 @@ const chapterShape = [
   { kind: 'group' as const, id: 'g-s2-wrap' },
   { id: 's2-quiz' },
   { id: 's2-takeaways' },
-  { id: 's2-summary' },
 ] as const;
 
-// Language-neutral colors for the Rollups L1↔L2 animation steps (parallel to t('rollupsAnim.steps')).
-const ROLLUP_STEP_COLORS = ['#8b5cf6', '#f59e0b', '#06b6d4', '#3b82f6', '#10b981'] as const;
+/* Keyword trail for students who want the tech underneath — never required reading. */
+function HoodHint({ topic, className = '' }: { topic: string; className?: string }) {
+  const { t } = useTranslation('blockchain-platforms/section-2');
+  return (
+    <div className={`shrink-0 min-w-0 flex items-baseline gap-2 text-[10px] text-muted-foreground ${className}`}>
+      <span className="font-black uppercase tracking-widest text-[#627EEA] whitespace-nowrap shrink-0">🔧 {t('hood.label')}</span>
+      <span className="font-mono leading-tight line-clamp-2 min-w-0">{t(`hood.${topic}`)}</span>
+    </div>
+  );
+}
+
+/* One memorable sentence per slide. Optional hood keywords share the row so the footer stays one strip. */
+function KeyPoint({ topic, hood, className = '' }: { topic: string; hood?: string; className?: string }) {
+  const { t } = useTranslation('blockchain-platforms/section-2');
+  return (
+    <div className={`shrink-0 flex flex-col lg:flex-row lg:items-center gap-1.5 lg:gap-4 ${className}`}>
+      <div className="flex items-center gap-2 rounded-lg border-2 px-3 py-1.5 lg:flex-1 min-w-0" style={{ borderColor: '#f59e0b60', backgroundColor: '#f59e0b10' }}>
+        <span className="text-[10px] font-black uppercase tracking-widest text-[#f59e0b] whitespace-nowrap shrink-0">{t('keyPoint.label')}</span>
+        <span className="text-xs lg:text-sm font-semibold text-foreground leading-snug">{t(`keyPoint.${topic}`)}</span>
+      </div>
+      {hood && <HoodHint topic={hood} className="lg:w-[38%] lg:pr-14" />}
+    </div>
+  );
+}
+
+/* ── ETH supply chart: stylised history 2015→2025 + two dashed projections, with a post-Merge zoom inset. ── */
+const CH = { w: 640, h: 400, left: 46, right: 150, top: 18, bottom: 30 };
+const SUPPLY_HISTORY: [number, number][] = [
+  [2015.58, 72.0], [2016, 76.5], [2017, 88.0], [2018, 96.9], [2019, 104.1], [2020, 109.2], [2021, 114.0], [2021.6, 117.0], [2022.7, 120.5],
+  [2023.0, 120.5], [2023.5, 120.25], [2024.0, 120.2], [2024.3, 120.07], [2024.7, 120.25], [2025.0, 120.45], [2025.5, 120.65], [2025.95, 120.8],
+];
+const SUPPLY_QUIET: [number, number][] = [[2025.95, 120.8], [2030, 123.2]];
+const SUPPLY_BUSY: [number, number][] = [[2025.95, 120.8], [2030, 119.5]];
+const MERGE_YEAR = 2022.7;
+const PROJECTION_START = 2026;
+
+function SupplyChart() {
+  const { t } = useTranslation('blockchain-platforms/section-2');
+  const muted = 'var(--muted-foreground)';
+  const fg = 'var(--foreground)';
+  const x = (yr: number) => CH.left + ((yr - 2015) / 15) * (CH.w - CH.left - CH.right);
+  const y = (m: number) => CH.top + ((130 - m) / 70) * (CH.h - CH.top - CH.bottom);
+  // Zoom inset: 2022.5→2030 on the x axis, 119→124M on the y axis.
+  const IN = { x0: 286, x1: 488, y0: 125, y1: 350, px0: 294, px1: 480, py0: 170, py1: 325 };
+  const ix = (yr: number) => IN.px0 + ((yr - 2022.5) / 7.5) * (IN.px1 - IN.px0);
+  const iy = (m: number) => IN.py0 + ((124 - m) / 5) * (IN.py1 - IN.py0);
+  const path = (pts: [number, number][], fx: (v: number) => number, fy: (v: number) => number) =>
+    pts.map(([yr, m], i) => `${i === 0 ? 'M' : 'L'}${fx(yr).toFixed(1)},${fy(m).toFixed(1)}`).join(' ');
+  const postMerge = SUPPLY_HISTORY.filter(([yr]) => yr >= MERGE_YEAR);
+  const genesis = SUPPLY_HISTORY[0];
+  const last = SUPPLY_HISTORY[SUPPLY_HISTORY.length - 1];
+
+  return (
+    <div className="rounded-xl border border-border bg-card p-3 lg:p-4 h-full min-h-0 flex flex-col gap-2">
+      <div className="flex items-baseline justify-between gap-3 shrink-0">
+        <div className="text-xs font-bold text-foreground">{t('issuance.chart.title')}</div>
+        <a href="https://ultrasound.money/" target="_blank" rel="noopener noreferrer" className="text-[11px] font-semibold text-[#627EEA] hover:underline whitespace-nowrap">{t('issuance.chart.liveLink')}</a>
+      </div>
+
+      <svg viewBox={`0 0 ${CH.w} ${CH.h}`} className="flex-1 min-h-0 w-full" role="img" aria-label={t('issuance.chart.title')}>
+        {/* grid + axes */}
+        {[60, 80, 100, 120].map(m => (
+          <g key={m}>
+            <line x1={CH.left} x2={x(2030)} y1={y(m)} y2={y(m)} stroke={muted} strokeOpacity="0.2" strokeWidth="1" />
+            <text x={CH.left - 6} y={y(m) + 3} textAnchor="end" fontSize="9" fill={muted}>{m}M</text>
+          </g>
+        ))}
+        {[2015, 2018, 2021, 2024, 2027, 2030].map(yr => (
+          <text key={yr} x={x(yr)} y={CH.h - 10} textAnchor="middle" fontSize="9" fill={muted}>{yr}</text>
+        ))}
+
+        {/* projection zone */}
+        <line x1={x(PROJECTION_START)} x2={x(PROJECTION_START)} y1={CH.top - 6} y2={y(60)} stroke={muted} strokeOpacity="0.35" strokeDasharray="2 3" />
+        <text x={x(PROJECTION_START) + 4} y={CH.top - 6} fontSize="9" fontStyle="italic" fill={muted}>{t('issuance.chart.projection')} →</text>
+
+        {/* history + projections */}
+        <path d={path(SUPPLY_HISTORY, x, y)} fill="none" stroke="#627EEA" strokeWidth="2" strokeLinejoin="round" />
+        <path d={path(SUPPLY_QUIET, x, y)} fill="none" stroke="#f59e0b" strokeWidth="1.5" strokeDasharray="5 4" />
+        <path d={path(SUPPLY_BUSY, x, y)} fill="none" stroke="#10b981" strokeWidth="1.5" strokeDasharray="5 4" />
+        <text x={x(2030) + 6} y={y(123.2) + 3} fontSize="9" fontWeight="600" fill={fg}>{t('issuance.chart.quiet')}</text>
+        <text x={x(2030) + 6} y={y(119.5) + 5} fontSize="9" fontWeight="600" fill={fg}>{t('issuance.chart.busy')}</text>
+
+        {/* milestones */}
+        <circle cx={x(genesis[0])} cy={y(genesis[1])} r="3.5" fill="#627EEA" stroke="var(--card)" strokeWidth="1.5" />
+        <text x={x(genesis[0]) + 7} y={y(genesis[1]) + 16} fontSize="9" fill={fg}>{t('issuance.chart.genesis')}</text>
+        <text x={x(2018.2)} y={y(81)} fontSize="9" fontWeight="600" fill={fg}>{t('issuance.chart.powLabel')}</text>
+        <text x={x(2018.2)} y={y(81) + 11} fontSize="8.5" fill={muted}>{t('issuance.chart.powSub')}</text>
+        <line x1={x(MERGE_YEAR)} x2={x(MERGE_YEAR)} y1={y(120.5)} y2={CH.top + 10} stroke="#627EEA" strokeOpacity="0.6" strokeDasharray="2 2" />
+        <circle cx={x(MERGE_YEAR)} cy={y(120.5)} r="3.5" fill="#627EEA" stroke="var(--card)" strokeWidth="1.5" />
+        <text x={x(MERGE_YEAR) - 5} y={CH.top + 12} textAnchor="end" fontSize="9" fontWeight="700" fill={fg}>{t('issuance.chart.merge')}</text>
+        <text x={x(MERGE_YEAR) - 5} y={CH.top + 23} textAnchor="end" fontSize="8.5" fill={muted}>{t('issuance.chart.mergeSub')}</text>
+
+        {/* zoom inset */}
+        <rect x={IN.x0} y={IN.y0} width={IN.x1 - IN.x0} height={IN.y1 - IN.y0} rx="6" fill="var(--card)" stroke={muted} strokeOpacity="0.45" />
+        <text x={IN.x0 + 7} y={IN.y0 + 13} fontSize="9" fontWeight="700" fill={fg}>{t('issuance.chart.zoomTitle')}</text>
+        <text x={IN.x0 + 7} y={IN.y0 + 27} fontSize="8.5" fill="#627EEA" fontWeight="600">{t('issuance.chart.issuedLegend')}</text>
+        <text x={IN.x0 + 7} y={IN.y0 + 39} fontSize="8.5" fill="#f97316" fontWeight="600">{t('issuance.chart.burnLegend')}</text>
+        {[120, 122].map(m => (
+          <g key={m}>
+            <line x1={IN.px0} x2={IN.px1} y1={iy(m)} y2={iy(m)} stroke={muted} strokeOpacity="0.2" />
+            <text x={IN.x0 - 4} y={iy(m) + 3} textAnchor="end" fontSize="8" fill={muted}>{m}M</text>
+          </g>
+        ))}
+        {[2023, 2026, 2029].map(yr => (
+          <text key={yr} x={ix(yr)} y={IN.y1 - 6} textAnchor="middle" fontSize="8" fill={muted}>{yr}</text>
+        ))}
+        <path d={path(postMerge, ix, iy)} fill="none" stroke="#627EEA" strokeWidth="2" strokeLinejoin="round" />
+        <path d={path(SUPPLY_QUIET, ix, iy)} fill="none" stroke="#f59e0b" strokeWidth="1.5" strokeDasharray="5 4" />
+        <path d={path(SUPPLY_BUSY, ix, iy)} fill="none" stroke="#10b981" strokeWidth="1.5" strokeDasharray="5 4" />
+        <circle cx={ix(MERGE_YEAR)} cy={iy(120.5)} r="3" fill="#627EEA" />
+        <text x={ix(MERGE_YEAR) + 5} y={iy(120.5) - 6} fontSize="8" fill={fg}>{t('issuance.chart.mergeDot')}</text>
+        <circle cx={ix(2024.3)} cy={iy(120.07)} r="3" fill="#f97316" />
+        <text x={ix(2024.3)} y={iy(120.07) + 13} textAnchor="middle" fontSize="8" fill={fg}>{t('issuance.chart.dipLabel')}</text>
+        <circle cx={ix(last[0])} cy={iy(last[1])} r="3" fill="#627EEA" />
+      </svg>
+
+      <p className="shrink-0 text-[11px] text-muted-foreground leading-snug">{t('issuance.chart.footnote')}</p>
+    </div>
+  );
+}
+
+const STAKE_AMOUNTS = [1, 32, 1000] as const;
+const STAKE_PATHS = ['solo', 'liquid', 'etf'] as const;
+type StakeAmount = (typeof STAKE_AMOUNTS)[number];
+type StakePath = (typeof STAKE_PATHS)[number];
+const STAKE_PATH_COLORS: Record<StakePath, string> = { solo: '#627EEA', liquid: '#06b6d4', etf: '#8b5cf6' };
+const STAKE_RATES: Record<StakePath, number> = { solo: 3.5, liquid: 3.1, etf: 3.0 };
+
+/* Stake-and-exit simulator: amount × path → three plain result cards + a four-stop timeline with the waits. */
+function StakingSimulator() {
+  const { t } = useTranslation('blockchain-platforms/section-2');
+  const [amount, setAmount] = useState<StakeAmount>(32);
+  const [path, setPath] = useState<StakePath>('solo');
+  const color = STAKE_PATH_COLORS[path];
+  const pathLabels = t('staking.sim.paths', { returnObjects: true }) as Record<StakePath, string>;
+  const stops = t('staking.sim.stops', { returnObjects: true }) as string[];
+  const waits = t(`staking.sim.waits.${path}`, { returnObjects: true }) as string[];
+
+  const canStake = path !== 'solo' || amount >= 32;
+  const canText = path !== 'solo'
+    ? t(`staking.sim.can.${path}`)
+    : amount < 32 ? t('staking.sim.can.soloNo', { amount })
+      : amount === 32 ? t('staking.sim.can.soloOne')
+        : t('staking.sim.can.soloMany', { validators: Math.floor(amount / 32) });
+  const rate = STAKE_RATES[path];
+  const yearly = (amount * rate / 100).toLocaleString(undefined, { maximumFractionDigits: 1 });
+
+  const chip = (active: boolean, c: string) => active
+    ? { backgroundColor: c, borderColor: c, color: '#fff' }
+    : { borderColor: 'var(--border)', color: 'var(--muted-foreground)' };
+  const stepLabel = (n: string, text: string) => (
+    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+      <span className="size-4 rounded-full bg-foreground text-background flex items-center justify-center text-[9px]">{n}</span>{text}
+    </div>
+  );
+  const results = [
+    { label: t('staking.sim.canLabel'), body: canText, c: canStake ? '#10b981' : '#ef4444' },
+    { label: t('staking.sim.earnLabel'), body: canStake ? t('staking.sim.earn', { eth: yearly, pct: rate }) : t('staking.sim.earnNone'), note: canStake ? t(`staking.sim.earnNote.${path}`) : '', c: color },
+    { label: t('staking.sim.exitLabel'), body: t(`staking.sim.exit.${path}`), c: color },
+  ];
+
+  return (
+    <div className="flex-1 min-h-0 flex flex-col gap-3">
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-4">
+        {/* Step 1 — inputs */}
+        <div className="rounded-xl border border-border bg-card p-3 lg:p-4 flex flex-col gap-3 min-h-0">
+          {stepLabel('1', t('staking.sim.step1'))}
+          <div>
+            <div className="text-xs font-bold text-foreground mb-1.5">{t('staking.sim.amountLabel')}</div>
+            <div className="flex gap-1.5">
+              {STAKE_AMOUNTS.map(a => (
+                <button key={a} onClick={() => setAmount(a)} className="flex-1 text-sm px-2 py-1.5 rounded-lg border font-bold font-mono transition-colors" style={chip(a === amount, '#10b981')}>
+                  {a.toLocaleString()} ETH
+                </button>
+              ))}
+            </div>
+            <p className="text-[11px] text-muted-foreground leading-snug mt-1.5">{t(`staking.sim.amountMeaning.${amount}`)}</p>
+          </div>
+          <div>
+            <div className="text-xs font-bold text-foreground mb-1.5">{t('staking.sim.pathLabel')}</div>
+            <div className="flex gap-1.5">
+              {STAKE_PATHS.map(p => (
+                <button key={p} onClick={() => setPath(p)} className="flex-1 text-xs px-2 py-1.5 rounded-lg border font-bold transition-colors leading-tight" style={chip(p === path, STAKE_PATH_COLORS[p])}>
+                  {pathLabels[p]}
+                </button>
+              ))}
+            </div>
+            <p className="text-[11px] text-muted-foreground leading-snug mt-1.5">{t(`staking.sim.pathMeaning.${path}`)}</p>
+          </div>
+          <p className="mt-auto text-[11px] text-muted-foreground leading-snug border-t border-border pt-2">
+            <span className="font-bold text-[#8b5cf6]">{t('staking.instructorLabel')}</span>{t('staking.instructorBody')}
+          </p>
+        </div>
+
+        {/* Step 2 — results */}
+        <div className="rounded-xl border border-border bg-card p-3 lg:p-4 flex flex-col gap-2 min-h-0">
+          {stepLabel('2', t('staking.sim.step2'))}
+          {results.map(r => (
+            <div key={r.label} className="flex-1 min-h-0 rounded-lg border px-3 py-2 flex flex-col justify-center transition-colors" style={{ borderColor: r.c + '60', backgroundColor: r.c + '10' }}>
+              <div className="text-[10px] font-black uppercase tracking-widest" style={{ color: r.c }}>{r.label}</div>
+              <div className="text-sm lg:text-base text-foreground leading-snug mt-0.5">{r.body}</div>
+              {r.note && <div className="text-[11px] text-muted-foreground leading-snug mt-0.5">{r.note}</div>}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Timeline — four stops, the wait for the chosen path under each */}
+      <div className="shrink-0 rounded-xl border border-border bg-card px-3 py-3 relative" style={{ opacity: canStake ? 1 : 0.4 }}>
+        <div className="absolute left-[12.5%] right-[12.5%] top-[21px] h-0.5" style={{ backgroundColor: color + '70' }} />
+        <div className="grid grid-cols-4 gap-2 relative">
+          {stops.map((label, i) => (
+            <div key={i} className="flex flex-col items-center text-center">
+              <div className="size-[18px] rounded-full border-2 bg-card flex items-center justify-center" style={{ borderColor: color }}>
+                <div className="size-2 rounded-full" style={{ backgroundColor: color }} />
+              </div>
+              <div className="text-xs font-bold text-foreground mt-1.5 leading-tight">{label}</div>
+              <div className="text-[11px] leading-snug mt-0.5 font-semibold" style={{ color }}>{waits[i]}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 /* ──────────────────── Rollups L1 ↔ L2 — animated flow ─────────────────────
    Visualises what happens between Layer 1 and a Layer 2 rollup:
@@ -68,213 +292,11 @@ const ROLLUP_STEP_COLORS = ['#8b5cf6', '#f59e0b', '#06b6d4', '#3b82f6', '#10b981
    Auto-plays on scroll-in + manual replay.
    ──────────────────────────────────────────────────────────────────────────── */
 
-function RollupsL1L2Animation() {
-  const { t } = useTranslation('blockchain-platforms/section-2');
-  const rootRef     = useRef<HTMLDivElement | null>(null);
-  const stepRef     = useRef<HTMLDivElement | null>(null);
-  const userTxRefs  = useRef<(SVGGElement | null)[]>([]);
-  const batchBoxRef = useRef<SVGGElement | null>(null);
-  const blobRef     = useRef<SVGGElement | null>(null);
-  const l1BlockRef  = useRef<SVGGElement | null>(null);
-  const [phase, setPhase] = useState<'idle' | 'playing'>('idle');
-  const playedRef   = useRef(false);
-
-  const stepLabels = t('rollupsAnim.steps', { returnObjects: true }) as string[];
-  const STEPS = ROLLUP_STEP_COLORS.map((color, i) => ({ label: stepLabels[i], color }));
-
-  const setStep = (i: number) => {
-    if (!stepRef.current) return;
-    stepRef.current.textContent = STEPS[i].label;
-    stepRef.current.style.color = STEPS[i].color;
-    stepRef.current.style.borderColor = STEPS[i].color + 'AA';
-    stepRef.current.style.backgroundColor = STEPS[i].color + '14';
-  };
-
-  const play = () => {
-    if (phase === 'playing') return;
-    setPhase('playing');
-
-    userTxRefs.current.forEach(t => {
-      if (!t) return;
-      t.style.opacity = '0';
-      t.style.transform = 'translate(0, 0)';
-    });
-    if (batchBoxRef.current) batchBoxRef.current.style.opacity = '0';
-    if (blobRef.current)     { blobRef.current.style.opacity = '0'; blobRef.current.style.transform = 'translate(0, 0) scale(1)'; }
-    if (l1BlockRef.current)  l1BlockRef.current.style.opacity = '0';
-
-    const tl = anime.timeline({ easing: 'easeInOutCubic', complete: () => setPhase('idle') });
-
-    tl.add({
-      targets: userTxRefs.current.filter(Boolean),
-      opacity: [0, 1],
-      translateY: [-12, 0],
-      duration: 350,
-      delay: anime.stagger(80),
-      changeBegin: () => setStep(0),
-    })
-    .add({
-      targets: userTxRefs.current.filter(Boolean),
-      translateY: 30,
-      scale: 0.85,
-      duration: 600,
-      delay: anime.stagger(60),
-      changeBegin: () => setStep(1),
-    })
-    .add({
-      targets: batchBoxRef.current,
-      opacity: [0, 1],
-      scale: [0.6, 1],
-      duration: 500,
-      easing: 'easeOutQuad',
-      changeBegin: () => setStep(2),
-    })
-    .add({
-      targets: userTxRefs.current.filter(Boolean),
-      opacity: 0,
-      duration: 250,
-    }, '-=250')
-    .add({
-      targets: batchBoxRef.current,
-      scale: [1, 0.45],
-      duration: 600,
-      easing: 'easeInQuad',
-    })
-    .add({
-      targets: batchBoxRef.current,
-      opacity: 0,
-      duration: 200,
-    }, '-=100')
-    .add({
-      targets: blobRef.current,
-      opacity: [0, 1],
-      scale: [0.4, 1],
-      duration: 350,
-      easing: 'easeOutQuad',
-    }, '-=100')
-    .add({
-      targets: blobRef.current,
-      translateY: 110,
-      duration: 900,
-      changeBegin: () => setStep(3),
-    })
-    .add({
-      targets: l1BlockRef.current,
-      opacity: [0, 1],
-      scale: [0.6, 1.15, 1],
-      duration: 700,
-      easing: 'easeOutQuad',
-      changeBegin: () => setStep(4),
-    })
-    .add({
-      targets: blobRef.current,
-      opacity: [1, 0],
-      duration: 300,
-    }, '-=300');
-  };
-
-  useEffect(() => {
-    if (!rootRef.current) return;
-    const obs = new IntersectionObserver(es => {
-      for (const e of es) {
-        if (e.isIntersecting && !playedRef.current) {
-          playedRef.current = true;
-          setTimeout(play, 350);
-          break;
-        }
-      }
-    }, { threshold: 0.35 });
-    obs.observe(rootRef.current);
-    return () => obs.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return (
-    <div ref={rootRef} className="flex flex-col gap-3 min-h-0 h-full">
-      <div className="shrink-0 flex items-start justify-between gap-3">
-        <div>
-          <div className="text-[10px] font-black uppercase tracking-widest text-[#8b5cf6]">{t('rollupsAnim.liveLabel')}</div>
-          <div className="text-sm font-bold text-foreground">{t('rollupsAnim.heading')}</div>
-        </div>
-        <button
-          onClick={play}
-          disabled={phase === 'playing'}
-          className="text-[11px] px-2.5 py-1 rounded-md bg-muted/60 hover:bg-muted text-foreground font-semibold disabled:opacity-50 transition-colors shrink-0"
-        >{t('rollupsAnim.replay')}</button>
-      </div>
-
-      <div ref={stepRef} className="shrink-0 px-3 py-2 rounded-lg border-2 text-xs font-bold transition-all" style={{ borderColor: STEPS[0].color + 'AA', backgroundColor: STEPS[0].color + '14', color: STEPS[0].color }}>
-        {STEPS[0].label}
-      </div>
-
-      <div className="flex-1 min-h-[280px] rounded-xl border border-border bg-card/40 p-3">
-        <svg viewBox="0 0 520 280" className="w-full h-full" style={{ overflow: 'visible' }}>
-          <rect x="20" y="20" width="480" height="80" rx="8" fill="#8b5cf615" stroke="#8b5cf6" strokeWidth="1.2" />
-          <text x="40" y="42" fontSize="11" fontWeight="900" fill="#8b5cf6">{t('rollupsAnim.svg.l2Title')}</text>
-          <text x="40" y="56" fontSize="9" fill="hsl(var(--muted-foreground))">{t('rollupsAnim.svg.l2Sub')}</text>
-
-          {[0, 1, 2, 3].map(i => (
-            <g key={i} ref={el => { userTxRefs.current[i] = el; }} style={{ opacity: 0, transformBox: 'fill-box' as React.CSSProperties['transformBox'], transformOrigin: `${100 + i * 50}px 78px` }}>
-              <rect x={85 + i * 50} y="68" width="30" height="22" rx="3" fill="#8b5cf6" stroke="#4c1d95" strokeWidth="0.7" />
-              <text x={100 + i * 50} y="83" textAnchor="middle" fontSize="9" fontWeight="800" fill="#fff">tx{i + 1}</text>
-            </g>
-          ))}
-
-          <rect x="320" y="60" width="80" height="34" rx="4" fill="#f59e0b22" stroke="#f59e0b" strokeWidth="1.3" />
-          <text x="360" y="78" textAnchor="middle" fontSize="9" fontWeight="900" fill="#f59e0b">{t('rollupsAnim.svg.sequencer')}</text>
-          <text x="360" y="89" textAnchor="middle" fontSize="7" fill="hsl(var(--muted-foreground))">{t('rollupsAnim.svg.sequencerSub')}</text>
-
-          <g ref={batchBoxRef} style={{ opacity: 0, transformBox: 'fill-box' as React.CSSProperties['transformBox'], transformOrigin: '420px 78px' }}>
-            <rect x="406" y="64" width="58" height="28" rx="3" fill="#06b6d422" stroke="#06b6d4" strokeWidth="1.3" />
-            <text x="435" y="82" textAnchor="middle" fontSize="9" fontWeight="900" fill="#06b6d4">{t('rollupsAnim.svg.batch')}</text>
-          </g>
-
-          <g ref={blobRef} style={{ opacity: 0, transformBox: 'fill-box' as React.CSSProperties['transformBox'], transformOrigin: '420px 78px' }}>
-            <rect x="408" y="68" width="24" height="20" rx="3" fill="#3b82f6" stroke="#1e3a8a" strokeWidth="1.2" />
-            <text x="420" y="82" textAnchor="middle" fontSize="7" fontWeight="900" fill="#fff">{t('rollupsAnim.svg.blob')}</text>
-          </g>
-
-          <text x="260" y="135" textAnchor="middle" fontSize="9" fontWeight="700" fill="hsl(var(--muted-foreground))" opacity="0.6">{t('rollupsAnim.svg.compressLabel')}</text>
-
-          <rect x="20" y="170" width="480" height="80" rx="8" fill="#627EEA15" stroke="#627EEA" strokeWidth="1.2" />
-          <text x="40" y="192" fontSize="11" fontWeight="900" fill="#627EEA">{t('rollupsAnim.svg.l1Title')}</text>
-          <text x="40" y="206" fontSize="9" fill="hsl(var(--muted-foreground))">{t('rollupsAnim.svg.l1Sub')}</text>
-
-          {[1, 2, 3, 4].map(i => (
-            <g key={i}>
-              <rect x={140 + i * 50} y="216" width="34" height="26" rx="2" fill="#627EEA25" stroke="#627EEA" strokeWidth="0.8" />
-              <text x={157 + i * 50} y="232" textAnchor="middle" fontSize="7" fontWeight="800" fill="#627EEA">#L1</text>
-            </g>
-          ))}
-          <g ref={l1BlockRef} style={{ opacity: 0, transformBox: 'fill-box' as React.CSSProperties['transformBox'], transformOrigin: '375px 229px' }}>
-            <rect x="358" y="216" width="34" height="26" rx="2" fill="#10b98140" stroke="#10b981" strokeWidth="1.4" />
-            <text x="375" y="232" textAnchor="middle" fontSize="7" fontWeight="800" fill="#10b981">{t('rollupsAnim.svg.verifiedBlob')}</text>
-          </g>
-        </svg>
-      </div>
-
-      <div className="shrink-0 grid grid-cols-2 lg:grid-cols-4 gap-2 text-[10px]">
-        <div className="rounded-md p-1.5 border" style={{ borderColor: '#8b5cf655', backgroundColor: '#8b5cf610' }}>
-          <span className="font-black text-[#8b5cf6]">{t('rollupsAnim.legend.l2txTerm')}</span> <span className="text-muted-foreground">{t('rollupsAnim.legend.l2txDesc')}</span>
-        </div>
-        <div className="rounded-md p-1.5 border" style={{ borderColor: '#f59e0b55', backgroundColor: '#f59e0b10' }}>
-          <span className="font-black text-[#f59e0b]">{t('rollupsAnim.legend.sequencerTerm')}</span> <span className="text-muted-foreground">{t('rollupsAnim.legend.sequencerDesc')}</span>
-        </div>
-        <div className="rounded-md p-1.5 border" style={{ borderColor: '#06b6d455', backgroundColor: '#06b6d410' }}>
-          <span className="font-black text-[#06b6d4]">{t('rollupsAnim.legend.compressTerm')}</span> <span className="text-muted-foreground">{t('rollupsAnim.legend.compressDesc')}</span>
-        </div>
-        <div className="rounded-md p-1.5 border" style={{ borderColor: '#10b98155', backgroundColor: '#10b98110' }}>
-          <span className="font-black text-[#10b981]">{t('rollupsAnim.legend.finaliseTerm')}</span> <span className="text-muted-foreground">{t('rollupsAnim.legend.finaliseDesc')}</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 interface WhyItem { title: string; detail: string; }
 interface LabelDesc { label: string; desc: string; }
 interface LabelDetail { label: string; detail: string; }
 interface FlowItem { label: string; sub: string; }
+interface WalletLayer { label: string; sub: string; detail: string; }
 interface ComparisonRow { feature: string; option1: string; option2: string; }
 interface StackLayer { label: string; sub: string; }
 interface TxField { field: string; value: string; comment: string; }
@@ -283,15 +305,16 @@ interface StrongRest { strong: string; rest: string; }
 interface LifecycleStep { label: string; detail: string; }
 interface ConsensusItem { icon: string; label: string; value: string; }
 interface ConsensusStep { label: string; detail: string; metric: string; }
-interface ConsensusStat { value: string; label: string; }
+interface StatTile { value: string; label: string; }
 interface RollupStep { label: string; detail: string; }
 interface RollupBullet { strong?: string; rest?: string; pre?: string; code?: string; post?: string; text?: string; }
 interface RollupMetric { label: string; l1: string; l2: string; }
 interface StablecoinLogo { sym: string; tag: string; }
-interface StablecoinCard { title: string; sub: string; mechanism: string; examples: string; logos: StablecoinLogo[]; risk: string; }
+interface StablecoinCard { title: string; sub: string; mechanism: string; logos: StablecoinLogo[]; risk: string; }
 interface AppProject { sym: string; tag: string; }
-interface AppCard { title: string; sub: string; what: string; examples: string; projects: AppProject[]; limit: string; }
+interface AppCard { title: string; sub: string; what: string; projects: AppProject[]; limit: string; }
 interface FitItem { name: string; why: string; example?: string; alt?: string; }
+interface IssuanceFact { title: string; detail: string; }
 
 export function BP_Section2() {
   const { t } = useTranslation('blockchain-platforms/section-2');
@@ -310,13 +333,20 @@ export function BP_Section2() {
   const whyLimits = t('why.limits', { returnObjects: true }) as WhyItem[];
   const whyProperties = t('why.properties', { returnObjects: true }) as LabelDesc[];
 
+  const turingButtons = t('turing.menu.buttons', { returnObjects: true }) as string[];
+  const turingTools = t('turing.kitchen.tools', { returnObjects: true }) as LabelDesc[];
+  const turingToolIcons = ['🔁', '🗄️', '🔀'];
+
+  const walletLayers = t('wallet.layers', { returnObjects: true }) as WalletLayer[];
+  const walletLayerIcons = [ScrollText, KeyRound, Hash];
+  const walletLayerColors = ['#f59e0b', '#627EEA', '#10b981'];
+  const walletAppPoints = t('wallet.appPoints', { returnObjects: true }) as string[];
+
   const accountsVisualEoaPoints = t('accountsVisual.eoa.points', { returnObjects: true }) as string[];
   const accountsVisualEoaIcons = ['👤', '🚀', '💰', '⛽'];
   const accountsVisualContractPoints = t('accountsVisual.contract.points', { returnObjects: true }) as string[];
   const accountsVisualContractIcons = ['⚙️', '📩', '🗄️', '🔄'];
   const accountsVisualFlow = t('accountsVisual.flow', { returnObjects: true }) as FlowItem[];
-
-  const accountsItems = t('accounts.items', { returnObjects: true }) as ComparisonRow[];
 
   const evmProperties = t('evm.properties', { returnObjects: true }) as LabelDetail[];
   const evmPropertyIcons = ['🏖️', '⚙️', '🔄', '📏'];
@@ -345,7 +375,14 @@ export function BP_Section2() {
   const consensusAfterItems = t('consensus.after.items', { returnObjects: true }) as ConsensusItem[];
   const consensusSteps = t('consensus.steps', { returnObjects: true }) as ConsensusStep[];
   const consensusStepColors = ['#627EEA', '#8b5cf6', '#3b82f6', '#10b981'];
-  const consensusStats = t('consensus.stats', { returnObjects: true }) as ConsensusStat[];
+  const consensusStepIcons = ['🔒', '🎲', '🗳️', '✅'];
+
+  const issuanceFacts = t('issuance.facts', { returnObjects: true }) as IssuanceFact[];
+  const issuanceFactMeta = [
+    { icon: '♾️', color: '#627EEA' },
+    { icon: '✂️', color: '#10b981' },
+    { icon: '🔥', color: '#f97316' },
+  ];
 
   const evmReasons = t('evmEcosystem.reasons', { returnObjects: true }) as LabelDetail[];
   const evmReasonMeta = [
@@ -378,8 +415,9 @@ export function BP_Section2() {
   const stablecoinCardMeta = [
     { icon: '🏦', color: '#3b82f6', logoColors: ['#26A17B', '#2775CA', '#00AAE4', '#003087'] },
     { icon: '⚖️', color: '#8b5cf6', logoColors: ['#F4B731', '#B6509E', '#745DDF', '#40649F'] },
-    { icon: '⚙️', color: '#ED1C24', logoColors: ['#172852', '#000000', '#0E1313'] },
+    { icon: '⚙️', color: '#ED1C24', logoColors: ['#5493F7', '#6B7280', '#94A3B8'] },
   ];
+  const stablecoinStats = t('stablecoins.stats', { returnObjects: true }) as StatTile[];
 
   const apps1Cards = t('apps1.cards', { returnObjects: true }) as AppCard[];
   const apps1CardMeta = [
@@ -401,7 +439,6 @@ export function BP_Section2() {
 
   const quizOptions = (t('quiz.options', { returnObjects: true }) as string[]).map((text, i) => ({ text, correct: i === 2 }));
   const quiz2Options = (t('quiz2.options', { returnObjects: true }) as string[]).map((text, i) => ({ text, correct: i === 1 }));
-  const quiz3Options = (t('quiz3.options', { returnObjects: true }) as string[]).map((text, i) => ({ text, correct: i === 2 }));
 
   const takeawayItems = t('takeaways.items', { returnObjects: true }) as string[];
 
@@ -496,16 +533,6 @@ export function BP_Section2() {
                 ))}
               </div>
 
-              {/* Bottom callout */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7, duration: 0.4 }}
-                className="rounded-xl p-3 text-center text-sm font-bold shrink-0"
-                style={{ backgroundColor: '#627EEA20', color: '#627EEA', border: '1px solid #627EEA40' }}
-              >
-                {t('why.callout')}
-              </motion.div>
             </div>
 
           </div>
@@ -517,11 +544,8 @@ export function BP_Section2() {
             transition={{ delay: 0.85, duration: 0.4 }}
             className="shrink-0 mt-4 rounded-xl border border-border bg-card px-4 py-3"
           >
-            <div className="flex items-center justify-between gap-3 mb-2">
-              <div className="text-xs font-semibold text-foreground">
-                {t('why.teaserTextA')}<span className="text-[#10b981]">{t('why.teaserHighlight')}</span>
-              </div>
-              <span className="text-[10px] text-muted-foreground italic shrink-0">{t('why.teaserNote')}</span>
+            <div className="text-xs font-semibold text-foreground mb-2">
+              {t('why.teaserTextA')}<span className="text-[#10b981]">{t('why.teaserHighlight')}</span>
             </div>
 
             {/* Energy bars */}
@@ -551,6 +575,147 @@ export function BP_Section2() {
               <span className="font-mono font-bold text-foreground">{t('why.posValueA')}<span className="text-[#10b981]">{t('why.posValueHighlight')}</span></span>
             </div>
           </motion.div>
+          <KeyPoint topic="why" hood="why" className="mt-3" />
+        </div>
+
+        {/* ═══════ S2-TURING — menu vs kitchen ═══════ */}
+        <div id="s2-turing" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-5">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('turing.heading')}</h2>
+            <p className="text-muted-foreground text-sm mt-1">{t('turing.subtitle')}</p>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-4 items-stretch">
+            {/* Bitcoin Script — the vending machine */}
+            <div className="rounded-2xl border-2 p-5 flex flex-col gap-4" style={{ borderColor: '#f7931a60', backgroundColor: '#f7931a08' }}>
+              <div className="flex items-center gap-3">
+                <span className="text-4xl leading-none">🎛️</span>
+                <div>
+                  <div className="font-black text-lg text-foreground leading-tight">{t('turing.menu.title')}</div>
+                  <div className="text-xs text-muted-foreground">{t('turing.menu.tag')}</div>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {turingButtons.map((label, i) => (
+                  <div key={i} className="rounded-xl border-2 bg-card px-3 py-6 text-center text-base font-bold text-foreground" style={{ borderColor: '#f7931a50' }}>{label}</div>
+                ))}
+              </div>
+              <div className="rounded-lg px-3 py-2.5 text-sm font-mono text-center" style={{ backgroundColor: '#f7931a18', color: '#b86a0e' }}>{t('turing.menu.display')}</div>
+              <p className="text-base text-muted-foreground leading-snug mt-auto">{t('turing.menu.body')}</p>
+            </div>
+
+            <div className="hidden lg:flex items-center text-xs font-black uppercase tracking-widest text-muted-foreground">vs</div>
+
+            {/* Ethereum EVM — the kitchen */}
+            <div className="rounded-2xl border-2 p-5 flex flex-col gap-4" style={{ borderColor: '#627EEA60', backgroundColor: '#627EEA08' }}>
+              <div className="flex items-center gap-3">
+                <span className="text-4xl leading-none">🍳</span>
+                <div>
+                  <div className="font-black text-lg text-foreground leading-tight">{t('turing.kitchen.title')}</div>
+                  <div className="text-xs text-muted-foreground">{t('turing.kitchen.tag')}</div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                {turingTools.map((tool, i) => (
+                  <div key={i} className="rounded-xl border bg-card px-4 py-4 flex items-center gap-4" style={{ borderColor: '#627EEA40' }}>
+                    <span className="text-3xl leading-none shrink-0">{turingToolIcons[i]}</span>
+                    <div>
+                      <div className="text-base font-bold text-foreground leading-tight">{tool.label}</div>
+                      <div className="text-sm text-muted-foreground leading-snug">{tool.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="text-base text-muted-foreground leading-snug mt-auto">{t('turing.kitchen.body')}</p>
+            </div>
+          </div>
+
+          <div className="shrink-0 mt-4 rounded-xl border px-4 py-2.5 text-sm text-foreground leading-snug" style={{ borderColor: '#f59e0b60', backgroundColor: '#f59e0b0d' }}>
+            <span className="font-bold text-[#f59e0b]">{t('turing.catchLabel')}</span>{t('turing.catchBody')}
+          </div>
+          <KeyPoint topic="turing" hood="turing" className="mt-3" />
+        </div>
+
+        {/* ═══════ S2-WALLET — what a wallet actually is ═══════ */}
+        <div id="s2-wallet" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-5">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('wallet.heading')}</h2>
+            <p className="text-sm text-muted-foreground mt-1">{t('wallet.subtitle')}</p>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-5 gap-6">
+
+            {/* Left — seed phrase → private key → address */}
+            <div className="lg:col-span-3 flex flex-col justify-center gap-2 min-h-0">
+              {walletLayers.map((layer, i) => {
+                const Icon = walletLayerIcons[i];
+                const color = walletLayerColors[i];
+                return (
+                  <div key={i} className="contents">
+                    {i > 0 && (
+                      <div className="flex items-center gap-2 pl-8 text-[11px] text-muted-foreground">
+                        <span className="h-4 w-px bg-border" />
+                        {t('wallet.derives')}
+                      </div>
+                    )}
+                    <motion.div
+                      initial={{ opacity: 0, x: -16 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.12, duration: 0.35 }}
+                      className="flex items-start gap-4 p-4 rounded-2xl border-2"
+                      style={{ borderColor: color + '60', backgroundColor: color + '08' }}
+                    >
+                      <div className="size-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: color + '18', color }}>
+                        <Icon className="size-6" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-baseline gap-2 flex-wrap">
+                          <span className="font-black text-lg text-foreground">{layer.label}</span>
+                          <span className="text-xs font-mono text-muted-foreground">{layer.sub}</span>
+                        </div>
+                        <div className="text-sm text-muted-foreground mt-1 leading-relaxed">{layer.detail}</div>
+                      </div>
+                    </motion.div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Right — what the app holds, who pays gas */}
+            <div className="lg:col-span-2 flex flex-col justify-center gap-4 min-h-0">
+              <motion.div
+                initial={{ opacity: 0, x: 16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3, duration: 0.35 }}
+                className="shrink-0 rounded-2xl border border-border bg-card p-5 flex flex-col gap-3"
+              >
+                <div className="flex items-center gap-2 shrink-0">
+                  <Wallet className="size-5 text-[#627EEA]" />
+                  <h3 className="font-bold text-base text-foreground">{t('wallet.appHeading')}</h3>
+                </div>
+                {walletAppPoints.map((text, i) => (
+                  <div key={i} className="flex items-start gap-3 text-sm text-foreground leading-relaxed">
+                    <span className="mt-2 size-1.5 rounded-full shrink-0" style={{ backgroundColor: '#627EEA' }} />
+                    {text}
+                  </div>
+                ))}
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45 }}
+                className="shrink-0 rounded-2xl border-2 p-4"
+                style={{ borderColor: '#f59e0b60', backgroundColor: '#f59e0b10' }}
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <Fuel className="size-4 text-[#f59e0b]" />
+                  <span className="text-[10px] font-black uppercase tracking-widest text-[#f59e0b]">{t('wallet.gasLabel')}</span>
+                </div>
+                <p className="text-sm text-foreground leading-relaxed">{t('wallet.gasBody')}</p>
+              </motion.div>
+            </div>
+          </div>
+          <KeyPoint topic="wallet" hood="wallet" className="mt-3" />
         </div>
 
         {/* ═══════ S2-ACCOUNTS-VISUAL ═══════ */}
@@ -658,17 +823,7 @@ export function BP_Section2() {
               ))}
             </div>
           </motion.div>
-        </div>
-
-        {/* ═══════ S2-ACCOUNTS ═══════ */}
-        <div id="s2-accounts" className="h-full">
-          <ComparisonSlide
-            title={t('accounts.title')}
-            featureLabel={t('accounts.featureLabel')}
-            option1Label={t('accounts.option1Label')}
-            option2Label={t('accounts.option2Label')}
-            items={accountsItems}
-          />
+          <KeyPoint topic="accountsVisual" hood="accounts" className="mt-3" />
         </div>
 
         {/* ═══════ S2-EVM ═══════ */}
@@ -679,15 +834,15 @@ export function BP_Section2() {
           </div>
 
           {/* JVM analogy banner — anchor the concept in something familiar before EVM-specifics */}
-          <div className="shrink-0 mb-4 rounded-xl border-2 p-3" style={{ borderColor: '#627EEAAA', backgroundColor: '#627EEA0d' }}>
+          <div className="shrink-0 mb-3 rounded-xl border-2 p-3" style={{ borderColor: '#627EEAAA', backgroundColor: '#627EEA0d' }}>
             <div className="flex items-start gap-3">
               <span className="text-2xl shrink-0">☕</span>
               <div className="flex-1 min-w-0">
                 <div className="text-[10px] font-black uppercase tracking-widest text-[#627EEA]">{t('evm.jvmLabel')}</div>
-                <div className="text-sm text-foreground leading-snug mt-0.5">
+                <div className="text-xs lg:text-sm text-foreground leading-snug mt-0.5">
                   {t('evm.jvmP1A')}<strong>{t('evm.jvmP1Strong')}</strong>{t('evm.jvmP1B')}<em>{t('evm.jvmP1Em')}</em>{t('evm.jvmP1C')}<code className="text-[#627EEA] font-mono">.java</code>{t('evm.jvmP1D')}
                 </div>
-                <div className="text-sm text-foreground leading-snug mt-1.5">
+                <div className="text-xs lg:text-sm text-foreground leading-snug mt-1">
                   <strong className="text-[#627EEA]">{t('evm.jvmP2Strong')}</strong>{t('evm.jvmP2A')}<em>{t('evm.jvmP2Em')}</em>{t('evm.jvmP2B')}
                 </div>
               </div>
@@ -697,22 +852,22 @@ export function BP_Section2() {
           <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-5">
 
             {/* Left — What is the EVM */}
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2 min-h-0">
               <h3 className="text-base font-bold text-foreground shrink-0">{t('evm.whatHeading')}</h3>
-              <div className="flex flex-col gap-2 flex-1">
+              <div className="flex flex-col gap-1.5 flex-1 min-h-0">
                 {evmProperties.map((prop, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.1, duration: 0.4, ease: 'easeOut' }}
-                    className="flex-1 flex items-start gap-3 p-3 rounded-xl border bg-card"
+                    className="flex-1 min-h-0 flex items-center gap-3 px-3 py-2 rounded-xl border bg-card"
                     style={{ borderColor: '#627EEA30' }}
                   >
                     <span className="text-2xl shrink-0">{evmPropertyIcons[i]}</span>
                     <div>
                       <div className="font-bold text-sm text-foreground">{prop.label}</div>
-                      <div className="text-xs text-muted-foreground leading-relaxed mt-0.5">{prop.detail}</div>
+                      <div className="text-xs text-muted-foreground leading-snug mt-0.5">{prop.detail}</div>
                     </div>
                   </motion.div>
                 ))}
@@ -720,31 +875,31 @@ export function BP_Section2() {
             </div>
 
             {/* Right — EVM Stack + compatibility */}
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2 min-h-0">
               <h3 className="text-base font-bold text-foreground shrink-0">{t('evm.stackHeading')}</h3>
 
               {/* Stack diagram */}
-              <div className="flex flex-col gap-1 flex-1">
+              <div className="flex flex-col flex-1 min-h-0">
                 {evmStack.map((layer, i) => {
                   const color = evmStackColors[i];
                   return (
-                  <div key={i} className="flex flex-col items-center">
+                  <div key={i} className="flex flex-col items-center flex-1 min-h-0">
                     <motion.div
                       initial={{ opacity: 0, scaleX: 0.7 }}
                       animate={{ opacity: 1, scaleX: 1 }}
                       transition={{ delay: 0.1 + i * 0.1, duration: 0.35 }}
-                      className="w-full rounded-lg px-4 py-2 text-center border"
+                      className="w-full flex-1 min-h-0 rounded-lg px-4 py-1 flex flex-col justify-center text-center border"
                       style={{ borderColor: color + '50', backgroundColor: color + '15' }}
                     >
-                      <div className="font-bold text-sm" style={{ color }}>{layer.label}</div>
-                      <div className="text-xs text-muted-foreground">{layer.sub}</div>
+                      <div className="font-bold text-sm leading-tight" style={{ color }}>{layer.label}</div>
+                      <div className="text-xs text-muted-foreground leading-tight">{layer.sub}</div>
                     </motion.div>
                     {i < 4 && (
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.15 + i * 0.1 }}
-                        className="text-muted-foreground text-sm leading-none py-0.5"
+                        className="text-muted-foreground text-xs leading-none"
                       >↓</motion.div>
                     )}
                   </div>
@@ -753,21 +908,20 @@ export function BP_Section2() {
               </div>
 
               {/* EVM Compatibility */}
-              <div className="shrink-0">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-2">{t('evm.compatLabel')}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {evmCompatChains.map(chain => (
-                    <span
-                      key={chain}
-                      className="px-2.5 py-1 rounded-full text-xs font-medium border"
-                      style={{ color: '#627EEA', borderColor: '#627EEA40', backgroundColor: '#627EEA12' }}
-                    >{chain}</span>
-                  ))}
-                </div>
+              <div className="shrink-0 flex items-center gap-2 flex-wrap">
+                <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">{t('evm.compatLabel')}</span>
+                {evmCompatChains.map(chain => (
+                  <span
+                    key={chain}
+                    className="px-2 py-0.5 rounded-full text-[11px] font-medium border"
+                    style={{ color: '#627EEA', borderColor: '#627EEA40', backgroundColor: '#627EEA12' }}
+                  >{chain}</span>
+                ))}
               </div>
             </div>
 
           </div>
+          <KeyPoint topic="evm" className="mt-3" />
         </div>
 
         {/* ═══════ S2-TRANSACTION ═══════ */}
@@ -850,6 +1004,7 @@ export function BP_Section2() {
             </div>
 
           </div>
+          <KeyPoint topic="transaction" className="mt-3" />
         </div>
 
         {/* ═══════ S2-GAS ═══════ */}
@@ -936,6 +1091,7 @@ export function BP_Section2() {
             </div>
 
           </div>
+          <KeyPoint topic="gas" hood="gas" className="mt-3" />
         </div>
 
         {/* ═══════ S2-EIP1559 ═══════ */}
@@ -1032,6 +1188,7 @@ export function BP_Section2() {
             </div>
 
           </div>
+          <KeyPoint topic="eip1559" className="mt-3" />
         </div>
 
         {/* ═══════ S2-SMARTCONTRACTS ═══════ */}
@@ -1127,6 +1284,7 @@ export function BP_Section2() {
             </div>
 
           </div>
+          <KeyPoint topic="smartContracts" hood="smartContracts" className="mt-3" />
         </div>
 
         {/* ═══════ S2-CONSENSUS ═══════ */}
@@ -1186,9 +1344,10 @@ export function BP_Section2() {
                         style={{ backgroundColor: color }}
                       >{i + 1}</div>
                       <div className="font-bold text-sm text-foreground">{step.label}</div>
+                      <span className="ml-auto text-xl leading-none">{consensusStepIcons[i]}</span>
                     </div>
-                    <div className="text-xs text-muted-foreground leading-relaxed flex-1">{step.detail}</div>
-                    <div className="text-[10px] font-mono px-2 py-1 rounded leading-snug shrink-0" style={{ backgroundColor: color + '15', color }}>
+                    <div className="text-sm lg:text-base text-foreground/90 leading-snug flex-1">{step.detail}</div>
+                    <div className="text-[11px] font-bold px-2 py-1 rounded leading-snug shrink-0" style={{ backgroundColor: color + '15', color }}>
                       {step.metric}
                     </div>
                   </motion.div>
@@ -1196,53 +1355,58 @@ export function BP_Section2() {
                 })}
               </div>
 
-              {/* Key numbers strip */}
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.65 }}
-                className="shrink-0 grid grid-cols-2 lg:grid-cols-4 gap-2 rounded-xl border border-border bg-card px-3 py-2.5"
-              >
-                {consensusStats.map((stat, i) => (
-                  <div key={i} className="flex flex-col items-center gap-0.5 text-center">
-                    <div className="text-base lg:text-lg font-black text-foreground leading-none">{stat.value}</div>
-                    <div className="text-[10px] text-muted-foreground uppercase tracking-wider leading-snug">{stat.label}</div>
-                  </div>
-                ))}
-              </motion.div>
-
-              {/* Slashing + Liquid Staking */}
-              <div className="shrink-0 grid grid-cols-1 lg:grid-cols-2 gap-3">
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.75 }}
-                  className="rounded-xl p-3 text-xs leading-relaxed flex items-start gap-2.5"
-                  style={{ backgroundColor: '#ef444412', border: '1px solid #ef444440' }}
-                >
-                  <span className="text-xl shrink-0 leading-none">⚔️</span>
-                  <div>
-                    <div className="font-bold mb-0.5" style={{ color: '#ef4444' }}>{t('consensus.slashingTitle')}</div>
-                    <div className="text-muted-foreground">{t('consensus.slashingBody')}</div>
-                  </div>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.85 }}
-                  className="rounded-xl p-3 text-xs leading-relaxed flex items-start gap-2.5"
-                  style={{ backgroundColor: '#06b6d412', border: '1px solid #06b6d440' }}
-                >
-                  <span className="text-xl shrink-0 leading-none">💧</span>
-                  <div>
-                    <div className="font-bold mb-0.5" style={{ color: '#06b6d4' }}>{t('consensus.liquidTitle')}</div>
-                    <div className="text-muted-foreground">{t('consensus.liquidBody')}</div>
-                  </div>
-                </motion.div>
-              </div>
+              <KeyPoint topic="consensus" hood="consensus" />
             </div>
 
           </div>
+        </div>
+
+        {/* ═══════ S2-STAKING — ETH's interest rate + the stake-and-exit simulator ═══════ */}
+        <div id="s2-staking" className="h-full flex flex-col p-5 lg:p-8">
+          <div className="shrink-0 mb-3">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('staking.heading')}</h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              {t('staking.subtitleA')}<span className="font-bold text-[#10b981]">{t('staking.subtitleRate')}</span>{t('staking.subtitleB')}<span className="font-bold text-[#ef4444]">{t('staking.subtitleSlash')}</span>{t('staking.subtitleC')}
+            </p>
+          </div>
+          <StakingSimulator />
+          <KeyPoint topic="staking" hood="staking" className="mt-3" />
+        </div>
+
+        {/* ═══════ S2-ISSUANCE — monetary policy: the supply curve ═══════ */}
+        <div id="s2-issuance" className="h-full flex flex-col p-5 lg:p-8">
+          <div className="shrink-0 mb-3">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('issuance.heading')}</h2>
+            <p className="text-sm text-muted-foreground mt-1 max-w-3xl">{t('issuance.subtitle')}</p>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[1fr_1.9fr] gap-4">
+            {/* Left — three facts + Bitcoin contrast */}
+            <div className="flex flex-col gap-2.5 min-h-0">
+              {issuanceFacts.map((f, i) => {
+                const meta = issuanceFactMeta[i];
+                return (
+                <div key={i} className="flex-1 min-h-0 rounded-xl border bg-card px-3 py-2.5 flex items-center gap-3" style={{ borderColor: meta.color + '50' }}>
+                  <span className="text-2xl shrink-0 leading-none">{meta.icon}</span>
+                  <div className="min-w-0">
+                    <div className="font-black text-sm" style={{ color: meta.color }}>{f.title}</div>
+                    <div className="text-xs text-muted-foreground leading-snug mt-0.5">{f.detail}</div>
+                  </div>
+                </div>
+                );
+              })}
+              <div className="shrink-0 rounded-xl border-2 px-3 py-2.5" style={{ borderColor: '#f7931a60', backgroundColor: '#f7931a10' }}>
+                <div className="text-[10px] font-black uppercase tracking-widest text-[#f7931a]">{t('issuance.btcLabel')}</div>
+                <div className="text-xs text-foreground leading-snug mt-0.5">{t('issuance.btcBody')}</div>
+              </div>
+            </div>
+
+            {/* Right — supply chart */}
+            <div className="flex flex-col min-h-0">
+              <SupplyChart />
+            </div>
+          </div>
+          <KeyPoint topic="issuance" hood="issuance" className="mt-3" />
         </div>
 
         {/* ═══════ S2-EVMECOSYSTEM ═══════ */}
@@ -1312,22 +1476,13 @@ export function BP_Section2() {
                 </div>
               </div>
 
-              {/* Bottom callout */}
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="shrink-0 rounded-xl p-3 text-xs font-medium text-center leading-relaxed"
-                style={{ backgroundColor: '#627EEA15', border: '1px solid #627EEA40', color: '#627EEA' }}
-              >
-                {t('evmEcosystem.callout')}
-              </motion.div>
             </div>
 
           </div>
+          <KeyPoint topic="evmEcosystem" className="mt-3" />
         </div>
 
-        {/* ═══════ S2-ROLLUPS ═══════ */}
+        {/* ═══════ S2-ROLLUPS — how a rollup works ═══════ */}
         <div id="s2-rollups" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-4">
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('rollups.heading')}</h2>
@@ -1336,163 +1491,144 @@ export function BP_Section2() {
             </p>
           </div>
 
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div className="flex-1 min-h-0 flex flex-col gap-4">
+            <h3 className="text-base font-bold text-foreground shrink-0">{t('rollups.howHeading')}</h3>
 
-            {/* Left — How a rollup works */}
-            <div className="flex flex-col gap-3 min-h-0">
-              <h3 className="text-base font-bold text-foreground shrink-0">{t('rollups.howHeading')}</h3>
-
-              <div className="flex-1 min-h-0 flex flex-col gap-2">
-                {rollupSteps.map((s, i) => {
-                  const color = rollupStepColors[i];
-                  return (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.08, duration: 0.3 }}
-                    className="flex-1 flex items-start gap-3 p-3 rounded-xl border bg-card"
-                    style={{ borderColor: color + '40' }}
-                  >
-                    <div
-                      className="size-8 rounded-lg flex items-center justify-center text-white font-black text-sm shrink-0"
-                      style={{ backgroundColor: color }}
-                    >{i + 1}</div>
-                    <div className="min-w-0">
-                      <div className="font-bold text-sm text-foreground">{s.label}</div>
-                      <div className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{s.detail}</div>
-                    </div>
-                  </motion.div>
-                  );
-                })}
-              </div>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="shrink-0 rounded-xl border border-[#627EEA]/30 px-3 py-2 text-[11px] text-center"
-                style={{ backgroundColor: '#627EEA12', color: '#627EEA' }}
-              >
-                <span className="font-bold">{t('rollups.securityNoteStrong')}</span>{t('rollups.securityNoteRest')}
-              </motion.div>
+            <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4 content-center">
+              {rollupSteps.map((s, i) => {
+                const color = rollupStepColors[i];
+                return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.08, duration: 0.3 }}
+                  className="flex items-start gap-4 p-5 rounded-xl border bg-card"
+                  style={{ borderColor: color + '40' }}
+                >
+                  <div
+                    className="size-10 rounded-lg flex items-center justify-center text-white font-black text-base shrink-0"
+                    style={{ backgroundColor: color }}
+                  >{i + 1}</div>
+                  <div className="min-w-0">
+                    <div className="font-bold text-base text-foreground">{s.label}</div>
+                    <div className="text-sm text-muted-foreground mt-1 leading-relaxed">{s.detail}</div>
+                  </div>
+                </motion.div>
+                );
+              })}
             </div>
 
-            {/* Right — Optimistic vs ZK + Tradeoffs */}
-            <div className="flex flex-col gap-3 min-h-0">
-              <h3 className="text-base font-bold text-foreground shrink-0">{t('rollups.flavorsHeading')}</h3>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="shrink-0 rounded-xl border border-[#627EEA]/30 px-4 py-2.5 text-xs text-center"
+              style={{ backgroundColor: '#627EEA12', color: '#627EEA' }}
+            >
+              <span className="font-bold">{t('rollups.securityNoteStrong')}</span>{t('rollups.securityNoteRest')}
+            </motion.div>
+          </div>
+          <KeyPoint topic="rollups" className="mt-3" />
+        </div>
 
-              <div className="grid grid-cols-2 gap-3 shrink-0">
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 }}
-                  className="rounded-xl border-2 border-[#FF0420]/40 bg-[#FF0420]/05 p-3"
-                  style={{ backgroundColor: '#FF042010' }}
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-lg">🤝</span>
-                    <div className="font-black text-sm text-[#FF0420]">{t('rollups.optimisticTitle')}</div>
-                  </div>
-                  <ul className="text-[11px] text-muted-foreground space-y-1 leading-relaxed">
-                    {rollupOptimistic.map((b, i) => (
-                      <li key={i}>
-                        {b.text ?? <>
-                          {b.pre}
-                          {b.strong && <span className="text-foreground font-semibold">{b.strong}</span>}
-                          {b.code && <span className="font-mono font-bold text-foreground">{b.code}</span>}
-                          {b.rest}{b.post}
-                        </>}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-2 pt-2 border-t border-border text-[10px] text-muted-foreground">
-                    <span className="font-bold text-foreground">{t('rollups.optimisticLiveLabel')}</span>{t('rollups.optimisticLive')}
-                  </div>
-                </motion.div>
+        {/* ═══════ S2-ROLLUPS-2 — optimistic vs ZK, L1 vs L2 for users ═══════ */}
+        <div id="s2-rollups-2" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('rollups2.heading')}</h2>
+            <p className="text-sm text-muted-foreground mt-1">{t('rollups2.subtitle')}</p>
+          </div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.25 }}
-                  className="rounded-xl border-2 border-[#8C8DFC]/40 bg-[#8C8DFC]/05 p-3"
-                  style={{ backgroundColor: '#8C8DFC10' }}
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-lg">🔐</span>
-                    <div className="font-black text-sm text-[#8C8DFC]">{t('rollups.zkTitle')}</div>
-                  </div>
-                  <ul className="text-[11px] text-muted-foreground space-y-1 leading-relaxed">
-                    {rollupZk.map((b, i) => (
-                      <li key={i}>
-                        {b.text ?? <>
-                          {b.pre}
-                          {b.strong && <span className="text-foreground font-semibold">{b.strong}</span>}
-                          {b.code && <span className="font-mono font-bold text-foreground">{b.code}</span>}
-                          {b.rest}{b.post}
-                        </>}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-2 pt-2 border-t border-border text-[10px] text-muted-foreground">
-                    <span className="font-bold text-foreground">{t('rollups.zkLiveLabel')}</span>{t('rollups.zkLive')}
-                  </div>
-                </motion.div>
-              </div>
-
-              {/* L1 vs L2 metrics */}
+          <div className="flex-1 min-h-0 flex flex-col justify-center gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 shrink-0">
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35 }}
-                className="rounded-xl border border-border bg-card p-3 flex-1 min-h-0 flex flex-col"
+                transition={{ delay: 0.15 }}
+                className="rounded-xl border-2 border-[#FF0420]/40 p-4"
+                style={{ backgroundColor: '#FF042010' }}
               >
-                <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">{t('rollups.metricsLabel')}</div>
-                <div className="grid grid-cols-3 gap-2 text-center text-[11px] flex-1">
-                  {rollupMetrics.map((m, i) => (
-                    <div key={i} className="rounded-lg bg-muted/40 border border-border p-2 flex flex-col justify-center">
-                      <div className="text-muted-foreground text-[10px]">{m.label}</div>
-                      <div className="font-bold text-foreground">{m.l1}</div>
-                      <div className="text-[#10b981] font-mono">{m.l2}</div>
-                    </div>
+                <div className="font-black text-base text-[#FF0420] mb-2">{t('rollups.optimisticTitle')}</div>
+                <ul className="text-sm text-muted-foreground space-y-1.5 leading-relaxed">
+                  {rollupOptimistic.map((b, i) => (
+                    <li key={i}>
+                      {b.text ?? <>
+                        {b.pre}
+                        {b.strong && <span className="text-foreground font-semibold">{b.strong}</span>}
+                        {b.code && <span className="font-mono font-bold text-foreground">{b.code}</span>}
+                        {b.rest}{b.post}
+                      </>}
+                    </li>
                   ))}
+                </ul>
+                <div className="mt-3 pt-2 border-t border-border text-xs text-muted-foreground">
+                  <span className="font-bold text-foreground">{t('rollups.optimisticLiveLabel')}</span>{t('rollups.optimisticLive')}
                 </div>
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="shrink-0 rounded-xl border border-[#f59e0b]/30 px-3 py-2 text-[11px] leading-relaxed"
-                style={{ backgroundColor: '#f59e0b12', color: 'var(--muted-foreground)' }}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                className="rounded-xl border-2 border-[#8C8DFC]/40 p-4"
+                style={{ backgroundColor: '#8C8DFC10' }}
               >
-                <span className="font-bold text-[#f59e0b]">{t('rollups.eip4844Label')}</span>
-                {t('rollups.eip4844A')}<span className="font-mono text-foreground">{t('rollups.eip4844Code')}</span>{t('rollups.eip4844B')}
+                <div className="font-black text-base text-[#8C8DFC] mb-2">{t('rollups.zkTitle')}</div>
+                <ul className="text-sm text-muted-foreground space-y-1.5 leading-relaxed">
+                  {rollupZk.map((b, i) => (
+                    <li key={i}>
+                      {b.text ?? <>
+                        {b.pre}
+                        {b.strong && <span className="text-foreground font-semibold">{b.strong}</span>}
+                        {b.code && <span className="font-mono font-bold text-foreground">{b.code}</span>}
+                        {b.rest}{b.post}
+                      </>}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-3 pt-2 border-t border-border text-xs text-muted-foreground">
+                  <span className="font-bold text-foreground">{t('rollups.zkLiveLabel')}</span>{t('rollups.zkLive')}
+                </div>
               </motion.div>
             </div>
 
-          </div>
-        </div>
+            {/* L1 vs L2 metrics */}
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 }}
+              className="rounded-xl border border-border bg-card p-4 shrink-0"
+            >
+              <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">{t('rollups.metricsLabel')}</div>
+              <div className="grid grid-cols-3 gap-3 text-center">
+                {rollupMetrics.map((m, i) => (
+                  <div key={i} className="rounded-lg bg-muted/40 border border-border px-3 py-4 flex flex-col justify-center gap-1">
+                    <div className="text-muted-foreground text-xs">{m.label}</div>
+                    <div className="font-bold text-foreground text-base">{m.l1}</div>
+                    <div className="text-[#10b981] font-mono text-sm">{m.l2}</div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
 
-        {/* ═══════ S2-ROLLUPS ANIMATION — animated L1 ↔ L2 flow ═══════ */}
-        <div id="s2-rollups-anim" className="h-full flex flex-col p-5 lg:p-8">
-          <div className="shrink-0 mb-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#8b5cf6]/15 border border-[#8b5cf6]/40 text-[#8b5cf6] text-xs font-bold">{t('rollupsAnimSlide.badge')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('rollupsAnimSlide.heading')}</h2>
-            <p className="text-sm text-muted-foreground max-w-3xl">
-              {t('rollupsAnimSlide.subtitle')}
-            </p>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="shrink-0 rounded-xl border border-[#f59e0b]/30 px-4 py-2.5 text-xs leading-relaxed"
+              style={{ backgroundColor: '#f59e0b12', color: 'var(--muted-foreground)' }}
+            >
+              <span className="font-bold text-[#f59e0b]">{t('rollups.eip4844Label')}</span>
+              {t('rollups.eip4844A')}<span className="font-mono text-foreground">{t('rollups.eip4844Code')}</span>{t('rollups.eip4844B')}
+            </motion.div>
           </div>
-          <div className="flex-1 min-h-0">
-            <RollupsL1L2Animation />
-          </div>
+          <KeyPoint topic="rollups2" className="mt-3" />
         </div>
 
         {/* ═══════ DEFI MECHANICS ═══════ */}
         <div id="s2-defi" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-4">
-            <span className="text-xs font-black uppercase tracking-widest text-[#627EEA]">{t('defi.sectionLabel')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1 mb-1">{t('defi.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{t('defi.heading')}</h2>
             <p className="text-sm text-muted-foreground">
               {t('defi.subtitleA')}
               <span className="text-[#627EEA] font-semibold">{t('defi.subtitleHighlight')}</span>
@@ -1623,33 +1759,17 @@ export function BP_Section2() {
 
           </div>
 
-          {/* Bottom hook */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="shrink-0 mt-4 rounded-xl border border-[#627EEA]/30 bg-[#627EEA]/08 px-4 py-2.5 text-xs text-center text-muted-foreground"
-            style={{ backgroundColor: '#627EEA0F' }}
-          >
-            {t('defi.hook')}
-          </motion.div>
+          <KeyPoint topic="defi" hood="defi" className="mt-2" />
         </div>
 
         {/* ═══════ STABLECOINS ═══════ */}
         <div id="s2-stablecoins" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-3">
+          <div className="shrink-0 mb-4">
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('stablecoins.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1">{t('stablecoins.subtitle')}</p>
           </div>
 
-          <div className="shrink-0 mb-4 rounded-xl border p-3" style={{ borderColor: '#10b98155', backgroundColor: '#10b9810d' }}>
-            <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#10b981' }}>{t('stablecoins.whatLabel')}</p>
-            <p className="text-sm text-foreground mt-0.5 leading-snug">
-              {t('stablecoins.whatBodyA')}<span className="font-semibold">{t('stablecoins.whatBodyStrong')}</span>{t('stablecoins.whatBodyB')}
-            </p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-3">
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
             {stablecoinCards.map((s, ci) => {
               const meta = stablecoinCardMeta[ci];
               return (
@@ -1657,194 +1777,124 @@ export function BP_Section2() {
                 key={ci}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="rounded-xl border-2 p-3 flex flex-col gap-2 min-h-0"
+                transition={{ duration: 0.3, delay: ci * 0.1 }}
+                className="rounded-xl border-2 p-4 flex flex-col gap-3 min-h-0"
                 style={{ borderColor: meta.color + '50', backgroundColor: meta.color + '08' }}
               >
-                <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-xl shrink-0 leading-none">{meta.icon}</span>
+                <div className="flex items-center gap-3 shrink-0">
+                  <span className="text-3xl shrink-0 leading-none">{meta.icon}</span>
                   <div className="min-w-0">
-                    <div className="font-black text-sm leading-tight" style={{ color: meta.color }}>{s.title}</div>
-                    <div className="text-[10px] text-muted-foreground leading-tight">{s.sub}</div>
+                    <div className="font-black text-base leading-tight" style={{ color: meta.color }}>{s.title}</div>
+                    <div className="text-[11px] text-muted-foreground leading-tight">{s.sub}</div>
                   </div>
                 </div>
-                {/* Logo strip — branded badges per token in this category */}
-                <div className="flex flex-wrap gap-1.5 shrink-0">
+                {/* Logo strip — the visual: who's in this category */}
+                <div className="flex flex-wrap gap-2 shrink-0">
                   {s.logos.map((l, li) => {
                     const logoColor = meta.logoColors[li];
                     return (
                     <div
                       key={l.sym}
-                      className="flex items-center gap-1.5 rounded-md border bg-card px-1.5 py-1"
+                      className="flex items-center gap-1.5 rounded-md border bg-card px-2 py-1"
                       style={{ borderColor: logoColor + '55' }}
-                      title={`${l.sym} · ${l.tag}`}
                     >
                       <div
-                        className="size-5 rounded-full flex items-center justify-center text-[7px] font-black text-white shrink-0"
+                        className="size-6 rounded-full flex items-center justify-center text-[8px] font-black text-white shrink-0"
                         style={{ background: logoColor }}
                       >$</div>
                       <div className="flex flex-col leading-none">
-                        <span className="text-[10px] font-black" style={{ color: logoColor }}>{l.sym}</span>
-                        <span className="text-[8px] text-muted-foreground">{l.tag}</span>
+                        <span className="text-[11px] font-black" style={{ color: logoColor }}>{l.sym}</span>
+                        <span className="text-[9px] text-muted-foreground">{l.tag}</span>
                       </div>
                     </div>
                     );
                   })}
                 </div>
-                <div className="rounded-lg border bg-card/60 px-2 py-1.5" style={{ borderColor: meta.color + '30' }}>
+                <div className="rounded-lg border bg-card/60 px-3 py-2.5" style={{ borderColor: meta.color + '30' }}>
                   <div className="text-[9px] font-bold uppercase tracking-wider" style={{ color: meta.color }}>{t('stablecoins.mechanismLabel')}</div>
-                  <div className="text-[10px] text-muted-foreground leading-snug mt-0.5">{s.mechanism}</div>
+                  <div className="text-sm text-foreground leading-snug mt-0.5">{s.mechanism}</div>
                 </div>
-                <div className="rounded-lg border bg-card/60 px-2 py-1.5 flex-1 min-h-0" style={{ borderColor: meta.color + '30' }}>
-                  <div className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground">{t('stablecoins.examplesLabel')}</div>
-                  <div className="text-[10px] text-muted-foreground leading-snug mt-0.5">{s.examples}</div>
-                </div>
-                <div className="rounded-lg p-2 border-l-2" style={{ borderColor: '#ED1C24', backgroundColor: '#ED1C2410' }}>
+                <div className="mt-auto rounded-lg p-3 border-l-2" style={{ borderColor: '#ED1C24', backgroundColor: '#ED1C2410' }}>
                   <div className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#ED1C24' }}>{t('stablecoins.breakLabel')}</div>
-                  <div className="text-[10px] text-muted-foreground leading-snug mt-0.5">{s.risk}</div>
+                  <div className="text-sm text-muted-foreground leading-snug mt-0.5">{s.risk}</div>
                 </div>
               </motion.div>
               );
             })}
           </div>
 
-          {/* Market scale + regulation strip */}
-          <div className="shrink-0 mt-3 grid grid-cols-1 lg:grid-cols-2 gap-2">
-            <div className="rounded-xl border p-2.5" style={{ borderColor: '#10b98155', backgroundColor: '#10b9810d' }}>
-              <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#10b981' }}>{t('stablecoins.scaleLabel')}</p>
-              <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">
-                {t('stablecoins.scaleBodyA')}<span className="font-semibold text-foreground">{t('stablecoins.scaleBodyStrong')}</span>{t('stablecoins.scaleBodyB')}
-              </p>
-            </div>
-            <div className="rounded-xl border p-2.5" style={{ borderColor: '#f59e0b55', backgroundColor: '#f59e0b0d' }}>
-              <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#f59e0b' }}>{t('stablecoins.regLabel')}</p>
-              <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">
-                {t('stablecoins.regBody')}
-              </p>
-            </div>
-          </div>
+          {/* Scale + regulation as three stat tiles */}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="shrink-0 mt-4 grid grid-cols-3 gap-2 rounded-xl border border-border bg-card px-3 py-2.5"
+          >
+            {stablecoinStats.map((stat, i) => (
+              <div key={i} className="flex flex-col items-center gap-0.5 text-center">
+                <div className="text-base lg:text-lg font-black text-foreground leading-none">{stat.value}</div>
+                <div className="text-[10px] text-muted-foreground uppercase tracking-wider leading-snug">{stat.label}</div>
+              </div>
+            ))}
+          </motion.div>
+          <KeyPoint topic="stablecoins" hood="stablecoins" className="mt-2" />
         </div>
 
         {/* ═══════ APPS — Beyond DeFi (1/2) ═══════ */}
-        <div id="s2-apps" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-3">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('apps1.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('apps1.subtitle')}</p>
-          </div>
-
-          <div className="shrink-0 mb-4 rounded-xl border p-3" style={{ borderColor: '#627EEA55', backgroundColor: '#627EEA0d' }}>
-            <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#627EEA' }}>{t('apps1.standardsLabel')}</p>
-            <p className="text-sm text-foreground mt-0.5 leading-snug">
-              {t('apps1.standardsA')}<span className="font-semibold">{t('apps1.standardsErc20')}</span>{t('apps1.standardsB')}<span className="font-semibold">{t('apps1.standardsErc721')}</span>{t('apps1.standardsC')}<span className="font-semibold">{t('apps1.standardsErc1155')}</span>{t('apps1.standardsD')}
-            </p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {apps1Cards.map((app, ci) => {
-              const meta = apps1CardMeta[ci];
-              return (
-              <motion.div
-                key={ci}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="rounded-xl border-2 p-4 flex flex-col gap-3 min-h-0"
-                style={{ borderColor: meta.color + '50', backgroundColor: meta.color + '08' }}
-              >
-                <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-2xl shrink-0 leading-none">{meta.icon}</span>
-                  <div className="min-w-0">
-                    <div className="font-black text-base leading-tight" style={{ color: meta.color }}>{app.title}</div>
-                    <div className="text-xs text-muted-foreground leading-tight">{app.sub}</div>
-                  </div>
-                </div>
-                <p className="text-sm text-muted-foreground leading-snug">{app.what}</p>
-                {/* Project badges — replace the empty visual area with real names */}
-                <div className="flex flex-wrap gap-1.5 flex-1 content-start">
-                  {app.projects.map(p => (
-                    <div
-                      key={p.sym}
-                      className="rounded-md border bg-card px-2 py-1 flex flex-col leading-tight"
-                      style={{ borderColor: meta.color + '55' }}
-                    >
-                      <span className="text-[11px] font-bold text-foreground">{p.sym}</span>
-                      <span className="text-[9px] text-muted-foreground">{p.tag}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="rounded-lg border bg-card/60 px-3 py-1.5 text-xs leading-snug" style={{ borderColor: meta.color + '40' }}>
-                  <span className="font-bold" style={{ color: meta.color }}>{t('apps1.moreExamplesLabel')}</span>
-                  <span className="text-muted-foreground">{app.examples}</span>
-                </div>
-                <div className="rounded-lg border bg-card/60 px-3 py-1.5 text-xs leading-snug" style={{ borderColor: '#ED1C2440' }}>
-                  <span className="font-bold" style={{ color: '#ED1C24' }}>{t('apps1.limitLabel')}</span>
-                  <span className="text-muted-foreground">{app.limit}</span>
-                </div>
-              </motion.div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ═══════ APPS — Beyond DeFi (2/2) ═══════ */}
-        <div id="s2-apps-2" className="h-full flex flex-col p-6 lg:p-10">
+        {[
+          { id: 's2-apps', ns: 'apps1', cards: apps1Cards, meta: apps1CardMeta },
+          { id: 's2-apps-2', ns: 'apps2', cards: apps2Cards, meta: apps2CardMeta },
+        ].map(slide => (
+        <div key={slide.id} id={slide.id} className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-4">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('apps2.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('apps2.subtitle')}</p>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t(`${slide.ns}.heading`)}</h2>
+            <p className="text-sm text-muted-foreground mt-1">{t(`${slide.ns}.subtitle`)}</p>
           </div>
 
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {apps2Cards.map((app, ci) => {
-              const meta = apps2CardMeta[ci];
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-5">
+            {slide.cards.map((app, ci) => {
+              const meta = slide.meta[ci];
               return (
               <motion.div
                 key={ci}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="rounded-xl border-2 p-4 flex flex-col gap-3 min-h-0"
+                transition={{ duration: 0.3, delay: ci * 0.1 }}
+                className="rounded-xl border-2 p-5 flex flex-col gap-4 min-h-0"
                 style={{ borderColor: meta.color + '50', backgroundColor: meta.color + '08' }}
               >
-                <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-2xl shrink-0 leading-none">{meta.icon}</span>
+                <div className="flex items-center gap-3 shrink-0">
+                  <span className="text-3xl shrink-0 leading-none">{meta.icon}</span>
                   <div className="min-w-0">
-                    <div className="font-black text-base leading-tight" style={{ color: meta.color }}>{app.title}</div>
+                    <div className="font-black text-lg leading-tight" style={{ color: meta.color }}>{app.title}</div>
                     <div className="text-xs text-muted-foreground leading-tight">{app.sub}</div>
                   </div>
                 </div>
-                <p className="text-sm text-muted-foreground leading-snug">{app.what}</p>
-                <div className="flex flex-wrap gap-1.5 flex-1 content-start">
+                <p className="text-base text-foreground leading-snug">{app.what}</p>
+                {/* Project badges — the visual: who's building here */}
+                <div className="flex flex-wrap gap-2.5 flex-1 content-start">
                   {app.projects.map(p => (
                     <div
                       key={p.sym}
-                      className="rounded-md border bg-card px-2 py-1 flex flex-col leading-tight"
+                      className="rounded-lg border bg-card px-3 py-2 flex flex-col leading-tight"
                       style={{ borderColor: meta.color + '55' }}
                     >
-                      <span className="text-[11px] font-bold text-foreground">{p.sym}</span>
-                      <span className="text-[9px] text-muted-foreground">{p.tag}</span>
+                      <span className="text-sm font-bold text-foreground">{p.sym}</span>
+                      <span className="text-[11px] text-muted-foreground">{p.tag}</span>
                     </div>
                   ))}
                 </div>
-                <div className="rounded-lg border bg-card/60 px-3 py-1.5 text-xs leading-snug" style={{ borderColor: meta.color + '40' }}>
-                  <span className="font-bold" style={{ color: meta.color }}>{t('apps2.moreExamplesLabel')}</span>
-                  <span className="text-muted-foreground">{app.examples}</span>
-                </div>
-                <div className="rounded-lg border bg-card/60 px-3 py-1.5 text-xs leading-snug" style={{ borderColor: '#ED1C2440' }}>
-                  <span className="font-bold" style={{ color: '#ED1C24' }}>{t('apps2.limitLabel')}</span>
+                <div className="rounded-lg border-l-2 px-3 py-2.5 text-sm leading-snug" style={{ borderColor: '#ED1C24', backgroundColor: '#ED1C2410' }}>
+                  <span className="font-bold" style={{ color: '#ED1C24' }}>{t(`${slide.ns}.limitLabel`)}</span>
                   <span className="text-muted-foreground">{app.limit}</span>
                 </div>
               </motion.div>
               );
             })}
           </div>
-
-          <div className="shrink-0 mt-4 rounded-xl border p-3" style={{ borderColor: '#627EEA55', backgroundColor: '#627EEA0d' }}>
-            <p className="text-sm text-muted-foreground leading-snug">
-              <span className="font-bold" style={{ color: '#627EEA' }}>{t('apps2.uriLabel')}</span>
-              {t('apps2.uriBody')}
-            </p>
-          </div>
+          <KeyPoint topic={slide.ns} hood="apps" className="mt-3" />
         </div>
+        ))}
 
         {/* ═══════ S2-COMPARISON ═══════ */}
         <div id="s2-comparison" className="h-full">
@@ -1854,14 +1904,14 @@ export function BP_Section2() {
             option1Label={t('comparison.option1Label')}
             option2Label={t('comparison.option2Label')}
             items={comparisonItems}
+            footer={<KeyPoint topic="comparison" />}
           />
         </div>
 
         {/* ═══════ BEST FITS — WHERE ETHEREUM WINS ═══════ */}
         <div id="s2-bestfits" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#627EEA]/15 border border-[#627EEA]/40 text-[#627EEA] text-xs font-bold">{t('bestFits.badge')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('bestFits.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('bestFits.heading')}</h2>
             <p className="text-sm text-muted-foreground max-w-3xl">
               {t('bestFits.subtitleA')}<strong className="text-foreground">{t('bestFits.subtitleStrong')}</strong>{t('bestFits.subtitleB')}
             </p>
@@ -1884,16 +1934,13 @@ export function BP_Section2() {
               </div>
             ))}
           </div>
-          <div className="shrink-0 mt-3 p-2.5 bg-[#ef4444]/08 border border-[#ef4444]/30 rounded-lg text-[11px] text-muted-foreground">
-            <strong className="text-[#ef4444]">{t('bestFits.notFitLabel')}</strong>{t('bestFits.notFitBody')}
-          </div>
+          <KeyPoint topic="bestFits" className="mt-2" />
         </div>
 
         {/* ═══════ WORST FITS — WHERE ETHEREUM IS WRONG ═══════ */}
         <div id="s2-worstfits" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#ef4444]/15 border border-[#ef4444]/40 text-[#ef4444] text-xs font-bold">{t('worstFits.badge')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('worstFits.headingA')}<em>{t('worstFits.headingEm')}</em>{t('worstFits.headingB')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('worstFits.headingA')}<em>{t('worstFits.headingEm')}</em>{t('worstFits.headingB')}</h2>
             <p className="text-sm text-muted-foreground max-w-3xl">
               {t('worstFits.subtitle')}
             </p>
@@ -1916,9 +1963,7 @@ export function BP_Section2() {
               </div>
             ))}
           </div>
-          <div className="shrink-0 mt-3 p-2.5 bg-[#10b981]/08 border border-[#10b981]/30 rounded-lg text-[11px] text-muted-foreground">
-            <strong className="text-[#10b981]">{t('worstFits.rightToolLabel')}</strong>{t('worstFits.rightToolBody')}
-          </div>
+          <KeyPoint topic="worstFits" className="mt-3" />
         </div>
 
         {/* ═══════ QUIZ ═══════ */}
@@ -1936,15 +1981,6 @@ export function BP_Section2() {
             question={t('quiz2.question')}
             options={quiz2Options}
             explanation={t('quiz2.explanation')}
-          />
-        </div>
-
-        {/* ═══════ QUIZ 3 — Contract deployment address ═══════ */}
-        <div id="s2-quiz-3" className="h-full">
-          <QuizSlide
-            question={t('quiz3.question')}
-            options={quiz3Options}
-            explanation={t('quiz3.explanation')}
           />
         </div>
 
