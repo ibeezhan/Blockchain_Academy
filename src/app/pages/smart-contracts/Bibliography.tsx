@@ -56,6 +56,35 @@ const resources: Resource[] = [
     tag: "Deep Dive",
     tagColor: "#f59e0b",
   },
+  // DAOs & NFT utility
+  {
+    title: "Moving beyond coin voting governance — Vitalik Buterin (2021)",
+    url: "https://vitalik.eth.limo/general/2021/08/16/voting3.html",
+    description: "Why token-weighted voting tends toward plutocracy and vote-buying, and what alternatives (quadratic voting, reputation, limited governance) look like. The best short read on DAO structure.",
+    tag: "Deep Dive",
+    tagColor: "#f59e0b",
+  },
+  {
+    title: "Quadratic Funding explained — Gitcoin / WTF is QF",
+    url: "https://wtfisqf.com/",
+    description: "Interactive explainer of quadratic funding: why many small donations attract more matching than one large one, and why Sybil resistance is the hard part.",
+    tag: "Deep Dive",
+    tagColor: "#f59e0b",
+  },
+  {
+    title: "Governor contracts — OpenZeppelin Docs",
+    url: "https://docs.openzeppelin.com/contracts/governance",
+    description: "The standard on-chain DAO stack: Governor (proposals, votes, quorum), votes tokens, and TimelockController. Read to see how the building blocks in Section 3 are wired in code.",
+    tag: "Deep Dive",
+    tagColor: "#f59e0b",
+  },
+  {
+    title: "Crypto Crime Report — NFT wash trading — Chainalysis (2022)",
+    url: "https://www.chainalysis.com/blog/2022-crypto-crime-report-preview-nft-wash-trading-money-laundering/",
+    description: "On-chain analysis of self-trading on NFT marketplaces. Context for why reported NFT volumes should be read sceptically.",
+    tag: "Deep Dive",
+    tagColor: "#f59e0b",
+  },
   {
     title: "Ethereum EIPs — Improvement Proposals",
     url: "https://eips.ethereum.org/",

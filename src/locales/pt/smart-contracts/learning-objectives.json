@@ -32,8 +32,8 @@
       "description": "Navegar pelas normas ERC, o processo EIP, frameworks (Hardhat / Foundry), comparação de 17 plataformas, padrões de integração e onde se enquadram as ferramentas de IA no desenvolvimento de smart contracts."
     },
     "design": {
-      "title": "Desenho de Aplicações Empresariais",
-      "description": "Aplicar o conhecimento do curso para desenhar uma solução com smart contracts: mapear stakeholders, identificar casos de uso, ponderar compromissos e apresentar um caso de negócio à turma."
+      "title": "Business Judgement (in-class assignment)",
+      "description": "In a small group, take a real problem through the course's critical lens and argue in one page whether it deserves a blockchain — problem, proposed solution, pros & cons."
     }
   }
 }

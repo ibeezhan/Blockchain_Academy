@@ -6,7 +6,9 @@ import { TakeawaySlide } from '../../components/templates/TakeawaySlide';
 import { QuizSlide } from '../../components/templates/QuizSlide';
 import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
-import { ShieldAlert } from 'lucide-react';
+import { UnderTheHood } from '../../components/shared/UnderTheHood';
+import { KeyPointBar } from '../../components/shared/KeyPointBar';
+import { ShieldAlert, KeyRound, ArrowRight, ArrowDown } from 'lucide-react';
 
 // Language-neutral shape — only IDs. Labels come from t() at render time.
 const chapterIds = [
@@ -15,11 +17,12 @@ const chapterIds = [
   's5-technical',
   's5-ex-oracle',
   's5-risks-security',
+  's5-admin-key',
+  's5-failures',
   's5-risks-cost',
   's5-risks-regulatory',
   's5-quiz',
   's5-takeaways',
-  's5-summary',
 ] as const;
 
 // ─── Exercise: Oracle Attack Scenario ───────────────────────────────────────
@@ -63,10 +66,23 @@ interface SecurityItem {
   stat: string;
 }
 
-interface SummaryCard {
-  title: string;
-  summary: string;
+interface FailureItem {
+  name: string;
+  date: string;
+  loss: string;
+  category: string;
+  what: string;
+  lesson: string;
 }
+
+const FAILURE_META = [
+  { emoji: '🔑', color: '#ED1C24' },
+  { emoji: '🗳️', color: '#8b5cf6' },
+  { emoji: '📡', color: '#f59e0b' },
+  { emoji: '🐛', color: '#6366f1' },
+  { emoji: '🧊', color: '#22d3ee' },
+  { emoji: '📉', color: '#7c2d12' },
+];
 
 function OracleAttackExercise() {
   const { t } = useTranslation('smart-contracts/section-5');
@@ -196,6 +212,8 @@ export function SC_Section5() {
     { emoji: '💸', color: '#ED1C24' },
   ];
 
+  const failureItems = t('failures.items', { returnObjects: true }) as FailureItem[];
+
   const costItems = t('cost.items', { returnObjects: true }) as WhyFixItem[];
   const costMeta = [
     { emoji: '🧱', color: '#ED1C24' },
@@ -217,8 +235,7 @@ export function SC_Section5() {
 
   const takeawayItems = t('takeaways.items', { returnObjects: true }) as string[];
 
-  const summaryCards = t('summary.cards', { returnObjects: true }) as SummaryCard[];
-  const summaryIcons = ['🔒', '🔮', '⛽', '⚖️', '💸', '🛡️'];
+  const adminPoints = t('adminKey.points', { returnObjects: true }) as { title: string; desc: string }[];
 
   return (
     <div className="h-full w-full flex overflow-hidden">
@@ -289,6 +306,8 @@ export function SC_Section5() {
               </div>
             </div>
           </div>
+          <UnderTheHood terms={['data feed', 'TWAP', 'signed report', 'VRF (randomness)']} className="shrink-0 mt-3" />
+          <KeyPointBar text={t('keyPoints.s5-oracle')} className="mt-3" />
         </div>
 
         {/* ═══════ CHALLENGES & LIMITATIONS ═══════ */}
@@ -331,6 +350,7 @@ export function SC_Section5() {
               );
             })}
           </div>
+          <KeyPointBar text={t('keyPoints.s5-challenges')} className="mt-3" />
         </div>
 
         {/* ═══════ TECHNICAL CHALLENGES ═══════ */}
@@ -373,11 +393,15 @@ export function SC_Section5() {
               );
             })}
           </div>
+          <KeyPointBar text={t('keyPoints.s5-technical')} className="mt-3" />
         </div>
 
         {/* ═══════ EXERCISE: ORACLE ATTACK ═══════ */}
-        <div id="s5-ex-oracle" className="h-full">
-          <OracleAttackExercise />
+        <div id="s5-ex-oracle" className="h-full flex flex-col">
+          <div className="flex-1 min-h-0">
+            <OracleAttackExercise />
+          </div>
+          <KeyPointBar text={t('keyPoints.s5-ex-oracle')} className="mx-6 lg:mx-8 mb-6 -mt-3" />
         </div>
 
         {/* ═══════ SECURITY RISKS ═══════ */}
@@ -414,6 +438,112 @@ export function SC_Section5() {
               );
             })}
           </div>
+          <KeyPointBar text={t('keyPoints.s5-risks-security')} className="mt-3" />
+        </div>
+
+        {/* ═══════ ADMIN KEYS & UPGRADEABLE PROXIES ═══════ */}
+        <div id="s5-admin-key" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-5">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('adminKey.heading')}</h2>
+            <p className="text-muted-foreground text-sm mt-1">{t('adminKey.subtitle')}</p>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-5 gap-6 content-center">
+
+            {/* Diagram: admin key → proxy → swappable logic */}
+            <div className="col-span-3 flex flex-col gap-3 justify-center">
+              <div className="flex justify-center">
+                <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl border-2 border-dashed border-[#f59e0b] bg-[#f59e0b]/10">
+                  <KeyRound className="size-5 text-[#f59e0b] shrink-0" />
+                  <div>
+                    <div className="font-black text-sm text-foreground leading-tight">{t('adminKey.diagram.admin')}</div>
+                    <div className="text-xs text-muted-foreground">{t('adminKey.diagram.adminNote')}</div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-center"><ArrowDown className="size-5 text-[#f59e0b]" /></div>
+              <div className="flex items-stretch gap-3">
+                <div className="flex-1 flex flex-col justify-center p-4 rounded-xl border border-border bg-card text-center">
+                  <div className="font-black text-sm text-foreground">{t('adminKey.diagram.user')}</div>
+                  <div className="text-xs text-muted-foreground mt-1">{t('adminKey.diagram.userNote')}</div>
+                </div>
+                <ArrowRight className="size-5 text-muted-foreground self-center shrink-0" />
+                <div className="flex-[1.4] flex flex-col justify-center p-4 rounded-xl border-2 border-[#6366f1] text-center" style={{ backgroundColor: '#6366f10d' }}>
+                  <div className="font-black text-sm text-[#6366f1]">{t('adminKey.diagram.proxy')}</div>
+                  <div className="text-xs text-muted-foreground mt-1">{t('adminKey.diagram.proxyNote')}</div>
+                </div>
+                <ArrowRight className="size-5 text-muted-foreground self-center shrink-0" />
+                <div className="flex-1 flex flex-col gap-2 justify-center">
+                  <div className="p-3 rounded-xl border border-border bg-muted/40 text-center text-sm font-bold text-muted-foreground line-through">{t('adminKey.diagram.logicOld')}</div>
+                  <div className="p-3 rounded-xl border-2 border-[#39B54A] text-center text-sm font-black text-foreground" style={{ backgroundColor: '#39B54A14' }}>{t('adminKey.diagram.logicNew')}</div>
+                  <div className="text-xs text-muted-foreground text-center">{t('adminKey.diagram.logicNote')}</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Three plain points */}
+            <div className="col-span-2 flex flex-col gap-3 justify-center">
+              {adminPoints.map((p) => (
+                <div key={p.title} className="p-3 bg-card border border-border rounded-xl">
+                  <div className="font-bold text-sm text-foreground">{p.title}</div>
+                  <div className="text-xs text-muted-foreground mt-1 leading-snug">{p.desc}</div>
+                </div>
+              ))}
+              <div className="p-3 rounded-xl border border-[#f59e0b]/30 text-xs text-muted-foreground" style={{ backgroundColor: '#f59e0b0f' }}>
+                <span className="font-bold text-[#f59e0b]">{t('adminKey.askLabel')}</span>{t('adminKey.askBody')}
+              </div>
+            </div>
+
+          </div>
+          <UnderTheHood terms={['proxy pattern', 'delegatecall', 'timelock', 'multisig', 'renounceOwnership']} className="shrink-0 mt-3" />
+          <KeyPointBar text={t('keyPoints.s5-admin-key')} className="mt-3" />
+        </div>
+
+        {/* ═══════ FAILURES GALLERY ═══════ */}
+        <div id="s5-failures" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('failures.heading')}</h2>
+            <p className="text-muted-foreground text-sm mt-1">{t('failures.subtitle')}</p>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-3 grid-rows-2 gap-3">
+            {failureItems.map((f, i) => {
+              const m = FAILURE_META[i];
+              return (
+                <motion.div
+                  key={f.name}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.25, delay: i * 0.04 }}
+                  className="flex flex-col gap-2 rounded-xl border-2 p-3.5 min-h-0"
+                  style={{ borderColor: m.color + '50', backgroundColor: m.color + '08' }}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="text-xl shrink-0">{m.emoji}</span>
+                      <div className="min-w-0">
+                        <div className="font-black text-sm text-foreground leading-tight">{f.name}</div>
+                        <div className="text-[10px] text-muted-foreground font-mono">{f.date}</div>
+                      </div>
+                    </div>
+                    <div className="font-mono font-black text-sm shrink-0" style={{ color: m.color }}>{f.loss}</div>
+                  </div>
+                  <span className="self-start text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded" style={{ backgroundColor: m.color + '18', color: m.color }}>{f.category}</span>
+                  <p className="text-xs text-foreground/90 leading-snug flex-1">{f.what}</p>
+                  <div className="text-[11px] text-muted-foreground p-2 rounded-lg border-l-2" style={{ borderColor: m.color, backgroundColor: m.color + '10' }}>
+                    <span className="font-bold" style={{ color: m.color }}>{t('failures.lessonLabel')}</span>{f.lesson}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <div className="shrink-0 mt-3 flex items-center justify-between gap-4 flex-wrap pr-16">
+            <p className="text-xs text-muted-foreground italic flex-1">{t('failures.footer')}</p>
+            <UnderTheHood terms={['validator keys', 'flash loan', 'oracle manipulation', 'selfdestruct', 'reflexivity']} />
+          </div>
+          <KeyPointBar text={t('keyPoints.s5-failures')} className="mt-3" />
         </div>
 
         {/* ═══════ COST RISKS ═══════ */}
@@ -455,6 +585,7 @@ export function SC_Section5() {
               );
             })}
           </div>
+          <KeyPointBar text={t('keyPoints.s5-risks-cost')} className="mt-3" />
         </div>
 
         {/* ═══════ REGULATORY RISKS ═══════ */}
@@ -490,6 +621,7 @@ export function SC_Section5() {
               );
             })}
           </div>
+          <KeyPointBar text={t('keyPoints.s5-risks-regulatory')} className="mt-3" />
         </div>
 
         {/* ═══════ QUIZ ═══════ */}
@@ -508,28 +640,6 @@ export function SC_Section5() {
           />
         </div>
 
-        <div id="s5-summary" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('summary.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('summary.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4 content-start">
-            {summaryCards.map((card, i) => (
-              <motion.div
-                key={card.title}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.08, duration: 0.3 }}
-                className="flex flex-col gap-2 p-4 rounded-2xl border bg-card"
-                style={{ borderColor: '#6366f130' }}
-              >
-                <div className="text-3xl">{summaryIcons[i]}</div>
-                <div className="font-bold text-sm text-foreground">{card.title}</div>
-                <div className="text-xs text-muted-foreground leading-relaxed">{card.summary}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
 
         </div>
         <SiteFooter className="snap-start" />

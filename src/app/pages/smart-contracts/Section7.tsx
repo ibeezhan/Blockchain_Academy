@@ -1,76 +1,196 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion, AnimatePresence } from 'motion/react';
 import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
 import { TitleSlide } from '../../components/templates/TitleSlide';
-import { QuizSlide } from '../../components/templates/QuizSlide';
-import { Users } from 'lucide-react';
+import { DiscussionSlide } from '../../components/templates/DiscussionSlide';
+import { UnderTheHood } from '../../components/shared/UnderTheHood';
+import { ClipboardList, Check } from 'lucide-react';
 
 // Language-neutral shape — IDs + kind only. Labels come from t() at render time.
 const chapterShape = [
   { kind: 'group' as const, id: 'g-brief' },
-  { id: 's7-overview' },
+  { id: 's7-brief' },
+  { id: 's7-three-parts' },
 
-  { kind: 'group' as const, id: 'g-plan' },
-  { id: 's7-p1-analysis' },
-  { id: 's7-p2-technical' },
-  { id: 's7-p3-governance' },
-  { id: 's7-p4-roadmap' },
+  { kind: 'group' as const, id: 'g-work' },
+  { id: 's7-problem-bank' },
+  { id: 's7-lens' },
+  { id: 's7-report' },
 
-  { kind: 'group' as const, id: 'g-submit' },
-  { id: 's7-evaluation' },
-  { id: 's7-quiz' },
+  { kind: 'group' as const, id: 'g-wrap' },
+  { id: 's7-discussion' },
+  { id: 's7-rubric' },
 ] as const;
 
-// Online sessions calendar — colors are language-neutral; dates/labels come from t().
-const TIMELINE_COLORS = ['#6366f1', '#8b5cf6', '#22d3ee', '#f59e0b', '#39B54A'];
+const STAT_COLORS = ['#6366f1', '#8b5cf6', '#39B54A', '#f59e0b'];
+const FLOW_COLORS = ['#6366f1', '#8b5cf6', '#22d3ee', '#39B54A'];
+const PART_COLORS = ['#ED1C24', '#6366f1', '#39B54A'];
+const PART_EMOJI = ['🩹', '⚙️', '⚖️'];
+const PROBLEM_EMOJI = ['🎓', '🎟️', '💸', '🤝', '🌱', '🍼', '🧑‍💻', '🏛️'];
+const PROBLEM_COLORS = ['#22d3ee', '#8b5cf6', '#6366f1', '#39B54A', '#10b981', '#f59e0b', '#ec4899', '#a855f7'];
+const RUBRIC_COLORS = ['#ED1C24', '#6366f1', '#39B54A', '#8b5cf6'];
 
-// Part 1 — card accent colors (language-neutral). Numbers stay module-side.
-const P1_CARDS = [
-  { num: '1.1', color: '#6366f1' },
-  { num: '1.2', color: '#8b5cf6' },
-  { num: '1.3', color: '#22d3ee' },
-  { num: '1.4', color: '#39B54A' },
-];
+interface Stat { label: string; value: string; note: string }
+interface FlowStep { step: string; time: string; desc: string }
+interface Part { num: string; title: string; words: string; lead: string; prompts: string[] }
+interface Problem { title: string; sector: string; actors: string; friction: string; angle: string; alternative: string }
+interface LensCheck { label: string; hint: string }
+interface SubmissionItem { label: string; value: string; note: string }
+interface Criterion { label: string; weight: string; desc: string }
 
-// Part 3 — card accent colors (language-neutral).
-const P3_CARDS = [
-  { num: '3.1', color: '#6366f1' },
-  { num: '3.2', color: '#8b5cf6' },
-  { num: '3.3', color: '#ED1C24' },
-];
+// ─── Interactive: Problem starters ───────────────────────────────────────────
 
-// Part 4 — phase accent colors (language-neutral).
-const P4_PHASE_COLORS = ['#6366f1', '#8b5cf6', '#39B54A'];
+function ProblemBank() {
+  const { t } = useTranslation('smart-contracts/section-7');
+  const items = t('problemBank.items', { returnObjects: true }) as Problem[];
+  const [selected, setSelected] = useState<number | null>(null);
+  const sel = selected !== null ? items[selected] : null;
+  const color = selected !== null ? PROBLEM_COLORS[selected] : '#6366f1';
 
-// Evaluation — criteria accent colors (language-neutral).
-const EVAL_COLORS = ['#6366f1', '#8b5cf6', '#39B54A', '#22d3ee', '#f59e0b', '#ec4899'];
+  return (
+    <div className="h-full flex flex-col p-6 lg:p-8">
+      <div className="shrink-0 mb-4">
+        <span className="px-2.5 py-0.5 rounded-full bg-[#6366f1]/15 border border-[#6366f1]/40 text-[#6366f1] text-xs font-bold">{t('problemBank.badge')}</span>
+        <h2 className="text-2xl font-bold text-foreground mt-1">{t('problemBank.heading')}</h2>
+        <p className="text-muted-foreground text-sm">{t('problemBank.subtitle')}</p>
+      </div>
 
-interface TimelineItem {
-  date: string;
-  label: string;
+      <div className="flex-1 min-h-0 grid grid-cols-[1.1fr_1fr] gap-5">
+        <div className="grid grid-cols-2 gap-2.5 content-center">
+          {items.map((p, i) => {
+            const active = i === selected;
+            const c = PROBLEM_COLORS[i];
+            return (
+              <motion.button
+                key={i}
+                onClick={() => setSelected(i)}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="text-left p-3 rounded-xl border-2 transition-colors flex items-start gap-2.5"
+                style={{ borderColor: active ? c : 'var(--border)', backgroundColor: active ? c + '14' : 'var(--card)' }}
+              >
+                <span className="text-xl shrink-0">{PROBLEM_EMOJI[i]}</span>
+                <span className="min-w-0">
+                  <span className="block text-[10px] font-bold uppercase tracking-widest" style={{ color: c }}>{p.sector}</span>
+                  <span className="block font-bold text-sm text-foreground leading-tight">{p.title}</span>
+                </span>
+              </motion.button>
+            );
+          })}
+        </div>
+
+        <div className="min-h-0 flex flex-col">
+          {!sel ? (
+            <div className="flex-1 flex items-center justify-center text-center border border-dashed border-border rounded-2xl">
+              <div className="text-muted-foreground">
+                <div className="text-5xl mb-3">👈</div>
+                <p className="text-sm">{t('problemBank.selectPrompt')}</p>
+              </div>
+            </div>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selected}
+                initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }}
+                className="flex-1 min-h-0 flex flex-col gap-2.5 p-4 rounded-2xl border-2 bg-card overflow-y-auto"
+                style={{ borderColor: color + '60' }}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">{PROBLEM_EMOJI[selected!]}</span>
+                  <div className="font-black text-base text-foreground">{sel.title}</div>
+                </div>
+                {[
+                  { label: t('problemBank.actorsLabel'), body: sel.actors, c: '#6366f1' },
+                  { label: t('problemBank.frictionLabel'), body: sel.friction, c: '#ED1C24' },
+                  { label: t('problemBank.angleLabel'), body: sel.angle, c: '#39B54A' },
+                  { label: t('problemBank.alternativeLabel'), body: sel.alternative, c: '#f59e0b' },
+                ].map((row) => (
+                  <div key={row.label} className="p-2.5 rounded-lg border-l-2" style={{ borderColor: row.c, backgroundColor: row.c + '0d' }}>
+                    <div className="text-[10px] font-bold uppercase tracking-widest" style={{ color: row.c }}>{row.label}</div>
+                    <div className="text-xs text-foreground leading-snug mt-0.5">{row.body}</div>
+                  </div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          )}
+          <div className="shrink-0 mt-3 p-2.5 rounded-xl border border-border bg-muted/30 text-xs text-muted-foreground">
+            <span className="font-semibold text-foreground">{t('problemBank.ownLabel')}</span>{t('problemBank.ownBody')}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-interface P1Card {
-  title: string;
-  items: string[];
-}
+// ─── Interactive: Blockchain lens checklist ──────────────────────────────────
 
-interface P3Card {
-  title: string;
-  intro: string;
-  points: string[];
-}
+function BlockchainLens() {
+  const { t } = useTranslation('smart-contracts/section-7');
+  const checks = t('lens.checks', { returnObjects: true }) as LensCheck[];
+  const [ticked, setTicked] = useState<boolean[]>(() => checks.map(() => false));
+  const count = ticked.filter(Boolean).length;
+  const verdict: 'sc' | 'hybrid' | 'db' = count >= 5 ? 'sc' : count >= 3 ? 'hybrid' : 'db';
+  const vColor = verdict === 'sc' ? '#39B54A' : verdict === 'hybrid' ? '#f59e0b' : '#ED1C24';
 
-interface P4Phase {
-  tag: string;
-  desc: string;
-}
+  return (
+    <div className="h-full flex flex-col p-6 lg:p-8">
+      <div className="shrink-0 mb-4 flex items-start justify-between gap-4">
+        <div>
+          <span className="px-2.5 py-0.5 rounded-full bg-[#39B54A]/15 border border-[#39B54A]/40 text-[#39B54A] text-xs font-bold">{t('lens.badge')}</span>
+          <h2 className="text-2xl font-bold text-foreground mt-1">{t('lens.heading')}</h2>
+          <p className="text-muted-foreground text-sm">{t('lens.subtitle')}</p>
+        </div>
+        {count > 0 && (
+          <button onClick={() => setTicked(checks.map(() => false))} className="shrink-0 px-3 py-1.5 rounded-lg bg-muted text-xs font-semibold text-muted-foreground hover:bg-muted/80 transition-colors">{t('lens.reset')}</button>
+        )}
+      </div>
 
-interface EvalCriterion {
-  label: string;
-  weight: string;
-  sub: string;
+      <div className="flex-1 min-h-0 grid grid-cols-[1.4fr_1fr] gap-5">
+        <div className="flex flex-col gap-2 justify-center">
+          {checks.map((c, i) => {
+            const on = ticked[i];
+            return (
+              <button
+                key={i}
+                onClick={() => setTicked(prev => prev.map((v, j) => (j === i ? !v : v)))}
+                className="flex items-start gap-3 p-3 rounded-xl border-2 text-left transition-colors"
+                style={{ borderColor: on ? '#39B54A' : 'var(--border)', backgroundColor: on ? '#39B54A12' : 'var(--card)' }}
+              >
+                <span className="size-6 rounded-md border-2 flex items-center justify-center shrink-0 mt-0.5" style={{ borderColor: on ? '#39B54A' : 'var(--muted-foreground)', backgroundColor: on ? '#39B54A' : 'transparent' }}>
+                  {on && <Check className="size-4 text-white" strokeWidth={3} />}
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-sm font-semibold text-foreground leading-snug">{c.label}</span>
+                  <span className="block text-xs text-muted-foreground mt-0.5">{c.hint}</span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="flex flex-col gap-3 justify-center">
+          <motion.div
+            key={verdict}
+            initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}
+            className="p-6 rounded-2xl border-4 bg-card text-center flex flex-col gap-3"
+            style={{ borderColor: vColor }}
+          >
+            <div className="text-xs font-bold uppercase tracking-widest" style={{ color: vColor }}>{t('lens.scoreLabel', { count, total: checks.length })}</div>
+            <div className="flex justify-center gap-1.5">
+              {checks.map((_, i) => (
+                <div key={i} className="h-2 w-8 rounded-full" style={{ backgroundColor: i < count ? vColor : 'var(--muted)' }} />
+              ))}
+            </div>
+            <div className="text-xl font-black text-foreground leading-tight">{t(`lens.verdicts.${verdict}.title`)}</div>
+            <p className="text-sm text-muted-foreground leading-relaxed">{t(`lens.verdicts.${verdict}.desc`)}</p>
+          </motion.div>
+          <div className="p-2.5 rounded-xl border border-border bg-muted/30 text-xs text-muted-foreground italic">{t('lens.footnote')}</div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export function SC_Section7() {
@@ -86,36 +206,13 @@ export function SC_Section7() {
     [t]
   );
 
-  const timelineItems = t('timeline.items', { returnObjects: true }) as TimelineItem[];
-  const timeline = timelineItems.map((item, i) => ({ ...item, color: TIMELINE_COLORS[i] }));
-
-  const integrates = t('overview.integrates', { returnObjects: true }) as string[];
-
-  const p1Cards = t('p1.cards', { returnObjects: true }) as P1Card[];
-  const p3Cards = t('p3.cards', { returnObjects: true }) as P3Card[];
-  const p4Phases = t('p4.phases', { returnObjects: true }) as P4Phase[];
-  const p4Metrics = t('p4.metrics', { returnObjects: true }) as string[];
-
-  const evalCriteria = t('evaluation.criteria', { returnObjects: true }) as EvalCriterion[];
-  const collaboration = t('evaluation.collaboration', { returnObjects: true }) as string[];
-
-  const quizOptionsRaw = t('quiz.options', { returnObjects: true }) as string[];
-  const quizOptions = quizOptionsRaw.map((text, i) => ({ text, correct: i === 1 }));
-
-  // Part 1, card 1.3, second bullet — rich inline markup resolved from t().
-  const valueFramework = (
-    <>
-      {t('p1.valueFramework.lead')}
-      <strong>{t('p1.valueFramework.trustless')}</strong>
-      {t('p1.valueFramework.sep1')}
-      <strong>{t('p1.valueFramework.transparency')}</strong>
-      {t('p1.valueFramework.sep2')}
-      <strong>{t('p1.valueFramework.immutability')}</strong>
-      {t('p1.valueFramework.sep3')}
-      <strong>{t('p1.valueFramework.automated')}</strong>
-      {t('p1.valueFramework.tail')}
-    </>
-  );
+  const stats = t('brief.stats', { returnObjects: true }) as Stat[];
+  const flow = t('brief.flow', { returnObjects: true }) as FlowStep[];
+  const parts = t('parts.items', { returnObjects: true }) as Part[];
+  const submission = t('report.submission', { returnObjects: true }) as SubmissionItem[];
+  const strong = t('report.strong', { returnObjects: true }) as string[];
+  const questions = t('discussion.questions', { returnObjects: true }) as string[];
+  const criteria = t('rubric.criteria', { returnObjects: true }) as Criterion[];
 
   return (
     <div className="h-full w-full flex overflow-hidden">
@@ -128,305 +225,204 @@ export function SC_Section7() {
             sectionNumber={t('title.sectionNumber')}
             title={t('title.title')}
             subtitle={t('title.subtitle')}
-            icon={<Users className="size-20 text-[#6366f1]" />}
+            icon={<ClipboardList className="size-20 text-[#6366f1]" />}
             gradient="from-[#39B54A] to-[#6366f1]"
           />
         </div>
 
-        {/* ═══════ OVERVIEW + TIMELINE ═══════ */}
-        <div id="s7-overview" className="h-full flex flex-col p-6 lg:p-10">
+        {/* ═══════ AT A GLANCE ═══════ */}
+        <div id="s7-brief" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('overview.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('overview.subtitle')}</p>
+            <span className="text-xs font-black uppercase tracking-widest text-[#6366f1]">{t('brief.badge')}</span>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('brief.heading')}</h2>
+            <p className="text-muted-foreground text-sm mt-1">{t('brief.subtitle')}</p>
+            <p className="text-xs font-semibold text-[#6366f1] mt-2">{t('brief.linkLine')}</p>
           </div>
 
-          <div className="flex-1 min-h-0 grid grid-cols-[1.1fr_1fr] gap-5">
-
-            {/* Left — what / who / how */}
+          <div className="flex-1 min-h-0 grid grid-cols-[1fr_1.3fr] gap-5">
             <div className="flex flex-col gap-3">
               <div className="grid grid-cols-2 gap-3">
-                <div className="p-3 bg-card border border-[#6366f1]/30 rounded-xl">
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-[#6366f1]">{t('overview.teamSizeLabel')}</div>
-                  <div className="font-black text-xl text-foreground mt-1">{t('overview.teamSizeValue')}</div>
-                </div>
-                <div className="p-3 bg-card border border-[#6366f1]/30 rounded-xl">
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-[#6366f1]">{t('overview.deliverableLabel')}</div>
-                  <div className="font-black text-xl text-foreground mt-1">{t('overview.deliverableValue')}</div>
-                  <div className="text-[10px] text-muted-foreground">{t('overview.deliverableNote')}</div>
-                </div>
-              </div>
-
-              <div className="p-4 bg-card border border-border rounded-xl flex-1">
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">{t('overview.integratesTitle')}</div>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  {integrates.map(c => (
-                    <li key={c} className="flex gap-2"><span className="text-[#6366f1] shrink-0 mt-0.5">›</span>{c}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="p-3 bg-[#6366f1]/10 border border-[#6366f1]/30 rounded-xl text-xs text-muted-foreground">
-                <span className="font-semibold text-foreground">{t('overview.mindsetLabel')}</span>{t('overview.mindsetBody')}
-              </div>
-            </div>
-
-            {/* Right — timeline */}
-            <div className="flex flex-col gap-2 min-h-0">
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('overview.sessionsLabel')}</div>
-              <div className="flex-1 min-h-0 flex flex-col gap-2 overflow-y-auto">
-                {timeline.map((item) => (
-                  <div key={item.date} className="flex items-stretch gap-3 p-3 bg-card border rounded-lg"
-                    style={{ borderColor: item.color + '40' }}>
-                    <div className="w-1.5 rounded-full shrink-0" style={{ backgroundColor: item.color }} />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-baseline justify-between gap-3 flex-wrap">
-                        <div className="font-bold text-sm text-foreground" style={{ color: item.color }}>{item.label}</div>
-                        <div className="text-[11px] text-muted-foreground font-mono shrink-0">{item.date}</div>
-                      </div>
-                    </div>
+                {stats.map((s, i) => (
+                  <div key={s.label} className="p-3 bg-card border rounded-xl" style={{ borderColor: STAT_COLORS[i] + '40' }}>
+                    <div className="text-[10px] font-bold uppercase tracking-widest" style={{ color: STAT_COLORS[i] }}>{s.label}</div>
+                    <div className="font-black text-lg text-foreground mt-1 leading-tight">{s.value}</div>
+                    <div className="text-[10px] text-muted-foreground mt-0.5">{s.note}</div>
                   </div>
                 ))}
               </div>
-              <div className="shrink-0 p-2.5 bg-[#ED1C24]/10 border border-[#ED1C24]/30 rounded-lg text-xs text-muted-foreground">
-                <span className="font-bold text-[#ED1C24]">{t('overview.deadlineLabel')}</span>{t('overview.deadlineBodyA')}<span className="font-mono">{t('overview.deadlineDate')}</span>{t('overview.deadlineBodyB')}
+              <div className="flex-1 p-4 rounded-xl border border-[#6366f1]/30 text-sm" style={{ backgroundColor: '#6366f10f' }}>
+                <span className="font-bold text-[#6366f1]">{t('brief.mindsetLabel')}</span>
+                <span className="text-muted-foreground">{t('brief.mindsetBody')}</span>
               </div>
             </div>
 
+            <div className="flex flex-col gap-2 min-h-0">
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('brief.flowLabel')}</div>
+              {flow.map((f, i) => (
+                <motion.div
+                  key={f.step}
+                  initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.07 }}
+                  className="flex-1 flex items-center gap-3 p-3 bg-card border rounded-xl"
+                  style={{ borderColor: FLOW_COLORS[i] + '40' }}
+                >
+                  <div className="size-9 rounded-lg flex items-center justify-center text-white font-black text-sm shrink-0" style={{ backgroundColor: FLOW_COLORS[i] }}>{i + 1}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <div className="font-bold text-sm text-foreground">{f.step}</div>
+                      <div className="text-[11px] font-mono shrink-0" style={{ color: FLOW_COLORS[i] }}>{f.time}</div>
+                    </div>
+                    <div className="text-xs text-muted-foreground leading-snug">{f.desc}</div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* ═══════ PART 1 — ANALYSIS ═══════ */}
-        <div id="s7-p1-analysis" className="h-full flex flex-col p-6 lg:p-10">
+        {/* ═══════ THE THREE PARTS ═══════ */}
+        <div id="s7-three-parts" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-5">
-            <div className="text-xs font-bold text-[#6366f1] uppercase tracking-widest mb-1">{t('p1.partLabel')}</div>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('p1.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('p1.subtitle')}</p>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('parts.heading')}</h2>
+            <p className="text-muted-foreground text-sm mt-1">{t('parts.subtitle')}</p>
           </div>
 
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-4 content-center">
-            {p1Cards.map((card, ci) => {
-              const meta = P1_CARDS[ci];
+          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4">
+            {parts.map((p, i) => {
+              const color = PART_COLORS[i];
               return (
-                <div key={meta.num} className="p-4 bg-card border rounded-xl flex flex-col gap-2" style={{ borderColor: meta.color + '40' }}>
-                  <div className="flex items-center gap-2">
-                    <div className="size-8 rounded-lg flex items-center justify-center text-white text-xs font-black" style={{ backgroundColor: meta.color }}>{meta.num}</div>
-                    <div className="font-black text-sm text-foreground">{card.title}</div>
-                  </div>
-                  <ul className="space-y-1.5 text-xs text-muted-foreground">
-                    {card.items.map((item, i) => (
-                      <li key={i} className="flex gap-1.5"><span style={{ color: meta.color }} className="shrink-0 mt-0.5">›</span><span>{item === 'valueFramework' ? valueFramework : item}</span></li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ═══════ PART 2 — TECHNICAL DESIGN ═══════ */}
-        <div id="s7-p2-technical" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <div className="text-xs font-bold text-[#8b5cf6] uppercase tracking-widest mb-1">{t('p2.partLabel')}</div>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('p2.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('p2.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5 content-center">
-
-            <div className="p-5 bg-card border-2 rounded-xl flex flex-col gap-3" style={{ borderColor: '#8b5cf650' }}>
-              <div className="flex items-center gap-2">
-                <div className="size-8 rounded-lg flex items-center justify-center text-white text-xs font-black bg-[#8b5cf6]">2.1</div>
-                <div className="font-black text-foreground">{t('p2.platform.title')}</div>
-              </div>
-              <ul className="space-y-2 text-xs text-muted-foreground flex-1">
-                <li className="flex gap-1.5"><span className="text-[#8b5cf6] shrink-0 mt-0.5">›</span>{t('p2.platform.item1')}</li>
-                <li className="flex gap-1.5"><span className="text-[#8b5cf6] shrink-0 mt-0.5">›</span><strong className="text-foreground">{t('p2.platform.item2Strong')}</strong>{t('p2.platform.item2')}</li>
-                <li className="flex gap-1.5"><span className="text-[#8b5cf6] shrink-0 mt-0.5">›</span>{t('p2.platform.item3A')}<em>{t('p2.platform.item3Em')}</em>{t('p2.platform.item3B')}</li>
-                <li className="flex gap-1.5"><span className="text-[#8b5cf6] shrink-0 mt-0.5">›</span>{t('p2.platform.item4A')}<em>{t('p2.platform.item4Em')}</em>{t('p2.platform.item4B')}</li>
-              </ul>
-              <div className="p-2 bg-[#8b5cf6]/10 rounded-lg text-[11px] text-muted-foreground">
-                <span className="font-semibold text-foreground">{t('p2.platform.tipLabel')}</span>{t('p2.platform.tipBody')}
-              </div>
-            </div>
-
-            <div className="p-5 bg-card border-2 rounded-xl flex flex-col gap-3" style={{ borderColor: '#22d3ee50' }}>
-              <div className="flex items-center gap-2">
-                <div className="size-8 rounded-lg flex items-center justify-center text-white text-xs font-black bg-[#22d3ee]">2.2</div>
-                <div className="font-black text-foreground">{t('p2.architecture.title')}</div>
-              </div>
-              <ul className="space-y-2 text-xs text-muted-foreground flex-1">
-                <li className="flex gap-1.5"><span className="text-[#22d3ee] shrink-0 mt-0.5">›</span>{t('p2.architecture.item1A')}<strong className="text-foreground">{t('p2.architecture.item1Strong')}</strong>{t('p2.architecture.item1B')}</li>
-                <li className="flex gap-1.5"><span className="text-[#22d3ee] shrink-0 mt-0.5">›</span>{t('p2.architecture.item2')}</li>
-                <li className="flex gap-1.5"><span className="text-[#22d3ee] shrink-0 mt-0.5">›</span>{t('p2.architecture.item3')}</li>
-                <li className="flex gap-1.5"><span className="text-[#22d3ee] shrink-0 mt-0.5">›</span>{t('p2.architecture.item4')}</li>
-              </ul>
-              <div className="p-2 bg-[#22d3ee]/10 rounded-lg text-[11px] text-muted-foreground">
-                <span className="font-semibold text-foreground">{t('p2.architecture.bonusLabel')}</span>{t('p2.architecture.bonusBody')}
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        {/* ═══════ PART 3 — GOVERNANCE & COMPLIANCE ═══════ */}
-        <div id="s7-p3-governance" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <div className="text-xs font-bold text-[#22d3ee] uppercase tracking-widest mb-1">{t('p3.partLabel')}</div>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('p3.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('p3.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4 content-center">
-
-            {p3Cards.map((card, ci) => {
-              const meta = P3_CARDS[ci];
-              return (
-                <div key={meta.num} className="p-5 bg-card border-2 rounded-xl flex flex-col gap-3" style={{ borderColor: meta.color + '50' }}>
-                  <div className="flex items-center gap-2">
-                    <div className="size-8 rounded-lg flex items-center justify-center text-white text-xs font-black" style={{ backgroundColor: meta.color }}>{meta.num}</div>
-                    <div className="font-black text-sm text-foreground">{card.title}</div>
-                  </div>
-                  <div className="text-xs text-muted-foreground italic">{card.intro}</div>
-                  <ul className="space-y-2 text-xs text-foreground/90 flex-1">
-                    {card.points.map((p, i) => (
-                      <li key={i} className="flex gap-2 leading-snug">
-                        <span style={{ color: meta.color }} className="shrink-0 mt-0.5 font-bold">›</span>
-                        <span>{p}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })}
-
-          </div>
-        </div>
-
-        {/* ═══════ PART 4 — ROADMAP ═══════ */}
-        <div id="s7-p4-roadmap" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <div className="text-xs font-bold text-[#f59e0b] uppercase tracking-widest mb-1">{t('p4.partLabel')}</div>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('p4.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('p4.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-[1.6fr_1fr] gap-5 content-center">
-
-            {/* Phases */}
-            <div className="flex flex-col gap-3">
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('p4.phasedPlanLabel')}</div>
-              {p4Phases.map((p, i) => {
-                const color = P4_PHASE_COLORS[i];
-                return (
-                  <div key={p.tag} className="flex items-center gap-3 p-3 bg-card border rounded-xl" style={{ borderColor: color + '40' }}>
-                    <div className="px-3 py-1 rounded-full font-black text-xs text-white shrink-0" style={{ backgroundColor: color }}>{p.tag}</div>
-                    <div className="flex-1 text-xs text-muted-foreground">{p.desc}</div>
-                  </div>
-                );
-              })}
-              <div className="p-3 bg-muted/40 border border-border rounded-xl text-xs text-muted-foreground">
-                <span className="font-semibold text-foreground">{t('p4.eachPhaseLabel')}</span>{t('p4.eachPhaseBodyA')}<strong className="text-foreground">{t('p4.eachPhaseStrong')}</strong>{t('p4.eachPhaseBodyB')}
-              </div>
-            </div>
-
-            {/* Success metrics */}
-            <div className="flex flex-col gap-3">
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('p4.metricsLabel')}</div>
-              <div className="p-4 bg-card border border-[#39B54A]/40 rounded-xl flex-1 flex flex-col gap-2">
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  {t('p4.metricsIntro')}
-                </p>
-                <ul className="space-y-1.5 text-xs text-muted-foreground mt-2">
-                  {p4Metrics.map(m => <li key={m} className="flex gap-1.5"><span className="text-[#39B54A] shrink-0">›</span>{m}</li>)}
-                </ul>
-                <div className="mt-auto p-2 bg-[#39B54A]/10 rounded-lg text-[11px] text-muted-foreground">
-                  {t('p4.metricsTip')}
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        {/* ═══════ EVALUATION + SUBMISSION ═══════ */}
-        <div id="s7-evaluation" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('evaluation.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('evaluation.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5 content-center">
-
-            {/* Eval criteria */}
-            <div className="flex flex-col gap-3">
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('evaluation.criteriaLabel')}</div>
-              {evalCriteria.map((c, i) => {
-                const color = EVAL_COLORS[i];
-                return (
-                  <div key={c.label} className="flex items-center gap-3 p-2.5 bg-card border border-border rounded-xl">
-                    <div className="w-2 self-stretch rounded-full shrink-0" style={{ backgroundColor: color }} />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="font-bold text-xs text-foreground">{c.label}</div>
-                        <div className="font-black text-xs shrink-0" style={{ color }}>{c.weight}</div>
+                <div key={p.num} className="flex flex-col rounded-2xl border-2 bg-card overflow-hidden" style={{ borderColor: color + '50' }}>
+                  <div className="h-1.5" style={{ backgroundColor: color }} />
+                  <div className="flex-1 flex flex-col gap-3 p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="size-10 rounded-xl flex items-center justify-center text-white text-lg font-black shrink-0" style={{ backgroundColor: color }}>{p.num}</div>
+                      <div className="min-w-0">
+                        <div className="font-black text-base text-foreground leading-tight">{p.title}</div>
+                        <div className="text-[11px] font-mono" style={{ color }}>{t('parts.wordsLabel', { words: p.words })} · {PART_EMOJI[i]}</div>
                       </div>
-                      <div className="text-[10px] text-muted-foreground">{c.sub}</div>
+                    </div>
+                    <div className="text-sm font-semibold text-foreground/90 italic">{p.lead}</div>
+                    <ul className="space-y-2 text-xs text-muted-foreground flex-1">
+                      {p.prompts.map((q, j) => (
+                        <li key={j} className="flex gap-2 leading-snug"><span className="shrink-0 mt-0.5 font-bold" style={{ color }}>›</span><span>{q}</span></li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="shrink-0 mt-4 p-3 rounded-xl border border-border bg-muted/30 text-center text-xs text-muted-foreground">{t('parts.footer')}</div>
+        </div>
+
+        {/* ═══════ PROBLEM STARTERS ═══════ */}
+        <div id="s7-problem-bank" className="h-full">
+          <ProblemBank />
+        </div>
+
+        {/* ═══════ BLOCKCHAIN LENS ═══════ */}
+        <div id="s7-lens" className="h-full">
+          <BlockchainLens />
+        </div>
+
+        {/* ═══════ THE 1-PAGE REPORT ═══════ */}
+        <div id="s7-report" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('report.heading')}</h2>
+            <p className="text-muted-foreground text-sm mt-1">{t('report.subtitle')}</p>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-[1fr_1.1fr] gap-6">
+            {/* Mock page */}
+            <div className="min-h-0 flex items-center justify-center">
+              <div className="w-full max-w-sm h-full max-h-full bg-white text-[#111] rounded-md shadow-xl border border-border p-5 flex flex-col gap-2.5 overflow-hidden" style={{ aspectRatio: '1 / 1.3' }}>
+                <div className="text-[9px] uppercase tracking-widest text-[#6366f1] font-bold">{t('report.pageTitle')}</div>
+                <div className="text-[9px] text-[#555] border-b border-[#ddd] pb-1.5">{t('report.pageGroup')}</div>
+                {[t('report.pageProblemTitle'), t('report.pageSolutionTitle')].map((title, i) => (
+                  <div key={title} className="flex flex-col gap-1">
+                    <div className="text-[11px] font-black" style={{ color: PART_COLORS[i] }}>{title}</div>
+                    {[100, 92, 96, 70].map((w, k) => <div key={k} className="h-1.5 rounded bg-[#e5e5e5]" style={{ width: `${w}%` }} />)}
+                  </div>
+                ))}
+                <div className="flex flex-col gap-1 flex-1">
+                  <div className="text-[11px] font-black text-[#39B54A]">{t('report.pageProsConsTitle')}</div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <div className="text-[9px] font-bold text-[#39B54A]">{t('report.pageProsLabel')}</div>
+                      {[90, 80, 85].map((w, k) => <div key={k} className="h-1.5 rounded bg-[#e5e5e5] mt-1" style={{ width: `${w}%` }} />)}
+                    </div>
+                    <div>
+                      <div className="text-[9px] font-bold text-[#ED1C24]">{t('report.pageConsLabel')}</div>
+                      {[85, 95, 75].map((w, k) => <div key={k} className="h-1.5 rounded bg-[#e5e5e5] mt-1" style={{ width: `${w}%` }} />)}
                     </div>
                   </div>
-                );
-              })}
-            </div>
-
-            {/* Submission */}
-            <div className="flex flex-col gap-3">
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('evaluation.submissionLabel')}</div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="p-3 bg-card border border-border rounded-xl">
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t('evaluation.formatLabel')}</div>
-                  <div className="font-bold text-sm text-foreground mt-1">{t('evaluation.formatValue')}</div>
-                  <div className="text-[10px] text-muted-foreground">{t('evaluation.formatNote')}</div>
                 </div>
-                <div className="p-3 bg-card border border-border rounded-xl">
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t('evaluation.lengthLabel')}</div>
-                  <div className="font-bold text-sm text-foreground mt-1">{t('evaluation.lengthValue')}</div>
-                  <div className="text-[10px] text-muted-foreground">{t('evaluation.lengthNote')}</div>
-                </div>
-                <div className="p-3 bg-card border border-border rounded-xl">
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t('evaluation.presentationLabel')}</div>
-                  <div className="font-bold text-sm text-foreground mt-1">{t('evaluation.presentationValue')}</div>
-                </div>
-                <div className="p-3 bg-card border border-border rounded-xl">
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t('evaluation.appendicesLabel')}</div>
-                  <div className="font-bold text-sm text-foreground mt-1">{t('evaluation.appendicesValue')}</div>
-                  <div className="text-[10px] text-muted-foreground">{t('evaluation.appendicesNote')}</div>
+                <div className="mt-auto p-2 rounded border border-[#6366f1]/40 bg-[#6366f1]/08 text-[10px]" style={{ backgroundColor: 'rgba(99,102,241,0.08)' }}>
+                  <span className="font-black text-[#6366f1]">{t('report.pageVerdictLabel')} </span>
+                  <span className="text-[#555] italic">{t('report.pageVerdictPlaceholder')}</span>
                 </div>
               </div>
+            </div>
 
-              <div className="p-4 bg-card border border-[#6366f1]/30 rounded-xl flex-1">
-                <div className="text-xs font-bold text-[#6366f1] uppercase tracking-widest mb-2">{t('evaluation.collaborationLabel')}</div>
-                <ul className="space-y-1.5 text-xs text-muted-foreground">
-                  {collaboration.map((item, i) => (
-                    <li key={i} className="flex gap-1.5"><span className="text-[#6366f1] shrink-0">›</span>{item}</li>
+            {/* Submission + checklist */}
+            <div className="flex flex-col gap-3 min-h-0">
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('report.submissionLabel')}</div>
+              <div className="grid grid-cols-2 gap-2.5">
+                {submission.map((s) => (
+                  <div key={s.label} className="p-3 bg-card border border-border rounded-xl">
+                    <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{s.label}</div>
+                    <div className="font-bold text-sm text-foreground mt-0.5">{s.value}</div>
+                    <div className="text-[10px] text-muted-foreground">{s.note}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="flex-1 min-h-0 p-4 bg-card border border-[#39B54A]/30 rounded-xl flex flex-col">
+                <div className="text-xs font-bold text-[#39B54A] uppercase tracking-widest mb-2">{t('report.strongLabel')}</div>
+                <ul className="space-y-1.5 text-xs text-muted-foreground overflow-y-auto">
+                  {strong.map((s, i) => (
+                    <li key={i} className="flex gap-2 leading-snug"><Check className="size-3.5 text-[#39B54A] shrink-0 mt-0.5" strokeWidth={3} /><span>{s}</span></li>
                   ))}
                 </ul>
               </div>
-
-              <div className="p-3 bg-[#ED1C24]/10 border border-[#ED1C24]/30 rounded-xl text-xs text-muted-foreground">
-                <span className="font-bold text-[#ED1C24]">{t('evaluation.deadlineLabel')}</span>{t('evaluation.deadlineBody')}
-              </div>
+              <UnderTheHood terms={['trigger', 'state', 'on-chain vs off-chain', 'oracle', 'multisig']} />
             </div>
-
           </div>
         </div>
 
-        {/* ═══════ QUIZ ═══════ */}
-        <div id="s7-quiz" className="h-full">
-          <QuizSlide
-            question={t('quiz.question')}
-            options={quizOptions}
-            explanation={t('quiz.explanation')}
-          />
+        {/* ═══════ CLASS DISCUSSION ═══════ */}
+        <div id="s7-discussion" className="h-full">
+          <DiscussionSlide prompt={t('discussion.prompt')} guidingQuestions={questions} />
+        </div>
+
+        {/* ═══════ RUBRIC ═══════ */}
+        <div id="s7-rubric" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-5">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('rubric.heading')}</h2>
+            <p className="text-muted-foreground text-sm mt-1">{t('rubric.subtitle')}</p>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-2 gap-4 content-center">
+            {criteria.map((c, i) => {
+              const color = RUBRIC_COLORS[i];
+              return (
+                <div key={c.label} className="flex items-stretch gap-3 p-4 bg-card border rounded-xl" style={{ borderColor: color + '40' }}>
+                  <div className="w-2 rounded-full shrink-0" style={{ backgroundColor: color }} />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="font-black text-base text-foreground">{c.label}</div>
+                      <div className="font-black text-lg shrink-0" style={{ color }}>{c.weight}</div>
+                    </div>
+                    <div className="text-sm text-muted-foreground mt-1 leading-snug">{c.desc}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="shrink-0 mt-4 p-3 rounded-xl border border-[#6366f1]/30 text-sm" style={{ backgroundColor: '#6366f10f' }}>
+            <span className="font-bold text-[#6366f1]">{t('rubric.noteLabel')}</span>
+            <span className="text-muted-foreground">{t('rubric.noteBody')}</span>
+          </div>
         </div>
 
         </div>

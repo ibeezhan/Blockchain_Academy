@@ -5,10 +5,10 @@
     "s1-what": "O que é um Smart Contract?",
     "s1-szabo": "A Máquina de Vending de Nick Szabo",
     "s1-history": "Evolução Histórica",
-    "s1-exercise": "🧩 Exercício",
+    "s1-exercise": "🧩 Contract or not?",
     "s1-quiz": "Quiz",
     "s1-takeaways": "Conclusões",
-    "s1-summary": "Resumo"
+    "s1-hype": "Hype vs Value"
   },
   "title": {
     "sectionNumber": "SECÇÃO 01",
@@ -139,26 +139,46 @@
     ]
   },
   "exercise": {
-    "badge": "🧩 Exercício",
-    "heading": "Isto é um Smart Contract?",
-    "subtitle": "Clica em SIM ou NÃO para cada cenário e depois vê a explicação.",
-    "scoreLabel": "corretas até agora",
-    "reset": "↺ Reiniciar",
-    "yes": "SIM",
-    "no": "NÃO",
-    "resultSc": "Smart Contract",
-    "resultNotSc": "Não é SC",
+    "badge": "🧩 Interactive",
+    "heading": "Contract or not?",
+    "subtitle": "Six everyday agreements. Tap: could this run as code, or does it still need a person or an institution?",
+    "scoreLabel": "correct so far",
+    "reset": "↺ Reset",
+    "yes": "Could be a smart contract",
+    "no": "Needs a human / institution",
+    "resultSc": "Could be a smart contract",
+    "resultNotSc": "Needs a human / institution",
     "scenarios": [
-      { "title": "Máquina de Vending", "desc": "Inserir moedas → receber o snack automaticamente", "reason": "Lógica auto-executável com pagamento condicional automático — a analogia original que Szabo usou." },
-      { "title": "Garantia (Escrow) Airbnb", "desc": "A plataforma retém o pagamento até o anfitrião confirmar o check-in", "reason": "Libertação condicional de fundos com base num evento confirmado — um caso de uso de smart contract de manual." },
-      { "title": "Registos Hospitalares", "desc": "Armazenar e partilhar o historial médico entre médicos", "reason": "Os dados são privados, atualizados com frequência e juridicamente sensíveis. O armazenamento on-chain é 50 000× mais caro do que uma base de dados." },
-      { "title": "Revenda de Bilhetes de Concerto", "desc": "Bilhetes NFT — royalties do artista impostos em cada revenda", "reason": "Royalties automáticos em cada transferência são impossíveis na bilhética tradicional — os smart contracts impõem-nos nativamente." },
-      { "title": "Despesas da Empresa", "desc": "Submeter recibos para aprovação do gestor", "reason": "Processo interno, uma única parte de confiança. Não é precisa descentralização — um simples fluxo de aprovação é mais barato e mais rápido." },
-      { "title": "Seguro de Colheitas", "desc": "Pagamento automático quando a precipitação fica abaixo de um limite", "reason": "Seguro paramétrico: o oracle fornece os dados, o contrato executa o pagamento. Sem perito de sinistros, sem demora." },
-      { "title": "Likes nas Redes Sociais", "desc": "Acompanhar likes e seguidores em tempo real", "reason": "Atualizações ao milissegundo + volume de dados enorme. Só os custos de gas fariam cada like custar dólares." },
-      { "title": "Tesouraria de DAO", "desc": "Os detentores de token votam; os fundos são libertados se a proposta passar", "reason": "Pagamento condicional multipartes sem necessidade de conselho ou entidade jurídica. É exatamente isto que as DAO fazem." },
-      { "title": "Serviço de Streaming", "desc": "Pagar uma mensalidade para aceder à biblioteca de vídeos", "reason": "Armazenar um filme de 2 horas on-chain custaria milhares de milhões. Armazenamento off-chain + token de acesso é o modelo certo." },
-      { "title": "Financiamento ao Comércio", "desc": "Carta de crédito: pagar ao importador quando a entrega da mercadoria é confirmada", "reason": "Várias partes que não confiam entre si + pagamento transfronteiriço condicional. Os bancos já fazem pilotos disto com a Hyperledger." }
+      {
+        "title": "A vending machine",
+        "desc": "Insert coins, pick a snack, get it — or get your coins back.",
+        "reason": "Fixed rule, instant check, automatic delivery — Szabo's original smart contract."
+      },
+      {
+        "title": "A Netflix subscription",
+        "desc": "Pay monthly for access to a video library run by one company.",
+        "reason": "One company runs the content, the servers and the rules — nothing needs trustless enforcement. A billing database wins."
+      },
+      {
+        "title": "Escrow for a house sale",
+        "desc": "Buyer's money is held until the title transfer is confirmed, then released.",
+        "reason": "Funds move only when a verifiable condition is met — the textbook pattern (Propy does this today). The title itself still needs the land registry."
+      },
+      {
+        "title": "A loyalty-points scheme",
+        "desc": "Earn points at one retailer, spend them at the same retailer.",
+        "reason": "A single issuer defines, prices and can cancel the points. It is their database — a blockchain adds cost, not trust."
+      },
+      {
+        "title": "A court judgement",
+        "desc": "A judge decides who was at fault and what the compensation is.",
+        "reason": "Needs interpretation of facts, intent and fairness. Code executes; it does not judge."
+      },
+      {
+        "title": "Flight-delay insurance payout",
+        "desc": "If your flight lands more than two hours late, you are paid automatically.",
+        "reason": "The delay is a public, checkable fact — an oracle reports it and the payout fires by itself (parametric insurance)."
+      }
     ]
   },
   "quiz": {
@@ -182,17 +202,42 @@
       "Mais de 6 mil milhões de dólares perdidos em exploits — o poder dos smart contracts traz uma séria responsabilidade de segurança"
     ]
   },
-  "summary": {
-    "heading": "Resumo da Secção",
-    "subtitle": "Tudo o que foi abordado nesta secção — num relance",
+  "hype": {
+    "heading": "Hype vs value: four things a smart contract is not",
+    "subtitle": "The name oversells it. Clearing these up now makes every case study later easier to judge.",
     "cards": [
-      { "title": "Nick Szabo (1994)", "summary": "\"Cláusulas contratuais incorporadas em hardware e software\" — a ideia original, 20 anos antes da Ethereum" },
-      { "title": "Scripts da Bitcoin", "summary": "Smart contracts limitados mas válidos: multi-sig, time locks, HTLCs — intencionalmente não Turing-completos" },
-      { "title": "Ethereum (2015)", "summary": "A EVM Turing-completa permitiu smart contracts arbitrários, abrindo a DeFi, os NFTs e as DAOs" },
-      { "title": "Propriedades-chave", "summary": "Imutável, autónomo, transparente, de confiança minimizada, determinista — tudo imposto pelo protocolo" },
-      { "title": "Limites do \"Código é Lei\"", "summary": "Bugs (A DAO: 60M de dólares), falha de oracle, sem reconhecimento jurídico — o código é lei até deixar de ser" },
-      { "title": "Quando Usar", "summary": "Várias partes que não confiam entre si + lógica condicional + sem intermediário de confiança = território de smart contract" }
+      {
+        "title": "Not a legal contract",
+        "body": "It is code that moves assets when conditions are met. Whether a court recognises it is a separate question — most real deployments pair the code with a normal legal agreement."
+      },
+      {
+        "title": "Not smart",
+        "body": "It does exactly what is written — no judgement, no exceptions, no \"obviously that's not what we meant\". A bug executes as faithfully as a feature."
+      },
+      {
+        "title": "Not free",
+        "body": "Every step costs a network fee and on-chain storage is extraordinarily expensive. Storing one megabyte on Ethereum costs more than a laptop."
+      },
+      {
+        "title": "Not unstoppable",
+        "body": "The contract may be, but its website, data feeds and admin keys are ordinary points of control. Tornado Cash's front-end went dark in 2022 while the contract kept running."
+      }
     ],
-    "footer": "Avança para a Secção 2 para explorar o ecossistema de Smart Contracts →"
+    "valueLabel": "So where is the value?",
+    "value": [
+      "Removing a middleman that many parties would otherwise have to trust — and pay",
+      "Making a rule impossible to bend after the fact — for everyone, including the operator",
+      "Settling across borders in seconds, around the clock, with a public audit trail"
+    ],
+    "footer": "Keep this lens for the rest of the course: does this use case need one of these three things? If not, a database will usually win."
+  },
+  "keyPoints": {
+    "s1-warmup": "Bitcoin is a ledger for one asset; Ethereum is a shared computer — smart contracts only make sense on the second.",
+    "s1-recap": "A smart contract is just an account controlled by code instead of a person — everything else follows from that.",
+    "s1-what": "A smart contract turns an agreement into a rule that runs itself — no one has to be trusted to honour it.",
+    "s1-hype": "Not legal, not smart, not free, not unstoppable — the value is removing a middleman, locking a rule and settling fast.",
+    "s1-szabo": "The vending machine is the whole idea: fixed rules, instant verification, no negotiation — and no one to appeal to.",
+    "s1-history": "Thirty years from idea to $100B in live contracts — and every expensive lesson came from code doing exactly what it was told.",
+    "s1-exercise": "If one trusted institution already runs the process well, a smart contract adds cost, not trust."
   }
 }

@@ -51,13 +51,14 @@
     },
     "smartContracts": {
       "title": "Aplicações Empresariais de Smart Contracts",
-      "description": "Da teoria à disrupção da indústria — compreende o que os smart contracts conseguem e não conseguem fazer pelo teu negócio, com casos de estudo reais e um projeto de equipa.",
+      "description": "Da teoria à disrupção da indústria — compreende o que os smart contracts conseguem e não conseguem fazer pelo teu negócio, com casos de estudo reais, aplicações de DAOs e NFTs, e um trabalho em aula.",
       "topics": [
         "Fundamentos de Smart Contracts",
         "EVM e Ecossistema Web3",
         "Casos de Estudo",
+        "DAOs & NFTs",
         "Problema do Oráculo",
-        "Projeto de Equipa"
+        "In-class Assignment"
       ]
     },
     "projectManagement": {
@@ -86,13 +87,13 @@
     "criticalThinking": "Pensamento Crítico",
     "limitations": "Limitações",
     "build": "Construir",
-    "teamProject": "Projeto de Equipa",
     "conclusion": "Conclusão",
     "recap": "Revisão",
     "ethereum": "Ethereum",
     "hyperledger": "Hyperledger",
     "interoperability": "Interoperabilidade",
-    "newTrends": "Novas Tendências"
+    "newTrends": "Novas Tendências",
+    "inClassAssignment": "In-class Assignment"
   },
   "instructors": {
     "helder": {
@@ -130,5 +131,8 @@
         "Concebeu o programa da Blockchain Academy e os seus materiais de formação em gestão de projetos no âmbito do Ripple Impact Fund"
       ]
     }
-  }
+  },
+  "underTheHood": "under the hood →",
+  "keyPoint": "Key point",
+  "optionalAdvanced": "Optional · Developer-oriented"
 }

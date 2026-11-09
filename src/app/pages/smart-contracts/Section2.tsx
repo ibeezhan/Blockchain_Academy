@@ -6,6 +6,9 @@ import { TakeawaySlide } from '../../components/templates/TakeawaySlide';
 import { QuizSlide } from '../../components/templates/QuizSlide';
 import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
+import { UnderTheHood } from '../../components/shared/UnderTheHood';
+import { KeyPointBar } from '../../components/shared/KeyPointBar';
+import { DeepDiveBadge } from '../../components/shared/DeepDiveBadge';
 import { Cog, Check, X } from 'lucide-react';
 
 import imgDisintermediation from '../../../assets/sc/disintermediation.png';
@@ -17,20 +20,17 @@ const chapterIds = [
   's2-dapp',
   's2-ex-stack',
   's2-vs',
-  's2-vs-2',
   's2-standards',
   's2-components',
   's2-workflow',
   's2-solidity',
   's2-execution',
   's2-capabilities',
-  's2-why',
   's2-gas',
   's2-ex-gas',
   's2-reshape',
   's2-quiz',
   's2-takeaways',
-  's2-summary',
 ] as const;
 
 // ─── Exercise: Gas Ranking ───────────────────────────────────────────────────
@@ -392,7 +392,6 @@ export function SC_Section2() {
   ];
 
   const vsAppRows = t('vsApp.rows', { returnObjects: true }) as { prop: string; a: string; b: string }[];
-  const vsContractRows = t('vsContract.rows', { returnObjects: true }) as { prop: string; a: string; b: string }[];
 
   const componentCards = t('components.cards', { returnObjects: true }) as { title: string; desc: string }[];
   const componentCardMeta = [
@@ -441,21 +440,6 @@ export function SC_Section2() {
     { color: '#ED1C24', emoji: '🛡️' },
   ];
 
-  const whyCore = t('why.core', { returnObjects: true }) as { title: string; desc: string }[];
-  const whyCoreMeta = [
-    { color: '#6366f1', emoji: '🤝' },
-    { color: '#39B54A', emoji: '🌍' },
-    { color: '#f59e0b', emoji: '🔍' },
-    { color: '#8b5cf6', emoji: '⚡' },
-  ];
-  const whyImpact = t('why.impact', { returnObjects: true }) as { title: string; desc: string }[];
-  const whyImpactMeta = [
-    { color: '#ED1C24', emoji: '💰' },
-    { color: '#6366f1', emoji: '🧩' },
-    { color: '#39B54A', emoji: '📜' },
-    { color: '#f59e0b', emoji: '🏛️' },
-  ];
-
   const gasFundamentals = t('gas.fundamentals', { returnObjects: true }) as { term: string; def: string }[];
   const gasFundamentalMeta = [
     { color: '#6366f1', emoji: '⛽' },
@@ -491,9 +475,6 @@ export function SC_Section2() {
   const quizOptions = quizOptionsText.map((text, i) => ({ text, correct: quizCorrect[i] }));
 
   const takeawayItems = t('takeaways.items', { returnObjects: true }) as string[];
-
-  const summaryCards = t('summary.cards', { returnObjects: true }) as { title: string; summary: string }[];
-  const summaryCardMeta = ['🔄', '⛽', '🏗️', '🌐', '💡', '⚖️'];
 
   return (
     <div className="h-full w-full flex overflow-hidden">
@@ -572,9 +553,11 @@ export function SC_Section2() {
                   </div>
                 ))}
               </div>
+              <UnderTheHood terms={['node', 'RPC', 'wallet signature', 'oracle']} className="mt-3" />
             </div>
 
           </div>
+          <KeyPointBar text={t('keyPoints.s2-web3')} className="mt-3" />
         </div>
 
         {/* ═══════ dAPPS ═══════ */}
@@ -617,14 +600,19 @@ export function SC_Section2() {
               <div className="shrink-0 p-2.5 bg-[#6366f1]/10 border border-[#6366f1]/25 rounded-lg text-xs text-muted-foreground">
                 <span className="font-semibold text-foreground">{t('dapp.insightLabel')}</span>{t('dapp.insightBody')}
               </div>
+              <UnderTheHood terms={['RPC (Infura / Alchemy)', 'IPFS', 'indexer (The Graph)']} className="shrink-0" />
             </div>
 
           </div>
+          <KeyPointBar text={t('keyPoints.s2-dapp')} className="mt-3" />
         </div>
 
         {/* ═══════ EXERCISE: dAPP STACK ═══════ */}
-        <div id="s2-ex-stack" className="h-full">
-          <DAppStackExercise />
+        <div id="s2-ex-stack" className="h-full flex flex-col">
+          <div className="flex-1 min-h-0">
+            <DAppStackExercise />
+          </div>
+          <KeyPointBar text={t('keyPoints.s2-ex-stack')} className="mx-6 lg:mx-8 mb-6 -mt-3" />
         </div>
 
         {/* ═══════ WEB2 vs WEB3 — APP INFRASTRUCTURE ═══════ */}
@@ -659,41 +647,9 @@ export function SC_Section2() {
             <span className="font-bold text-[#39B54A]">{t('vsApp.takeawayLabel')}</span>
             <span className="text-muted-foreground">{t('vsApp.takeaway')}</span>
           </div>
+          <KeyPointBar text={t('keyPoints.s2-vs')} className="mt-3" />
         </div>
 
-        {/* ═══════ TRADITIONAL vs SMART CONTRACTS ═══════ */}
-        <div id="s2-vs-2" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <span className="text-xs font-black uppercase tracking-widest text-[#6366f1]">{t('vsContract.kicker')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('vsContract.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('vsContract.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 flex items-center justify-center">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}
-              className="w-full max-w-4xl rounded-2xl border border-border bg-card overflow-hidden shadow-sm"
-            >
-              <div className="grid grid-cols-[1.15fr_1fr_1fr]">
-                <div className="p-3.5 text-[11px] font-black uppercase tracking-widest text-muted-foreground bg-muted">{t('vsContract.propertyLabel')}</div>
-                <div className="p-3.5 text-center text-sm font-black text-[#ED1C24] bg-[#ED1C24]/10 border-l border-border">{t('vsContract.colA')}</div>
-                <div className="p-3.5 text-center text-sm font-black text-[#6366f1] bg-[#6366f1]/10 border-l border-border">{t('vsContract.colB')}</div>
-              </div>
-              {vsContractRows.map((r, i) => (
-                <div key={r.prop} className={`grid grid-cols-[1.15fr_1fr_1fr] border-t border-border ${i % 2 ? 'bg-muted/30' : ''}`}>
-                  <div className="px-3.5 py-3 font-semibold text-sm text-foreground">{r.prop}</div>
-                  <div className="px-3.5 py-3 text-sm text-muted-foreground text-center border-l border-border">{r.a}</div>
-                  <div className="px-3.5 py-3 text-sm text-foreground font-medium text-center border-l border-border" style={{ backgroundColor: 'rgba(99,102,241,0.05)' }}>{r.b}</div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-
-          <div className="shrink-0 mt-4 rounded-xl border border-[#6366f1]/30 px-4 py-2.5 text-center text-sm" style={{ backgroundColor: 'rgba(99,102,241,0.07)' }}>
-            <span className="font-bold text-[#6366f1]">{t('vsContract.takeawayLabel')}</span>
-            <span className="text-muted-foreground">{t('vsContract.takeaway')}</span>
-          </div>
-        </div>
 
         {/* ═══════ TOKEN STANDARDS ═══════ */}
         <div id="s2-standards" className="h-full flex flex-col p-6 lg:p-10">
@@ -727,15 +683,8 @@ export function SC_Section2() {
                   ))}
                 </div>
                 <p className="text-xs text-muted-foreground">{t('standards.erc20.desc')}</p>
-                <div className="rounded-lg bg-[#0d1117] p-2.5 flex-1 min-h-0">
-                  <div className="text-[9px] font-black uppercase tracking-widest text-muted-foreground mb-1">{t('standards.coreFunctions')}</div>
-                  <div className="font-mono text-[10px] leading-relaxed space-y-0.5" style={{ color: '#6366f1' }}>
-                    <div>transfer(to, amount)</div>
-                    <div>approve(spender, amount)</div>
-                    <div>transferFrom(from, to, amount)</div>
-                    <div>balanceOf(account)</div>
-                    <div>totalSupply()</div>
-                  </div>
+                <div className="flex-1 min-h-0 flex items-end">
+                  <UnderTheHood terms={['transfer()', 'approve()', 'balanceOf()', 'totalSupply()']} />
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {['USDC','DAI','UNI','WETH'].map(t => <span key={t} className="text-[11px] font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: '#6366f115', color: '#6366f1' }}>{t}</span>)}
@@ -763,15 +712,8 @@ export function SC_Section2() {
                   ))}
                 </div>
                 <p className="text-xs text-muted-foreground">{t('standards.erc721.desc')}</p>
-                <div className="rounded-lg bg-[#0d1117] p-2.5 flex-1 min-h-0">
-                  <div className="text-[9px] font-black uppercase tracking-widest text-muted-foreground mb-1">{t('standards.coreFunctions')}</div>
-                  <div className="font-mono text-[10px] leading-relaxed space-y-0.5" style={{ color: '#f97316' }}>
-                    <div>ownerOf(tokenId)</div>
-                    <div>transferFrom(from, to, tokenId)</div>
-                    <div>approve(to, tokenId)</div>
-                    <div>setApprovalForAll(op, bool)</div>
-                    <div>tokenURI(tokenId)</div>
-                  </div>
+                <div className="flex-1 min-h-0 flex items-end">
+                  <UnderTheHood terms={['ownerOf()', 'transferFrom()', 'tokenURI()']} />
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {['CryptoPunks','ENS',t('standards.erc721.tagTitleDeeds')].map(tag => <span key={tag} className="text-[11px] font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: '#f9731615', color: '#f97316' }}>{tag}</span>)}
@@ -798,15 +740,8 @@ export function SC_Section2() {
                   <div className="size-9 rounded-lg bg-[#f97316] text-white text-sm font-black flex items-center justify-center">★</div>
                 </div>
                 <p className="text-xs text-muted-foreground">{t('standards.erc1155.descA')}<em>{t('standards.erc1155.descEm')}</em>{t('standards.erc1155.descB')}</p>
-                <div className="rounded-lg bg-[#0d1117] p-2.5 flex-1 min-h-0">
-                  <div className="text-[9px] font-black uppercase tracking-widest text-muted-foreground mb-1">{t('standards.coreFunctions')}</div>
-                  <div className="font-mono text-[10px] leading-relaxed space-y-0.5" style={{ color: '#39B54A' }}>
-                    <div>balanceOf(account, id)</div>
-                    <div>balanceOfBatch(accounts, ids)</div>
-                    <div>safeTransferFrom(from, to, id, amt)</div>
-                    <div>safeBatchTransferFrom(…)</div>
-                    <div>setApprovalForAll(op, bool)</div>
-                  </div>
+                <div className="flex-1 min-h-0 flex items-end">
+                  <UnderTheHood terms={['balanceOfBatch()', 'safeBatchTransferFrom()']} />
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {[t('standards.erc1155.tagGameItems'),t('standards.erc1155.tagTickets'),t('standards.erc1155.tagEditions')].map(tag => <span key={tag} className="text-[11px] font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: '#39B54A15', color: '#39B54A' }}>{tag}</span>)}
@@ -820,6 +755,7 @@ export function SC_Section2() {
             <span className="font-bold text-[#6366f1]">{t('standards.footerLabel')}</span>
             <span className="text-muted-foreground">{t('standards.footerA')}<em>{t('standards.footerEm')}</em>{t('standards.footerB')}</span>
           </div>
+          <KeyPointBar text={t('keyPoints.s2-standards')} className="mt-3" />
         </div>
 
         {/* ═══════ ANATOMY ═══════ */}
@@ -890,9 +826,11 @@ export function SC_Section2() {
               <div className="p-3 bg-[#6366f1]/10 border border-[#6366f1]/30 rounded-xl text-xs text-muted-foreground">
                 <span className="font-semibold text-foreground">{t('components.platformLabel')}</span>{t('components.platformBody')}
               </div>
+              <UnderTheHood terms={['mapping', 'require()', 'emit', 'msg.sender', 'ABI']} />
             </div>
 
           </div>
+          <KeyPointBar text={t('keyPoints.s2-components')} className="mt-3" />
         </div>
 
         {/* ═══════ WORKFLOW ═══════ */}
@@ -926,6 +864,8 @@ export function SC_Section2() {
                 ))}
               </div>
 
+              <UnderTheHood terms={['bytecode', 'contract address', 'ABI', 'event log']} className="mb-3" />
+
               {/* Code illustration */}
               <div className="p-4 bg-card border border-border rounded-xl font-mono text-xs">
                 <div className="flex items-center gap-2 mb-3">
@@ -953,12 +893,16 @@ export function SC_Section2() {
               </div>
             </div>
           </div>
+          <KeyPointBar text={t('keyPoints.s2-workflow')} className="mt-3" />
         </div>
 
         {/* ═══════ READING SOLIDITY ═══════ */}
         <div id="s2-solidity" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-4">
-            <span className="text-xs font-black uppercase tracking-widest text-[#6366f1]">{t('solidity.kicker')}</span>
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="text-xs font-black uppercase tracking-widest text-[#6366f1]">{t('solidity.kicker')}</span>
+              <DeepDiveBadge label={t('optionalAdvanced', { ns: 'common' })} />
+            </div>
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1 mb-1">{t('solidity.heading')}</h2>
             <p className="text-sm text-muted-foreground">{t('solidity.subtitle')}</p>
           </div>
@@ -1020,6 +964,7 @@ export function SC_Section2() {
               ))}
             </div>
           </div>
+          <KeyPointBar text={t('keyPoints.s2-solidity')} className="mt-3" />
         </div>
 
         {/* ═══════ EXECUTION ENVIRONMENT ═══════ */}
@@ -1101,9 +1046,11 @@ export function SC_Section2() {
                   <span className="font-semibold text-foreground">{t('execution.deployLabel')}</span>{t('execution.deployBody')}
                 </div>
               </div>
+              <UnderTheHood terms={['EVM opcode', 'bytecode', 'finality', 'validator attestation']} />
             </div>
 
           </div>
+          <KeyPointBar text={t('keyPoints.s2-execution')} className="mt-3" />
         </div>
 
         {/* ═══════ NEW CAPABILITIES ═══════ */}
@@ -1113,7 +1060,7 @@ export function SC_Section2() {
             <p className="text-muted-foreground text-sm mt-1">{t('capabilities.subtitle')}</p>
           </div>
 
-          <div className="flex-1 min-h-0 flex flex-col gap-3">
+          <div className="flex-1 min-h-0 flex flex-col gap-2">
             {capabilityItems.map((c, i) => (
               <motion.div
                 key={c.title}
@@ -1121,7 +1068,7 @@ export function SC_Section2() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.25 }}
-                className="flex-1 flex items-center gap-4 p-4 rounded-xl border-2 bg-card"
+                className="flex-1 flex items-center gap-4 p-3 rounded-xl border-2 bg-card"
                 style={{ borderColor: capabilityMeta[i].color + '40' }}
               >
                 <div className="size-12 rounded-xl flex items-center justify-center text-2xl shrink-0" style={{ backgroundColor: capabilityMeta[i].color + '18' }}>{capabilityMeta[i].emoji}</div>
@@ -1131,52 +1078,17 @@ export function SC_Section2() {
                 </div>
                 <div className="hidden lg:block w-[34%] shrink-0">
                   <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">{t('capabilities.realExample')}</div>
-                  <div className="text-sm text-muted-foreground italic leading-snug p-2.5 rounded-lg" style={{ backgroundColor: capabilityMeta[i].color + '0d' }}>{c.example}</div>
+                  <div className="text-sm text-muted-foreground italic leading-snug p-2 rounded-lg" style={{ backgroundColor: capabilityMeta[i].color + '0d' }}>{c.example}</div>
                 </div>
               </motion.div>
             ))}
           </div>
+          <div className="shrink-0 mt-3 p-2.5 rounded-xl border border-border bg-muted/30 text-xs text-muted-foreground">
+            <span className="font-semibold text-foreground">{t('capabilities.whyLabel')}</span>{t('capabilities.whyBody')}
+          </div>
+          <KeyPointBar text={t('keyPoints.s2-capabilities')} className="mt-3" />
         </div>
 
-        {/* ═══════ WHY BUILD WITH SMART CONTRACTS? ═══════ */}
-        <div id="s2-why" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('why.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('why.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5 content-center">
-
-            {/* Column 1: Core reasons */}
-            <div className="flex flex-col gap-3">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('why.coreLabel')}</p>
-              {whyCore.map((r, i) => (
-                <div key={r.title} className="flex-1 flex gap-2.5 p-3 bg-card border border-border rounded-xl" style={{ borderColor: whyCoreMeta[i].color + '30' }}>
-                  <div className="size-8 rounded-lg flex items-center justify-center text-base shrink-0" style={{ backgroundColor: whyCoreMeta[i].color + '18' }}>{whyCoreMeta[i].emoji}</div>
-                  <div>
-                    <div className="font-bold text-xs mb-0.5" style={{ color: whyCoreMeta[i].color }}>{r.title}</div>
-                    <div className="text-xs text-muted-foreground leading-snug">{r.desc}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Column 2: Business impact */}
-            <div className="flex flex-col gap-3">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('why.impactLabel')}</p>
-              {whyImpact.map((r, i) => (
-                <div key={r.title} className="flex-1 flex gap-2.5 p-3 bg-card border border-border rounded-xl" style={{ borderColor: whyImpactMeta[i].color + '30' }}>
-                  <div className="size-8 rounded-lg flex items-center justify-center text-base shrink-0" style={{ backgroundColor: whyImpactMeta[i].color + '18' }}>{whyImpactMeta[i].emoji}</div>
-                  <div>
-                    <div className="font-bold text-xs mb-0.5" style={{ color: whyImpactMeta[i].color }}>{r.title}</div>
-                    <div className="text-xs text-muted-foreground leading-snug">{r.desc}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-          </div>
-        </div>
 
         {/* ═══════ GAS FUNDAMENTALS ═══════ */}
         <div id="s2-gas" className="h-full flex flex-col p-6 lg:p-10">
@@ -1209,6 +1121,7 @@ export function SC_Section2() {
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">{t('gas.formulaExample')}</div>
               </div>
+              <UnderTheHood terms={['gwei', 'base fee', 'priority tip', 'EIP-1559', 'L2 rollup']} />
             </div>
 
             {/* Right: why gas + economics */}
@@ -1242,11 +1155,15 @@ export function SC_Section2() {
             </div>
 
           </div>
+          <KeyPointBar text={t('keyPoints.s2-gas')} className="mt-3" />
         </div>
 
         {/* ═══════ EXERCISE: GAS RANKING ═══════ */}
-        <div id="s2-ex-gas" className="h-full">
-          <GasRankingExercise />
+        <div id="s2-ex-gas" className="h-full flex flex-col">
+          <div className="flex-1 min-h-0">
+            <GasRankingExercise />
+          </div>
+          <KeyPointBar text={t('keyPoints.s2-ex-gas')} className="mx-6 lg:mx-8 mb-6 -mt-3" />
         </div>
 
         {/* ═══════ RESHAPE BUSINESS ═══════ */}
@@ -1275,6 +1192,7 @@ export function SC_Section2() {
           <div className="shrink-0 mt-4 p-3 rounded-xl border border-border bg-muted/30 text-xs text-muted-foreground">
             <span className="font-semibold text-foreground">{t('reshape.patternLabel')}</span>{t('reshape.patternBody')}
           </div>
+          <KeyPointBar text={t('keyPoints.s2-reshape')} className="mt-3" />
         </div>
 
         {/* Quiz 1: Workflow */}
@@ -1293,32 +1211,6 @@ export function SC_Section2() {
           />
         </div>
 
-        {/* ═══════ SUMMARY ═══════ */}
-        <div id="s2-summary" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('summary.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('summary.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4 content-start">
-            {summaryCards.map((card, i) => (
-              <motion.div
-                key={card.title}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.08, duration: 0.3 }}
-                className="flex flex-col gap-2 p-4 rounded-2xl border bg-card"
-                style={{ borderColor: '#6366f130' }}
-              >
-                <div className="text-3xl">{summaryCardMeta[i]}</div>
-                <div className="font-bold text-sm text-foreground">{card.title}</div>
-                <div className="text-xs text-muted-foreground leading-relaxed">{card.summary}</div>
-              </motion.div>
-            ))}
-          </div>
-          <div className="shrink-0 mt-4 p-3 rounded-xl border border-border bg-card/50 text-center">
-            <span className="text-xs text-muted-foreground">{t('summary.footer')}</span>
-          </div>
-        </div>
 
         </div>
         <SiteFooter className="snap-start" />

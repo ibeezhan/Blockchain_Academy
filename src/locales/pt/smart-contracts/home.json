@@ -43,8 +43,8 @@
       "description": "Normas ERC, processo EIP, frameworks (Hardhat / Foundry), comparação de 17 plataformas, padrões de integração e desenvolvimento com IA."
     },
     "section7": {
-      "title": "Projeto de Equipa",
-      "description": "Desenha uma aplicação empresarial com smart contracts, mapeia os stakeholders, identifica riscos e apresenta o teu caso à turma."
+      "title": "In-class Assignment",
+      "description": "In small groups: pick a real-world problem, discuss it, and submit a one-page report — problem, proposed solution, and the pros & cons of using a blockchain."
     },
     "conclusion": {
       "title": "Conclusão",

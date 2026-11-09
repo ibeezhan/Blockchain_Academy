@@ -6,6 +6,8 @@ import { TakeawaySlide } from '../../components/templates/TakeawaySlide';
 import { QuizSlide } from '../../components/templates/QuizSlide';
 import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
+import { UnderTheHood } from '../../components/shared/UnderTheHood';
+import { KeyPointBar } from '../../components/shared/KeyPointBar';
 import { FileCode2, Check, X } from 'lucide-react';
 
 import imgSzaboVending from '../../../assets/sc/szabo-vending-machine.png';
@@ -15,23 +17,23 @@ const chapterIds = [
   's1-warmup',
   's1-recap',
   's1-what',
+  's1-exercise',
+  's1-hype',
   's1-szabo',
   's1-history',
-  's1-exercise',
   's1-quiz',
   's1-takeaways',
-  's1-summary',
 ] as const;
 
 
-// ─── Exercise: Is this a Smart Contract? ────────────────────────────────────
+// ─── Interactive: Contract or not? ──────────────────────────────────────────
 
-// Language-neutral data: only the boolean answer is fixed per scenario.
-const SCENARIO_ANSWERS = [true, true, false, true, false, true, false, true, false, true];
+// Language-neutral data: true = could run as a smart contract, false = needs a human / institution.
+const SCENARIO_ANSWERS = [true, false, true, false, false, true];
 
 interface Scenario { title: string; desc: string; reason: string; }
 
-function SmartContractSortingExercise() {
+function ContractOrNotExercise() {
   const { t } = useTranslation('smart-contracts/section-1');
   const scenarioText = t('exercise.scenarios', { returnObjects: true }) as Scenario[];
   const SCENARIOS = scenarioText.map((s, i) => ({ ...s, answer: SCENARIO_ANSWERS[i] }));
@@ -52,13 +54,10 @@ function SmartContractSortingExercise() {
 
   return (
     <div className="h-full flex flex-col p-6 lg:p-8">
-      {/* Header */}
       <div className="shrink-0 flex items-center justify-between mb-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#6366f1]/15 border border-[#6366f1]/40 text-[#6366f1] text-xs font-bold">{t('exercise.badge')}</span>
-          </div>
-          <h2 className="text-2xl font-bold text-foreground">{t('exercise.heading')}</h2>
+          <span className="px-2.5 py-0.5 rounded-full bg-[#6366f1]/15 border border-[#6366f1]/40 text-[#6366f1] text-xs font-bold">{t('exercise.badge')}</span>
+          <h2 className="text-2xl font-bold text-foreground mt-1">{t('exercise.heading')}</h2>
           <p className="text-muted-foreground text-sm mt-0.5">{t('exercise.subtitle')}</p>
         </div>
         <div className="flex items-center gap-4">
@@ -74,8 +73,7 @@ function SmartContractSortingExercise() {
         </div>
       </div>
 
-      {/* Grid */}
-      <div className="flex-1 min-h-0 grid grid-cols-5 grid-rows-2 gap-3">
+      <div className="flex-1 min-h-0 grid grid-cols-3 grid-rows-2 gap-3">
         {SCENARIOS.map((s, i) => {
           const picked  = answers[i];
           const isRight = picked === s.answer;
@@ -90,17 +88,15 @@ function SmartContractSortingExercise() {
                 backgroundColor: !isOpen ? 'var(--card)' : isRight ? '#39B54A10' : '#ED1C2410',
               }}
             >
-              {/* Card body */}
-              <div className="flex-1 p-4 flex flex-col gap-2">
-                <div className="font-black text-sm text-foreground leading-tight">{s.title}</div>
-                <div className="text-xs text-muted-foreground leading-snug flex-1">{s.desc}</div>
-
+              <div className="flex-1 p-4 flex flex-col gap-1.5">
+                <div className="font-black text-lg text-foreground leading-tight">{s.title}</div>
+                <div className="text-sm text-muted-foreground leading-snug">{s.desc}</div>
                 <AnimatePresence>
                   {isOpen && (
                     <motion.div
                       initial={{ opacity: 0, y: 4 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="text-xs leading-snug font-medium"
+                      className="text-sm leading-snug font-medium mt-auto"
                       style={{ color: isRight ? '#39B54A' : '#ED1C24' }}
                     >
                       {isRight ? '✓ ' : '✗ '}{s.reason}
@@ -109,16 +105,15 @@ function SmartContractSortingExercise() {
                 </AnimatePresence>
               </div>
 
-              {/* Buttons or result badge */}
               {!isOpen ? (
                 <div className="flex border-t border-border shrink-0">
                   <button
                     onClick={() => handlePick(i, true)}
-                    className="flex-1 py-2 text-sm font-black text-[#39B54A] hover:bg-[#39B54A]/15 transition-colors border-r border-border"
+                    className="flex-1 py-2 px-1 text-xs font-black text-[#39B54A] hover:bg-[#39B54A]/15 transition-colors border-r border-border"
                   >{t('exercise.yes')}</button>
                   <button
                     onClick={() => handlePick(i, false)}
-                    className="flex-1 py-2 text-sm font-black text-[#ED1C24] hover:bg-[#ED1C24]/15 transition-colors"
+                    className="flex-1 py-2 px-1 text-xs font-black text-[#ED1C24] hover:bg-[#ED1C24]/15 transition-colors"
                   >{t('exercise.no')}</button>
                 </div>
               ) : (
@@ -262,7 +257,14 @@ interface CompareRow { trad: string; smart: string; }
 interface WhyPoint { a: string; strong: string; b: string; }
 interface SzaboStep { label: string; detail: string; }
 interface HistoryEvent { year: string; tag: string; title: string; desc: string; }
-interface SummaryCard { title: string; summary: string; }
+interface HypeCard { title: string; body: string; }
+
+const HYPE_META = [
+  { emoji: '⚖️', color: '#ED1C24' },
+  { emoji: '🤖', color: '#f59e0b' },
+  { emoji: '⛽', color: '#8b5cf6' },
+  { emoji: '🔌', color: '#6366f1' },
+];
 
 export function SC_Section1() {
   const { t } = useTranslation('smart-contracts/section-1');
@@ -300,9 +302,8 @@ export function SC_Section1() {
 
   const takeawayItems = t('takeaways.items', { returnObjects: true }) as string[];
 
-  const summaryIcons = ['📜', '⛓️', '🌐', '✅', '⚠️', '🎯'];
-  const summaryText = t('summary.cards', { returnObjects: true }) as SummaryCard[];
-  const summaryCards = summaryText.map((c, i) => ({ ...c, icon: summaryIcons[i] }));
+  const hypeCards = t('hype.cards', { returnObjects: true }) as HypeCard[];
+  const hypeValue = t('hype.value', { returnObjects: true }) as string[];
 
   return (
     <div className="h-full w-full flex overflow-hidden">
@@ -322,8 +323,11 @@ export function SC_Section1() {
         </div>
 
         {/* ═══════ 0a. WARM-UP: BITCOIN vs ETHEREUM ═══════ */}
-        <div id="s1-warmup" className="h-full">
-          <BitcoinEthereumWarmup />
+        <div id="s1-warmup" className="h-full flex flex-col">
+          <div className="flex-1 min-h-0">
+            <BitcoinEthereumWarmup />
+          </div>
+          <KeyPointBar text={t('keyPoints.s1-warmup')} className="mx-6 lg:mx-8 mb-6 -mt-3" />
         </div>
 
         {/* ═══════ 0b. ETHEREUM RECAP (warm-up) ═══════ */}
@@ -358,6 +362,8 @@ export function SC_Section1() {
             <span className="font-bold text-[#6366f1]">{t('recap.footerLabel')}</span>
             <span className="text-muted-foreground">{t('recap.footerA')}<em>{t('recap.footerEm')}</em>{t('recap.footerB')}</span>
           </div>
+          <UnderTheHood terms={['EOA vs contract account', 'EVM', 'gas · gwei', 'nonce', 'state']} className="shrink-0 mt-2 justify-center" />
+          <KeyPointBar text={t('keyPoints.s1-recap')} className="mt-3" />
         </div>
 
         {/* ═══════ 1. WHAT IS A SMART CONTRACT ═══════ */}
@@ -392,6 +398,7 @@ export function SC_Section1() {
                   ))}
                 </div>
               </div>
+              <UnderTheHood terms={['Solidity', 'bytecode', 'deterministic', 'immutable address']} />
             </div>
 
             {/* Right: key properties */}
@@ -409,6 +416,61 @@ export function SC_Section1() {
             </div>
 
           </div>
+          <KeyPointBar text={t('keyPoints.s1-what')} className="mt-3" />
+        </div>
+
+        {/* ═══════ INTERACTIVE: CONTRACT OR NOT? ═══════ */}
+        <div id="s1-exercise" className="h-full flex flex-col">
+          <div className="flex-1 min-h-0">
+            <ContractOrNotExercise />
+          </div>
+          <KeyPointBar text={t('keyPoints.s1-exercise')} className="mx-6 lg:mx-8 mb-6 -mt-3" />
+        </div>
+
+        {/* ═══════ 1b. HYPE vs VALUE ═══════ */}
+        <div id="s1-hype" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-5">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('hype.heading')}</h2>
+            <p className="text-muted-foreground text-sm mt-1">{t('hype.subtitle')}</p>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-[1.5fr_1fr] gap-5">
+            <div className="grid grid-cols-2 gap-3 content-center">
+              {hypeCards.map((c, i) => {
+                const m = HYPE_META[i];
+                return (
+                  <motion.div
+                    key={c.title}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.07 }}
+                    className="p-4 rounded-xl border-2 flex flex-col gap-2"
+                    style={{ borderColor: m.color + '50', backgroundColor: m.color + '08' }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl">{m.emoji}</span>
+                      <div className="font-black text-base text-foreground">{c.title}</div>
+                    </div>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{c.body}</p>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            <div className="flex flex-col gap-3 justify-center">
+              <div className="flex-1 p-5 rounded-2xl border-2 border-[#39B54A]/50 bg-gradient-to-br from-[#39B54A]/12 to-transparent flex flex-col gap-3">
+                <div className="font-black text-base text-[#39B54A]">{t('hype.valueLabel')}</div>
+                <ul className="space-y-2.5 text-sm text-foreground/90 flex-1">
+                  {hypeValue.map((v, i) => (
+                    <li key={i} className="flex gap-2 leading-snug"><span className="text-[#39B54A] shrink-0 font-black">{i + 1}</span><span>{v}</span></li>
+                  ))}
+                </ul>
+                <div className="text-xs text-muted-foreground italic border-t border-[#39B54A]/30 pt-2">{t('hype.footer')}</div>
+              </div>
+              <UnderTheHood terms={['legal wrapper', 'oracle', 'admin key', 'front-end vs contract']} />
+            </div>
+          </div>
+          <KeyPointBar text={t('keyPoints.s1-hype')} className="mt-3" />
         </div>
 
         {/* ═══════ 2. NICK SZABO'S VENDING MACHINE ═══════ */}
@@ -469,6 +531,7 @@ export function SC_Section1() {
             </div>
 
           </div>
+          <KeyPointBar text={t('keyPoints.s1-szabo')} className="mt-3" />
         </div>
 
         {/* ═══════ 3. HISTORICAL EVOLUTION ═══════ */}
@@ -501,11 +564,8 @@ export function SC_Section1() {
               </motion.div>
             ))}
           </div>
-        </div>
-
-        {/* ═══════ EXERCISE ═══════ */}
-        <div id="s1-exercise" className="h-full">
-          <SmartContractSortingExercise />
+          <UnderTheHood terms={['Bitcoin Script', 'EVM', 'ERC-20', 'ERC-721', 'reentrancy']} className="shrink-0 mt-3" />
+          <KeyPointBar text={t('keyPoints.s1-history')} className="mt-3" />
         </div>
 
         {/* ═══════ QUIZ ═══════ */}
@@ -525,32 +585,6 @@ export function SC_Section1() {
           />
         </div>
 
-        {/* ═══════ SUMMARY ═══════ */}
-        <div id="s1-summary" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('summary.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('summary.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4 content-start">
-            {summaryCards.map((card, i) => (
-              <motion.div
-                key={card.title}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.08, duration: 0.3 }}
-                className="flex flex-col gap-2 p-4 rounded-2xl border bg-card"
-                style={{ borderColor: '#6366f130' }}
-              >
-                <div className="text-3xl">{card.icon}</div>
-                <div className="font-bold text-sm text-foreground">{card.title}</div>
-                <div className="text-xs text-muted-foreground leading-relaxed">{card.summary}</div>
-              </motion.div>
-            ))}
-          </div>
-          <div className="shrink-0 mt-4 p-3 rounded-xl border border-border bg-card/50 text-center">
-            <span className="text-xs text-muted-foreground">{t('summary.footer')}</span>
-          </div>
-        </div>
 
         </div>
         <SiteFooter className="snap-start" />

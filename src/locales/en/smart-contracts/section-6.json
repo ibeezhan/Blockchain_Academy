@@ -25,7 +25,7 @@
   "title": {
     "sectionNumber": "SECTION 06",
     "title": "Build & Integration",
-    "subtitle": "Standards, frameworks, platforms, and integration patterns for taking smart contracts to production"
+    "subtitle": "Optional developer material: standards, frameworks, platforms and integration patterns. Not covered in lecture."
   },
   "ercData": {
     "erc-20": {
@@ -46,7 +46,7 @@
     },
     "erc-1155": {
       "purpose": "Both fungible and non-fungible tokens in a single contract; ideal for gaming and batch transfers.",
-      "takeaway": "Efficient and flexible — batch transfers cut gas costs by 80–90%. Common in gaming/NFTs."
+      "takeaway": "Batch transfers cut gas costs substantially. Common in gaming and NFTs."
     }
   },
   "eipSteps": {
@@ -89,18 +89,18 @@
     "corda": { "type": "Permissioned", "language": "Kotlin, Java", "erc": "No ERC concept", "desc": "Finance-oriented. State machines, no global gossip." }
   },
   "ercExplorer": {
-    "badge": "🧩 Interactive",
+    "badge": "Interactive",
     "heading": "ERC Standards Explorer",
-    "subtitle": "Click any ERC to see its functions, events, and where it's used in the wild.",
+    "subtitle": "Click an ERC to see its functions, events and where it is used.",
     "purposeLabel": "Purpose",
     "functionsLabel": "Core functions",
     "eventsLabel": "Events",
     "examplesLabel": "Real examples in production",
     "takeawayLabel": "Key takeaway",
-    "specLink": "📄 Read the full {{name}} spec ↗"
+    "specLink": "Read the {{name}} spec"
   },
   "eipFlow": {
-    "badge": "🧩 Interactive",
+    "badge": "Interactive",
     "heading": "How an EIP becomes a standard",
     "subtitle": "From idea to network upgrade — click any step to see what happens.",
     "timelineLabel": "Process timeline",
@@ -108,7 +108,7 @@
     "timelineEnd": "network upgrade"
   },
   "fwCompare": {
-    "badge": "🧩 Interactive",
+    "badge": "Interactive",
     "heading": "Smart Contract Frameworks · Side by Side",
     "subtitle": "Click a row label to highlight that comparison dimension across all frameworks.",
     "rows": {
@@ -123,7 +123,7 @@
     }
   },
   "checklist": {
-    "badge": "🧩 Interactive",
+    "badge": "Interactive",
     "heading": "Platform Selection Checklist",
     "subtitle": "Toggle the requirements that matter for your use case. The top 5 matching platforms surface live.",
     "topMatches": "Top matches",
@@ -140,7 +140,7 @@
     }
   },
   "platformsTable": {
-    "badge": "🧩 Interactive",
+    "badge": "Interactive",
     "heading": "Platforms · Filter & Compare",
     "subtitle": "17 production platforms — filter by capability.",
     "filters": {
@@ -170,7 +170,7 @@
       { "name": "Governance modules", "items": ["Standard voting contracts", "Proposal patterns", "OpenZeppelin Governor"] }
     ],
     "whyLabel": "Why standards matter:",
-    "whyBody": " they enable interoperability with wallets, exchanges (CEX/DEX), DeFi protocols, marketplaces, and other dApps — by ensuring consistent behaviors and interfaces. Inheriting from a standard means your contract works \"out of the box\" with the entire ecosystem."
+    "whyBody": " a contract that follows a standard works with every wallet, exchange, marketplace and protocol that already supports it."
   },
   "ercExplain": {
     "heading": "What is an ERC?",
@@ -189,7 +189,7 @@
     ],
     "eipTerm": "EIP",
     "ercTerm": "ERC",
-    "browseLink": "📚 Browse all ERCs ↗"
+    "browseLink": "Browse all ERCs"
   },
   "ercEvolve": {
     "heading": "Why Standards Evolve",
@@ -200,21 +200,21 @@
       { "title": "Community innovation", "desc": "Anyone can submit an EIP. Community discussion through Magicians forum, GitHub, AllCoreDevs calls drives proposals to maturity." }
     ],
     "exampleLabel": "Real example:",
-    "exampleBody": " ERC-2981 (NFT royalty standard) was created because ERC-721 had no built-in mechanism for royalty enforcement. Artists were not getting paid on secondary sales. ERC-2981 standardized the royaltyInfo function so marketplaces could query and respect royalties automatically. The standard process took ~2 years from proposal to widespread adoption."
+    "exampleBody": " ERC-721 had no royalty mechanism, so artists were not paid on secondary sales. ERC-2981 standardised a royaltyInfo function that marketplaces can query. It took about two years from proposal to wide adoption, and payment still depends on marketplace policy."
   },
   "ercExample": {
     "heading": "ERC-20 in Solidity · OpenZeppelin",
-    "subtitle": "The audited, battle-tested way to deploy a fungible token.",
+    "subtitle": "The standard way to deploy a fungible token.",
     "fileName": "MyToken.sol",
     "givesYouTitle": "What this code gives you",
     "points": [
       { "label": "Importing", "desc": "import \"@openzeppelin/contracts/…/ERC20.sol\"; brings in all the audited functions, events, and behaviors of the ERC-20 standard." },
       { "label": "Inheriting", "desc": "contract MyToken is ERC20 — your contract follows the standard interface. Wallets, DEXs, block explorers all recognise it without configuration." },
       { "label": "Extending", "desc": "You can add custom logic on top — burn(), pause(), mint controls, transfer fees — by inheriting more OpenZeppelin modules." },
-      { "label": "Compatibility", "desc": "Because you inherit ERC-20 from OpenZeppelin, your token works out-of-the-box with wallets, DEXs, and indexers — no integrations to write." }
+      { "label": "Compatibility", "desc": "Works with wallets, DEXs and indexers without integration work." }
     ],
     "whyOzLabel": "Why use OpenZeppelin?",
-    "whyOzBody": " The contracts are audited, battle-tested in billions of dollars of value. Writing your own ERC-20 from scratch is a security risk you almost never need to take."
+    "whyOzBody": " The contracts are audited and secure billions of dollars in production. Writing your own ERC-20 is a risk you rarely need to take."
   },
   "frameworksIntro": {
     "heading": "Smart Contract Frameworks",
@@ -238,7 +238,7 @@
   },
   "tools": {
     "heading": "Useful Tools",
-    "subtitle": "Web-based playgrounds and learning resources every smart contract developer should know.",
+    "subtitle": "Browser playgrounds and learning resources.",
     "items": [
       { "name": "Remix IDE", "desc": "Browser-based Solidity IDE — write, compile, deploy, debug, all in your browser. Ideal for prototyping." },
       { "name": "Eth.build", "desc": "Visual sandbox for understanding Ethereum mechanics — drag-and-drop building of contract interactions." },
@@ -261,7 +261,7 @@
   "integrationIntro": {
     "heading": "Integration Best Practices",
     "subtitle": "Connecting smart contracts to existing systems without breaking either side.",
-    "lead": "Seamless integration is essential — existing software systems should keep operating efficiently while harnessing the benefits of automation, transparency, and trust. Five integration patterns dominate production deployments:",
+    "lead": "Existing systems must keep working while the contract is added. Five patterns cover most production deployments:",
     "patterns": [
       { "label": "Node infrastructure" },
       { "label": "API & middleware" },
@@ -289,7 +289,7 @@
       },
       {
         "title": "Hybrid",
-        "pros": ["Best of both worlds", "Provider for dev/staging", "Self-hosted for production validation", "Resilience via redundancy"],
+        "pros": ["Provider as fallback", "Provider for dev/staging", "Self-hosted for production validation", "Resilience via redundancy"],
         "cons": ["Two systems to maintain", "More complex deployment", "Sync logic between sources", "Higher initial setup cost"]
       }
     ],
@@ -389,16 +389,16 @@
   "aiDev": {
     "heading": "AI-Driven Smart Contract Development",
     "subtitle": "Use AI tools where they shine — and know where they don't belong.",
-    "helpsTitle": "✓ Where AI helps",
+    "helpsTitle": "Where AI helps",
     "helps": [
       { "label": "Ideation:", "text": " brainstorm contract designs, explore alternatives" },
       { "label": "Documentation:", "text": " generate NatSpec, README, function docs" },
       { "label": "Project overview / business plan:", "text": " structure, edit, polish" },
       { "label": "Prototyping:", "text": " Remix + ChatGPT for quick PoCs and learning" },
-      { "label": "Coding agents", "text": " (Codex, Claude Code) for actual implementation work — much better than chat" }
+      { "label": "Coding agents", "text": " (Codex, Claude Code) for implementation work" }
     ],
     "helpsFooter": "Use AI as a faster way to learn, prototype, and document. Treat its output as a draft.",
-    "notTitle": "✗ Where AI does NOT belong",
+    "notTitle": "Where AI does not belong",
     "not": [
       { "label": "Production smart contracts", "text": " without expert review and audit" },
       { "label": "Security-critical logic", "text": " — AI hallucinates plausible-looking but vulnerable code" },
@@ -413,7 +413,7 @@
     "items": [
       "Standards (ERC-20/721/777/1155/2981) make contracts interoperable with the entire wallet/exchange/marketplace ecosystem",
       "EIP process is open: anyone can propose; community + clients + AllCoreDevs decide. From idea to network upgrade can take months to years",
-      "Use OpenZeppelin contracts as your base — audited, battle-tested, save you from rolling your own ERC-20",
+      "Use OpenZeppelin contracts as the base; they are audited and widely used",
       "Hardhat / Foundry are the dominant frameworks for EVM. Foundry is fastest; Hardhat is most extensible. Brownie/Truffle are legacy. Anchor for Solana",
       "Free tools to know: remix.ethereum.org · eth.build · speedrunethereum.com · scaffoldeth.io",
       "Platform selection is multi-dimensional: EVM compatibility · public vs permissioned · throughput · cost · ecosystem · regulatory fit",
@@ -430,5 +430,9 @@
       "Cardano — formal verification focus, Plutus/Marlowe for finance."
     ],
     "explanation": "The use case has 4 specific constraints: full ERC support (rules out non-EVM Solana, Cardano, Hyperledger Fabric), low gas (rules out Ethereum L1 mainnet for frequent distributions), OpenZeppelin compatibility (favors EVM), and EU regulatory fit (favors public chains with MiCA-compliant pathways). Polygon, Arbitrum, and Base all check every box. Hyperledger Fabric is great for enterprise but has zero ERC support and would force you to rebuild every standard. Solana is fast but requires Rust + custom token standards. Cardano's tooling is less mature for tokenized real-estate. The answer is an EVM-compatible L2."
+  },
+  "optionalNote": {
+    "label": "Optional section.",
+    "body": " Nothing here is required for the in-class assignment. Skim the Platform Checklist and the On vs Off-Chain slide if you want the two most useful pieces for a business reader."
   }
 }

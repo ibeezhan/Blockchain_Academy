@@ -430,5 +430,9 @@
       "Cardano — foco em verificação formal, Plutus/Marlowe para finanças."
     ],
     "explanation": "O caso de uso tem 4 restrições específicas: suporte completo de ERC (exclui as não-EVM Solana, Cardano, Hyperledger Fabric), gas baixo (exclui a mainnet L1 da Ethereum para distribuições frequentes), compatibilidade com OpenZeppelin (favorece EVM) e encaixe regulatório da UE (favorece chains públicas com caminhos compatíveis com MiCA). Polygon, Arbitrum e Base satisfazem todos os critérios. A Hyperledger Fabric é ótima para o setor empresarial mas tem zero suporte de ERC e obrigar-te-ia a reconstruir cada standard. A Solana é rápida mas exige Rust + standards de token personalizados. As ferramentas da Cardano são menos maduras para imobiliário tokenizado. A resposta é uma L2 compatível com EVM."
+  },
+  "optionalNote": {
+    "label": "Optional section.",
+    "body": " Nothing here is required for the in-class assignment. Skim the Platform Checklist and the On vs Off-Chain slide if you want the two most useful pieces for a business reader."
   }
 }

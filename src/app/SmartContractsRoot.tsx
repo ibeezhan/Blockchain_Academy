@@ -20,7 +20,7 @@ export function SmartContractsRoot() {
     { id: '4',    number: '04', label: t('sections.criticalThinking'),   path: `${BASE}/section-4` },
     { id: '5',    number: '05', label: t('sections.limitations'),        path: `${BASE}/section-5` },
     { id: '6',    number: '06', label: t('sections.build'),              path: `${BASE}/section-6` },
-    { id: '7',    number: '07', label: t('sections.teamProject'),        path: `${BASE}/section-7` },
+    { id: '7',    number: '07', label: t('sections.inClassAssignment'),        path: `${BASE}/section-7` },
     { id: 'end',  number: '🏁', label: t('sections.conclusion'),         path: `${BASE}/conclusion` },
     { id: 'bib',  number: '📖', label: t('sections.bibliography'),       path: `${BASE}/bibliography` },
   ];

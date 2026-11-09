@@ -6,6 +6,7 @@ import { TakeawaySlide } from '../../components/templates/TakeawaySlide';
 import { QuizSlide } from '../../components/templates/QuizSlide';
 import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
+import { DeepDiveBadge } from '../../components/shared/DeepDiveBadge';
 import { Wrench } from 'lucide-react';
 
 // Language-neutral shape — only IDs. Labels come from t() at render time.
@@ -564,8 +565,12 @@ export function SC_Section6() {
         {/* ═══════ STANDARDS INTRO ═══════ */}
         <div id="s6-standards-intro" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-5">
+            <div className="mb-2"><DeepDiveBadge label={t('optionalAdvanced', { ns: 'common' })} /></div>
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('standardsIntro.heading')}</h2>
             <p className="text-muted-foreground text-sm mt-1">{t('standardsIntro.subtitle')}</p>
+            <div className="mt-3 p-2.5 rounded-xl border border-[#8b5cf6]/30 text-xs text-muted-foreground" style={{ backgroundColor: '#8b5cf60f' }}>
+              <span className="font-bold text-[#8b5cf6]">{t('optionalNote.label')}</span>{t('optionalNote.body')}
+            </div>
           </div>
           <div className="flex-1 min-h-0 grid grid-cols-3 gap-4 content-center">
             {standardsCards.map((c, ci) => {

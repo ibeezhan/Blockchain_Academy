@@ -1,242 +1,235 @@
 {
   "groups": {
-    "g-brief": "🎯 Briefing",
-    "g-plan": "📋 O Plano",
-    "g-submit": "📊 Fecho"
+    "g-brief": "🎯 The Assignment",
+    "g-work": "🛠 Work Session",
+    "g-wrap": "💬 Wrap"
   },
   "chapters": {
-    "s7-overview": "Visão Geral & Calendário",
-    "s7-p1-analysis": "Parte 1 · Análise",
-    "s7-p2-technical": "Parte 2 · Técnica",
-    "s7-p3-governance": "Parte 3 · Governação",
-    "s7-p4-roadmap": "Parte 4 · Roadmap",
-    "s7-evaluation": "Avaliação & Entrega",
-    "s7-quiz": "Quiz"
+    "s7-brief": "At a Glance",
+    "s7-three-parts": "The Three Parts",
+    "s7-problem-bank": "🧩 Problem Starters",
+    "s7-lens": "🧩 Blockchain Lens",
+    "s7-report": "The 1-Page Report",
+    "s7-discussion": "Class Discussion",
+    "s7-rubric": "How It's Assessed"
   },
   "title": {
-    "sectionNumber": "SECÇÃO 07",
-    "title": "Projeto de Equipa",
-    "subtitle": "Desenha uma aplicação de negócio com smart contracts — desde o enunciado do problema, passando pelo desenho técnico, até a um PDF entregável e a uma apresentação."
+    "sectionNumber": "SECTION 07",
+    "title": "In-class Assignment & Discussion",
+    "subtitle": "Pick a real-world problem, debate it in small groups, and argue — in one page — whether it deserves a blockchain."
   },
-  "timeline": {
+  "brief": {
+    "badge": "In-class assignment",
+    "heading": "The assignment at a glance",
+    "subtitle": "A consulting exercise, not a coding one. Your job is to think clearly about a real problem and give an honest recommendation.",
+    "linkLine": "This is the second of two graded in-class assignments; the first was in Fundamentals §3.",
+    "stats": [
+      { "label": "Groups", "value": "3–4 people", "note": "form them in the room" },
+      { "label": "Time in class", "value": "~45 min", "note": "discussion + drafting" },
+      { "label": "Deliverable", "value": "1 page max", "note": "PDF · exactly three parts" },
+      { "label": "Weight", "value": "In-class", "note": "one of the course's two in-class assignments" }
+    ],
+    "flowLabel": "How the session runs",
+    "flow": [
+      { "step": "Form groups & pick a problem", "time": "10 min", "desc": "Use a starter from the next slide or bring a problem from your own work or studies." },
+      { "step": "Discuss & draft", "time": "25 min", "desc": "Work through the three parts. Run the blockchain lens. Disagree — then write down why." },
+      { "step": "Share back", "time": "2 min / group", "desc": "One sentence per part. The class pushes back; you refine." },
+      { "step": "Submit the 1-pager", "time": "end of session", "desc": "PDF, one page, group names at the top. Your instructor confirms the exact deadline." }
+    ],
+    "mindsetLabel": "The mindset:",
+    "mindsetBody": " you are the consultant a company hired to tell them whether blockchain is worth it. \"No, and here is why\" is a perfectly good answer — if it is well argued."
+  },
+  "parts": {
+    "heading": "Exactly three parts — nothing else",
+    "subtitle": "A reader with five minutes should get the problem, the proposal, and an honest verdict. Headings in the report must match these three.",
+    "wordsLabel": "≈ {{words}} words",
     "items": [
-      { "date": "26 de maio de 2026", "label": "Apresentação do projeto + Q&A" },
-      { "date": "28 de maio de 2026", "label": "Material de leitura + Q&A do projeto" },
-      { "date": "2 de junho de 2026", "label": "Desenvolvimento com IA na prática" },
-      { "date": "5 de junho de 2026", "label": "Apresentações iniciais do projeto + Q&A" },
-      { "date": "9 de junho de 2026", "label": "Apresentações finais + entrega" }
-    ]
-  },
-  "overview": {
-    "heading": "Visão Geral do Projeto",
-    "subtitle": "Identifica um problema do mundo real, avalia se a blockchain é a ferramenta certa e desenha uma solução com smart contracts. Integra os cinco cursos da Academia.",
-    "teamSizeLabel": "Dimensão da equipa",
-    "teamSizeValue": "3 a 4 membros",
-    "deliverableLabel": "Entregável",
-    "deliverableValue": "PDF de 3 a 5 páginas",
-    "deliverableNote": "+ apresentação de 5 min",
-    "integratesTitle": "Este projeto integra",
-    "integrates": [
-      "Fundamentos de Blockchain — conceitos centrais e modelos de confiança",
-      "Aplicações de Negócio dos Smart Contracts — desenho e framework de decisão",
-      "Plataformas Blockchain — escolher a chain certa para o teu caso de uso",
-      "Governação e Conformidade — governação legal, regulatória e on-chain",
-      "Gestão de Projeto para Iniciativas Blockchain — transformar um desenho num roadmap"
-    ],
-    "mindsetLabel": "A mentalidade:",
-    "mindsetBody": " pensa como empreendedores e consultores de blockchain. Identifica oportunidades reais, desenha soluções viáveis, navega os compromissos entre tecnologia, negócio e regulação.",
-    "sessionsLabel": "Sessões online · 18h–20h",
-    "deadlineLabel": "Prazo:",
-    "deadlineBodyA": " as entregas encerram a ",
-    "deadlineDate": "10 de junho de 2026",
-    "deadlineBodyB": "."
-  },
-  "p1": {
-    "partLabel": "Parte 1 de 4",
-    "heading": "Definição & Análise do Problema",
-    "subtitle": "Antes de desenhares seja o que for, prova que existe um problema real que vale a pena resolver — e que a blockchain é a ferramenta certa para ele.",
-    "cards": [
       {
-        "title": "Enunciado do Problema",
-        "items": [
-          "Que problema de negócio específico estás a resolver? Sê preciso — nomeia os atores, a atividade, o atrito.",
-          "Quais são os pontos de dor na solução ou processo atual?",
-          "Quem sofre estes pontos de dor e com que frequência?"
+        "num": "1",
+        "title": "Problem statement",
+        "words": "120",
+        "lead": "What is broken today, for whom, and why?",
+        "prompts": [
+          "Who are the actors — and which of them do the others have to trust?",
+          "Where exactly is the friction: time, cost, fraud, disputes, opacity?",
+          "How is it handled today, and what does that cost (money, days, errors)?",
+          "One concrete scenario beats three abstract ones."
         ]
       },
       {
-        "title": "Análise do Estado Atual",
-        "items": [
-          "Como é que este problema é abordado hoje (se é que é)?",
-          "Que ineficiências, custos ou problemas de confiança existem na abordagem atual?",
-          "Quantifica sempre que possível — custo, tempo, taxas de erro, horas manuais."
+        "num": "2",
+        "title": "Proposed solution",
+        "words": "150",
+        "lead": "What would a smart-contract-based design do — in plain language?",
+        "prompts": [
+          "What triggers the contract, and what does it do when triggered?",
+          "What lives on-chain (ownership, votes, hashes) and what stays off-chain (documents, personal data)?",
+          "Who operates it: a company, a consortium, a DAO? Public or permissioned chain?",
+          "Which course examples is it closest to — and how does it differ?"
         ]
       },
       {
-        "title": "Proposta de Valor da Blockchain & dos SC",
-        "items": [
-          "Que valor acrescenta um smart contract face a um sistema tradicional?",
-          "valueFramework",
-          "Justifica porque é que a blockchain é a solução certa — ou assinala honestamente os compromissos se for um caso limítrofe."
-        ]
-      },
-      {
-        "title": "Mapeamento de Stakeholders",
-        "items": [
-          "Quem são todos os stakeholders? Quem beneficia — e em que medida?",
-          "Quem é desestabilizado ou perde? Como vão reagir?",
-          "Que incentivos alinham (ou desalinham) o comportamento dos participantes?",
-          "Modelo de receita — taxas de transação, subscrição, economia de tokens ou híbrido?",
-          "Vantagem competitiva e defensabilidade — porquê a tua equipa, porquê agora?"
+        "num": "3",
+        "title": "Pros & cons of using a blockchain",
+        "words": "150",
+        "lead": "Would this actually be better than a well-run database?",
+        "prompts": [
+          "At least two genuine advantages and two genuine disadvantages.",
+          "Cost, privacy, governance, legal recognition, user experience — pick the ones that bite here.",
+          "What would the non-blockchain alternative look like, and why is it worse (or better)?",
+          "End with a verdict: ✅ smart contract · ⚠️ hybrid · ❌ database — in one sentence."
         ]
       }
     ],
-    "valueFramework": {
-      "lead": "Passa-o pela framework de decisão: isto exige ",
-      "trustless": "execução sem necessidade de confiança",
-      "sep1": ", ",
-      "transparency": "transparência",
-      "sep2": ", ",
-      "immutability": "imutabilidade",
-      "sep3": " ou ",
-      "automated": "imposição automatizada",
-      "tail": "?"
-    }
+    "footer": "Diagrams count toward the page. Appendices do not exist. If it doesn't fit on one page, it isn't sharp enough yet."
   },
-  "p2": {
-    "partLabel": "Parte 2 de 4",
-    "heading": "Desenho Técnico",
-    "subtitle": "Escolhe uma plataforma com uma justificação defensável, esboça o sistema de smart contracts e identifica onde vive cada dado.",
-    "platform": {
-      "title": "Seleção de Plataforma",
-      "item1": "Que plataforma blockchain? Ethereum, Polygon, Arbitrum, Solana, Hyperledger Fabric, Corda…",
-      "item2Strong": "Pública vs privada/consórcio",
-      "item2": " — toma a decisão e defende-a.",
-      "item3A": "Justifica face a: ",
-      "item3Em": "velocidade de transação · custo · segurança · maturidade do ecossistema · adequação ao caso de uso",
-      "item3B": ".",
-      "item4A": "Não digas apenas \"Ethereum\" — explica porque é melhor que as duas alternativas seguintes para o ",
-      "item4Em": "teu",
-      "item4B": " problema.",
-      "tipLabel": "Dica:",
-      "tipBody": " reaproveita o interativo de checklist de plataforma (Secção 6) — o teu veredito é a tua resposta aqui."
+  "problemBank": {
+    "badge": "🧩 Problem starters",
+    "heading": "Pick a problem — or bring your own",
+    "subtitle": "Click a card to see the actors, the friction, one blockchain angle and one honest alternative. Use them as a springboard, not an answer key.",
+    "selectPrompt": "Select a problem to see the starter notes",
+    "actorsLabel": "Actors",
+    "frictionLabel": "Where trust breaks today",
+    "angleLabel": "A blockchain angle",
+    "alternativeLabel": "The honest alternative",
+    "ownLabel": "Bring your own:",
+    "ownBody": " any problem where several parties exchange value or records and at least one of them is not fully trusted. Your workplace, your sports club, your student association — all fair game.",
+    "items": [
+      {
+        "title": "Diploma verification",
+        "sector": "Education",
+        "actors": "Universities · graduates · employers · background-check firms",
+        "friction": "Employers e-mail registrars and wait days; fake diplomas are a multi-billion-dollar market; students don't control their own record.",
+        "angle": "The university anchors a hash of each diploma on-chain; the graduate holds the credential; anyone verifies in seconds (MIT Blockcerts, Section 3).",
+        "alternative": "A national verification API run by the ministry of education — cheaper, but it makes the ministry the single point of trust and failure."
+      },
+      {
+        "title": "Concert ticket scalping",
+        "sector": "Entertainment",
+        "actors": "Artist · promoter · ticketing platform · fans · resellers",
+        "friction": "Bots buy out drops in seconds; resale prices explode; the artist earns nothing on resale; fakes are common at the door.",
+        "angle": "Tickets as NFTs with resale rules in the contract — price caps, identity-bound transfers, a cut to the artist on every resale (GET Protocol).",
+        "alternative": "A centralised platform can already cap resale prices (Ticketmaster does). The blockchain adds portability and auditability — is that worth wallets for fans?"
+      },
+      {
+        "title": "Cross-border tuition & remittances",
+        "sector": "Payments",
+        "actors": "International students or migrant workers · their families · banks on both sides · the university or landlord",
+        "friction": "3–5 days, 5–8% in fees and FX spread, no visibility on where the money is.",
+        "angle": "Stablecoins over an L2 settle in seconds for cents; the university accepts USDC or converts on arrival (Section 3 · Borderless).",
+        "alternative": "Fintech rails (Wise, SEPA Instant) already do this cheaply in many corridors — the case is strongest where banking access is poor."
+      },
+      {
+        "title": "Charity donation transparency",
+        "sector": "Non-profit",
+        "actors": "Donors · the charity · field partners · auditors · regulators",
+        "friction": "Donors can't see what happened to their money; overhead ratios are disputed; trust collapses after each scandal.",
+        "angle": "Donations and disbursements flow through a transparent treasury contract; every payment is public; milestone-based release (DAO-style, Section 3).",
+        "alternative": "Published audited accounts. Cheaper and legally recognised — but slower, less granular, and still based on trusting the auditor."
+      },
+      {
+        "title": "Carbon credit double counting",
+        "sector": "Sustainability",
+        "actors": "Project developers · registries · brokers · corporate buyers · verifiers",
+        "friction": "The same credit can be sold twice across registries; retirement is hard to prove; provenance is opaque.",
+        "angle": "Each credit is a unique token; retiring it burns it; the full chain of custody is public (tokenised credits, Section 3 · RWA).",
+        "alternative": "A single global registry with an API. The real problem is bad or fraudulent measurement at the source — which no ledger fixes."
+      },
+      {
+        "title": "Baby-formula recall",
+        "sector": "Food supply chain",
+        "actors": "Manufacturer · distributors · retailers · regulators · parents",
+        "friction": "Tracing one contaminated batch to shelves takes days; whole product lines get pulled; blame is disputed.",
+        "angle": "Every hand-off recorded on a permissioned chain; recall scope found in seconds (Walmart Food Trust, Section 3).",
+        "alternative": "A shared database run by the industry association. Works if everyone trusts the association — the question is whether they do."
+      },
+      {
+        "title": "Freelancer escrow",
+        "sector": "Gig economy",
+        "actors": "Freelancer · client · platform · dispute arbitrators",
+        "friction": "Clients ghost after delivery; freelancers deliver nothing after deposit; platforms take 10–20% and freeze funds for weeks.",
+        "angle": "Funds locked in an escrow contract; released on client approval or by a vote of arbitrators; fees fall to a few percent.",
+        "alternative": "Existing platforms are escrow already. The contract removes the platform's discretion — and its customer support. Who settles a messy dispute?"
+      },
+      {
+        "title": "Group-buying a rare asset",
+        "sector": "Collective ownership",
+        "actors": "Thousands of small contributors · an auction house · a custodian · a legal entity",
+        "friction": "Pooling money fast across strangers is hard; deciding what happens after is harder (ConstitutionDAO, Section 3).",
+        "angle": "A DAO treasury collects funds in days; token holders vote on custody, display, resale; exit rights protect minorities.",
+        "alternative": "A fund or cooperative with a lawyer. Slower, but it can actually own the asset. What happens when the DAO loses the auction?"
+      }
+    ]
+  },
+  "lens": {
+    "badge": "🧩 Critical lens",
+    "heading": "Should this problem earn a blockchain?",
+    "subtitle": "Tick what is true for your group's problem. The verdict updates live — bring it to Part 3 of your report.",
+    "checks": [
+      { "label": "Several parties are involved who do not fully trust each other", "hint": "If one party is trusted by all, a database wins." },
+      { "label": "They need one shared record that no single party controls", "hint": "Shared truth is the core thing a blockchain sells." },
+      { "label": "The rules are simple and stable enough to write as code", "hint": "If the policy changes monthly, immutability hurts." },
+      { "label": "The data can be public or hashed — no raw personal data on-chain", "hint": "GDPR and trade secrets conflict with public ledgers." },
+      { "label": "The current intermediary is expensive, slow or a real fraud risk", "hint": "Disintermediation must save something measurable." },
+      { "label": "Users can live with wallets — or you can hide them behind an app", "hint": "Wallet UX is still the number-one adoption killer." }
+    ],
+    "scoreLabel": "{{count}} of {{total}} ticked",
+    "verdicts": {
+      "sc": { "title": "✅ Strong case for a smart contract", "desc": "Multi-party, shared truth, stable rules. Your Part 3 should still name the two biggest risks — audits and governance." },
+      "hybrid": { "title": "⚠️ Hybrid — justify every on-chain piece", "desc": "Some of the pattern fits. Most real deployments live here: hashes or ownership on-chain, data and discretion off-chain." },
+      "db": { "title": "❌ Probably a database", "desc": "A well-run database with audit logs is cheaper, faster and legally clearer. Saying so, with reasons, is a strong report." }
     },
-    "architecture": {
-      "title": "Arquitetura do Smart Contract",
-      "item1A": "Desenho de alto nível da tua dApp / sistema de contratos — ",
-      "item1Strong": "diagramas são bem-vindos",
-      "item1B": ".",
-      "item2": "Que dados precisa o contrato? O que fica on-chain vs alimentado por oracle vs off-chain?",
-      "item3": "Eventos de gatilho, variáveis de estado, funções-chave — mostra a forma, não tens de escrever o código.",
-      "item4": "Considerações de segurança: reentrância? dependências de oracle? controlo de acessos? front-running? Aborda-as explicitamente.",
-      "bonusLabel": "Bónus:",
-      "bonusBody": " um contrato em pseudocódigo ou um esboço real em Solidity no anexo é bem pontuado."
-    }
+    "reset": "↺ Reset",
+    "footnote": "This is a conversation starter, not a formula. Section 4's decision tree is the full version — use both."
   },
-  "p3": {
-    "partLabel": "Parte 3 de 4",
-    "heading": "Governação & Conformidade",
-    "subtitle": "Os smart contracts combinam código e lei. Explica como as decisões são tomadas, que regulamentos se aplicam e que riscos estás a assumir.",
-    "cards": [
-      {
-        "title": "Framework de Governação",
-        "intro": "Decide como o sistema se conduz a si próprio depois de estar em produção.",
-        "points": [
-          "Como é governado o sistema de contratos no dia a dia?",
-          "On-chain vs off-chain — que decisões vivem onde?",
-          "DAOs, multisigs ou governação tradicional — qual encaixa?",
-          "Quem pode atualizar ou pausar o contrato e sob que controlos?"
-        ]
-      },
-      {
-        "title": "Regulatório & Legal",
-        "intro": "Mapeia as regras que se aplicam antes que te mordam.",
-        "points": [
-          "Jurisdição — onde vivem os utilizadores e os dados?",
-          "Regulamentos aplicáveis: MiCA, lei dos valores mobiliários, AML / KYC, regras setoriais.",
-          "Viabilidade legal hoje — que licenças ou aprovações são necessárias?",
-          "RGPD se tocares em dados pessoais — guarda hashes, não campos em bruto."
-        ]
-      },
-      {
-        "title": "Avaliação de Risco",
-        "intro": "Nomeia o que pode correr mal — em três camadas.",
-        "points": [
-          "Técnico · bugs no contrato, falhas de oracle, congestionamento, perda de chaves.",
-          "Negócio · adoção, concorrência, mudança regulatória, timing de mercado.",
-          "Operacional · dependências da equipa, custódia, resposta a incidentes.",
-          "Para cada linha: probabilidade × impacto + um plano de mitigação."
-        ]
-      }
+  "report": {
+    "heading": "The 1-page report",
+    "subtitle": "A template you can copy. Three headings, a verdict line, your names. Nothing else.",
+    "pageTitle": "Smart Contracts · In-class Assignment",
+    "pageGroup": "Group: names · date",
+    "pageProblemTitle": "1 · Problem statement",
+    "pageSolutionTitle": "2 · Proposed solution",
+    "pageProsConsTitle": "3 · Pros & cons of using a blockchain",
+    "pageProsLabel": "Pros",
+    "pageConsLabel": "Cons",
+    "pageVerdictLabel": "Verdict:",
+    "pageVerdictPlaceholder": "✅ / ⚠️ / ❌ — one sentence",
+    "submissionLabel": "Submission",
+    "submission": [
+      { "label": "Format", "value": "PDF", "note": "one page, portrait" },
+      { "label": "Length", "value": "1 page max", "note": "diagrams count; appendices don't exist" },
+      { "label": "Names", "value": "All group members", "note": "at the top of the page" },
+      { "label": "Due", "value": "End of session", "note": "unless your instructor says otherwise" }
+    ],
+    "strongLabel": "A strong report…",
+    "strong": [
+      "Names the actors and says which one is not trusted — in the first three lines.",
+      "Describes what the contract does in plain language. No code, no jargon without a gloss.",
+      "Puts data where it belongs: ownership and rules on-chain, personal data and documents off.",
+      "Gives at least two honest cons — cost, privacy, governance, user experience.",
+      "Ends with a verdict a sceptical CFO could repeat in one sentence.",
+      "Cites at least one real case from this course (success or failure) as a reference point."
     ]
   },
-  "p4": {
-    "partLabel": "Parte 4 de 4",
-    "heading": "Roadmap de Implementação",
-    "subtitle": "Transforma o desenho num plano por fases. Não precisamos de datas de calendário — precisamos de saber que pensaste sobre o que vem primeiro, o que depende de quê e como medirias o sucesso.",
-    "phasedPlanLabel": "Plano por fases",
-    "phases": [
-      { "tag": "MVP", "desc": "A menor versão que prova a proposta de valor. Um caso de uso, âmbito restrito, recursos manuais permitidos." },
-      { "tag": "v1", "desc": "Núcleo pronto para produção. Contrato auditado, UI básica, utilizadores reais, monitorização e resposta a incidentes." },
-      { "tag": "Full", "desc": "Produto completo em funcionalidades. Integrações com sistemas adjacentes, governação ativa, ganchos de ecossistema (oracles, indexadores, marketplaces)." }
-    ],
-    "eachPhaseLabel": "Para cada fase:",
-    "eachPhaseBodyA": " marcos principais, dependências entre eles, recursos necessários (composição da equipa + competências) e uma ",
-    "eachPhaseStrong": "estimativa de esforço",
-    "eachPhaseBodyB": " (pequeno / médio / grande — sem datas de calendário necessárias).",
-    "metricsLabel": "Métricas de sucesso",
-    "metricsIntro": "Como vais saber que cada fase teve sucesso? Escolhe métricas que mapeiem diretamente para os pontos de dor da Parte 1.",
-    "metrics": [
-      "Tempo até à ação (dias → minutos)",
-      "Custo por transação ou por disputa",
-      "Taxa de erro / fraude",
-      "Número de participantes / carteiras ativas",
-      "TVL ou valor a fluir pelo contrato",
-      "Achados de auditoria fechados"
-    ],
-    "metricsTip": "Escolhe 2 a 3 — não 10. Torna-as mensuráveis."
+  "discussion": {
+    "prompt": "Which of today's problems genuinely needs a blockchain — and which just needs a better database?",
+    "questions": [
+      "Where did your group disagree most: the problem, the solution, or the verdict? What evidence would settle it?",
+      "For a ❌ verdict: what would have to change (regulation, user tools, cost) for it to become ✅?",
+      "For a ✅ verdict: who runs it, who pays the gas, and who gets blamed when it goes wrong?",
+      "Which real case from the course does your problem most resemble — Estonia, Walmart, The DAO, ASX, TradeLens, ConstitutionDAO?"
+    ]
   },
-  "evaluation": {
-    "heading": "Avaliação & Entrega",
-    "subtitle": "Como avaliamos o projeto — e exatamente o que entregar.",
-    "criteriaLabel": "Critérios de avaliação",
+  "rubric": {
+    "heading": "How it's assessed",
+    "subtitle": "Four equal criteria. Critical thinking is rewarded as much as enthusiasm — a well-argued \"no\" scores as high as a well-argued \"yes\".",
     "criteria": [
-      { "label": "Adequação Problema-Solução", "weight": "20%", "sub": "A blockchain é genuinamente a solução certa? O problema está claramente definido?" },
-      { "label": "Realismo de Implementação & Solidez Técnica", "weight": "20%", "sub": "O roadmap é exequível? Os riscos estão devidamente avaliados? A arquitetura é sólida?" },
-      { "label": "Viabilidade de Negócio", "weight": "20%", "sub": "Caminho claro para a criação de valor e sustentabilidade. Bónus: plano de negócio & estratégia de entrada no mercado." },
-      { "label": "Governação & Conformidade", "weight": "15%", "sub": "Considerações legais e de governação adequadamente abordadas." },
-      { "label": "Qualidade da Apresentação", "weight": "15%", "sub": "Documento bem estruturado, claro, profissional." },
-      { "label": "Análise de Stakeholders", "weight": "10%", "sub": "Todos os stakeholders identificados com análise clara de benefício/custo." }
+      { "label": "Clarity of the problem", "weight": "25%", "desc": "Actors, friction and today's cost are concrete. A reader knows who is not trusted and why it matters." },
+      { "label": "Fit of the solution", "weight": "25%", "desc": "The contract's trigger, action and on/off-chain split are plain and plausible. It connects to a real pattern from the course." },
+      { "label": "Honesty of the pros & cons", "weight": "25%", "desc": "Real trade-offs, not a sales pitch. The non-blockchain alternative is taken seriously. The verdict follows from the analysis." },
+      { "label": "Use of course concepts", "weight": "25%", "desc": "Decision framework, oracle problem, governance, limitations and at least one real case are used correctly — not name-dropped." }
     ],
-    "submissionLabel": "Requisitos de entrega",
-    "formatLabel": "Formato",
-    "formatValue": "PDF",
-    "formatNote": "idealmente",
-    "lengthLabel": "Extensão",
-    "lengthValue": "3 a 5 páginas",
-    "lengthNote": "excl. anexos",
-    "presentationLabel": "Apresentação",
-    "presentationValue": "5 min + Q&A",
-    "appendicesLabel": "Anexos",
-    "appendicesValue": "Opcional",
-    "appendicesNote": "diagramas · pseudocódigo · modelos",
-    "collaborationLabel": "Colaboração de equipa",
-    "collaboration": [
-      "Cada membro da equipa contribui para a investigação, a escrita e a apresentação.",
-      "Documenta as contribuições individuais num anexo.",
-      "Aplica princípios de gestão de projeto: atribui papéis, acompanha o progresso, faz revisões internas antes da entrega."
-    ],
-    "deadlineLabel": "Prazo:",
-    "deadlineBody": " 10 de junho de 2026 — as entregas encerram. Apresentações finais a 9 de junho."
-  },
-  "quiz": {
-    "question": "A tua equipa está a desenhar um smart contract para um pagamento de seguro de colheitas: um sensor deteta precipitação abaixo de um limiar e o contrato paga automaticamente ao agricultor. A proposta obtém nota máxima em Adequação Problema-Solução e em Análise de Stakeholders, mas o avaliador assinala-a como limítrofe. Que categoria de avaliação terá perdido pontos com maior probabilidade — e o que deves reforçar no entregável?",
-    "options": [
-      "Qualidade da Apresentação (15%) — a apresentação não estava suficientemente polida; reescreve o sumário executivo.",
-      "Realismo de Implementação & Solidez Técnica (20%) — a avaliação de risco deveria abordar explicitamente a dependência de oracle do sensor de precipitação, o problema da imutabilidade caso o sensor avarie e a escolha da plataforma para uma entrega fiável.",
-      "Viabilidade de Negócio (20%) — o projeto precisa de um plano de negócio e de uma estratégia de entrada no mercado, independentemente da solidez técnica.",
-      "Governação & Conformidade (15%) — os pagamentos automáticos exigem sempre aprovação regulatória prévia explícita antes de o projeto poder ser avaliado."
-    ],
-    "explanation": "A categoria Realismo de Implementação & Solidez Técnica (20%) cobre avaliação de risco, arquitetura e justificação de plataforma — exatamente as lacunas que este desenho tem. Em concreto: (1) Dependência de oracle — o sensor de precipitação é um ponto único de falha; o entregável tem de abordar como o projeto tolera o comprometimento ou a indisponibilidade do oracle. (2) Imutabilidade — se o sensor reportar dados errados e o contrato executar, o pagamento não pode ser revertido; que salvaguardas ou janelas de disputa existem? (3) Plataforma — a chain escolhida oferece a disponibilidade de dados e a finalidade que este caso de uso precisa? A Qualidade da Apresentação é sobre polimento, a Viabilidade de Negócio é sobre o caminho de criação de valor, e a Governação & Conformidade — embora importante — não assinalaria por si só um veredito limítrofe aqui. A jogada certa é reforçar a Parte 2 (Desenho Técnico) e a Parte 3.3 (Avaliação de Risco)."
+    "noteLabel": "Reminder:",
+    "noteBody": " this is one of two in-class assignments in the course. It is graded on reasoning, not on whether the answer was \"blockchain\"."
   }
 }
