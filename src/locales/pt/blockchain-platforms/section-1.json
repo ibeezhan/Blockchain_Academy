@@ -15,7 +15,6 @@
     "s1-apps": "Apps",
     "s1-lightning": "🧩 Lightning Network",
     "s1-bestfits": "🎯 Melhores Encaixes",
-    "s1-worstfits": "🚫 Piores Encaixes",
     "s1-quiz-fit": "Quiz: Right tool?",
     "s1-takeaways": "Conclusões"
   },
@@ -372,25 +371,8 @@
       { "emoji": "🛡️", "name": "Ativo de reserva estratégica",      "why": "Escassez verificável + neutralidade jurisdicional + infraestrutura de nível carrier → atrativa como reserva \"neutra\".", "example": "US Strategic Bitcoin Reserve (2025) · alocações de fundos soberanos · políticas de tesouraria empresarial." }
     ],
     "notFitLabel": "Não encaixa em:",
-    "notFitBody": " smart contracts ricos (usa Ethereum), point-of-sale de retalho de alto débito na camada de base (usa Lightning ou outra chain), consórcios empresariais privados (usa Fabric), identidade / governação / composabilidade DeFi on-chain.",
+    "notFitBody": " smart contracts, DeFi or NFTs (use Ethereum or another programmable chain), high-volume retail payments on the base layer (use Lightning), private B2B consortia (use Fabric). Bitcoin is not a general-purpose computer.",
     "keyPoint": "Bitcoin wins where neutrality and scarcity matter more than features: reserves, settlement, censorship-resistant value."
-  },
-"worstFits": {
-    "headingA": "Onde a Bitcoin é a Ferramenta ",
-    "headingEm": "Errada",
-    "headingB": "",
-    "subtitle": "As mesmas escolhas de desenho que tornam a Bitcoin ótima na escassez digital tornam-na ativamente má noutras tarefas. Se dás por ti a lutar contra o protocolo, estás a usar a chain errada.",
-    "whyNotLabel": "Porque não",
-    "useInsteadLabel": "Usa antes",
-    "items": [
-      { "emoji": "🤖", "name": "Smart contracts complexos / dApps", "why": "O Bitcoin Script não é intencionalmente Turing-completo — sem loops, sem estado persistente, sem lógica rica. Os contornos (Counterparty, RGB) batem no mesmo teto.", "alt": "Usa Ethereum (EVM) · Solana · Cosmos SDK · Starknet para qualquer tipo de dinheiro ou app programável." },
-      { "emoji": "🚀", "name": "Pagamentos de retalho de alto débito (em L1)", "why": "A L1 sustenta ~7 TPS com blocos de ~10 minutos. Mesmo uma adoção moderada empurra as fees para dois dígitos; não podes correr uma rede de cartões na camada de base.", "alt": "Usa Lightning (L2 da BTC) para pagamentos ao nível dos sats · Solana / Base / Avalanche para retalho com stablecoins." },
-      { "emoji": "🏥", "name": "Consórcios B2B privados (saúde, KYC, RWA)", "why": "Visibilidade pública on-chain + ausência de identidade integrada = inviável para partilha regulada de dados entre organizações identificadas.", "alt": "Usa Hyperledger Fabric (channels) · R3 Corda · forks Ethereum permissionados (Quorum)." },
-      { "emoji": "🌾", "name": "DeFi / NFTs / DAOs", "why": "Sem tokens nativos, sem identidade on-chain, sem governação programável. Todo o projeto de \"Bitcoin DeFi\" acaba por exigir Ethereum ou uma sidechain federada para realmente compor.", "alt": "Usa Ethereum + L2s · Solana · Sui para composabilidade DeFi e standards de ativos ricos." }
-    ],
-    "rightToolLabel": "Ferramenta certa, tarefa certa:",
-    "rightToolBody": " se a resposta for \"reserva de valor\", \"camada de liquidação neutra\" ou \"resistência à censura\" — a Bitcoin vence. Para literalmente qualquer coisa programável, escolhe uma chain diferente (e tudo bem).",
-    "keyPoint": "Bitcoin is not a general-purpose computer; anything programmable belongs on another chain."
   },
   "quizTrilemma": {
     "question": "A payments app needs 5,000 transactions per second and must never go down. Which corner of the trilemma does Bitcoin give you least of — and what does that imply?",

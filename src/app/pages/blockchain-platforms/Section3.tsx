@@ -1,4 +1,4 @@
-import { Fragment, useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { TitleSlide } from '../../components/templates/TitleSlide';
@@ -18,11 +18,9 @@ const chapterShape = [
   { id: 's3-why' },
   { id: 's3-tradeoffs' },
   { id: 's3-usecases' },
-  { id: 's3-supplychains' },
 
   { kind: 'group' as const, id: 'g-s3-arch' },
   { id: 's3-overview' },
-  { id: 's3-how-agrees' },
 
   { kind: 'group' as const, id: 'g-s3-privacy' },
   { id: 's3-channels' },
@@ -38,7 +36,6 @@ const chapterShape = [
 
   { kind: 'group' as const, id: 'g-s3-fit' },
   { id: 's3-bestfits' },
-  { id: 's3-worstfits' },
   { id: 's3-vocab' },
 
   { kind: 'group' as const, id: 'g-s3-wrap' },
@@ -285,120 +282,6 @@ function UseCasesSlide() {
   );
 }
 
-// ─── s3-supplychains ──────────────────────────────────────────────────────────
-
-// Language-neutral: step icons only. Labels + ledger writes resolved via t().
-const SUPPLY_STEP_ICONS = ['🌾', '🏭', '🚛', '🏪', '👤'];
-
-function SupplyChainsSlide() {
-  const { t } = useTranslation('blockchain-platforms/section-3');
-  const stepText = t('supplychains.steps', { returnObjects: true }) as { label: string; preTool: string; preIssue: string }[];
-  const writes = t('supplychains.writes', { returnObjects: true }) as string[];
-  const steps = SUPPLY_STEP_ICONS.map((icon, i) => ({ icon, write: writes[i], ...stepText[i] }));
-  const deployments = t('supplychains.deployments', { returnObjects: true }) as { label: string; detail: string }[];
-  const results = t('supplychains.results', { returnObjects: true }) as { metric: string; label: string }[];
-
-  return (
-    <div className="h-full flex flex-col p-6 lg:p-10">
-      <div className="shrink-0 mb-3">
-        <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('supplychains.heading')}</h2>
-        <p className="text-sm text-muted-foreground mt-1">{t('supplychains.subtitle')}</p>
-      </div>
-
-      {/* Real-world deployments strip */}
-      <div className="shrink-0 mb-4 grid grid-cols-1 lg:grid-cols-3 gap-2">
-        {deployments.map(d => (
-          <div key={d.label} className="px-3 py-1.5 rounded-lg border border-border bg-card">
-            <div className="text-[11px] font-bold text-foreground leading-tight">{d.label}</div>
-            <div className="text-[10px] text-muted-foreground leading-snug mt-0.5">{d.detail}</div>
-          </div>
-        ))}
-      </div>
-
-      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-5">
-
-        {/* Left — siloed today */}
-        <div className="flex flex-col gap-2 min-h-0">
-          <div className="shrink-0 flex items-center gap-2 flex-wrap">
-            <span
-              className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full"
-              style={{ backgroundColor: '#ED1C2418', color: '#ED1C24', border: '1px solid #ED1C2450' }}
-            >
-              {t('supplychains.siloedBadge')}
-            </span>
-            <span className="text-xs text-muted-foreground">{t('supplychains.siloedNote')}</span>
-          </div>
-          <div className="flex-1 min-h-0 grid auto-rows-fr gap-1.5">
-            {steps.map((step) => (
-              <div
-                key={step.label}
-                className="rounded-xl border p-2.5 flex items-start gap-2.5 min-h-0"
-                style={{ borderColor: '#ED1C2430', backgroundColor: '#ED1C2408' }}
-              >
-                <span className="text-base shrink-0 leading-none mt-0.5">{step.icon}</span>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-baseline justify-between gap-2 flex-wrap">
-                    <span className="font-bold text-sm text-foreground">{step.label}</span>
-                    <span className="text-[10px] font-mono text-muted-foreground truncate">{step.preTool}</span>
-                  </div>
-                  <div className="text-[11px] leading-snug mt-0.5" style={{ color: '#ED1C24' }}>{step.preIssue}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="shrink-0 rounded-lg p-2.5 text-[11px] leading-snug" style={{ backgroundColor: '#ED1C2412', border: '1px solid #ED1C2440' }}>
-            <span className="font-bold" style={{ color: '#ED1C24' }}>{t('supplychains.walmartCaseLabel')}</span>
-            <span className="text-muted-foreground">{t('supplychains.walmartCaseBody')}</span>
-          </div>
-        </div>
-
-        {/* Right — Fabric channel */}
-        <div className="flex flex-col gap-2 min-h-0">
-          <div className="shrink-0 flex items-center gap-2 flex-wrap">
-            <span
-              className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full"
-              style={{ backgroundColor: '#39B54A18', color: '#39B54A', border: '1px solid #39B54A50' }}
-            >
-              {t('supplychains.fabricBadge')}
-            </span>
-            <span className="text-xs text-muted-foreground">{t('supplychains.fabricNote')}</span>
-          </div>
-          <div className="flex-1 min-h-0 grid auto-rows-fr gap-1.5">
-            {steps.map((step) => (
-              <div
-                key={step.label}
-                className="rounded-xl border p-2.5 flex items-start gap-2.5 min-h-0"
-                style={{ borderColor: '#39B54A40', backgroundColor: '#39B54A08' }}
-              >
-                <span className="text-base shrink-0 leading-none mt-0.5">{step.icon}</span>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-baseline justify-between gap-2 flex-wrap">
-                    <span className="font-bold text-sm text-foreground">{step.label}</span>
-                    <span className="text-[10px] font-medium" style={{ color: '#39B54A' }}>{t('supplychains.writeLabel')}</span>
-                  </div>
-                  <div className="text-[11px] leading-snug mt-0.5 text-foreground">{step.write}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="shrink-0 grid grid-cols-3 gap-2">
-            {results.map(r => (
-              <div key={r.label} className="p-2 rounded-lg border text-center" style={{ borderColor: '#39B54A50', backgroundColor: '#39B54A0d' }}>
-                <div className="font-black text-xs leading-tight" style={{ color: '#39B54A' }}>{r.metric}</div>
-                <div className="text-[10px] text-muted-foreground mt-0.5 leading-snug">{r.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div className="shrink-0 mt-3 flex flex-col gap-2 lg:pr-20">
-        <KeyPointBar text={t('supplychains.keyPoint')} />
-        <UnderTheHood items={t('supplychains.hood', { returnObjects: true }) as string[]} />
-      </div>
-    </div>
-  );
-}
-
 // ─── s3-overview ─────────────────────────────────────────────────────────────
 
 function FabricOverviewVisual() {
@@ -417,97 +300,6 @@ function FabricOverviewVisual() {
           <div className="text-xs text-muted-foreground">{card.desc}</div>
         </div>
       ))}
-    </div>
-  );
-}
-
-// ─── s3-how-agrees ───────────────────────────────────────────────────────────
-
-const HOW_AGREES_COLORS = ['#f59e0b', '#6366f1', '#39B54A'];
-
-interface MechanismText { emoji: string; label: string; one: string; business: string; }
-interface CompareRow { platform: string; who: string; time: string; finality: string; }
-
-function HowFabricAgreesSlide() {
-  const { t } = useTranslation('blockchain-platforms/section-3');
-  const mechanisms = t('howAgrees.mechanisms', { returnObjects: true }) as MechanismText[];
-  const compareCols = t('howAgrees.compareCols', { returnObjects: true }) as string[];
-  const compare = t('howAgrees.compare', { returnObjects: true }) as CompareRow[];
-  const hood = t('howAgrees.hood', { returnObjects: true }) as string[];
-
-  return (
-    <div className="h-full flex flex-col p-6 lg:p-10">
-      <div className="shrink-0 mb-4">
-        <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('howAgrees.heading')}</h2>
-        <p className="text-sm text-muted-foreground mt-1">{t('howAgrees.subtitle')}</p>
-      </div>
-
-      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {mechanisms.map((m, i) => {
-          const color = HOW_AGREES_COLORS[i];
-          return (
-            <motion.div
-              key={m.label}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1, duration: 0.3 }}
-              className="rounded-2xl border-2 p-4 flex flex-col gap-3 min-h-0"
-              style={{ borderColor: color + '55', backgroundColor: color + '08' }}
-            >
-              <div className="shrink-0 flex items-center gap-2.5">
-                <span className="text-3xl leading-none">{m.emoji}</span>
-                <div className="font-black text-base text-foreground leading-tight">{m.label}</div>
-              </div>
-              <div className="flex-1 min-h-0">
-                <div className="text-[9px] font-black uppercase tracking-widest" style={{ color }}>{t('howAgrees.oneLineLabel')}</div>
-                <p className="text-sm lg:text-base text-foreground leading-snug mt-1">{m.one}</p>
-              </div>
-              <div className="shrink-0 rounded-lg px-2.5 py-2 border-l-2" style={{ borderColor: color, backgroundColor: color + '12' }}>
-                <div className="text-[9px] font-black uppercase tracking-widest" style={{ color }}>{t('howAgrees.businessLabel')}</div>
-                <div className="text-xs lg:text-sm text-muted-foreground leading-snug mt-0.5">{m.business}</div>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Bitcoin vs Fabric at a glance + which ordering to pick */}
-      <div className="shrink-0 mt-3 grid grid-cols-1 lg:grid-cols-2 gap-3">
-        <div className="rounded-xl border border-border bg-card/50 p-3">
-          <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2">{t('howAgrees.compareLabel')}</div>
-          <div className="grid grid-cols-[auto_1.3fr_1fr_1.2fr] gap-x-3 gap-y-1.5 text-[11px] items-start">
-            <div />
-            {compareCols.map((c) => (
-              <div key={c} className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">{c}</div>
-            ))}
-            {compare.map((row, i) => {
-              const color = i === 0 ? '#f7931a' : '#39B54A';
-              return (
-                <Fragment key={row.platform}>
-                  <div className="font-black" style={{ color }}>{row.platform}</div>
-                  <div className="text-muted-foreground leading-snug">{row.who}</div>
-                  <div className="text-foreground font-semibold leading-snug">{row.time}</div>
-                  <div className="text-muted-foreground leading-snug">{row.finality}</div>
-                </Fragment>
-              );
-            })}
-          </div>
-        </div>
-        <div className="rounded-xl border p-3 flex flex-col gap-1.5" style={{ borderColor: '#6366f155', backgroundColor: '#6366f10d' }}>
-          <div className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#6366f1' }}>{t('howAgrees.chooseLabel')}</div>
-          <p className="text-[11px] text-muted-foreground leading-snug">
-            <span className="font-bold" style={{ color: '#6366f1' }}>{t('howAgrees.chooseRaft.term')}</span>{t('howAgrees.chooseRaft.body')}
-          </p>
-          <p className="text-[11px] text-muted-foreground leading-snug">
-            <span className="font-bold" style={{ color: '#39B54A' }}>{t('howAgrees.chooseBft.term')}</span>{t('howAgrees.chooseBft.body')}
-          </p>
-        </div>
-      </div>
-
-      <div className="shrink-0 mt-3 flex flex-col gap-2 lg:pr-20">
-        <KeyPointBar text={t('howAgrees.keyPoint')} />
-        <UnderTheHood items={hood} />
-      </div>
     </div>
   );
 }
@@ -791,6 +583,9 @@ function TxFlowSlide() {
             <div className="font-bold text-sm text-foreground mb-1">{t('txflow.eovTitle')}</div>
             <div className="text-xs text-muted-foreground leading-relaxed">
               {t('txflow.eovBodyA')}<strong>{t('txflow.eovBefore')}</strong>{t('txflow.eovBodyB')}
+            </div>
+            <div className="text-xs text-muted-foreground leading-relaxed mt-2">
+              <strong className="text-foreground">{t('txflow.orderingTitle')}</strong>{t('txflow.orderingBody')}
             </div>
           </div>
           <UnderTheHood items={t('txflow.hood', { returnObjects: true }) as string[]} className="mt-auto" />
@@ -1137,7 +932,6 @@ export function BP_Section3() {
   const productionColors = ['#39B54A', '#ED1C24', '#6366f1'];
   const productionCaseList = productionCases.map((c, i) => ({ ...c, statusColor: productionColors[i] }));
   const bestfitCases = t('bestfits.cases', { returnObjects: true }) as { emoji: string; name: string; why: string; example: string }[];
-  const worstfitCases = t('worstfits.cases', { returnObjects: true }) as { emoji: string; name: string; why: string; alt: string }[];
   const vocabRows = t('vocab.rows', { returnObjects: true }) as { pub: string; fab: string; note: string }[];
   const quizOptions = t('quiz.options', { returnObjects: true }) as { text: string }[];
   const quiz2Options = t('quiz2.options', { returnObjects: true }) as { text: string }[];
@@ -1181,11 +975,6 @@ export function BP_Section3() {
           <UseCasesSlide />
         </div>
 
-        {/* ═══════ SUPPLY CHAINS ═══════ */}
-        <div id="s3-supplychains" className="h-full">
-          <SupplyChainsSlide />
-        </div>
-
         {/* ═══════ FABRIC OVERVIEW ═══════ */}
         <div id="s3-overview" className="h-full flex flex-col">
           <div className="flex-1 min-h-0 overflow-hidden">
@@ -1197,11 +986,6 @@ export function BP_Section3() {
             />
           </div>
           <KeyPointBar text={t('overview.keyPoint')} className="shrink-0 mx-5 mb-5 lg:ml-10 lg:mr-30 lg:mb-8" />
-        </div>
-
-        {/* ═══════ UNDER THE HOOD — HOW FABRIC AGREES ═══════ */}
-        <div id="s3-how-agrees" className="h-full">
-          <HowFabricAgreesSlide />
         </div>
 
         {/* ═══════ CHANNELS ═══════ */}
@@ -1325,38 +1109,6 @@ export function BP_Section3() {
             <strong className="text-[#ef4444]">{t('bestfits.notAFitLabel')}</strong>{t('bestfits.notAFitBody')}
           </div>
           <KeyPointBar text={t('bestfits.keyPoint')} className="shrink-0 mt-2 lg:mr-20" />
-        </div>
-
-        {/* ═══════ WORST FITS — WHERE FABRIC IS WRONG ═══════ */}
-        <div id="s3-worstfits" className="h-full flex flex-col p-5 lg:p-8">
-          <div className="shrink-0 mb-3">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('worstfits.headingA')}<em>{t('worstfits.headingEm')}</em>{t('worstfits.headingB')}</h2>
-            <p className="text-sm text-muted-foreground max-w-3xl">
-              {t('worstfits.intro')}
-            </p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-3">
-            {worstfitCases.map(uc => (
-              <div key={uc.name} className="rounded-xl border-2 p-3 flex flex-col gap-2" style={{ borderColor: '#ef444455', backgroundColor: '#ef444408' }}>
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl shrink-0">{uc.emoji}</span>
-                  <div className="font-black text-foreground text-base leading-tight">{uc.name}</div>
-                </div>
-                <div className="text-xs text-muted-foreground leading-snug">
-                  <span className="font-bold text-[#ef4444] uppercase tracking-widest text-[9px] mr-1">{t('worstfits.whyNotLabel')}</span>
-                  {uc.why}
-                </div>
-                <div className="mt-auto text-[11px] text-foreground bg-card border border-border rounded-md px-2 py-1.5 leading-snug">
-                  <span className="font-bold text-[#10b981] uppercase tracking-widest text-[9px] mr-1">{t('worstfits.useInsteadLabel')}</span>
-                  {uc.alt}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="shrink-0 mt-3 p-2.5 bg-[#10b981]/08 border border-[#10b981]/30 rounded-lg text-[11px] text-muted-foreground">
-            <strong className="text-[#10b981]">{t('worstfits.rightToolLabel')}</strong>{t('worstfits.rightToolBody.a')}<em>{t('worstfits.rightToolBody.known')}</em>{t('worstfits.rightToolBody.b')}<em>{t('worstfits.rightToolBody.regulated')}</em>{t('worstfits.rightToolBody.c')}<em>{t('worstfits.rightToolBody.selective')}</em>{t('worstfits.rightToolBody.d')}
-          </div>
-          <KeyPointBar text={t('worstfits.keyPoint')} className="shrink-0 mt-2 lg:mr-20" />
         </div>
 
         {/* ═══════ FABRIC ↔ PUBLIC-CHAIN GLOSSARY ═══════ */}

@@ -29,7 +29,6 @@ const chapterShape = [
 
   { kind: 'group' as const, id: 'g-s1-fit' },
   { id: 's1-bestfits' },
-  { id: 's1-worstfits' },
   { id: 's1-quiz-fit' },
 
   { kind: 'group' as const, id: 'g-s1-wrap' },
@@ -1304,38 +1303,6 @@ export function BP_Section1() {
             <strong className="text-[#ef4444]">{t('bestFits.notFitLabel')}</strong>{t('bestFits.notFitBody')}
           </div>
           <KeyPointBar text={t('bestFits.keyPoint')} className="shrink-0 mt-2 lg:mr-20" />
-        </div>
-
-        {/* ═══════ WORST FITS — WHERE BITCOIN IS WRONG ═══════ */}
-        <div id="s1-worstfits" className="h-full flex flex-col p-5 lg:p-8">
-          <div className="shrink-0 mb-3">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('worstFits.headingA')}<em>{t('worstFits.headingEm')}</em>{t('worstFits.headingB')}</h2>
-            <p className="text-sm text-muted-foreground max-w-3xl">
-              {t('worstFits.subtitle')}
-            </p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-3">
-            {(t('worstFits.items', { returnObjects: true }) as { emoji: string; name: string; why: string; alt: string }[]).map(uc => (
-              <div key={uc.name} className="rounded-xl border-2 p-3 flex flex-col gap-2" style={{ borderColor: '#ef444455', backgroundColor: '#ef444408' }}>
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl shrink-0">{uc.emoji}</span>
-                  <div className="font-black text-foreground text-base leading-tight">{uc.name}</div>
-                </div>
-                <div className="text-xs text-muted-foreground leading-snug">
-                  <span className="font-bold text-[#ef4444] uppercase tracking-widest text-[9px] mr-1">{t('worstFits.whyNotLabel')}</span>
-                  {uc.why}
-                </div>
-                <div className="mt-auto text-[11px] text-foreground bg-card border border-border rounded-md px-2 py-1.5 leading-snug">
-                  <span className="font-bold text-[#10b981] uppercase tracking-widest text-[9px] mr-1">{t('worstFits.useInsteadLabel')}</span>
-                  {uc.alt}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="shrink-0 mt-3 p-2.5 bg-[#10b981]/08 border border-[#10b981]/30 rounded-lg text-[11px] text-muted-foreground">
-            <strong className="text-[#10b981]">{t('worstFits.rightToolLabel')}</strong>{t('worstFits.rightToolBody')}
-          </div>
-          <KeyPointBar text={t('worstFits.keyPoint')} className="shrink-0 mt-2 lg:mr-20" />
         </div>
 
         {/* ═══════ QUIZ — best/worst fit judgement ═══════ */}

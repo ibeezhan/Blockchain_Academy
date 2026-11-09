@@ -10,7 +10,6 @@
   },
   "chapters": {
     "s3-why": "Porquê Permissionada?",
-    "s3-supplychains": "Cadeias de Abastecimento",
     "s3-overview": "Visão Geral do Fabric",
     "s3-channels": "Channels",
     "s3-txflow": "Fluxo de Transações",
@@ -19,13 +18,11 @@
     "s3-production": "Em Produção",
     "s3-comparison": "ETH vs Fabric",
     "s3-bestfits": "🎯 Melhores Encaixes",
-    "s3-worstfits": "🚫 Piores Encaixes",
     "s3-vocab": "🧩 Glossário Fabric ↔ chain pública",
     "s3-quiz": "Quiz",
     "s3-takeaways": "Conclusões",
     "s3-tradeoffs": "Public vs Permissioned",
-    "s3-usecases": "Enterprise Use Cases",
-    "s3-how-agrees": "🔧 How Fabric agrees"
+    "s3-usecases": "Enterprise Use Cases"
   },
   "title": {
     "sectionNumber": "SECÇÃO 03",
@@ -52,44 +49,6 @@
     "adoptersLabel": "Adotantes no mundo real",
     "hood": ["MSP identity", "channels", "Raft / BFT ordering"],
     "keyPoint": "When the participants already know each other, you can trade openness for throughput and privacy."
-  },
-  "supplychains": {
-    "heading": "Cadeias de Abastecimento: O Caso de Uso Perfeito",
-    "subtitle": "Partilha de dados entre múltiplas partes sem um ponto único de confiança — exatamente o que a blockchain resolve.",
-    "deployments": [
-      { "label": "Walmart × IBM Food Trust", "detail": "Em funcionamento desde 2018 — porco, vegetais de folha, mangas · 100+ fornecedores" },
-      { "label": "De Beers Tracr", "detail": "Proveniência de diamantes · certificação livre de conflitos" },
-      { "label": "Maersk TradeLens", "detail": "⚠ Encerrada em 2022 — lição sobre efeitos de rede, não falha técnica" }
-    ],
-    "steps": [
-      { "label": "Agricultor", "preTool": "Diário em papel + fax", "preIssue": "Sem registos temporais · fáceis de falsificar · perdidos em trânsito" },
-      { "label": "Processador", "preTool": "Excel + anexos de email", "preIssue": "Dados reintroduzidos · campos perdidos · divergência de versões" },
-      { "label": "Distribuidor", "preTool": "Sistema ERP (SAP)", "preIssue": "Os códigos internos não correspondem aos IDs a montante" },
-      { "label": "Retalhista", "preTool": "POS — apenas SKU", "preIssue": "Sem proveniência · sem consultas a montante" },
-      { "label": "Consumidor", "preTool": "Recibo em papel", "preIssue": "Sem informação de origem · tem de confiar nos rótulos" }
-    ],
-    "siloedBadge": "✕ Hoje — em silos",
-    "siloedNote": "Cada parte acumula os dados no seu próprio sistema",
-    "walmartCaseLabel": "Caso Walmart 2008 — ",
-    "walmartCaseBody": "rastrear uma única manga contaminada exigiu telefonar a 7 sistemas diferentes e demorou cerca de 7 dias. A maior parte desse tempo foi conciliar formatos, não procurar.",
-    "fabricBadge": "✓ Num channel Fabric",
-    "fabricNote": "Cada passo escreve num único ledger partilhado e apenas-acrescentar",
-    "chaincodeInvoke": "→ invocar chaincode",
-    "results": [
-      { "metric": "7 dias → 2,2 s", "label": "recolha de mangas (Walmart)" },
-      { "metric": "100%", "label": "rastreabilidade entre parceiros" },
-      { "metric": "~30 mil M$", "label": "fraude alimentar evitada / ano" }
-    ],
-    "writeLabel": "→ written to the shared ledger",
-    "writes": [
-      "Harvest record · batch B1 · GPS · date",
-      "Processing record · batch B1 → lot L42 · temperature 4 °C",
-      "Transport record · lot L42 · Farm → Hub → Store · temperature log",
-      "Receipt record · lot L42 ↔ SKU A123 · store NYC-12",
-      "Provenance query · SKU A123 → full history in 2.2 s"
-    ],
-    "hood": ["chaincode invoke", "recordHarvest()", "queryProvenance()", "endorsement policy"],
-    "keyPoint": "A shared ledger does not make partners trust each other; it stops them reconciling each other’s spreadsheets."
   },
   "overview": {
     "title": "Hyperledger Fabric",
@@ -145,6 +104,8 @@
     "eovBodyA": "O Fabric corre o chaincode ",
     "eovBefore": "antes",
     "eovBodyB": " de ordenar. Isto significa que múltiplas transações podem ser simuladas em paralelo por peers diferentes em simultâneo — desbloqueando débito elevado.",
+    "orderingTitle": "Ordering choice: ",
+    "orderingBody": "Raft (the default) when the orderer operators trust each other; SmartBFT (Fabric v3) when they are competitors or a faulty orderer must be tolerated, at the cost of more orderers and lower speed.",
     "stages": [
       {
         "label": "Propose",
@@ -190,7 +151,7 @@
     "restart": "↺ Restart",
     "policyTitle": "Endorsement policy = the business rule",
     "policyBody": "The consortium decides who must sign each kind of transaction — e.g. a delivery needs Producer AND Distributor. The platform enforces that rule on every transaction, automatically.",
-    "hood": ["endorsement policy", "read/write set", "ordering service · Raft", "world state", "MVCC check"],
+    "hood": ["endorsement policy", "read/write set", "ordering service · Raft / SmartBFT", "world state", "MVCC check"],
     "keyPoint": "Nothing reaches the ledger until the organisations named in the policy have counter-signed; the platform enforces the rule."
   },
   "exerciseSupply": {
@@ -319,33 +280,8 @@
       { "emoji": "🪪", "name": "Consórcios de identidade e credenciais", "why": "Sem participantes anónimos — cada parte assina com uma credencial emitida por um MSP de confiança. Encaixa em frameworks de identidade regulados.", "example": "Credenciais verificáveis ao estilo Sovrin · portais B2B governamentais · rails interbancários de CBDC (pilotos)." }
     ],
     "notAFitLabel": "Não encaixa em:",
-    "notAFitBody": " DeFi sem permissão (usa Ethereum), escassez digital / reserva de valor (usa Bitcoin), apps de consumo que exijam auto-custódia aberta, qualquer coisa em que a resistência à censura contra o próprio consórcio seja um requisito.",
+    "notAFitBody": " open consumer apps, DeFi or NFTs (use Ethereum or another public chain), neutral store of value (use Bitcoin), and anything that must resist the consortium itself: members can vote to freeze assets or change the rules.",
     "keyPoint": "Fabric fits when participants are known, regulated and need to share selectively: supply chains, interbank rails, health exchanges."
-  },
-  "worstfits": {
-    "headingA": "Onde o Hyperledger Fabric é a Ferramenta ",
-    "headingEm": "Errada",
-    "headingB": "",
-    "intro": "O desenho permissionado, sem token e baseado em channels do Fabric é brilhante para consórcios B2B — e quase inútil para qualquer coisa que precise de uma rede aberta, pública e portadora de valor.",
-    "whyNotLabel": "Porque não",
-    "useInsteadLabel": "Usa antes",
-    "cases": [
-      { "emoji": "🌍", "name": "Apps / dApps de consumo público", "why": "Cada participante precisa de uma identidade emitida por MSP. Sem utilizadores anónimos, sem onboarding sem permissão — incompatível com a UX da Internet pública.", "alt": "Usa Ethereum (+ L2s) · Solana · Sui para apps de consumo abertas e onboarding baseado em carteira." },
-      { "emoji": "💎", "name": "Valor resistente à censura / reserva de valor", "why": "Um consórcio pode votar para remover membros, congelar ativos ou mudar regras. Por desenho — e exatamente o que não queres para dinheiro neutro.", "alt": "Usa Bitcoin para armazenamento de valor com confiança minimizada e neutro em relação à jurisdição." },
-      { "emoji": "💰", "name": "DeFi componível / liquidez", "why": "Sem token nativo, sem pools de liquidez abertos, sem contas partilhadas entre organizações. A componibilidade do DeFi exige escritores sem permissão + um AMM público.", "alt": "Usa Ethereum + L2s · Solana · Sui · Cosmos para componibilidade de DeFi e liquidez partilhada." },
-      { "emoji": "🎨", "name": "Mercados de NFT / economia de criadores aberta", "why": "Sem normas globais de token (ERC-721/1155 não existem), sem descoberta pública, sem emparelhamentos anónimos comprador/vendedor. O encaixe cultural está errado.", "alt": "Usa Ethereum · Polygon · Solana · Base para NFTs, mercados e royalties." }
-    ],
-    "rightToolLabel": "Ferramenta certa, tarefa certa:",
-    "rightToolBody": {
-      "a": " O Fabric brilha quando os participantes são ",
-      "known": "conhecidos",
-      "b": ", ",
-      "regulated": "regulados",
-      "c": ", e precisam de ",
-      "selective": "partilha seletiva de dados",
-      "d": " — consórcios de cadeia de abastecimento, rails interbancários, trocas de saúde. Para todo o resto, escolhe uma chain pública."
-    },
-    "keyPoint": "Anything that must stay open to strangers or outlive its consortium belongs on a public chain, not on Fabric."
   },
   "vocab": {
     "heading": "Fabric ↔ Blockchain Pública — Mesmo Mecanismo, Vocabulário Diferente",
@@ -522,52 +458,5 @@
     ],
     "hood": ["channels", "chaincode", "endorsement policy", "private data collections"],
     "keyPoint": "A permissioned network lives or dies on its convener and its funding; technology was rarely why one closed."
-  },
-  "howAgrees": {
-    "heading": "Under the hood: how Fabric agrees",
-    "subtitle": "No miners, no token. Three mechanisms replace Proof of Work.",
-    "oneLineLabel": "In one sentence",
-    "businessLabel": "For the business",
-    "mechanisms": [
-      {
-        "emoji": "📮",
-        "label": "Ordering service",
-        "one": "A small cluster of orderer nodes run by the consortium puts endorsed transactions into blocks — it sequences them and never judges their content.",
-        "business": "Thousands of transactions per second, final in seconds — no block race, no fee market."
-      },
-      {
-        "emoji": "👑",
-        "label": "Raft — the default",
-        "one": "The orderers elect a leader that writes the block log while the others copy it; if the leader crashes, they elect a new one within seconds.",
-        "business": "Tolerates crashes, not lies — right when the operators are trusted partners."
-      },
-      {
-        "emoji": "✍️",
-        "label": "Endorsement",
-        "one": "Before anything is ordered, the organisations named in the endorsement policy simulate the transaction and counter-sign the result.",
-        "business": "“Who must sign” is a business rule — Fabric enforces it on every transaction."
-      }
-    ],
-    "compareLabel": "Compared with Bitcoin",
-    "compareCols": ["Who agrees", "How long", "Finality"],
-    "compare": [
-      { "platform": "Bitcoin", "who": "Thousands of anonymous miners race", "time": "~10 min per block", "finality": "Probabilistic — wait ~6 blocks" },
-      { "platform": "Fabric", "who": "A handful of known orderers sequence", "time": "Seconds", "finality": "Final on commit — no forks" }
-    ],
-    "chooseLabel": "Which ordering to choose",
-    "chooseRaft": { "term": "Raft", "body": " — orderer operators are trusted partners (most consortiums). Fastest and simplest." },
-    "chooseBft": {
-      "term": "SmartBFT (Fabric v3)",
-      "body": " — operators are competitors, or regulation demands tolerating a malicious node. Needs 4+ orderers to survive one bad one, and runs slower."
-    },
-    "hood": [
-      "leader election · log replication",
-      "SmartBFT · N ≥ 3F + 1",
-      "execute-order-validate",
-      "read/write set",
-      "Kafka ordering (removed in v3)",
-      "crash vs Byzantine faults"
-    ],
-    "keyPoint": "Fabric replaces mining with known orderers and counter-signatures; fast and final because every participant is identified."
   }
 }

@@ -15,7 +15,6 @@
     "s1-apps": "Apps",
     "s1-lightning": "🧩 Lightning Network",
     "s1-bestfits": "🎯 Best Fits",
-    "s1-worstfits": "🚫 Worst Fits",
     "s1-quiz-fit": "Quiz: Right tool?",
     "s1-takeaways": "Takeaways"
   },
@@ -419,25 +418,8 @@
       { "emoji": "🛡️", "name": "Strategic reserve asset",         "why": "Verifiable scarcity and no issuing jurisdiction make it attractive as a neutral reserve.", "example": "US Strategic Bitcoin Reserve (2025) · sovereign wealth fund allocations · corporate treasury policies." }
     ],
     "notFitLabel": "Not a fit for:",
-    "notFitBody": " rich smart contracts (use Ethereum), high-throughput retail point-of-sale on the base layer (use Lightning or another chain), private enterprise consortia (use Fabric), on-chain identity / governance / DeFi composability.",
+    "notFitBody": " smart contracts, DeFi or NFTs (use Ethereum or another programmable chain), high-volume retail payments on the base layer (use Lightning), private B2B consortia (use Fabric). Bitcoin is not a general-purpose computer.",
     "keyPoint": "Bitcoin wins where neutrality and scarcity matter more than features: reserves, settlement, censorship-resistant value."
-  },
-"worstFits": {
-    "headingA": "Where Bitcoin is the ",
-    "headingEm": "Wrong",
-    "headingB": " Tool",
-    "subtitle": "The same design choices that make Bitcoin good at digital scarcity make it a poor fit for other jobs.",
-    "whyNotLabel": "Why not",
-    "useInsteadLabel": "Use instead",
-    "items": [
-      { "emoji": "🤖", "name": "Complex smart contracts / dApps", "why": "Bitcoin Script is intentionally not Turing-complete — no loops, no persistent state, no rich logic. Workarounds (Counterparty, RGB) hit the same ceiling.", "alt": "Use Ethereum (EVM) · Solana · Cosmos SDK · Starknet for any kind of programmable money or app." },
-      { "emoji": "🚀", "name": "High-throughput retail payments (on L1)", "why": "L1 sustains ~7 TPS with ~10-minute blocks. Even moderate adoption pushes fees into double digits; you cannot run a card-network on the base layer.", "alt": "Use Lightning (BTC L2) for sats-level payments · Solana / Base / Avalanche for stablecoin retail." },
-      { "emoji": "🏥", "name": "Private B2B consortia (healthcare, KYC, RWA)", "why": "Public on-chain visibility + no built-in identity = a non-starter for regulated data sharing between named organisations.", "alt": "Use Hyperledger Fabric (channels) · R3 Corda · permissioned Ethereum forks (Quorum)." },
-      { "emoji": "🌾", "name": "DeFi / NFTs / DAOs", "why": "No native tokens, no on-chain identity, no programmable governance. \"Bitcoin DeFi\" projects end up on Ethereum or a federated sidechain.", "alt": "Use Ethereum + L2s · Solana · Sui for DeFi composability and rich asset standards." }
-    ],
-    "rightToolLabel": "Right tool, right job:",
-    "rightToolBody": " if the answer is \"store of value\", \"neutral settlement layer\" or \"censorship resistance\", Bitcoin wins. For anything programmable, pick a different chain.",
-    "keyPoint": "Bitcoin is not a general-purpose computer; anything programmable belongs on another chain."
   },
   "quizTrilemma": {
     "question": "A payments app needs 5,000 transactions per second and must never go down. Which corner of the trilemma does Bitcoin give you least of — and what does that imply?",
