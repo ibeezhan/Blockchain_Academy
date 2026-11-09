@@ -47,7 +47,7 @@
     "subtitle": "Aplicações, ecossistema, evolução da web, e o futuro da tecnologia descentralizada"
   },
   "ethereum": {
-    "recapBadge": "↩ §2",
+    "recapBadge": "↩ Recap · Section 2 · Bitcoin's limits",
     "recapA":     "O Bitcoin Script era",
     "recapStrong":"intencionalmente limitado",
     "recapTail":  ". A resposta do Vitalik: não remendar o Bitcoin — construir uma nova cadeia com uma máquina virtual a sério.",
@@ -70,7 +70,7 @@
     "keyPoint": "Bitcoin stores balances; Ethereum also stores programs — and runs them for anyone who pays."
   },
   "ethAccounts": {
-    "recapBadge": "↩ §2",
+    "recapBadge": "↩ Recap · Section 2 · wallets & keys",
     "recapA": "Lembra-te — uma carteira guarda chaves, não moedas. A Ethereum corre a mesma ideia, mas com",
     "recapStrong": "dois tipos",
     "recapTail": "de conta: uma controlada por humano, outra controlada por código.",
@@ -117,7 +117,7 @@
     "peek": "You'll deploy a contract account of your own and call it from your wallet."
   },
   "ethGas": {
-    "recapBadge": "↩ just covered",
+    "recapBadge": "↩ Recap · just covered · smart contracts",
     "recapBody": "A smart contract runs on thousands of computers at once. Somebody pays for that work — that's gas.",
     "heading": "Gas — Paying the World Computer for Work",
     "lead": "Every action costs a little gas. Bigger job, more gas. Busier network, higher price per unit. You only pay for what you use.",
@@ -217,20 +217,35 @@
         "keyPoint": "Replace the exchange with a pool and a formula — open 24/7, but today mostly crypto trading crypto.",
         "visual": {
           "orderBookTitle": "Order book — traditional exchange",
-          "orderBookSub": "a middleman matches buyers with sellers",
-          "buyers": "buyers",
-          "sellers": "sellers",
+          "orderBookSub": "a middleman matches buyers with sellers · price in USDC per ETH",
+          "bids": "BIDS · buyers",
+          "asks": "ASKS · sellers",
+          "spread": "SPREAD = 20",
+          "spreadSub": "the matchmaker's edge",
+          "mid": "mid price 3,000",
+          "lastTrade": "last trade 3,005",
           "exchange": "Exchange",
-          "matching": "matches orders, takes a fee",
+          "matching": "matches bid ↔ ask",
+          "fee": "…and takes a fee 💸",
+          "tradeWhen": "✓ A trade happens only when a bid and an ask meet",
           "orderBookNote": "Every trade needs a counterparty and a matchmaker.",
           "ammTitle": "AMM — DeFi",
           "ammSub": "you trade against a pool, priced by a formula",
-          "you": "You",
-          "tokenIn": "ETH in",
-          "tokenOut": "USDC out",
+          "you": "🧑 you trade against the pool",
+          "tokenIn": "USDC in →",
+          "tokenOut": "← ETH out",
           "pool": "Liquidity pool",
           "poolFunded": "a contract, funded by users",
           "formula": "x · y = k",
+          "axisX": "ETH in pool (x)",
+          "axisY": "USDC in pool (y)",
+          "start": "start",
+          "priceLabel": "1 ETH =",
+          "paid": "you paid",
+          "swapBtn": "Swap 1 ETH",
+          "swapBigBtn": "Swap 5 ETH",
+          "resetBtn": "↺ reset",
+          "impactHint": "Price impact — bigger trades move the point further along the curve, so every extra ETH costs more.",
           "ammNote": "No counterparty needed — the formula sets the price.",
           "bottomLine": "DeFi replaces the exchange with a pool + a formula."
         }
@@ -257,15 +272,10 @@
         ],
         "risk": "Metadata armazenada off-chain (IPFS) pode desaparecer — \"não és dono da imagem, és dono do recibo\"",
         "hype": "The 2021 picture mania collapsed; the useful part — transferable proof of ownership — remains",
-        "stat": "41 mil milhões de USD transacionados em NFTs em 2021 — pico. Agora focado em utilidade.",
         "later": "You'll mint a token of your own and see exactly what is — and isn't — stored on-chain.",
         "hood": "ERC-721 & off-chain metadata",
         "keyPoint": "A unique token with a public ownership history — you own the record, not necessarily the file.",
         "visual": {
-          "fungible": "Fungible",
-          "fungibleSub": "every unit identical — 1 ETH = 1 ETH",
-          "nonFungible": "Non-fungible",
-          "nonFungibleSub": "each token unique — #001 ≠ #002",
           "provenance": "On-chain history of #001 — provenance",
           "minted": "minted by artist",
           "sold": "sold to",
@@ -288,10 +298,6 @@
           {
             "name": "Uniswap DAO",
             "desc": "Detentores de UNI controlam a tesouraria de 6 mil milhões+ USD da Uniswap — votaram para fazer deploy em novas cadeias"
-          },
-          {
-            "name": "Gitcoin DAO",
-            "desc": "Financia desenvolvimento open-source via voto quadrático — a comunidade decide quem recebe grants"
           }
         ],
         "risk": "Apatia dos eleitores, captura por baleias, governação lenta para emergências",
@@ -399,9 +405,9 @@
     },
     "sorter": {
       "title": "🎛️ Fungible or unique?",
-      "hint": "Sort each item: Count them (ERC-20) or Name them (ERC-721).",
-      "countBtn": "= Count",
-      "nameBtn": "≠ Name",
+      "hint": "Sort each item: Fungible (ERC-20, count them) or Non-fungible (ERC-721, name them).",
+      "countBtn": "Fungible",
+      "nameBtn": "Non-fungible",
       "right": "✓",
       "wrong": "✗",
       "score": "{{correct}} / {{total}} right",
@@ -414,16 +420,12 @@
         { "emoji": "🏠", "label": "A house deed", "answer": "unique", "why": "One deed, one specific house — name it." }
       ]
     },
-    "business": {
-      "strong": "Why it matters:",
-      "body": "issuing a token is cheap and instant. The hard part is the business model and the law around it — not the technology."
-    },
     "hood": "ERC-20 & ERC-721 standards",
     "keyPoint": "Two container shapes — countable (ERC-20) or named (ERC-721) — and every app already understands both.",
     "peek": "You'll create a token of each kind and see the standard behind it."
   },
   "useCases": {
-    "recapBadge": "↩ §1",
+    "recapBadge": "↩ Recap · Section 1 · the village ledger",
     "recapBody": "Lembras-te do livro-razão da aldeia — cada problema de confiança que viste aí reaparece, à escala da indústria.",
     "heading": "Casos de Uso de Blockchain — Três Padrões, Doze Indústrias",
     "patternLabel": "Padrão",
@@ -503,7 +505,7 @@
     "noticeBodyTail": ") aparece na cadeia de abastecimento, saúde e media. As indústrias são superfícies diferentes; a primitiva subjacente é a mesma — é por isso que uma escolha de plataforma no Curso 2 pode servir múltiplos casos de negócio do Curso 3."
   },
   "ecosystem": {
-    "recapBadge": "↩ §1 + §2",
+    "recapBadge": "↩ Recap · builds on Section 1 (nodes & network) and Section 2 (smart contracts)",
     "recapBody":  "Cada caso de uso que acabaste de ver vive algures nesta stack — os mesmos nós do §1 em baixo, os mesmos contratos que DeFi/NFTs no meio, tu no topo.",
     "heading":    "O Ecossistema Blockchain e Web3",
     "lead":       "Uma stack em camadas — desde a infraestrutura crua em baixo até aos utilizadores finais no topo.",
@@ -605,7 +607,7 @@
     "peek": "You'll build a small dApp front-end that talks to your own contract."
   },
   "ethics": {
-    "recapBadge": "↩ §2",
+    "recapBadge": "↩ Recap · Section 2 · immutability",
     "recapA": "A mesma",
     "recapStrong": "imutabilidade",
     "recapTail": "que protege a cadeia de adulteração também protege regras más de serem desfeitas. Mesma propriedade, duas faces.",
@@ -638,7 +640,7 @@
     "footer": "Keep these in mind — the next slide shows the same technology pulled in two opposite directions."
   },
   "ethicsControl": {
-    "recapBadge": "↩ §1",
+    "recapBadge": "↩ Recap · Section 1 · who controls it?",
     "recapA": "Remember the Section 1 question —",
     "recapStrong": "who controls it?",
     "recapTail": "Same technology, two very different answers.",
@@ -896,11 +898,11 @@
   },
   "assignment": {
     "ribbon":       "📝 In-class Assignment #1",
-    "contextLabel": "Closing activity · small groups · submitted",
+    "contextLabel": "Closing activity · in class, then homework",
     "title":        "Could a blockchain fix this?",
     "subtitle":     "You've seen what blockchains do well — and the course's recurring question: does this problem actually earn a blockchain? Now apply that lens to a real-world problem of your own choosing.",
     "groupSize":    "Groups of 3–4",
-    "duration":     "20 min",
+    "duration":     "15–20 min in class",
     "seedsLabel":   "Pick a real-world problem",
     "seedsIntro":   "Any industry, any scale. Starting points if you're stuck:",
     "seeds": [
@@ -911,15 +913,22 @@
       { "emoji": "🎟️", "title": "Ticket scalping" },
       { "emoji": "🏠", "title": "Land registries" }
     ],
-    "stepsLabel": "How it runs",
+    "stage1Label": "Stage 1 · In class · 15–20 min",
     "steps": [
-      { "time": "5 min",  "label": "Form a group, pick one problem" },
-      { "time": "10 min", "label": "Discuss: solution, pros, cons" },
-      { "time": "5 min",  "label": "Write it up and submit" }
+      { "time": "5 min",       "label": "Form a group of 3–4 and pick one real-world problem" },
+      { "time": "10 min",      "label": "Discuss: could a blockchain help? Sketch the solution, pros and cons" },
+      { "time": "1 min/group", "label": "Present your problem statement to the instructor — out loud" }
     ],
-    "deliverableLabel": "Deliverable · one report per group",
+    "stage1Note": "Nothing is written or submitted in class — just a clear, spoken problem statement.",
+    "stage2Label": "Stage 2 · Homework · one write-up per group",
     "deliverableLimit": "MAX 1 PAGE",
-    "partHint":         "≈ ⅓ page · one tight paragraph",
+    "rules": [
+      { "emoji": "📄", "text": "Max one page — strictly enforced" },
+      { "emoji": "⚠️", "text": "Penalties for anything over one page" },
+      { "emoji": "✅", "text": "Meaningful bullet points are fine" },
+      { "emoji": "📅", "text": "Due end of the week · via Moodle" }
+    ],
+    "partHint":         "≈ ⅓ page each",
     "deliverableIntro": "Three parts, in this order. Be concrete and honest — a well-argued \"no, a database is enough\" scores as well as a yes.",
     "parts": [
       { "title": "Problem statement",   "desc": "Who is affected, what goes wrong today, and why trust or coordination is at the heart of it." },
@@ -927,6 +936,6 @@
       { "title": "Pros & cons",         "desc": "What a blockchain genuinely adds here — and what it costs. Would a spreadsheet or a trusted middleman do the job?" }
     ],
     "footerStrong": "Wild ideas welcome.",
-    "footerBody":   "Creativity gets you a strong problem; critical thinking gets you a strong report. Both are graded."
+    "footerBody":   "In class: a clear problem, said out loud. At home: one page on Moodle by the end of the week — one page means one page. Creativity gets you a strong problem; critical thinking gets you a strong page."
   }
 }
