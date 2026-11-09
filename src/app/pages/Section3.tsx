@@ -1,10 +1,11 @@
-import { useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link, useParams } from 'react-router';
 import { TitleSlide } from '../components/templates/TitleSlide';
 import { DiscussionSlide } from '../components/templates/DiscussionSlide';
 import { TakeawaySlide } from '../components/templates/TakeawaySlide';
 import { QuizSlide } from '../components/templates/QuizSlide';
-import { Rocket, ExternalLink, Telescope, Landmark, Image as ImageIcon, Vote, Lightbulb, Server, Database, ServerCrash, Ban, Coins, Music } from 'lucide-react';
+import { Rocket, ExternalLink, Telescope, Cpu, Landmark, Image as ImageIcon, Vote, Lightbulb, Server, Database, ServerCrash, Ban, Coins, Music, Users, FileText, Scale, Target } from 'lucide-react';
 import { SectionNav } from '../components/navigation/SectionNav';
 import { SiteFooter } from '../components/shared/SiteFooter';
 import ethereumLogo from '../../ethereum-eth-logo.svg';
@@ -25,11 +26,13 @@ const NS = 'blockchain-fundamentals/section-3';
 const section3ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
   { kind: 'group', id: 'g-s3-eth' },
   { id: 's3-ethereum' },
+  { id: 's3-smartcontract' },
   { id: 's3-accounts' },
   { id: 's3-gas' },
   { id: 's3-defi' },
   { id: 's3-nfts' },
   { id: 's3-daos' },
+  { id: 's3-tokens' },
 
   { kind: 'group', id: 'g-s3-world' },
   { id: 's3-usecases-trust' },
@@ -51,20 +54,64 @@ const section3ChaptersShape: ReadonlyArray<{ id: string; kind?: 'group' }> = [
   { id: 's3-quiz' },
   { id: 's3-takeaways' },
   { id: 's3-recap' },
-  { id: 's3-brainstorm' },
+  { id: 's3-assignment' },
 ];
 
 const PEEK = '#22d3ee';
 
 /** Forward-pointing footer used on every "sneak peek" slide. */
-function PeekFooter({ body }: { body: string }) {
+function PeekFooter({ body, className = 'mt-3' }: { body: string; className?: string }) {
   const { t } = useTranslation(NS);
   return (
-    <div className="shrink-0 mt-3 px-3 py-2 rounded-lg border border-dashed flex items-center gap-2 text-[11px] text-muted-foreground"
+    <div className={`shrink-0 min-w-0 px-3 py-2 rounded-lg border border-dashed flex items-center gap-2 text-[11px] text-muted-foreground ${className}`}
       style={{ borderColor: PEEK + '80', backgroundColor: PEEK + '10' }}>
       <Telescope className="size-3.5 shrink-0" style={{ color: PEEK }} />
-      <strong style={{ color: PEEK }}>{t('peek.label')}</strong> {body}
+      <span><strong style={{ color: PEEK }}>{t('peek.label')}</strong> {body}</span>
     </div>
+  );
+}
+
+const KEY = '#f59e0b';
+
+/** The one sentence to remember from a slide — rendered as a consistent bar at the bottom. */
+function KeyPoint({ body, className = 'mt-3' }: { body: string; className?: string }) {
+  const { t } = useTranslation(NS);
+  return (
+    <div className={`shrink-0 min-w-0 px-3 py-2 rounded-lg border-2 flex items-center gap-2.5 ${className}`}
+      style={{ borderColor: KEY + '80', backgroundColor: KEY + '14' }}>
+      <span className="text-base leading-none shrink-0">🔑</span>
+      <span className="text-[10px] font-black uppercase tracking-widest shrink-0" style={{ color: KEY }}>{t('keyPoint.label')}</span>
+      <span className="text-xs lg:text-sm font-semibold text-foreground leading-snug">{body}</span>
+    </div>
+  );
+}
+
+/** Bottom row shared by the Ethereum cluster: key point (wide) + "later session" peek (narrow). */
+function SlideFooter({ keyPoint, peek }: { keyPoint: string; peek?: string }) {
+  if (!peek) return <KeyPoint body={keyPoint} />;
+  return (
+    <div className="shrink-0 mt-3 grid grid-cols-[3fr_2fr] gap-3">
+      <KeyPoint body={keyPoint} className="" />
+      <PeekFooter body={peek} className="" />
+    </div>
+  );
+}
+
+const HOOD = '#8b5cf6';
+
+/** "Under the hood →" pill: names the deep topic and links to Blockchain Platforms §2, where it is taught properly. */
+function TechHint({ body, className = '' }: { body: string; className?: string }) {
+  const { t } = useTranslation(NS);
+  const { lang = 'en' } = useParams<{ lang?: string }>();
+  return (
+    <Link to={`/${lang}/blockchain-platforms/section-2`} title={t('techHint.title')}
+      className={`inline-flex items-center gap-1.5 shrink-0 whitespace-nowrap px-2.5 py-1 rounded-full border text-[10px] leading-tight text-muted-foreground hover:bg-[#8b5cf6]/15 transition-colors ${className}`}
+      style={{ borderColor: HOOD + '66', backgroundColor: HOOD + '0f' }}>
+      <Cpu className="size-3 shrink-0" style={{ color: HOOD }} />
+      <strong className="shrink-0" style={{ color: HOOD }}>{t('techHint.label')}</strong>
+      <span>{body}</span>
+      <span className="font-bold" style={{ color: HOOD }}>· {t('techHint.target')}</span>
+    </Link>
   );
 }
 
@@ -114,6 +161,37 @@ function AccountCard({ color, emoji, copy }: { color: string; emoji: string; cop
   );
 }
 
+/** Three "who can start this?" scenarios; tap one to reveal ✓/✗ and the one-line why. */
+function WhoStartsQuiz() {
+  const { t } = useTranslation(NS);
+  const q = t('ethAccounts.quiz', { returnObjects: true }) as { title: string; hint: string; items: Array<{ emoji: string; text: string; ok: boolean; why: string }> };
+  const [open, setOpen] = useState<Record<number, boolean>>({});
+  const OK = '#39B54A', RED = '#ef4444';
+  return (
+    <div className="shrink-0 mt-3 grid grid-cols-[auto_1fr_1fr_1fr] gap-2 items-stretch">
+      <div className="px-3 py-2 rounded-xl border flex flex-col justify-center max-w-[11rem]" style={{ borderColor: KEY + '66', backgroundColor: KEY + '12' }}>
+        <div className="text-xs font-black text-foreground leading-tight">{q.title}</div>
+        <div className="text-[10px] text-muted-foreground leading-snug mt-0.5">{q.hint}</div>
+      </div>
+      {q.items.map((it, i) => {
+        const shown = open[i];
+        const tone = it.ok ? OK : RED;
+        return (
+          <button key={i} type="button" onClick={() => setOpen(o => ({ ...o, [i]: true }))} aria-expanded={!!shown}
+            className="text-left px-3 py-2 rounded-xl border-2 bg-card flex items-center gap-2.5 transition-all hover:-translate-y-0.5 min-w-0"
+            style={{ borderColor: shown ? tone : 'var(--border)', backgroundColor: shown ? tone + '10' : undefined }}>
+            <span className="text-xl shrink-0">{it.emoji}</span>
+            <div className="min-w-0">
+              <div className="text-xs font-bold text-foreground leading-tight">{it.text}</div>
+              {shown && <div className="text-[10px] leading-snug mt-0.5 font-semibold" style={{ color: tone }}>{it.ok ? '✓' : '✗'} {it.why}</div>}
+            </div>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 /** The one arrow that matters on the accounts slide: EOA ──tx──▶ Contract. */
 function AccountsArrow() {
   const { t } = useTranslation(NS);
@@ -126,6 +204,319 @@ function AccountsArrow() {
         <line x1="2" y1="10" x2="112" y2="10" stroke={C} strokeWidth="3" strokeLinecap="round" markerEnd="url(#acc-arrow)" />
       </svg>
       <p className="text-[11px] text-muted-foreground leading-snug">{t('ethAccounts.arrowSub')}</p>
+    </div>
+  );
+}
+
+// ─── Interactive: a smart contract as a vending machine ─────────────────────
+
+type VendStep = 'idle' | 'short' | 'checking' | 'done';
+const VEND_PRICE = 2;
+
+interface VendCopy {
+  badge: string; hint: string; machineTitle: string; priceLabel: string; balanceLabel: string;
+  insert: string; undo: string; reset: string; dispensed: string;
+  display: Record<VendStep, string>; displayExploit: string;
+  trace: {
+    inputLabel: string; inputIdle: string; inputCoin: string; ruleLabel: string; rule: string; rulePass: string; ruleFail: string;
+    ruleTypo: string; ruleTypoPass: string;
+    outcomeLabel: string; outcomeIdle: string; outcomeShort: string; outcomeDone: string; outcomeExploit: string;
+  };
+  undoMsg: string; escrowNote: string;
+  typo: { toggle: string; hint: string; undoMsg: string; pillsLabel: string; pills: string[] };
+}
+
+function TraceRow({ n, label, body, detail, color }: { n: number; label: string; body: string; detail?: string; color: string }) {
+  return (
+    <div className="flex-1 min-h-0 rounded-xl border bg-card px-3 py-2 flex items-center gap-3" style={{ borderColor: color + '55' }}>
+      <span className="size-6 rounded-full flex items-center justify-center text-[11px] font-black text-white shrink-0" style={{ backgroundColor: color }}>{n}</span>
+      <div className="min-w-0">
+        <div className="text-[10px] font-black uppercase tracking-widest" style={{ color }}>{label}</div>
+        <div className="text-sm text-foreground leading-snug">{body}</div>
+        {detail && <div className="text-xs font-bold leading-snug" style={{ color }}>{detail}</div>}
+      </div>
+    </div>
+  );
+}
+
+/** Insert a coin → the rule checks itself → dispense or refund. The "undo" button exists only to prove it does nothing.
+ *  "Rule has a typo" flips ≥ into ≤: a €1 coin now buys a €2 can — and that runs exactly as written too (The DAO, 2016). */
+function VendingMachineDemo() {
+  const { t } = useTranslation(NS);
+  const d = t('smartContract.demo', { returnObjects: true }) as VendCopy;
+  const [step, setStep] = useState<VendStep>('idle');
+  const [coin, setCoin] = useState(0);
+  const [undoTried, setUndoTried] = useState(false);
+  const [typo, setTypo] = useState(false);
+  useEffect(() => {
+    if (step !== 'checking') return;
+    const id = setTimeout(() => setStep('done'), 900);
+    return () => clearTimeout(id);
+  }, [step]);
+  const passes = (amount: number) => (typo ? amount <= VEND_PRICE : amount >= VEND_PRICE);
+  const insert = (amount: number) => { setCoin(amount); setUndoTried(false); setStep(passes(amount) ? 'checking' : 'short'); };
+  const reset = () => { setStep('idle'); setCoin(0); setUndoTried(false); };
+  const toggleTypo = () => { setTypo(v => !v); reset(); };
+
+  const OK = '#39B54A', AMBER = '#f59e0b', RED = '#ef4444', GRAY = '#9ca3af', BUG = '#a855f7';
+  const fmt = (n: number) => `€${n}`;
+  const held = step === 'checking' || step === 'done' ? coin : 0;
+  const exploit = typo && coin < VEND_PRICE && step !== 'idle' && step !== 'short';
+  const ruleColor = step === 'idle' ? GRAY : step === 'short' ? RED : exploit ? BUG : OK;
+  const outcome = step === 'done'
+    ? (exploit ? t('smartContract.demo.trace.outcomeExploit', { amount: fmt(coin) }) : d.trace.outcomeDone)
+    : step === 'short' ? d.trace.outcomeShort : d.trace.outcomeIdle;
+  const ruleDetail = step === 'idle' ? undefined : step === 'short' ? d.trace.ruleFail : exploit ? d.trace.ruleTypoPass : d.trace.rulePass;
+  const display = step === 'done' && exploit ? d.displayExploit : d.display[step];
+
+  return (
+    <div className="h-full min-h-0 flex flex-col gap-3">
+      <div className="flex items-center gap-3 shrink-0">
+        <span className="px-2 py-0.5 rounded-full bg-[#f59e0b]/15 border border-[#f59e0b]/40 text-[#f59e0b] text-[10px] font-bold shrink-0">{d.badge}</span>
+        <span className="text-[11px] text-muted-foreground truncate">{typo ? d.typo.hint : d.hint}</span>
+        <button type="button" onClick={toggleTypo} aria-pressed={typo}
+          className="ml-auto shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] font-bold transition-colors"
+          style={{ borderColor: BUG + (typo ? 'ff' : '66'), backgroundColor: BUG + (typo ? '26' : '0f'), color: typo ? BUG : 'var(--muted-foreground)' }}>
+          <span className={`size-3 rounded-full border transition-colors ${typo ? '' : 'bg-transparent'}`} style={{ borderColor: BUG, backgroundColor: typo ? BUG : 'transparent' }} />
+          🐛 {d.typo.toggle}
+        </button>
+      </div>
+
+      <div className="flex-1 min-h-0 grid grid-cols-[auto_1fr] gap-4">
+        {/* The machine */}
+        <div className="w-44 lg:w-52 rounded-2xl border-2 p-3 flex flex-col gap-2" style={{ borderColor: OK + '66', background: `linear-gradient(to bottom, ${OK}1f, var(--card))` }}>
+          <div className="text-center text-[10px] font-black tracking-[0.3em]" style={{ color: OK }}>{d.machineTitle}</div>
+          <div className="flex-1 min-h-0 rounded-xl bg-background/70 border border-border flex items-center justify-center text-5xl relative overflow-hidden">
+            <span className={`transition-opacity duration-500 ${step === 'done' ? 'opacity-20' : ''}`}>🥤</span>
+            {step === 'done' && <span className="absolute inset-x-0 bottom-2 text-center text-[10px] font-bold" style={{ color: OK }}>↓ {d.dispensed}</span>}
+          </div>
+          <div className="rounded-md px-2 py-1.5 font-mono text-[11px] font-bold text-center bg-[#0f172a]" style={{ color: step === 'short' ? RED : exploit ? BUG : OK }}>{display}</div>
+          <div className="grid grid-cols-2 gap-1.5 text-[10px]">
+            <div className="rounded-md border border-border bg-card px-2 py-1 text-center">
+              <div className="text-muted-foreground">{d.priceLabel}</div><div className="font-mono font-black text-foreground">{fmt(VEND_PRICE)}</div>
+            </div>
+            <div className="rounded-md border bg-card px-2 py-1 text-center" style={{ borderColor: AMBER + '66' }}>
+              <div className="text-muted-foreground">{d.balanceLabel}</div><div className="font-mono font-black" style={{ color: AMBER }}>{fmt(held)}</div>
+            </div>
+          </div>
+          <div className="h-9 rounded-lg border border-border bg-muted/40 flex items-center justify-center text-xl" aria-live="polite">
+            {step === 'done' ? '🥤' : step === 'short' ? '🪙' : ''}
+          </div>
+        </div>
+
+        {/* Rule trace + controls */}
+        <div className="min-w-0 flex flex-col gap-2">
+          <TraceRow n={1} color={step === 'idle' ? GRAY : AMBER} label={d.trace.inputLabel}
+            body={step === 'idle' ? d.trace.inputIdle : t('smartContract.demo.trace.inputCoin', { amount: fmt(coin) })} />
+          <TraceRow n={2} color={ruleColor} label={d.trace.ruleLabel}
+            body={t(typo ? 'smartContract.demo.trace.ruleTypo' : 'smartContract.demo.trace.rule', { price: fmt(VEND_PRICE) })}
+            detail={ruleDetail} />
+          <TraceRow n={3} color={step === 'done' ? (exploit ? BUG : OK) : step === 'short' ? RED : GRAY} label={d.trace.outcomeLabel} body={outcome} />
+
+          <div className="shrink-0 flex flex-wrap items-center gap-2 pt-1">
+            {step !== 'done' && [1, 2].map(a => (
+              <button key={a} type="button" disabled={step === 'checking'} onClick={() => insert(a)}
+                className="px-3 py-1.5 rounded-lg border text-sm font-bold transition-all hover:-translate-y-0.5 disabled:opacity-50"
+                style={{ borderColor: AMBER + '80', backgroundColor: AMBER + '1a', color: AMBER }}>
+                🪙 {t('smartContract.demo.insert', { amount: fmt(a) })}
+              </button>
+            ))}
+            {step === 'done' && !undoTried && (
+              <button type="button" onClick={() => setUndoTried(true)}
+                className="px-3 py-1.5 rounded-lg border text-sm font-bold transition-all hover:-translate-y-0.5"
+                style={{ borderColor: RED + '80', backgroundColor: RED + '14', color: RED }}>{d.undo}</button>
+            )}
+            {step !== 'idle' && (
+              <button type="button" onClick={reset} className="px-3 py-1.5 rounded-lg border border-border bg-card text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors">{d.reset}</button>
+            )}
+          </div>
+          {undoTried && (
+            <div className="shrink-0 px-3 py-2 rounded-lg border text-xs font-semibold leading-snug" style={{ borderColor: RED + '66', backgroundColor: RED + '12', color: RED }}>
+              🔒 {exploit ? d.typo.undoMsg : d.undoMsg}
+            </div>
+          )}
+          {typo ? (
+            <div className="shrink-0 flex flex-wrap items-center gap-1.5 text-[10px] text-muted-foreground">
+              <span className="font-bold" style={{ color: BUG }}>{d.typo.pillsLabel}</span>
+              {d.typo.pills.map((p, i) => (
+                <span key={i} className="px-2 py-0.5 rounded-full border font-semibold text-foreground" style={{ borderColor: BUG + '66', backgroundColor: BUG + '12' }}>{p}</span>
+              ))}
+            </div>
+          ) : (
+            <p className="shrink-0 text-[11px] text-muted-foreground italic">{d.escrowNote}</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Keystone slide: what is a smart contract? ──────────────────────────────
+
+function SmartContractSlide() {
+  const { t } = useTranslation(NS);
+  const principles = t('smartContract.principles', { returnObjects: true }) as Array<{ emoji: string; title: string; body: string }>;
+  const COLORS = ['#f59e0b', '#627EEA', '#8b5cf6', '#ef4444'];
+  return (
+    <div id="s3-smartcontract" className="h-full flex flex-col p-5 lg:p-8">
+      <div className="shrink-0 mb-3">
+        <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
+          <span className="px-1.5 py-0.5 rounded bg-[#39B54A]/15 text-[#39B54A] font-bold shrink-0 whitespace-nowrap">{t('smartContract.kicker')}</span>
+          <span className="truncate">{t('smartContract.kickerBody')}</span>
+          <TechHint body={t('smartContract.hood')} className="ml-auto" />
+        </div>
+        <div className="flex items-center gap-3 mb-1">
+          <span className="text-2xl">🤖</span>
+          <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('smartContract.heading')}</h2>
+        </div>
+        <p className="text-base text-foreground font-medium max-w-4xl">{t('smartContract.lead')}</p>
+      </div>
+
+      <div className="flex-1 min-h-0 grid grid-cols-5 gap-4">
+        <div className="col-span-3 min-h-0"><VendingMachineDemo /></div>
+        <div className="col-span-2 min-h-0 flex flex-col gap-3">
+          {principles.map((p, i) => {
+            const last = i === principles.length - 1;
+            return (
+              <div key={i} className="flex-1 min-h-0 rounded-2xl border-2 bg-card px-4 py-3 flex items-center gap-3"
+                style={{ borderColor: COLORS[i] + (last ? '80' : '40'), backgroundColor: last ? COLORS[i] + '0d' : undefined }}>
+                <div className="size-12 rounded-2xl text-2xl flex items-center justify-center shrink-0" style={{ backgroundColor: COLORS[i] + '1a' }}>{p.emoji}</div>
+                <div className="min-w-0">
+                  <div className="font-black text-base text-foreground leading-tight" style={last ? { color: COLORS[i] } : undefined}>{p.title}</div>
+                  <p className="text-xs lg:text-sm text-muted-foreground mt-0.5 leading-snug">{p.body}</p>
+                </div>
+              </div>
+            );
+          })}
+          <div className="shrink-0 px-3 py-2 rounded-xl bg-[#39B54A]/10 border border-[#39B54A]/30 text-[11px] text-muted-foreground">
+            <span className="font-bold text-[#39B54A]">{t('smartContract.business.strong')}</span> {t('smartContract.business.body')}
+          </div>
+        </div>
+      </div>
+      <SlideFooter keyPoint={t('smartContract.keyPoint')} peek={t('smartContract.peek')} />
+    </div>
+  );
+}
+
+// ─── Tokens: the business primitive ─────────────────────────────────────────
+
+interface TokenKindCopy { standard: string; title: string; sub: string; examples: string[]; verb: string }
+
+type TokenShape = 'fungible' | 'unique';
+interface SorterCard { emoji: string; label: string; answer: TokenShape; why: string }
+interface SorterCopy { title: string; hint: string; countBtn: string; nameBtn: string; right: string; wrong: string; score: string; cards: SorterCard[] }
+
+/** Six everyday things, two buckets. Tap "Fungible" (ERC-20) or "Non-fungible" (ERC-721); the card turns green or red with a one-line why. */
+function TokenSorter() {
+  const { t } = useTranslation(NS);
+  const s = t('tokens.sorter', { returnObjects: true }) as SorterCopy;
+  const [picks, setPicks] = useState<Record<number, TokenShape>>({});
+  const F = '#627EEA', U = '#f97316', OK = '#39B54A', RED = '#ef4444';
+  const done = Object.keys(picks).length;
+  const correct = s.cards.filter((c, i) => picks[i] === c.answer).length;
+  return (
+    <div className="shrink-0 rounded-xl border border-border bg-card p-3 flex flex-col gap-2">
+      <div className="flex items-center gap-3">
+        <span className="px-2 py-0.5 rounded-full bg-[#f59e0b]/15 border border-[#f59e0b]/40 text-[#f59e0b] text-[10px] font-bold shrink-0">{s.title}</span>
+        <span className="text-[11px] text-muted-foreground truncate">{s.hint}</span>
+        {done > 0 && (
+          <span className="ml-auto text-[11px] font-bold shrink-0" style={{ color: correct === done ? OK : 'var(--muted-foreground)' }}>
+            {t('tokens.sorter.score', { correct, total: done })}
+          </span>
+        )}
+      </div>
+      <div className="grid grid-cols-6 gap-2">
+        {s.cards.map((c, i) => {
+          const pick = picks[i];
+          const right = pick === c.answer;
+          const tone = pick ? (right ? OK : RED) : 'var(--border)';
+          return (
+            <div key={i} className="rounded-xl border-2 px-2 py-2 flex flex-col items-center text-center gap-1.5 transition-colors"
+              style={{ borderColor: tone, backgroundColor: pick ? tone + '12' : undefined }}>
+              <span className="text-2xl leading-none">{c.emoji}</span>
+              <span className="text-[11px] font-bold text-foreground leading-tight">{c.label}</span>
+              {pick ? (
+                <p className="text-[10px] leading-snug" style={{ color: tone }}>
+                  <strong>{right ? s.right : s.wrong}</strong> {c.why}
+                </p>
+              ) : (
+                <div className="grid grid-cols-2 gap-1 w-full mt-auto">
+                  {([['fungible', F, s.countBtn], ['unique', U, s.nameBtn]] as const).map(([shape, color, label]) => (
+                    <button key={shape} type="button" onClick={() => setPicks(p => ({ ...p, [i]: shape }))}
+                      className="px-1 py-1 rounded-md border text-[10px] font-bold transition-all hover:-translate-y-0.5"
+                      style={{ borderColor: color + '80', backgroundColor: color + '14', color }}>{label}</button>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function TokensSlide() {
+  const { t } = useTranslation(NS);
+  const kinds = [
+    { key: 'fungible', color: '#627EEA', glyph: '=' },
+    { key: 'unique', color: '#f97316', glyph: '≠' },
+  ] as const;
+  const TINTS = ['#8b5cf6', '#22d3ee', '#ED1C24'];
+  return (
+    <div id="s3-tokens" className="h-full flex flex-col p-5 lg:p-8">
+      <div className="shrink-0 mb-3">
+        <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
+          <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] font-bold shrink-0 whitespace-nowrap">{t('tokens.kicker')}</span>
+          <span className="truncate">{t('tokens.kickerBody')}</span>
+          <TechHint body={t('tokens.hood')} className="ml-auto" />
+        </div>
+        <div className="flex items-center gap-3 mb-1">
+          <span className="text-2xl">🪙</span>
+          <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('tokens.heading')}</h2>
+        </div>
+        <p className="text-sm text-muted-foreground max-w-4xl">{t('tokens.lead')}</p>
+      </div>
+
+      <div className="flex-1 min-h-0 grid grid-cols-2 gap-4">
+        {kinds.map(k => {
+          const c = t(`tokens.${k.key}`, { returnObjects: true }) as TokenKindCopy;
+          const unique = k.key === 'unique';
+          return (
+            <div key={k.key} className="min-h-0 rounded-2xl border-2 bg-card flex flex-col overflow-hidden" style={{ borderColor: k.color + '66' }}>
+              <div className="px-4 py-3 flex items-center gap-3 shrink-0" style={{ background: `linear-gradient(to right, ${k.color}2e, transparent)` }}>
+                <span className="px-2 py-0.5 rounded-md font-mono text-[11px] font-black text-white shrink-0" style={{ backgroundColor: k.color }}>{c.standard}</span>
+                <div className="min-w-0">
+                  <div className="font-bold text-foreground text-base lg:text-lg leading-tight">{c.title}</div>
+                  <div className="text-xs text-muted-foreground">{c.sub}</div>
+                </div>
+              </div>
+              {/* Visual: three identical coins vs three distinct tickets */}
+              <div className="flex-1 min-h-0 flex items-center justify-center gap-3 px-4 py-2">
+                {[0, 1, 2].map(i => (
+                  <div key={i} className="flex items-center gap-3">
+                    <div className="size-20 lg:size-24 rounded-2xl border-2 flex flex-col items-center justify-center text-4xl lg:text-5xl gap-0.5"
+                      style={{ borderColor: unique ? TINTS[i] : k.color, backgroundColor: (unique ? TINTS[i] : k.color) + '1a' }}>
+                      {unique ? '🎟️' : '🪙'}
+                      {unique && <span className="font-mono text-[11px] font-bold" style={{ color: TINTS[i] }}>#00{i + 1}</span>}
+                    </div>
+                    {i < 2 && <span className="text-3xl font-black" style={{ color: k.color }}>{k.glyph}</span>}
+                  </div>
+                ))}
+              </div>
+              <div className="shrink-0 px-4 pb-3 flex flex-wrap items-center gap-2">
+                {c.examples.map((ex, i) => (
+                  <span key={i} className="px-2.5 py-1 rounded-full border text-xs font-semibold text-foreground" style={{ borderColor: k.color + '55', backgroundColor: k.color + '10' }}>{ex}</span>
+                ))}
+                <span className="ml-auto text-sm font-black" style={{ color: k.color }}>{c.verb}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="shrink-0 mt-3"><TokenSorter /></div>
+      <SlideFooter keyPoint={t('tokens.keyPoint')} peek={t('tokens.peek')} />
     </div>
   );
 }
@@ -258,79 +649,153 @@ function FuelAnalogy() {
 
 // ─── Sneak-peek illustrations (DeFi / NFTs / DAOs) ───────────────────────────
 
-/** DeFi: order book + matchmaker (left) vs liquidity pool + x·y=k (right). */
-function DefiIllustration({ v }: { v: Record<string, string> }) {
-  const G = '#39B54A', GRAY = '#9ca3af', BUY = '#22c55e', SELL = '#ef4444', ETH = '#627EEA';
-  const bids = ['buy @ 2,990', 'buy @ 2,985', 'buy @ 2,980', 'buy @ 2,970'];
-  const asks = ['sell @ 3,010', 'sell @ 3,015', 'sell @ 3,020', 'sell @ 3,030'];
-  // x·y=k drawn in the mini chart's local coordinates
-  const curve = [18, 22, 26, 30, 36, 44, 54, 66, 78].map((x, i) => `${i ? 'L' : 'M'}${x},${(104 - 900 / (x - 6)).toFixed(1)}`).join(' ');
+/** DeFi: a real order book (bids · spread · asks, matchmaker in the middle) vs an interactive x·y=k pool. */
+const POOL_ETH0 = 100, POOL_USDC0 = 300_000, POOL_K = POOL_ETH0 * POOL_USDC0, POOL_MIN_ETH = 70;
+const fmtInt = (n: number) => Math.round(n).toLocaleString('en-US');
+
+function OrderBookSvg({ v }: { v: Record<string, string> }) {
+  const GRAY = '#9ca3af', BUY = '#22c55e', SELL = '#ef4444', AMBER = '#f59e0b';
+  const bids = [['2,990', 1.5], ['2,985', 2.2], ['2,980', 3.0], ['2,970', 4.1]] as const;
+  const asks = [['3,010', 1.2], ['3,015', 2.0], ['3,020', 2.8], ['3,030', 3.6]] as const;
+  const rows = [54, 80, 106, 132];
   return (
-    <svg viewBox="0 0 640 250" className="w-full h-full" role="img" aria-label={v.bottomLine}>
-      <ArrowDefs id="defi-arrow" color={G} />
-      {/* ── Order book ── */}
-      <text x="155" y="18" fontSize="12" fontWeight="800" textAnchor="middle" fill={GRAY}>{v.orderBookTitle}</text>
-      <text x="155" y="32" fontSize="9" textAnchor="middle" fill="var(--muted-foreground)">{v.orderBookSub}</text>
-      <text x="50" y="56" fontSize="9" fontWeight="800" textAnchor="middle" fill={BUY}>{v.buyers}</text>
-      <text x="260" y="56" fontSize="9" fontWeight="800" textAnchor="middle" fill={SELL}>{v.sellers}</text>
-      {[64, 90, 116, 142].map((y, i) => (
+    <svg viewBox="0 0 320 218" className="w-full h-full" role="img" aria-label={v.orderBookTitle}>
+      <text x="160" y="14" fontSize="12" fontWeight="800" textAnchor="middle" fill={GRAY}>{v.orderBookTitle}</text>
+      <text x="160" y="27" fontSize="8.5" textAnchor="middle" fill="var(--muted-foreground)">{v.orderBookSub}</text>
+      <text x="62" y="46" fontSize="8.5" fontWeight="800" textAnchor="middle" fill={BUY}>{v.bids}</text>
+      <text x="258" y="46" fontSize="8.5" fontWeight="800" textAnchor="middle" fill={SELL}>{v.asks}</text>
+      {rows.map((y, i) => (
         <g key={i}>
-          <rect x="14" y={y} width="72" height="18" rx="4" fill={BUY + '22'} stroke={BUY} strokeWidth="1" />
-          <text x="50" y={y + 12.5} fontSize="8" fontFamily="monospace" textAnchor="middle" fill="var(--foreground)">{bids[i]}</text>
-          <line x1="86" y1={y + 9} x2="104" y2="110" stroke={GRAY} strokeWidth="1" strokeDasharray="2 2" />
-          <rect x="224" y={y} width="72" height="18" rx="4" fill={SELL + '22'} stroke={SELL} strokeWidth="1" />
-          <text x="260" y={y + 12.5} fontSize="8" fontFamily="monospace" textAnchor="middle" fill="var(--foreground)">{asks[i]}</text>
-          <line x1="206" y1="110" x2="224" y2={y + 9} stroke={GRAY} strokeWidth="1" strokeDasharray="2 2" />
+          {/* bids descend from the best bid; the depth bar grows toward the spread */}
+          <rect x="10" y={y} width="104" height="20" rx="4" fill={BUY + '12'} stroke={BUY} strokeWidth={i === 0 ? 1.6 : 0.8} />
+          <rect x={114 - bids[i][1] * 22} y={y} width={bids[i][1] * 22} height="20" rx="4" fill={BUY + '2e'} />
+          <text x="17" y={y + 13.5} fontSize="7" fill="var(--muted-foreground)">{bids[i][1]} ETH</text>
+          <text x="107" y={y + 13.5} fontSize="9" fontFamily="monospace" fontWeight={i === 0 ? 800 : 600} textAnchor="end" fill="var(--foreground)">{bids[i][0]}</text>
+          <rect x="206" y={y} width="104" height="20" rx="4" fill={SELL + '12'} stroke={SELL} strokeWidth={i === 0 ? 1.6 : 0.8} />
+          <rect x="206" y={y} width={asks[i][1] * 22} height="20" rx="4" fill={SELL + '2e'} />
+          <text x="213" y={y + 13.5} fontSize="9" fontFamily="monospace" fontWeight={i === 0 ? 800 : 600} fill="var(--foreground)">{asks[i][0]}</text>
+          <text x="303" y={y + 13.5} fontSize="7" textAnchor="end" fill="var(--muted-foreground)">{asks[i][1]} ETH</text>
+          {i > 0 && <line x1="114" y1={y + 10} x2="118" y2="146" stroke={GRAY} strokeWidth="0.8" strokeDasharray="2 2" />}
+          {i > 0 && <line x1="206" y1={y + 10} x2="202" y2="146" stroke={GRAY} strokeWidth="0.8" strokeDasharray="2 2" />}
         </g>
       ))}
-      <rect x="104" y="78" width="102" height="64" rx="10" fill="var(--card)" stroke={GRAY} strokeWidth="2" />
-      <text x="155" y="104" fontSize="18" textAnchor="middle">🏛️</text>
-      <text x="155" y="121" fontSize="9" fontWeight="800" textAnchor="middle" fill="var(--foreground)">{v.exchange}</text>
-      <text x="155" y="132" fontSize="7.5" textAnchor="middle" fill="var(--muted-foreground)">{v.matching}</text>
-      <text x="155" y="190" fontSize="9" fontStyle="italic" textAnchor="middle" fill="var(--muted-foreground)">{v.orderBookNote}</text>
-
-      <line x1="320" y1="10" x2="320" y2="200" stroke="var(--border)" strokeWidth="1.5" strokeDasharray="4 4" />
-
-      {/* ── AMM ── */}
-      <text x="480" y="18" fontSize="12" fontWeight="800" textAnchor="middle" fill={G}>{v.ammTitle}</text>
-      <text x="480" y="32" fontSize="9" textAnchor="middle" fill="var(--muted-foreground)">{v.ammSub}</text>
-      <circle cx="356" cy="110" r="22" fill={ETH + '22'} stroke={ETH} strokeWidth="2" />
-      <text x="356" y="117" fontSize="18" textAnchor="middle">🧑</text>
-      <text x="356" y="146" fontSize="9" fontWeight="700" textAnchor="middle" fill={ETH}>{v.you}</text>
-      <rect x="404" y="52" width="122" height="116" rx="14" fill={G + '14'} stroke={G} strokeWidth="2" />
-      <text x="465" y="70" fontSize="10" fontWeight="800" textAnchor="middle" fill={G}>{v.pool}</text>
-      <circle cx="442" cy="104" r="18" fill={ETH} />
-      <text x="442" y="108" fontSize="9" fontWeight="800" textAnchor="middle" fill="#fff">ETH</text>
-      <circle cx="488" cy="104" r="18" fill="#2775CA" />
-      <text x="488" y="108" fontSize="8" fontWeight="800" textAnchor="middle" fill="#fff">USDC</text>
-      <text x="465" y="146" fontSize="8" textAnchor="middle" fill="var(--muted-foreground)">{v.poolFunded}</text>
-      <line x1="380" y1="96" x2="400" y2="96" stroke={G} strokeWidth="2" markerEnd="url(#defi-arrow)" />
-      <text x="390" y="90" fontSize="7.5" fontWeight="700" textAnchor="middle" fill="var(--foreground)">{v.tokenIn}</text>
-      <line x1="400" y1="126" x2="380" y2="126" stroke={G} strokeWidth="2" markerEnd="url(#defi-arrow)" />
-      <text x="390" y="137" fontSize="7.5" fontWeight="700" textAnchor="middle" fill="var(--foreground)">{v.tokenOut}</text>
-      {/* mini x·y=k chart */}
-      <g transform="translate(542,52)">
-        <rect width="88" height="116" rx="8" fill="var(--card)" stroke="var(--border)" />
-        <line x1="12" y1="104" x2="82" y2="104" stroke="var(--muted-foreground)" strokeWidth="1" />
-        <line x1="12" y1="10" x2="12" y2="104" stroke="var(--muted-foreground)" strokeWidth="1" />
-        <path d={curve} fill="none" stroke={G} strokeWidth="2" strokeLinejoin="round" />
-        <circle r="4" fill={G}><animateMotion dur="5s" repeatCount="indefinite" path={curve} /></circle>
-        <text x="80" y="22" fontSize="9" fontFamily="monospace" fontWeight="800" textAnchor="end" fill={G}>{v.formula}</text>
-        <text x="80" y="113" fontSize="7" textAnchor="end" fill="var(--muted-foreground)">ETH</text>
-        <text transform="rotate(-90)" x="-20" y="8" fontSize="7" fill="var(--muted-foreground)">USDC</text>
-      </g>
-      <text x="480" y="190" fontSize="9" fontStyle="italic" textAnchor="middle" fill="var(--muted-foreground)">{v.ammNote}</text>
-
-      <rect x="140" y="212" width="360" height="26" rx="13" fill={G + '1a'} stroke={G + '66'} />
-      <text x="320" y="229" fontSize="10.5" fontWeight="800" textAnchor="middle" fill={G}>{v.bottomLine}</text>
+      {/* spread between best bid and best ask */}
+      <rect x="118" y="54" width="84" height="20" rx="4" fill={AMBER + '1a'} stroke={AMBER} strokeWidth="1.4" strokeDasharray="3 2" />
+      <text x="160" y="67.5" fontSize="9" fontWeight="900" textAnchor="middle" fill={AMBER}>{v.spread}</text>
+      <text x="160" y="84" fontSize="7" fontStyle="italic" textAnchor="middle" fill={AMBER}>{v.spreadSub}</text>
+      {/* mid price / last trade marker */}
+      <line x1="122" y1="94" x2="198" y2="94" stroke={GRAY} strokeWidth="1" strokeDasharray="3 2" />
+      <polygon points="160,90 164,94 160,98 156,94" fill="var(--foreground)" />
+      <text x="160" y="106" fontSize="7" fontWeight="700" textAnchor="middle" fill="var(--foreground)">{v.mid}</text>
+      <text x="160" y="115" fontSize="6.5" textAnchor="middle" fill="var(--muted-foreground)">{v.lastTrade}</text>
+      {/* the exchange: best bid and best ask travel to it, meet, and a fee is taken */}
+      <rect x="118" y="122" width="84" height="52" rx="8" fill="var(--card)" stroke={GRAY} strokeWidth="2" />
+      <text x="160" y="141" fontSize="16" textAnchor="middle">🏛️</text>
+      <text x="160" y="153" fontSize="8.5" fontWeight="800" textAnchor="middle" fill="var(--foreground)">{v.exchange}</text>
+      <text x="160" y="162" fontSize="6.5" textAnchor="middle" fill="var(--muted-foreground)">{v.matching}</text>
+      <text x="160" y="170" fontSize="6.5" fontWeight="800" textAnchor="middle" fill={AMBER}>{v.fee}</text>
+      <circle r="3.5" fill={BUY}><animateMotion dur="2.6s" repeatCount="indefinite" path="M114,64 L116,64 L116,126 L124,126" /></circle>
+      <circle r="3.5" fill={SELL}><animateMotion dur="2.6s" repeatCount="indefinite" path="M206,64 L204,64 L204,126 L196,126" /></circle>
+      <text x="160" y="190" fontSize="8.5" fontWeight="800" textAnchor="middle" fill="var(--foreground)">{v.tradeWhen}</text>
+      <text x="160" y="206" fontSize="8.5" fontStyle="italic" textAnchor="middle" fill="var(--muted-foreground)">{v.orderBookNote}</text>
     </svg>
   );
 }
 
-/** NFTs: fungible vs unique tokens (top), then the provenance trail of one token (bottom). */
-function NftIllustration({ v }: { v: Record<string, string> }) {
-  const C = '#f97316', ETH = '#627EEA';
-  const shapes = ['#8b5cf6', '#22d3ee', '#ED1C24'];
+/** The x·y=k hyperbola with the pool's live point; `eth` is the current ETH reserve. */
+function AmmSvg({ v, eth }: { v: Record<string, string>; eth: number }) {
+  const G = '#39B54A', ETH = '#627EEA', USDC = '#2775CA', GRAY = '#9ca3af';
+  const usdc = POOL_K / eth;
+  const W = 166, H = 102;
+  const px = (e: number) => ((e - 64) / 68) * W;
+  const py = (u: number) => H - ((u - 220_000) / 260_000) * H;
+  const curve = Array.from({ length: 35 }, (_, i) => 64 + i * 2).map((e, i) => `${i ? 'L' : 'M'}${px(e).toFixed(1)},${py(POOL_K / e).toFixed(1)}`).join(' ');
+  const cx = px(eth), cy = py(usdc), moved = eth !== POOL_ETH0;
+  return (
+    <svg viewBox="0 0 320 172" className="w-full h-full" role="img" aria-label={v.ammTitle}>
+      <ArrowDefs id="defi-arrow" color={G} />
+      <text x="160" y="14" fontSize="12" fontWeight="800" textAnchor="middle" fill={G}>{v.ammTitle}</text>
+      <text x="160" y="27" fontSize="8.5" textAnchor="middle" fill="var(--muted-foreground)">{v.ammSub}</text>
+      {/* small pool card — reserves follow the swaps */}
+      <rect x="6" y="38" width="106" height="122" rx="12" fill={G + '12'} stroke={G} strokeWidth="1.5" />
+      <text x="59" y="52" fontSize="9" fontWeight="800" textAnchor="middle" fill={G}>{v.pool}</text>
+      <text x="59" y="62" fontSize="6.5" textAnchor="middle" fill="var(--muted-foreground)">{v.poolFunded}</text>
+      <circle cx="34" cy="84" r="15" fill={ETH} />
+      <text x="34" y="87.5" fontSize="8" fontWeight="800" textAnchor="middle" fill="#fff">ETH</text>
+      <circle cx="84" cy="84" r="15" fill={USDC} />
+      <text x="84" y="87" fontSize="7" fontWeight="800" textAnchor="middle" fill="#fff">USDC</text>
+      <text x="34" y="110" fontSize="8" fontWeight="800" fontFamily="monospace" textAnchor="middle" fill="var(--foreground)">{fmtInt(eth)}</text>
+      <text x="84" y="110" fontSize="8" fontWeight="800" fontFamily="monospace" textAnchor="middle" fill="var(--foreground)">{fmtInt(usdc)}</text>
+      <rect x="12" y="120" width="44" height="13" rx="4" fill={USDC + '22'} stroke={USDC + '88'} strokeWidth="0.8" />
+      <text x="34" y="129" fontSize="6.5" fontWeight="700" textAnchor="middle" fill="var(--foreground)">{v.tokenIn}</text>
+      <rect x="62" y="120" width="44" height="13" rx="4" fill={ETH + '22'} stroke={ETH + '88'} strokeWidth="0.8" />
+      <text x="84" y="129" fontSize="6.5" fontWeight="700" textAnchor="middle" fill="var(--foreground)">{v.tokenOut}</text>
+      <text x="59" y="150" fontSize="7" textAnchor="middle" fill="var(--muted-foreground)">{v.you}</text>
+      {/* the curve is the hero */}
+      <g transform="translate(142,40)">
+        <line x1="0" y1={H} x2={W} y2={H} stroke={GRAY} strokeWidth="1" />
+        <line x1="0" y1="0" x2="0" y2={H} stroke={GRAY} strokeWidth="1" />
+        <text x={W / 2} y={H + 11} fontSize="7" textAnchor="middle" fill="var(--muted-foreground)">{v.axisX}</text>
+        <text transform="rotate(-90)" x={-H / 2} y="-5" fontSize="7" textAnchor="middle" fill="var(--muted-foreground)">{v.axisY}</text>
+        <text x={W - 2} y="12" fontSize="11" fontFamily="monospace" fontWeight="900" textAnchor="end" fill={G}>{v.formula}</text>
+        <path d={curve} fill="none" stroke={G} strokeWidth="2.2" strokeLinejoin="round" />
+        {moved && (
+          <g opacity="0.7">
+            <circle cx={px(POOL_ETH0)} cy={py(POOL_USDC0)} r="4" fill="none" stroke={GRAY} strokeWidth="1.5" strokeDasharray="2 1.5" />
+            <text x={px(POOL_ETH0) + 6} y={py(POOL_USDC0) + 10} fontSize="6.5" fill="var(--muted-foreground)">{v.start}</text>
+          </g>
+        )}
+        <g style={{ transform: `translate(${cx}px, ${cy}px)`, transition: 'transform 600ms cubic-bezier(.4,0,.2,1)' }}>
+          <line x1="0" y1="0" x2="0" y2={H - cy} stroke={G} strokeWidth="1" strokeDasharray="2 2" />
+          <line x1="0" y1="0" x2={-cx} y2="0" stroke={G} strokeWidth="1" strokeDasharray="2 2" />
+          <text x="3" y={H - cy - 2} fontSize="7" fontWeight="800" fontFamily="monospace" fill={ETH}>{fmtInt(eth)} ETH</text>
+          <text x={-cx + 3} y="-3" fontSize="7" fontWeight="800" fontFamily="monospace" fill={USDC}>{fmtInt(usdc)} USDC</text>
+          <circle r="6" fill={G} stroke="var(--card)" strokeWidth="2" />
+        </g>
+      </g>
+      <text x="160" y="169" fontSize="8.5" fontStyle="italic" textAnchor="middle" fill="var(--muted-foreground)">{v.ammNote}</text>
+    </svg>
+  );
+}
+
+function DefiIllustration({ v }: { v: Record<string, string> }) {
+  const G = '#39B54A', AMBER = '#f59e0b';
+  const [eth, setEth] = useState(POOL_ETH0);
+  const usdc = POOL_K / eth, price = usdc / eth, price0 = POOL_USDC0 / POOL_ETH0;
+  const bought = POOL_ETH0 - eth, paid = usdc - POOL_USDC0;
+  const delta = ((price / price0 - 1) * 100).toFixed(1);
+  const canSwap = (n: number) => eth - n >= POOL_MIN_ETH;
+  const btn = 'px-2.5 py-1 rounded-md border text-[11px] font-bold transition-all hover:-translate-y-0.5 disabled:opacity-40 disabled:hover:translate-y-0';
+  return (
+    <div className="w-full h-full min-h-0 flex flex-col gap-2">
+      <div className="flex-1 min-h-0 grid grid-cols-2 gap-3">
+        <div className="min-h-0 flex items-center justify-center"><OrderBookSvg v={v} /></div>
+        <div className="min-h-0 flex flex-col gap-1.5 border-l border-dashed border-border pl-3">
+          <div className="flex-1 min-h-0 flex items-center justify-center"><AmmSvg v={v} eth={eth} /></div>
+          <div className="shrink-0 flex items-center gap-2 flex-wrap">
+            <span className="px-2 py-1 rounded-md border font-mono text-[11px] font-bold text-foreground" style={{ borderColor: G + '66', backgroundColor: G + '12' }}>
+              {v.priceLabel} {fmtInt(price)} USDC{bought > 0 && <span className="ml-1.5" style={{ color: AMBER }}>+{delta}%</span>}
+            </span>
+            {bought > 0 && <span className="text-[10px] text-muted-foreground">{v.paid} {fmtInt(paid)} USDC · {bought} ETH</span>}
+            <div className="ml-auto flex gap-1.5">
+              {[[1, v.swapBtn], [5, v.swapBigBtn]].map(([n, label]) => (
+                <button key={n} type="button" disabled={!canSwap(n as number)} onClick={() => setEth(e => e - (n as number))}
+                  className={btn} style={{ borderColor: G + '80', backgroundColor: G + '14', color: G }}>{label}</button>
+              ))}
+              {bought > 0 && <button type="button" onClick={() => setEth(POOL_ETH0)} className={btn + ' text-muted-foreground border-border'}>{v.resetBtn}</button>}
+            </div>
+          </div>
+          <p className="shrink-0 text-[10px] leading-snug text-muted-foreground"><strong style={{ color: AMBER }}>↗</strong> {v.impactHint}</p>
+        </div>
+      </div>
+      <div className="shrink-0 mx-auto px-5 py-1.5 rounded-full text-[11px] font-extrabold border" style={{ color: G, backgroundColor: G + '1a', borderColor: G + '66' }}>{v.bottomLine}</div>
+    </div>
+  );
+}
+
+/** NFTs: the provenance trail of one token — minted, sold, sold, current owner — drawn top-down. */
+function NftProvenance({ v }: { v: Record<string, string> }) {
+  const C = '#f97316', ART = '#8b5cf6';
   const steps = [
     { emoji: '🎨', label: v.minted, who: 'block 18,204,112' },
     { emoji: '🔁', label: v.sold, who: '0x3f…a9' },
@@ -338,55 +803,79 @@ function NftIllustration({ v }: { v: Record<string, string> }) {
     { emoji: '👤', label: v.currentOwner, who: '0x9b…42' },
   ];
   return (
-    <svg viewBox="0 0 640 250" className="w-full h-full" role="img" aria-label={v.bottomLine}>
+    <svg viewBox="0 0 280 336" className="w-full h-full" role="img" aria-label={v.bottomLine}>
       <ArrowDefs id="nft-arrow" color={C} />
-      {/* fungible */}
-      <text x="160" y="20" fontSize="12" fontWeight="800" textAnchor="middle" fill="var(--muted-foreground)">{v.fungible}</text>
-      <text x="160" y="33" fontSize="9" textAnchor="middle" fill="var(--muted-foreground)">{v.fungibleSub}</text>
-      {[100, 160, 220].map((cx, i) => (
-        <g key={i}>
-          <circle cx={cx} cy="70" r="20" fill={ETH} stroke="#4c5fd0" strokeWidth="2" />
-          <text x={cx} y="74" fontSize="9" fontWeight="800" textAnchor="middle" fill="#fff">1 ETH</text>
-          {i < 2 && <text x={cx + 30} y="75" fontSize="16" fontWeight="900" textAnchor="middle" fill="var(--muted-foreground)">=</text>}
-        </g>
-      ))}
-      <line x1="320" y1="12" x2="320" y2="104" stroke="var(--border)" strokeWidth="1.5" strokeDasharray="4 4" />
-      {/* non-fungible */}
-      <text x="480" y="20" fontSize="12" fontWeight="800" textAnchor="middle" fill={C}>{v.nonFungible}</text>
-      <text x="480" y="33" fontSize="9" textAnchor="middle" fill="var(--muted-foreground)">{v.nonFungibleSub}</text>
-      {[404, 460, 516].map((x, i) => (
-        <g key={i}>
-          <rect x={x} y="44" width="48" height="52" rx="5" fill="var(--card)" stroke={C} strokeWidth={i === 0 ? 2.5 : 1.5} />
-          {i === 0 && <circle cx={x + 24} cy="64" r="10" fill={shapes[0]} />}
-          {i === 1 && <rect x={x + 14} y="54" width="20" height="20" rx="3" fill={shapes[1]} />}
-          {i === 2 && <polygon points={`${x + 24},53 ${x + 35},75 ${x + 13},75` } fill={shapes[2]} />}
-          <text x={x + 24} y="90" fontSize="8" fontFamily="monospace" fontWeight="700" textAnchor="middle" fill={C}>#00{i + 1}</text>
-          {i < 2 && <text x={x + 52} y="75" fontSize="16" fontWeight="900" textAnchor="middle" fill={C}>≠</text>}
-        </g>
-      ))}
-      {/* provenance trail of #001 */}
-      <line x1="20" y1="114" x2="620" y2="114" stroke="var(--border)" strokeWidth="1" />
-      <text x="24" y="132" fontSize="10" fontWeight="800" fill={C}>{v.provenance}</text>
-      <text x="616" y="132" fontSize="9" textAnchor="end" fill="var(--muted-foreground)">🔒 {v.forever}</text>
-      <rect x="24" y="146" width="40" height="44" rx="4" fill="var(--card)" stroke={C} strokeWidth="2" />
-      <circle cx="44" cy="162" r="9" fill={shapes[0]} />
-      <text x="44" y="184" fontSize="7.5" fontFamily="monospace" fontWeight="700" textAnchor="middle" fill={C}>#001</text>
-      <line x1="66" y1="168" x2="80" y2="168" stroke={C} strokeWidth="2" markerEnd="url(#nft-arrow)" />
+      <text x="140" y="16" fontSize="10" fontWeight="800" textAnchor="middle" fill={C}>{v.provenance}</text>
+      {/* the token itself */}
+      <rect x="100" y="28" width="80" height="66" rx="8" fill="var(--card)" stroke={C} strokeWidth="2" />
+      <circle cx="140" cy="54" r="14" fill={ART} />
+      <text x="140" y="85" fontSize="9" fontFamily="monospace" fontWeight="800" textAnchor="middle" fill={C}>#001</text>
+      <line x1="140" y1="96" x2="140" y2="110" stroke={C} strokeWidth="2" markerEnd="url(#nft-arrow)" />
       {steps.map((s, i) => {
-        const x = 84 + i * 140;
+        const y = 112 + i * 48, last = i === 3;
         return (
           <g key={i}>
-            <rect x={x} y="140" width="118" height="56" rx="10" fill={i === 3 ? C + '1f' : 'var(--card)'} stroke={C} strokeWidth={i === 3 ? 2 : 1.2} />
-            <text x={x + 18} y="174" fontSize="18" textAnchor="middle">{s.emoji}</text>
-            <text x={x + 36} y="163" fontSize="9" fontWeight="700" fill="var(--foreground)">{s.label}</text>
-            <text x={x + 36} y="179" fontSize="8.5" fontFamily="monospace" fill="var(--muted-foreground)">{s.who}</text>
-            {i < 3 && <line x1={x + 120} y1="168" x2={x + 138} y2="168" stroke={C} strokeWidth="2" markerEnd="url(#nft-arrow)" />}
+            <rect x="40" y={y} width="200" height="36" rx="10" fill={last ? C + '1f' : 'var(--card)'} stroke={C} strokeWidth={last ? 2 : 1.2} />
+            <text x="60" y={y + 24} fontSize="17" textAnchor="middle">{s.emoji}</text>
+            <text x="80" y={y + 15} fontSize="9.5" fontWeight="700" fill="var(--foreground)">{s.label}</text>
+            <text x="80" y={y + 28} fontSize="8.5" fontFamily="monospace" fill="var(--muted-foreground)">{s.who}</text>
+            {i < 3 && <line x1="140" y1={y + 38} x2="140" y2={y + 46} stroke={C} strokeWidth="2" markerEnd="url(#nft-arrow)" />}
           </g>
         );
       })}
-      <rect x="140" y="212" width="360" height="26" rx="13" fill={C + '1a'} stroke={C + '66'} />
-      <text x="320" y="229" fontSize="10.5" fontWeight="800" textAnchor="middle" fill={C}>{v.bottomLine}</text>
+      <text x="140" y="314" fontSize="9" fontWeight="700" textAnchor="middle" fill="var(--muted-foreground)">🔒 {v.forever}</text>
+      <rect x="20" y="322" width="240" height="0" fill="none" />
+      <text x="140" y="331" fontSize="9.5" fontWeight="800" textAnchor="middle" fill={C}>{v.bottomLine}</text>
     </svg>
+  );
+}
+
+/** NFTs: one visual (provenance of #001) on the left; definition, three example chips and one honest note on the right. */
+function NftSlide() {
+  const { t } = useTranslation(NS);
+  const app = (t('ethApps.apps', { returnObjects: true }) as AppPeek[])[1];
+  const C = '#f97316';
+  return (
+    <div id="s3-nfts" className="h-full flex flex-col p-5 lg:p-8">
+      <div className="shrink-0 mb-3 flex items-center gap-2 text-[10px] text-muted-foreground">
+        <span className="px-1.5 py-0.5 rounded font-bold shrink-0 whitespace-nowrap" style={{ color: PEEK, backgroundColor: PEEK + '26' }}>{t('ethApps.peekBadge')}</span>
+        <span className="truncate">{app.tease}</span>
+        <TechHint body={app.hood} className="ml-auto" />
+      </div>
+
+      <div className="flex-1 min-h-0 grid grid-cols-12 gap-5">
+        <div className="col-span-5 min-h-0 bg-card border rounded-xl p-3 flex items-center justify-center overflow-hidden" style={{ borderColor: C + '55' }}>
+          <NftProvenance v={app.visual} />
+        </div>
+        <div className="col-span-7 min-h-0 flex flex-col justify-center gap-4">
+          <div>
+            <div className="flex items-center gap-3 mb-2 flex-wrap">
+              <div className="size-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: C + '26', color: C }}><ImageIcon className="size-6" /></div>
+              <h2 className="text-2xl lg:text-3xl font-bold text-foreground leading-none">{app.title} <span className="text-base lg:text-lg font-semibold text-muted-foreground">— {app.subtitle}</span></h2>
+            </div>
+            <span className="inline-block text-xs italic text-muted-foreground px-2.5 py-1 rounded-full border border-border bg-card mb-2">{t('ethApps.replacesLabel')} {app.replaces}</span>
+            <p className="text-base lg:text-lg text-foreground leading-snug">{app.description}</p>
+          </div>
+          <div>
+            <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1.5">{t('ethApps.examplesLabel')}</div>
+            <div className="flex gap-2">
+              {(app.examples ?? []).map((ex, j) => (
+                <div key={j} className="flex-1 min-w-0 px-3 py-2 rounded-xl border bg-card" style={{ borderColor: C + '55' }}>
+                  <div className="font-bold text-sm text-foreground leading-tight">{ex.name}</div>
+                  <div className="text-xs text-muted-foreground leading-snug mt-0.5">{ex.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-xl border border-border bg-muted/30 px-3 py-2.5 text-xs text-muted-foreground space-y-1.5">
+            <div><span className="font-bold text-[#f59e0b] mr-1">{t('ethApps.hypeLabel')}</span>{app.hype}</div>
+            <div><span className="font-bold text-[#ef4444] mr-1">{t('ethApps.riskLabel')}</span>{app.risk}</div>
+          </div>
+        </div>
+      </div>
+
+      <SlideFooter keyPoint={app.keyPoint} peek={app.later} />
+    </div>
   );
 }
 
@@ -457,7 +946,7 @@ function DaoIllustration({ v }: { v: Record<string, string> }) {
 
 interface AppPeek {
   title: string; subtitle: string; replaces: string; tease: string; description: string;
-  examples?: Array<{ name: string; desc: string }>; risk: string; stat: string; later: string;
+  examples?: Array<{ name: string; desc: string }>; risk: string; hype: string; stat?: string; later: string; hood: string; keyPoint: string;
   visual: Record<string, string>;
 }
 
@@ -471,8 +960,9 @@ function SneakPeekSlide({ id, index, color, icon, illustration }: {
     <div id={id} className="h-full flex flex-col p-5 lg:p-8">
       <div className="shrink-0 mb-3">
         <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
-          <span className="px-1.5 py-0.5 rounded font-bold" style={{ color: PEEK, backgroundColor: PEEK + '26' }}>{t('ethApps.peekBadge')}</span>
-          <span>{app.tease}</span>
+          <span className="px-1.5 py-0.5 rounded font-bold shrink-0 whitespace-nowrap" style={{ color: PEEK, backgroundColor: PEEK + '26' }}>{t('ethApps.peekBadge')}</span>
+          <span className="truncate">{app.tease}</span>
+          <TechHint body={app.hood} className="ml-auto" />
         </div>
         <div className="flex items-center gap-3 mb-1">
           <div className="size-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: color + '26', color }}>{icon}</div>
@@ -486,7 +976,8 @@ function SneakPeekSlide({ id, index, color, icon, illustration }: {
         {illustration(app.visual)}
       </div>
       {examples.length > 0 && (
-        <div className="shrink-0 mt-3 grid grid-cols-3 gap-3">
+        <div className="shrink-0 mt-3 grid gap-3" style={{ gridTemplateColumns: `auto repeat(${examples.length}, minmax(0, 1fr))` }}>
+          <div className="px-3 flex items-center max-w-[6.5rem] text-[10px] font-black uppercase tracking-widest leading-tight text-muted-foreground">{t('ethApps.examplesLabel')}</div>
           {examples.map((ex, j) => (
             <div key={j} className="px-3 py-2 rounded-xl bg-card border border-border flex items-center gap-3">
               <span className="size-7 rounded-lg flex items-center justify-center text-xs font-black text-white shrink-0" style={{ backgroundColor: color }}>{j + 1}</span>
@@ -499,16 +990,19 @@ function SneakPeekSlide({ id, index, color, icon, illustration }: {
         </div>
       )}
 
-      <div className="shrink-0 mt-3 grid grid-cols-[auto_1fr] gap-3">
+      <div className="shrink-0 mt-3 grid grid-cols-[auto_1fr_1fr] gap-3">
         <div className="px-4 py-2 rounded-xl border flex items-center" style={{ borderColor: color + '55', background: `linear-gradient(to right, ${color}26, transparent)` }}>
           <div className="text-sm font-black" style={{ color }}>{app.stat}</div>
         </div>
         <div className="px-3 py-2 rounded-xl bg-[#ef4444]/8 border border-[#ef4444]/30 text-xs text-muted-foreground flex items-center">
-          <span className="font-bold text-[#ef4444] mr-1">{t('ethApps.riskLabel')}</span>{app.risk}
+          <span className="font-bold text-[#ef4444] mr-1 shrink-0">{t('ethApps.riskLabel')}</span><span>{app.risk}</span>
+        </div>
+        <div className="px-3 py-2 rounded-xl bg-[#f59e0b]/8 border border-[#f59e0b]/30 text-xs text-muted-foreground flex items-center">
+          <span className="font-bold text-[#f59e0b] mr-1 shrink-0">{t('ethApps.hypeLabel')}</span><span>{app.hype}</span>
         </div>
       </div>
 
-      <PeekFooter body={app.later} />
+      <SlideFooter keyPoint={app.keyPoint} peek={app.later} />
     </div>
   );
 }
@@ -548,17 +1042,19 @@ function UseCasePatternSlide({ id, index }: { id: string; index: number }) {
         <p className="text-sm text-muted-foreground mt-1.5 max-w-3xl">{group.tagline}</p>
       </div>
 
-      <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2 shrink-0">{t('useCases.showsUpIn')}</div>
-      <div className="flex-1 min-h-0 grid grid-cols-2 grid-rows-2 gap-4">
-        {group.industries.map((ind, j) => (
-          <div key={j} className="rounded-2xl border-2 bg-card p-6 flex items-center gap-5 min-h-0" style={{ borderColor: cfg.color + '40', background: `linear-gradient(to bottom right, ${cfg.color}12, transparent 60%)` }}>
-            <div className="size-20 rounded-2xl flex items-center justify-center text-5xl shrink-0" style={{ backgroundColor: cfg.color + '1a' }}>{cfg.industryEmojis[j]}</div>
-            <div className="min-w-0">
-              <div className="font-black text-xl lg:text-2xl text-foreground leading-tight">{ind.name}</div>
-              <div className="text-base text-muted-foreground mt-1.5 leading-snug">{ind.hook}</div>
+      <div className="flex-1 min-h-0 flex flex-col items-center justify-center gap-3">
+        <div className="w-full max-w-4xl text-[10px] font-black uppercase tracking-widest text-muted-foreground">{t('useCases.showsUpIn')}</div>
+        <div className="grid grid-cols-2 gap-5 w-full max-w-4xl">
+          {group.industries.map((ind, j) => (
+            <div key={j} className="rounded-2xl border-2 bg-card px-5 py-4 flex items-center gap-4" style={{ borderColor: cfg.color + '40', background: `linear-gradient(to bottom right, ${cfg.color}12, transparent 60%)` }}>
+              <div className="size-14 rounded-2xl flex items-center justify-center text-3xl shrink-0" style={{ backgroundColor: cfg.color + '1a' }}>{cfg.industryEmojis[j]}</div>
+              <div className="min-w-0">
+                <div className="font-black text-lg lg:text-xl text-foreground leading-tight">{ind.name}</div>
+                <div className="text-sm text-muted-foreground mt-1 leading-snug">{ind.hook}</div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Pattern strip — where we are in the three-slide tour */}
@@ -752,14 +1248,17 @@ function KnowledgeWall() {
   );
 }
 
-// ─── Brainstorm — closing in-class activity ──────────────────────────────────
+// ─── In-class Assignment #1 — closing group activity ─────────────────────────
 
-function BrainstormSlide() {
+function AssignmentSlide() {
   const { t } = useTranslation(NS);
-  const COLOR = '#f59e0b';
-  const seeds = t('brainstorm.seeds', { returnObjects: true }) as Array<{ emoji: string; title: string; desc: string }>;
-  const questions = t('brainstorm.questions', { returnObjects: true }) as string[];
-  const steps = t('brainstorm.steps', { returnObjects: true }) as Array<{ time: string; label: string }>;
+  const COLOR = '#f59e0b', STAGE1 = '#39B54A', STAGE2 = '#6366f1';
+  const seeds = t('assignment.seeds', { returnObjects: true }) as Array<{ emoji: string; title: string }>;
+  const parts = t('assignment.parts', { returnObjects: true }) as Array<{ title: string; desc: string }>;
+  const steps = t('assignment.steps', { returnObjects: true }) as Array<{ time: string; label: string }>;
+  const rules = t('assignment.rules', { returnObjects: true }) as Array<{ emoji: string; text: string }>;
+  const partIcons = [Target, Lightbulb, Scale];
+  const partColors = ['#ED1C24', '#6366f1', '#39B54A'];
   return (
     <div className="h-full flex flex-col p-6 lg:p-10 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none opacity-60"
@@ -770,66 +1269,96 @@ function BrainstormSlide() {
         <div className="flex items-start gap-4">
           <div className="px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-widest text-white shadow-md shrink-0"
             style={{ background: `linear-gradient(135deg, ${COLOR}, #ED1C24)` }}>
-            {t('brainstorm.ribbon')}
+            {t('assignment.ribbon')}
           </div>
           <div>
-            <div className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">{t('brainstorm.contextLabel')}</div>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-0.5">{t('brainstorm.title')}</h2>
-            <p className="text-muted-foreground text-sm mt-1 max-w-3xl">{t('brainstorm.subtitle')}</p>
+            <div className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">{t('assignment.contextLabel')}</div>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-0.5">{t('assignment.title')}</h2>
+            <p className="text-muted-foreground text-sm mt-1 max-w-3xl">{t('assignment.subtitle')}</p>
           </div>
         </div>
-        <div className="shrink-0 px-3 py-1.5 rounded-full text-xs font-bold border-2 self-center"
-          style={{ borderColor: COLOR + '50', color: COLOR, backgroundColor: COLOR + '10' }}>
-          ⏱ {t('brainstorm.duration')}
+        <div className="shrink-0 flex items-center gap-2 self-center">
+          <div className="px-3 py-1.5 rounded-full text-xs font-bold border-2 flex items-center gap-1.5"
+            style={{ borderColor: COLOR + '50', color: COLOR, backgroundColor: COLOR + '10' }}>
+            <Users className="size-3.5" /> {t('assignment.groupSize')}
+          </div>
+          <div className="px-3 py-1.5 rounded-full text-xs font-bold border-2"
+            style={{ borderColor: COLOR + '50', color: COLOR, backgroundColor: COLOR + '10' }}>
+            ⏱ {t('assignment.duration')}
+          </div>
         </div>
       </div>
 
       {/* Panes */}
       <div className="flex-1 min-h-0 relative z-10 grid grid-cols-12 gap-4">
-        {/* Seeds */}
-        <div className="col-span-5 p-4 bg-card border-2 rounded-2xl flex flex-col gap-3 min-h-0" style={{ borderColor: COLOR + '50' }}>
-          <div className="text-[10px] font-black uppercase tracking-widest" style={{ color: COLOR }}>{t('brainstorm.seedsLabel')}</div>
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-2.5">
-            {seeds.map((s, i) => (
-              <div key={i} className="p-3 rounded-xl border border-border bg-muted/30 flex flex-col gap-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl leading-none">{s.emoji}</span>
-                  <div className="font-bold text-sm text-foreground leading-tight">{s.title}</div>
+        {/* Left: pick a problem + Stage 1 (in class, spoken) */}
+        <div className="col-span-5 flex flex-col gap-4 min-h-0">
+          <div className="flex-1 p-4 bg-card border-2 rounded-2xl flex flex-col gap-3 min-h-0" style={{ borderColor: COLOR + '50' }}>
+            <div className="text-[10px] font-black uppercase tracking-widest" style={{ color: COLOR }}>{t('assignment.seedsLabel')}</div>
+            <p className="text-xs text-muted-foreground leading-snug">{t('assignment.seedsIntro')}</p>
+            <div className="flex flex-wrap gap-2 content-start">
+              {seeds.map((s, i) => (
+                <div key={i} className="px-2.5 py-1.5 rounded-full border border-border bg-muted/30 flex items-center gap-1.5">
+                  <span className="text-base leading-none">{s.emoji}</span>
+                  <span className="font-semibold text-xs text-foreground leading-tight">{s.title}</span>
                 </div>
-                <p className="text-xs text-muted-foreground leading-snug">{s.desc}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-        {/* Questions */}
-        <div className="col-span-4 p-4 bg-card border-2 rounded-2xl flex flex-col gap-3 min-h-0 border-[#6366f1]/50">
-          <div className="text-[10px] font-black uppercase tracking-widest text-[#6366f1]">{t('brainstorm.questionsLabel')}</div>
-          <div className="flex-1 flex flex-col justify-center gap-2.5">
-            {questions.map((q, i) => (
-              <div key={i} className="flex items-start gap-3 p-2.5 rounded-lg bg-muted/30">
-                <div className="size-6 rounded-full bg-[#6366f1]/20 flex items-center justify-center shrink-0 text-xs font-bold text-[#6366f1]">{i + 1}</div>
-                <p className="text-sm text-foreground leading-snug">{q}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* Steps */}
-        <div className="col-span-3 p-4 bg-card border-2 rounded-2xl flex flex-col gap-3 min-h-0 border-[#39B54A]/50">
-          <div className="text-[10px] font-black uppercase tracking-widest text-[#39B54A]">{t('brainstorm.stepsLabel')}</div>
-          <div className="flex-1 flex flex-col justify-center gap-3">
+          <div className="shrink-0 p-4 bg-card border-2 rounded-2xl flex flex-col gap-2.5" style={{ borderColor: STAGE1 + '80' }}>
+            <div className="text-[10px] font-black uppercase tracking-widest" style={{ color: STAGE1 }}>{t('assignment.stage1Label')}</div>
             {steps.map((s, i) => (
               <div key={i} className="flex items-center gap-3">
-                <div className="shrink-0 px-2 py-1 rounded-md bg-[#39B54A]/15 text-[#39B54A] text-[10px] font-black font-mono">{s.time}</div>
-                <p className="text-sm text-foreground leading-snug">{s.label}</p>
+                <div className="shrink-0 w-[5.6rem] text-center px-1.5 py-1 rounded-md text-[10px] font-black font-mono whitespace-nowrap" style={{ backgroundColor: STAGE1 + '26', color: STAGE1 }}>{s.time}</div>
+                <p className="text-xs lg:text-sm text-foreground leading-snug">{s.label}</p>
+              </div>
+            ))}
+            <p className="text-[11px] italic text-muted-foreground leading-snug border-t border-border pt-2">🗣️ {t('assignment.stage1Note')}</p>
+          </div>
+        </div>
+
+        {/* Right: Stage 2 (homework) — the one-page write-up and its rules */}
+        <div className="col-span-7 p-5 bg-card border-2 rounded-2xl flex flex-col gap-3 min-h-0" style={{ borderColor: STAGE2 + '80' }}>
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div className="flex items-center gap-2">
+              <FileText className="size-4" style={{ color: STAGE2 }} />
+              <div className="text-[10px] font-black uppercase tracking-widest" style={{ color: STAGE2 }}>{t('assignment.stage2Label')}</div>
+            </div>
+            <div className="px-3 py-1 rounded-full text-xs font-black border-2 text-white shadow-sm" style={{ borderColor: STAGE2, backgroundColor: STAGE2 }}>
+              {t('assignment.deliverableLimit')}
+            </div>
+          </div>
+          <div className="grid grid-cols-4 gap-2">
+            {rules.map((r, i) => (
+              <div key={i} className="px-2.5 py-2 rounded-xl border-2 flex items-center gap-2 text-xs font-semibold text-foreground leading-tight"
+                style={{ borderColor: STAGE2 + '55', backgroundColor: STAGE2 + '10' }}>
+                <span className="text-base leading-none shrink-0">{r.emoji}</span>{r.text}
               </div>
             ))}
           </div>
-          <Lightbulb className="size-10 text-[#39B54A]/40 self-center shrink-0" />
+          <p className="text-sm text-muted-foreground leading-snug">{t('assignment.deliverableIntro')}</p>
+          <div className="flex-1 min-h-0 grid grid-cols-3 gap-3">
+            {parts.map((p, i) => {
+              const Icon = partIcons[i];
+              const c = partColors[i];
+              return (
+                <div key={i} className="p-4 rounded-xl border-2 bg-muted/20 flex flex-col gap-2 min-h-0 overflow-hidden" style={{ borderColor: c + '50' }}>
+                  <div className="flex items-center gap-2">
+                    <div className="size-7 rounded-full flex items-center justify-center text-xs font-black text-white shrink-0" style={{ backgroundColor: c }}>{i + 1}</div>
+                    <Icon className="size-4 shrink-0" style={{ color: c }} />
+                    <div className="font-bold text-base text-foreground leading-tight">{p.title}</div>
+                  </div>
+                  <p className="text-xs lg:text-sm text-muted-foreground leading-snug">{p.desc}</p>
+                  <div className="mt-auto pt-2 text-[10px] font-semibold uppercase tracking-widest truncate" style={{ color: c + 'aa' }}>{t('assignment.partHint')}</div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       <div className="shrink-0 relative z-10 mt-4 p-3 rounded-xl border-2 text-sm" style={{ borderColor: COLOR + '40', backgroundColor: COLOR + '10' }}>
-        <strong className="text-foreground">{t('brainstorm.footerStrong')}</strong> <span className="text-muted-foreground">{t('brainstorm.footerBody')}</span>
+        <strong className="text-foreground">{t('assignment.footerStrong')}</strong> <span className="text-muted-foreground">{t('assignment.footerBody')}</span>
       </div>
     </div>
   );
@@ -865,103 +1394,88 @@ export function Section3() {
           />
         </div>
 
-        {/* ═══════ 1. ETHEREUM & VITALIK BUTERIN ═══════ */}
+        {/* ═══════ 1. ETHEREUM — THE WORLD COMPUTER ═══════ */}
         <div id="s3-ethereum" className="h-full flex flex-col p-5 lg:p-8">
 
-          <div className="shrink-0 mb-4">
+          <div className="shrink-0 mb-3">
             <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
-              <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] font-bold">{t('ethereum.recapBadge')}</span>
-              <span>{t('ethereum.recapA')} <strong className="text-foreground">{t('ethereum.recapStrong')}</strong>{t('ethereum.recapTail')}</span>
+              <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] font-bold shrink-0 whitespace-nowrap">{t('ethereum.recapBadge')}</span>
+              <span className="truncate">{t('ethereum.recapA')} <strong className="text-foreground">{t('ethereum.recapStrong')}</strong>{t('ethereum.recapTail')}</span>
+              <TechHint body={t('ethereum.hood')} className="ml-auto" />
             </div>
             <div className="flex items-center gap-3 mb-1">
               <img src={ethereumLogo} alt="Ethereum" className="h-8 object-contain" />
               <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('ethereum.heading')}</h2>
             </div>
-            <p className="text-sm text-muted-foreground">{t('ethereum.lead')}</p>
+            <p className="text-base lg:text-lg text-foreground font-semibold">{t('ethereum.lead')}</p>
           </div>
 
           <div className="flex-1 min-h-0 grid grid-cols-3 gap-4">
 
-            {/* Vitalik card */}
-            <div className="bg-card border border-border rounded-xl overflow-hidden flex flex-col">
+            {/* Vitalik card + one-line origin */}
+            <div className="bg-card border border-border rounded-xl overflow-hidden flex flex-col min-h-0">
               <img src={vitalikPhoto} alt={t('ethereum.vitalikName')} className="w-full object-cover object-top flex-1 min-h-0" />
               <div className="p-4 shrink-0">
                 <div className="font-black text-foreground text-lg leading-tight">{t('ethereum.vitalikName')}</div>
                 <div className="text-xs text-[#627EEA] font-medium mt-0.5">{t('ethereum.vitalikRole')}</div>
-                <div className="text-xs text-muted-foreground mt-2">{t('ethereum.vitalikBio')} <span className="text-foreground font-bold">{t('ethereum.vitalikAge')}</span>.</div>
+                <div className="text-xs text-muted-foreground mt-2">{t('ethereum.vitalikBio')} <span className="text-foreground font-bold">{t('ethereum.vitalikAge')}</span>. {t('ethereum.originLine')}</div>
               </div>
             </div>
 
-            {/* Timeline + why */}
             <div className="col-span-2 flex flex-col gap-3 min-h-0">
-
-              <div className="bg-card border border-border rounded-xl p-4 flex flex-col gap-3">
-                <h3 className="font-bold text-foreground text-sm">{t('ethereum.whyTitle')}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {t('ethereum.whyP1A')} <span className="text-foreground font-medium">{t('ethereum.whyP1Strong')}</span> {t('ethereum.whyP1Tail')}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {t('ethereum.whyP2A')} <span className="text-foreground font-medium">{t('ethereum.whyP2Strong1')}</span> {t('ethereum.whyP2Mid')} <span className="text-foreground font-medium">{t('ethereum.whyP2Strong2')}</span>{t('ethereum.whyP2Tail')}
-                </p>
+              {/* World-computer framing */}
+              <div className="shrink-0 rounded-xl border p-4 flex items-center gap-4" style={{ borderColor: '#627EEA55', background: 'linear-gradient(to right, #627EEA26, transparent)' }}>
+                <div className="size-14 rounded-2xl bg-[#627EEA]/15 flex items-center justify-center text-3xl shrink-0">🌍</div>
+                <div className="min-w-0">
+                  <h3 className="font-black text-foreground text-base leading-tight">{t('ethereum.worldTitle')}</h3>
+                  <p className="text-sm text-muted-foreground mt-1 leading-snug">{t('ethereum.worldBody')}</p>
+                </div>
               </div>
 
-              <div className="flex gap-3 flex-1 min-h-0">
-
-                <div className="flex flex-col gap-2 flex-1">
-                  {(['#627EEA','#627EEA','#39B54A','#ED1C24','#8b5cf6','#8b5cf6','#22d3ee']).map((color, i) => {
-                    const events = t('ethereum.events', { returnObjects: true }) as Array<{ year: string; label: string }>;
-                    const ev = events[i];
-                    const soon = i === 6;
-                    return (
-                      <div key={i} className={`flex items-center gap-3 rounded-lg px-3 py-2 ${soon ? 'bg-[#22d3ee]/10 border border-dashed border-[#22d3ee]/50' : 'bg-card border border-border'}`}>
-                        <span className="font-black text-sm shrink-0" style={{ color }}>{ev.year}</span>
-                        <span className="text-sm text-muted-foreground flex-1">{ev.label}</span>
-                        {soon && (
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#22d3ee]/20 text-[#22d3ee] shrink-0">{t('ethereum.soonBadge')}</span>
-                        )}
-                      </div>
-                    );
-                  })}
-                  <a
-                    href="https://rabby.io"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 px-3 py-2.5 bg-[#7084ff]/10 border border-[#7084ff]/40 rounded-lg hover:bg-[#7084ff]/20 hover:border-[#7084ff]/70 transition-all group mt-1"
-                  >
-                    <span className="text-xl shrink-0">🐰</span>
-                    <div className="flex-1">
-                      <div className="text-sm font-bold text-[#7084ff]">{t('ethereum.walletCta')}</div>
-                      <div className="text-xs text-muted-foreground">rabby.io</div>
+              {/* Three milestones */}
+              <div className="flex-1 min-h-0 grid grid-cols-3 gap-3">
+                {(t('ethereum.milestones', { returnObjects: true }) as Array<{ emoji: string; year: string; label: string; note: string }>).map((m, i) => {
+                  const color = ['#627EEA', '#39B54A', PEEK][i];
+                  return (
+                    <div key={i} className="min-h-0 rounded-xl border-2 bg-card p-4 flex flex-col items-center text-center justify-center gap-1.5" style={{ borderColor: color + '55', background: `linear-gradient(to bottom, ${color}14, var(--card) 60%)` }}>
+                      <span className="size-16 rounded-full flex items-center justify-center text-4xl mb-1" style={{ backgroundColor: color + '1f' }}>{m.emoji}</span>
+                      <span className="font-black text-2xl leading-none" style={{ color }}>{m.year}</span>
+                      <span className="font-bold text-sm text-foreground leading-tight">{m.label}</span>
+                      <span className="text-xs text-muted-foreground leading-snug">{m.note}</span>
                     </div>
-                    <ExternalLink className="size-4 text-[#7084ff]/60 group-hover:text-[#7084ff] transition-colors shrink-0" />
-                  </a>
-                </div>
-
-                <div className="w-40 shrink-0 flex flex-col gap-2">
-                  <div className="bg-gradient-to-br from-[#627EEA]/20 to-transparent border border-[#627EEA]/40 rounded-xl p-3 flex flex-col items-center text-center flex-1">
-                    <img src={ethereumLogo} alt="ETH" className="h-10 object-contain mb-2" />
-                    <div className="text-xl font-black text-[#627EEA]">{t('ethereum.rank')}</div>
-                    <div className="text-xs text-muted-foreground mt-1">{t('ethereum.rankNote')}</div>
-                  </div>
-                  <div className="bg-card border border-border rounded-xl p-3 text-center">
-                    <div className="text-lg font-black text-foreground">{t('ethereum.dappCount')}</div>
-                    <div className="text-xs text-muted-foreground">{t('ethereum.dappCountNote')}</div>
-                  </div>
-                </div>
-
+                  );
+                })}
               </div>
 
+              <a
+                href="https://rabby.io"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 flex items-center gap-3 px-3 py-2.5 bg-[#7084ff]/10 border border-[#7084ff]/40 rounded-lg hover:bg-[#7084ff]/20 hover:border-[#7084ff]/70 transition-all group"
+              >
+                <span className="text-xl shrink-0">🐰</span>
+                <div className="flex-1">
+                  <div className="text-sm font-bold text-[#7084ff]">{t('ethereum.walletCta')}</div>
+                  <div className="text-xs text-muted-foreground">rabby.io</div>
+                </div>
+                <ExternalLink className="size-4 text-[#7084ff]/60 group-hover:text-[#7084ff] transition-colors shrink-0" />
+              </a>
             </div>
 
           </div>
+          <KeyPoint body={t('ethereum.keyPoint')} />
         </div>
+
+        {/* ═══════ KEYSTONE: WHAT IS A SMART CONTRACT? ═══════ */}
+        <SmartContractSlide />
 
         {/* ═══════ ETH ACCOUNTS — EOA vs CONTRACT ═══════ */}
         <div id="s3-accounts" className="h-full flex flex-col p-5 lg:p-8">
-          <div className="shrink-0 mb-4">
+          <div className="shrink-0 mb-3">
             <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
-              <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] font-bold">{t('ethAccounts.recapBadge')}</span>
-              <span>{t('ethAccounts.recapA')} <strong className="text-foreground">{t('ethAccounts.recapStrong')}</strong> {t('ethAccounts.recapTail')}</span>
+              <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] font-bold shrink-0 whitespace-nowrap">{t('ethAccounts.recapBadge')}</span>
+              <span className="truncate">{t('ethAccounts.recapA')} <strong className="text-foreground">{t('ethAccounts.recapStrong')}</strong> {t('ethAccounts.recapTail')}</span>
+              <TechHint body={t('ethAccounts.hood')} className="ml-auto" />
             </div>
             <div className="flex items-center gap-3 mb-1">
               <img src={ethereumLogo} alt="Ethereum" className="h-7 object-contain" />
@@ -974,18 +1488,17 @@ export function Section3() {
             <AccountsArrow />
             <AccountCard color="#39B54A" emoji="⚙️" copy={t('ethAccounts.contract', { returnObjects: true }) as AccountCopy} />
           </div>
-          <div className="shrink-0 mt-3 p-3 bg-[#f59e0b]/10 border border-[#f59e0b]/30 rounded-lg text-xs text-muted-foreground">
-            <span className="font-bold text-[#f59e0b]">{t('ethAccounts.keyRuleStrong')}</span> {t('ethAccounts.keyRuleBody')}
-          </div>
-          <PeekFooter body={t('ethAccounts.peek')} />
+          <WhoStartsQuiz />
+          <SlideFooter keyPoint={t('ethAccounts.keyPoint')} peek={t('ethAccounts.peek')} />
         </div>
 
         {/* ═══════ GAS — INTERACTIVE FEE CALCULATOR ═══════ */}
         <div id="s3-gas" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-3">
             <div className="flex items-center gap-2 mb-1.5 text-[10px] text-muted-foreground">
-              <span className="px-1.5 py-0.5 rounded bg-[#627EEA]/15 text-[#627EEA] font-bold">{t('ethGas.recapBadge')}</span>
-              <span>{t('ethGas.recapBody')}</span>
+              <span className="px-1.5 py-0.5 rounded bg-[#627EEA]/15 text-[#627EEA] font-bold shrink-0 whitespace-nowrap">{t('ethGas.recapBadge')}</span>
+              <span className="truncate">{t('ethGas.recapBody')}</span>
+              <TechHint body={t('ethGas.hood')} className="ml-auto" />
             </div>
             <div className="flex items-center gap-3 mb-1">
               <span className="text-2xl">⛽</span>
@@ -997,16 +1510,34 @@ export function Section3() {
             <div className="col-span-3 min-h-0"><GasFeeDemo /></div>
             <div className="col-span-2 min-h-0 flex flex-col gap-3">
               <FuelAnalogy />
-              <div className="shrink-0 p-2.5 bg-muted/40 border border-border rounded-lg text-[11px] text-muted-foreground leading-snug">{t('ethGas.eipNote')}</div>
+              {/* Surge-pricing analogy for the gas-price slider */}
+              <div className="shrink-0 px-3 py-2 rounded-xl border flex items-center gap-3" style={{ borderColor: '#f59e0b55', backgroundColor: '#f59e0b10' }}>
+                <span className="text-2xl shrink-0">🚕</span>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-foreground">{t('ethGas.surge.title')}</div>
+                  <div className="text-[11px] text-muted-foreground leading-snug">{t('ethGas.surge.body')}</div>
+                </div>
+              </div>
+              {/* Why a per-step fee exists at all: the brake on endless loops and spam */}
+              <div className="shrink-0 px-3 py-2 rounded-xl border flex items-center gap-3" style={{ borderColor: '#ef444455', backgroundColor: '#ef444410' }}>
+                <span className="text-2xl shrink-0">🔁</span>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-foreground">{t('ethGas.why.title')}</div>
+                  <div className="text-[11px] text-muted-foreground leading-snug">{t('ethGas.why.body')}</div>
+                </div>
+              </div>
             </div>
           </div>
-          <PeekFooter body={t('ethGas.peek')} />
+          <SlideFooter keyPoint={t('ethGas.keyPoint')} peek={t('ethGas.peek')} />
         </div>
 
         {/* ═══════ SNEAK PEEKS: DeFi · NFTs · DAOs ═══════ */}
         <SneakPeekSlide id="s3-defi" index={0} color="#39B54A" icon={<Landmark className="size-6" />} illustration={v => <DefiIllustration v={v} />} />
-        <SneakPeekSlide id="s3-nfts" index={1} color="#f97316" icon={<ImageIcon className="size-6" />} illustration={v => <NftIllustration v={v} />} />
+        <NftSlide />
         <SneakPeekSlide id="s3-daos" index={2} color="#6366f1" icon={<Vote className="size-6" />} illustration={v => <DaoIllustration v={v} />} />
+
+        {/* ═══════ TOKENS — THE BUSINESS PRIMITIVE ═══════ */}
+        <TokensSlide />
 
         {/* ═══════ 2. BLOCKCHAIN USE CASES — ONE SLIDE PER PATTERN ═══════ */}
         <UseCasePatternSlide id="s3-usecases-trust" index={0} />
@@ -1016,8 +1547,8 @@ export function Section3() {
         {/* ═══════ 2. BLOCKCHAIN & WEB3 ECOSYSTEM MAP ═══════ */}
         <div id="s3-ecosystem" className="h-full flex items-center justify-center p-8">
           <div className="max-w-4xl w-full">
-            <div className="flex items-center justify-center gap-2 mb-2 text-[10px] text-muted-foreground">
-              <span className="px-1.5 py-0.5 rounded bg-[#6366f1]/15 text-[#6366f1] font-bold">{t('ecosystem.recapBadge')}</span>
+            <div className="flex flex-col items-center gap-1 mb-2 text-[10px] text-muted-foreground text-center">
+              <span className="px-1.5 py-0.5 rounded bg-[#6366f1]/15 text-[#6366f1] font-bold whitespace-nowrap">{t('ecosystem.recapBadge')}</span>
               <span>{t('ecosystem.recapBody')}</span>
             </div>
             <h2 className="text-3xl font-bold text-foreground mb-1 text-center">{t('ecosystem.heading')}</h2>
@@ -1352,9 +1883,9 @@ export function Section3() {
           <KnowledgeWall />
         </div>
 
-        {/* ═══════ BRAINSTORM — CLOSING ACTIVITY ═══════ */}
-        <div id="s3-brainstorm" className="h-full">
-          <BrainstormSlide />
+        {/* ═══════ IN-CLASS ASSIGNMENT #1 — CLOSING ACTIVITY ═══════ */}
+        <div id="s3-assignment" className="h-full">
+          <AssignmentSlide />
         </div>
 
       </div>

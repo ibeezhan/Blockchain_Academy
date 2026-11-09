@@ -8,11 +8,13 @@
   },
   "chapters": {
     "s3-ethereum": "Ethereum",
+    "s3-smartcontract": "Smart Contracts",
     "s3-accounts": "Accounts",
     "s3-gas": "Gas",
     "s3-defi": "DeFi",
     "s3-nfts": "NFTs",
     "s3-daos": "DAOs",
+    "s3-tokens": "Tokens",
     "s3-usecases-trust": "Trust w/o Middlemen",
     "s3-usecases-provenance": "Provenance",
     "s3-usecases-coord": "Coordination",
@@ -26,7 +28,7 @@
     "s3-quiz": "Quizzes",
     "s3-takeaways": "Takeaways",
     "s3-recap": "🧱 Knowledge Wall",
-    "s3-brainstorm": "💡 Brainstorm"
+    "s3-assignment": "📝 Assignment"
   },
   "title": {
     "sectionNumber": "SECTION 03",
@@ -36,85 +38,89 @@
   "peek": {
     "label": "Later session →"
   },
+  "keyPoint": {
+    "label": "Key point"
+  },
+  "techHint": {
+    "label": "Under the hood →",
+    "target": "Platforms §2",
+    "title": "The deep version lives in Blockchain Platforms, Section 2"
+  },
   "ethereum": {
-    "recapBadge": "↩ §2",
-    "recapA":     "Bitcoin Script was",
+    "recapBadge": "↩ Recap · Section 2 · Bitcoin's limits",
+    "recapA":     "Bitcoin's scripting was",
     "recapStrong":"intentionally limited",
-    "recapTail":  ". Vitalik's response: don't patch Bitcoin — build a new chain with a real virtual machine.",
+    "recapTail":  ". Vitalik's response: don't patch Bitcoin — build a new chain that can run programs.",
     "heading":    "Ethereum — The Programmable Blockchain",
-    "lead":       "Bitcoin proved decentralised money was possible. Ethereum asked: what if you could run any program on a blockchain?",
+    "lead":       "Bitcoin is money. Ethereum is a programmable world computer.",
     "vitalikName":"Vitalik Buterin",
     "vitalikRole":"Co-founder of Ethereum",
     "vitalikBio": "Born 1994 in Russia, raised in Canada. Published the Ethereum whitepaper in late 2013 — aged",
     "vitalikAge": "19",
-    "whyTitle":   "Why Ethereum Existed",
-    "whyP1A":     "Vitalik was an early Bitcoin contributor and journalist. He saw that Bitcoin's scripting language was",
-    "whyP1Strong":"deliberately limited",
-    "whyP1Tail":  "— great for currency, useless for building applications. Several projects had tried to layer features on top of Bitcoin (Colored Coins, Mastercoin) but all hit the same ceiling.",
-    "whyP2A":     "His proposal: a new blockchain with a",
-    "whyP2Strong1":"Turing-complete virtual machine",
-    "whyP2Mid":   "(the EVM) that could execute any arbitrary program — called a",
-    "whyP2Strong2":"smart contract",
-    "whyP2Tail":  ". Developers would finally be able to build decentralised applications without a trusted server.",
-    "events": [
-      { "year": "2013",   "label": "Whitepaper published" },
-      { "year": "2014",   "label": "Crowdsale raises $18M — largest at the time" },
-      { "year": "2015",   "label": "Ethereum mainnet launches (Frontier)" },
-      { "year": "2016",   "label": "The DAO hack — first major test of governance" },
-      { "year": "2022",   "label": "The Merge — switches from PoW to Proof of Stake" },
-      { "year": "2025",   "label": "Pectra upgrade — smart accounts, higher validator limits, blob scaling" },
-      { "year": "2026 →", "label": "Fusaka upgrade — full PeerDAS, EOF, and deeper L2 scaling" }
+    "originLine": "An early Bitcoin writer, he wanted a blockchain that could run any program — not just move coins.",
+    "worldTitle": "A world computer",
+    "worldBody":  "One shared computer run by thousands of machines, that anyone can use and nobody owns. Bitcoin stores balances; Ethereum also stores programs — and runs them for anyone who pays the fee.",
+    "milestones": [
+      { "emoji": "🚀", "year": "2015", "label": "Launch", "note": "Ethereum goes live. Programs on a blockchain, for real." },
+      { "emoji": "🌱", "year": "2022", "label": "The Merge → Proof of Stake", "note": "Mining replaced by staking. Energy use drops ~99.95%." },
+      { "emoji": "🏙️", "year": "Today", "label": "The default platform for apps", "note": "DeFi, NFTs, DAOs, tokens — most of them started here." }
     ],
-    "soonBadge":   "SOON",
     "walletCta": "Create your first wallet",
-    "rank":        "#2",
-    "rankNote":    "Largest blockchain by market cap and developer activity",
-    "dappCount":   "4,000+",
-    "dappCountNote":"dApps live on Ethereum today"
+    "hood": "EVM & Solidity",
+    "keyPoint": "Bitcoin stores balances; Ethereum also stores programs — and runs them for anyone who pays."
   },
   "ethAccounts": {
-    "recapBadge": "↩ §2",
-    "recapA": "Remember — a wallet holds keys, not coins. Ethereum runs the same idea, but with",
-    "recapStrong": "two flavours",
-    "recapTail": "of account: one human-controlled, one code-controlled.",
-    "title": "Ethereum: Two Types of Account",
-    "intro": "A balance you control with a key — or a program that holds its own balance. Ethereum has both, and they talk to each other.",
+    "recapBadge": "↩ Recap · Section 2 · wallets & keys",
+    "recapA": "Remember — a wallet holds keys, not coins. Ethereum keeps that idea and adds a",
+    "recapStrong": "second kind",
+    "recapTail": "of account: one that is run by code instead of a person.",
+    "title": "Two Kinds of Account",
+    "intro": "Your wallet is a person. A smart contract is a robot that only acts when poked. Everything on Ethereum is one or the other.",
     "examplesLabel": "Examples:",
     "eoa": {
       "abbr": "EOA",
-      "title": "Externally Owned Account",
+      "title": "Your wallet — a person",
       "tagline": "key-controlled",
-      "traits": [{"emoji": "🔑", "label": "private key"}, {"emoji": "🚀", "label": "starts transactions"}, {"emoji": "📭", "label": "no code"}],
+      "traits": [{"emoji": "🔑", "label": "holds the key"}, {"emoji": "🚀", "label": "starts every action"}, {"emoji": "🧑", "label": "a human decides"}],
       "points": [
-        "Controlled by a private key — whoever holds the key owns the account",
-        "Can initiate transactions: send ETH, call a contract, deploy one",
-        "Holds an ETH balance. Stores no code."
+        "Whoever holds the key owns the account — that's you",
+        "Starts things: send money, poke a contract, publish a new one",
+        "Holds a balance and nothing else — there are no rules inside"
       ],
-      "examples": "your Rabby or Zerion wallet, a hardware wallet, an exchange hot wallet"
+      "examples": "your Rabby or Zerion wallet, a hardware wallet, an exchange wallet"
     },
     "contract": {
       "abbr": "Contract",
-      "title": "Contract Account",
+      "title": "A smart contract — a robot",
       "tagline": "code-controlled",
-      "traits": [{"emoji": "⚙️", "label": "runs code"}, {"emoji": "⛔", "label": "cannot start a tx"}, {"emoji": "💾", "label": "code + state on-chain"}],
+      "traits": [{"emoji": "⚙️", "label": "follows its rules"}, {"emoji": "👉", "label": "acts only when poked"}, {"emoji": "💰", "label": "holds its own money"}],
       "points": [
-        "Controlled by its code — no private key, no human owner",
-        "Cannot initiate anything: it only runs when an EOA (or another contract) calls it",
-        "Holds an ETH balance plus code and state, stored on-chain forever"
+        "No key, no owner — the code is the boss",
+        "Never moves on its own: it waits until a wallet (or another robot) calls it",
+        "Holds its own balance and hands it out exactly as its rules say"
       ],
       "examples": "Uniswap, the USDC token, an NFT collection"
     },
-    "arrowLabel": "transaction",
-    "arrowSub": "Every transaction originates from an EOA — a contract only reacts when called.",
-    "keyRuleStrong": "Key rule:",
-    "keyRuleBody": "Smart contracts never act on their own. Behind every on-chain action there is a key-holder — a human, or a bot someone runs — who signed the first transaction.",
+    "arrowLabel": "action",
+    "arrowSub": "Every action starts from a wallet — a contract only reacts when called.",
+    "quiz": {
+      "title": "Who can start this?",
+      "hint": "Tap each scenario.",
+      "items": [
+        { "emoji": "🔑", "text": "A wallet sends ETH", "ok": true, "why": "A key-holder signed it — that's how every action begins." },
+        { "emoji": "⏰", "text": "A contract wakes up at midnight by itself", "ok": false, "why": "Contracts have no clock and no key. Nobody poked it, so nothing happens." },
+        { "emoji": "⚙️", "text": "Contract A calls contract B", "ok": true, "why": "Only because a wallet poked A first — the chain of calls still starts with a key." }
+      ]
+    },
+    "hood": "EOA vs contract, nonce & state",
+    "keyPoint": "Every action starts with a human's key; contracts only react.",
     "peek": "You'll deploy a contract account of your own and call it from your wallet."
   },
   "ethGas": {
-    "recapBadge": "↩ just covered",
-    "recapBody": "A contract's code runs on every node in the network. Someone has to pay for that computation — that's gas.",
-    "heading": "Gas — The Fuel of the EVM",
-    "lead": "Every instruction the EVM executes costs a little gas. You pay for what you use — and nothing can loop forever.",
+    "recapBadge": "↩ Recap · just covered · smart contracts",
+    "recapBody": "A smart contract runs on thousands of computers at once. Somebody pays for that work — that's gas.",
+    "heading": "Gas — Paying the World Computer for Work",
+    "lead": "Every action costs a little gas. Bigger job, more gas. Busier network, higher price per unit. You only pay for what you use.",
     "demo": {
       "badge": "🎛️ Interactive",
       "hint": "Drag the sliders, or load a typical operation below.",
@@ -178,13 +184,23 @@
       ],
       "caption": "A bigger job burns more units. A busier network raises the price per unit."
     },
-    "eipNote": "Since EIP-1559 (2021) the gas price = a base fee the protocol burns + a priority tip for the validator. Run out of gas mid-way? The transaction reverts — but you still pay for the work done.",
+    "surge": {
+      "title": "Busy network = higher fee",
+      "body": "Like Uber surge pricing: same ride, more people asking, higher price per unit. The gas-price slider is the surge."
+    },
+    "why": {
+      "title": "Why gas exists at all",
+      "body": "Without a per-step fee, one endless loop could freeze the shared computer for everyone. Paying per instruction is the natural brake — and the spam filter."
+    },
+    "hood": "gwei & the EIP-1559 fee market",
+    "keyPoint": "Gas is the price of computation AND the brake that stops anyone jamming the world computer.",
     "peek": "You'll write a contract and watch the gas meter tick as it runs."
   },
   "ethApps": {
     "peekBadge": "👀 Sneak peek",
     "replacesLabel": "Replaces:",
     "riskLabel": "Risk:",
+    "hypeLabel": "Hype vs real:",
     "examplesLabel": "Concrete examples",
     "apps": [
       {
@@ -192,26 +208,44 @@
         "subtitle": "Decentralised Finance",
         "replaces": "Banks, brokers, exchanges",
         "tease": "Programmable money, first use: rebuild finance out of smart contracts. Light tour now — a later session goes deep.",
-        "description": "Lending, trading and earning yield as smart contracts — open 24/7, no account manager, no middleman taking a cut. The core trick: replace the exchange with a pool and a formula.",
+        "description": "Lending, trading and earning interest as smart contracts — open 24/7, no account manager, no middleman taking a cut.",
         "risk": "Smart contract bugs, oracle manipulation, liquidation cascades",
+        "hype": "Real and open 24/7 — but most volume is still crypto trading crypto, not everyday finance",
         "stat": "$40B+ locked in DeFi protocols",
         "later": "You'll trace a real token swap through a smart contract, step by step.",
+        "hood": "AMMs, lending, stablecoins",
+        "keyPoint": "Replace the exchange with a pool and a formula — open 24/7, but today mostly crypto trading crypto.",
         "visual": {
           "orderBookTitle": "Order book — traditional exchange",
-          "orderBookSub": "a middleman matches buyers with sellers",
-          "buyers": "buyers",
-          "sellers": "sellers",
+          "orderBookSub": "a middleman matches buyers with sellers · price in USDC per ETH",
+          "bids": "BIDS · buyers",
+          "asks": "ASKS · sellers",
+          "spread": "SPREAD = 20",
+          "spreadSub": "the matchmaker's edge",
+          "mid": "mid price 3,000",
+          "lastTrade": "last trade 3,005",
           "exchange": "Exchange",
-          "matching": "matches orders, takes a fee",
+          "matching": "matches bid ↔ ask",
+          "fee": "…and takes a fee 💸",
+          "tradeWhen": "✓ A trade happens only when a bid and an ask meet",
           "orderBookNote": "Every trade needs a counterparty and a matchmaker.",
           "ammTitle": "AMM — DeFi",
           "ammSub": "you trade against a pool, priced by a formula",
-          "you": "You",
-          "tokenIn": "ETH in",
-          "tokenOut": "USDC out",
+          "you": "🧑 you trade against the pool",
+          "tokenIn": "USDC in →",
+          "tokenOut": "← ETH out",
           "pool": "Liquidity pool",
           "poolFunded": "a contract, funded by users",
           "formula": "x · y = k",
+          "axisX": "ETH in pool (x)",
+          "axisY": "USDC in pool (y)",
+          "start": "start",
+          "priceLabel": "1 ETH =",
+          "paid": "you paid",
+          "swapBtn": "Swap 1 ETH",
+          "swapBigBtn": "Swap 5 ETH",
+          "resetBtn": "↺ reset",
+          "impactHint": "Price impact — bigger trades move the point further along the curve, so every extra ETH costs more.",
           "ammNote": "No counterparty needed — the formula sets the price.",
           "bottomLine": "DeFi replaces the exchange with a pool + a formula."
         }
@@ -221,7 +255,7 @@
         "subtitle": "Non-Fungible Tokens",
         "replaces": "Art dealers, certificate authorities, notaries",
         "tease": "Programmable money, second use: tokens that are unique. Light tour now — a later session goes deep.",
-        "description": "Provable, transferable ownership of a unique token. The chain records every owner it ever had — the blockchain is the title deed.",
+        "description": "A unique token whose every owner is recorded on the chain — the blockchain itself is the title deed.",
         "examples": [
           {
             "name": "ENS (.eth names)",
@@ -237,13 +271,11 @@
           }
         ],
         "risk": "The image usually lives off-chain — \"you own the receipt, not the file\"",
-        "stat": "$41B traded at the 2021 peak — now utility-focused",
+        "hype": "The 2021 picture mania collapsed; the useful part — transferable proof of ownership — remains",
         "later": "You'll mint a token of your own and see exactly what is — and isn't — stored on-chain.",
+        "hood": "ERC-721 & off-chain metadata",
+        "keyPoint": "A unique token with a public ownership history — you own the record, not necessarily the file.",
         "visual": {
-          "fungible": "Fungible",
-          "fungibleSub": "every unit identical",
-          "nonFungible": "Non-fungible",
-          "nonFungibleSub": "each token unique",
           "provenance": "On-chain history of #001 — provenance",
           "minted": "minted by artist",
           "sold": "sold to",
@@ -266,15 +298,14 @@
           {
             "name": "Uniswap DAO",
             "desc": "UNI holders steer a multi-billion treasury"
-          },
-          {
-            "name": "Gitcoin",
-            "desc": "Community votes decide which open-source projects get grants"
           }
         ],
         "risk": "Voter apathy, whale capture, slow in emergencies",
+        "hype": "\"No CEO\" sounds great — in practice a few big token holders often decide, and someone still does the work",
         "stat": "$20B+ held in DAO treasuries",
         "later": "You'll look at a real governance vote and ask who really held the power.",
+        "hood": "governance contracts & treasuries",
+        "keyPoint": "Rules are code, decisions are votes — transparent by default, slow by design.",
         "visual": {
           "holders": "Token holders",
           "holdersSub": "anyone holding the token",
@@ -291,8 +322,110 @@
       }
     ]
   },
+  "smartContract": {
+    "kicker": "Keystone idea",
+    "kickerBody": "Everything else in this section — accounts, gas, DeFi, NFTs, DAOs, tokens — is built from this one thing.",
+    "heading": "What is a Smart Contract?",
+    "lead": "A vending machine made of code: insert the coin, the rules fire automatically, and nobody stands between you and the can.",
+    "principles": [
+      { "emoji": "💰", "title": "Holds its own money", "body": "The machine keeps the coins. No shopkeeper, no bank account in the middle." },
+      { "emoji": "📜", "title": "Runs exactly as written", "body": "Same input, same result, every time — for everyone." },
+      { "emoji": "🚫", "title": "Nobody can stop or reverse it", "body": "Once it runs, it ran. Not the owner, not a court, not the author." },
+      { "emoji": "🐛", "title": "The catch: a bug runs as written too", "body": "The DAO hack (2016): ~$60M drained by code doing precisely what it said. The fix split the chain — ETH / ETC." }
+    ],
+    "business": {
+      "strong": "Why business cares:",
+      "body": "an agreement that enforces itself removes the middleman you used to pay to enforce it."
+    },
+    "demo": {
+      "badge": "🎛️ Interactive",
+      "hint": "Insert a coin and watch the rule run itself.",
+      "machineTitle": "SNACK-O-MATIC",
+      "priceLabel": "Price",
+      "balanceLabel": "Machine holds",
+      "insert": "Insert {{amount}}",
+      "undo": "↩ Try to undo",
+      "reset": "↺ Start again",
+      "dispensed": "dispensed",
+      "display": {
+        "idle": "INSERT COIN",
+        "short": "NOT ENOUGH · COIN RETURNED",
+        "checking": "CHECKING RULE…",
+        "done": "ENJOY 🥤"
+      },
+      "displayExploit": "ENJOY 🥤 · FOR €1?!",
+      "trace": {
+        "inputLabel": "Input",
+        "inputIdle": "waiting for a coin…",
+        "inputCoin": "{{amount}} inserted",
+        "ruleLabel": "Rule",
+        "rule": "if coin ≥ {{price}} → dispense · otherwise → return coin",
+        "rulePass": "condition met ✓ — executes automatically",
+        "ruleFail": "condition not met ✗ — nothing happens",
+        "ruleTypo": "if coin ≤ {{price}} → dispense · otherwise → return coin   🐛 typo: ≤ instead of ≥",
+        "ruleTypoPass": "condition met ✓ — the typo lets a cheap coin through, exactly as written",
+        "outcomeLabel": "Outcome",
+        "outcomeIdle": "—",
+        "outcomeShort": "coin returned, nothing changed",
+        "outcomeDone": "can dispensed · recorded forever 🔒",
+        "outcomeExploit": "€2 can dispensed for {{amount}} · recorded forever 🔒"
+      },
+      "undoMsg": "There is no undo button. The rule already ran — not the owner, not a bank, not a court can take the can back.",
+      "escrowNote": "Swap the can for a house deed and the coin for the purchase price — that's escrow without a notary.",
+      "typo": {
+        "toggle": "Rule has a typo",
+        "hint": "Insert €1 — the typo lets it through. Then try to undo.",
+        "undoMsg": "Code is law cuts both ways. Nobody can fix it after the fact — which is why audits exist.",
+        "pillsLabel": "Keywords:",
+        "pills": ["audits", "immutability", "upgradeable proxies"]
+      }
+    },
+    "hood": "EVM, Solidity, bytecode",
+    "keyPoint": "An agreement that enforces itself — and a bug enforces itself too.",
+    "peek": "You'll write and deploy a contract like this one yourself."
+  },
+  "tokens": {
+    "kicker": "Business lens",
+    "kickerBody": "DeFi, NFTs and DAOs all move the same two building blocks around.",
+    "heading": "Tokens — The Business Primitive",
+    "lead": "A token is a standard-shaped container for value. Because the shape is standard, every wallet, exchange and app already knows how to hold it.",
+    "fungible": {
+      "standard": "ERC-20",
+      "title": "Fungible — interchangeable units",
+      "sub": "1 = 1, like euros or shares",
+      "examples": ["Loyalty points", "Company shares", "Stablecoins (digital dollars)"],
+      "verb": "Count them."
+    },
+    "unique": {
+      "standard": "ERC-721",
+      "title": "Unique — one of a kind",
+      "sub": "#001 ≠ #002, like a deed or a seat",
+      "examples": ["Property deeds", "Event tickets", "Memberships"],
+      "verb": "Name them."
+    },
+    "sorter": {
+      "title": "🎛️ Fungible or unique?",
+      "hint": "Sort each item: Fungible (ERC-20, count them) or Non-fungible (ERC-721, name them).",
+      "countBtn": "Fungible",
+      "nameBtn": "Non-fungible",
+      "right": "✓",
+      "wrong": "✗",
+      "score": "{{correct}} / {{total}} right",
+      "cards": [
+        { "emoji": "💶", "label": "A €10 note", "answer": "fungible", "why": "Any €10 note is as good as any other — count them." },
+        { "emoji": "✈️", "label": "Airline miles", "answer": "fungible", "why": "Points are identical units; 500 miles is 500 miles." },
+        { "emoji": "🎟️", "label": "Concert seat 12A", "answer": "unique", "why": "That seat, that night — no other ticket is the same." },
+        { "emoji": "🎓", "label": "A university diploma", "answer": "unique", "why": "Issued to one named person; swapping two makes no sense." },
+        { "emoji": "📈", "label": "One Apple share", "answer": "fungible", "why": "Every share is identical and interchangeable — count them." },
+        { "emoji": "🏠", "label": "A house deed", "answer": "unique", "why": "One deed, one specific house — name it." }
+      ]
+    },
+    "hood": "ERC-20 & ERC-721 standards",
+    "keyPoint": "Two container shapes — countable (ERC-20) or named (ERC-721) — and every app already understands both.",
+    "peek": "You'll create a token of each kind and see the standard behind it."
+  },
   "useCases": {
-    "recapBadge": "↩ §1",
+    "recapBadge": "↩ Recap · Section 1 · the village ledger",
     "recapBody": "Remember the village ledger — every trust problem you saw there shows up again, at industry scale.",
     "heading": "Blockchain Use Cases — Three Patterns, Twelve Industries",
     "patternLabel": "Pattern",
@@ -372,8 +505,8 @@
     "noticeBodyTail": ") shows up across supply chain, healthcare, and media. Industries are different surfaces; the underlying primitive is the same — which is why one platform choice can serve many business cases. A later session picks the platforms apart."
   },
   "ecosystem": {
-    "recapBadge": "↩ §1 + §2",
-    "recapBody":  "Each use case you just saw lives somewhere in this stack — same nodes from §1 at the bottom, same contracts as DeFi/NFTs in the middle, you at the top.",
+    "recapBadge": "↩ Recap · builds on Section 1 (nodes & network) and Section 2 (smart contracts)",
+    "recapBody":  "Each use case you just saw lives somewhere in this stack — same nodes from Section 1 at the bottom, same contracts as DeFi/NFTs in the middle, you at the top.",
     "heading":    "The Blockchain & Web3 Ecosystem",
     "lead":       "A layered stack — from raw infrastructure at the bottom to end users at the top.",
     "users":      "Users",
@@ -474,7 +607,7 @@
     "peek": "You'll build a small dApp front-end that talks to your own contract."
   },
   "ethics": {
-    "recapBadge": "↩ §2",
+    "recapBadge": "↩ Recap · Section 2 · immutability",
     "recapA": "The same",
     "recapStrong": "immutability",
     "recapTail": "that protects the chain from tampering also protects bad rules from being undone. Same property, two faces.",
@@ -507,7 +640,7 @@
     "footer": "Keep these in mind — the next slide shows the same technology pulled in two opposite directions."
   },
   "ethicsControl": {
-    "recapBadge": "↩ §1",
+    "recapBadge": "↩ Recap · Section 1 · who controls it?",
     "recapA": "Remember the Section 1 question —",
     "recapStrong": "who controls it?",
     "recapTail": "Same technology, two very different answers.",
@@ -634,7 +767,7 @@
   "takeaways": {
     "title": "Section 3 — Key Takeaways",
     "items": [
-      "Ethereum turned the blockchain into a programmable computer — accounts, contracts, and gas are the three ideas everything else builds on",
+      "Ethereum turned the blockchain into a programmable world computer — smart contracts, accounts, gas and tokens are the ideas everything else builds on",
       "DeFi, NFTs, and DAOs are what programmable money unlocks: finance, ownership, and organisations without a central operator",
       "The same three patterns — trust without intermediaries, verifiable provenance, self-sovereign coordination — show up across every industry",
       "Web3 = Read + Write + Own: the key shift is that users own their data and digital assets instead of platforms",
@@ -763,33 +896,46 @@
       }
     }
   },
-  "brainstorm": {
-    "ribbon":       "💡 Brainstorm",
-    "contextLabel": "Closing activity · small groups",
-    "title":        "Brainstorm: the next crazy thing",
-    "subtitle":     "Bitcoin is one of the simplest blockchains — and people already run it on volcanoes. In groups of 3–4, dream up what we could do with Bitcoin or blockchain decades from now. The wilder, the better.",
-    "duration":     "15 min",
-    "seedsLabel":   "Seeds to get you going",
+  "assignment": {
+    "ribbon":       "📝 In-class Assignment #1",
+    "contextLabel": "Closing activity · in class, then homework",
+    "title":        "Could a blockchain fix this?",
+    "subtitle":     "You've seen what blockchains do well — and the course's recurring question: does this problem actually earn a blockchain? Now apply that lens to a real-world problem of your own choosing.",
+    "groupSize":    "Groups of 3–4",
+    "duration":     "15–20 min in class",
+    "seedsLabel":   "Pick a real-world problem",
+    "seedsIntro":   "Any industry, any scale. Starting points if you're stuck:",
     "seeds": [
-      { "emoji": "🌋", "title": "Volcano-powered mining",      "desc": "El Salvador mines bitcoin with geothermal energy from a volcano. What else could soak up stranded energy?" },
-      { "emoji": "♨️", "title": "Mining heat reuse",            "desc": "Miners already heat greenhouses and swimming pools with their exhaust. A whole town heated by hashes?" },
-      { "emoji": "🛰️", "title": "Bitcoin for ___",             "desc": "A satellite paying for bandwidth, a robot buying its own electricity — machine-to-machine money?" },
-      { "emoji": "🧬", "title": "Programmable money for ___",  "desc": "Aid that unlocks when the rain fails. Wages streamed by the second. Fill in the blank." }
+      { "emoji": "🚚", "title": "Supply-chain fraud" },
+      { "emoji": "🎓", "title": "Fake diplomas" },
+      { "emoji": "💸", "title": "Slow cross-border pay" },
+      { "emoji": "🗳️", "title": "Contested votes" },
+      { "emoji": "🎟️", "title": "Ticket scalping" },
+      { "emoji": "🏠", "title": "Land registries" }
     ],
-    "questionsLabel": "Stress-test every idea",
-    "questions": [
-      "Is it actually possible — today, or in 2050?",
-      "What would have to be true for it to work?",
-      "Who controls it? Who could switch it off?",
-      "Would it even need a blockchain — or would a spreadsheet do?"
-    ],
-    "stepsLabel": "How it runs",
+    "stage1Label": "Stage 1 · In class · 15–20 min",
     "steps": [
-      { "time": "5 min", "label": "Form a group and pick your wildest idea" },
-      { "time": "5 min", "label": "Run it through the four questions" },
-      { "time": "5 min", "label": "Pitch it to the room in 60 seconds" }
+      { "time": "5 min",       "label": "Form a group of 3–4 and pick one real-world problem" },
+      { "time": "10 min",      "label": "Discuss: could a blockchain help? Sketch the solution, pros and cons" },
+      { "time": "1 min/group", "label": "Present your problem statement to the instructor — out loud" }
     ],
-    "footerStrong": "No wrong answers.",
-    "footerBody":   "The point is to notice where a blockchain genuinely helps — and where it's just a buzzword. Both are worth spotting."
+    "stage1Note": "Nothing is written or submitted in class — just a clear, spoken problem statement.",
+    "stage2Label": "Stage 2 · Homework · one write-up per group",
+    "deliverableLimit": "MAX 1 PAGE",
+    "rules": [
+      { "emoji": "📄", "text": "Max one page — strictly enforced" },
+      { "emoji": "⚠️", "text": "Penalties for anything over one page" },
+      { "emoji": "✅", "text": "Meaningful bullet points are fine" },
+      { "emoji": "📅", "text": "Due end of the week · via Moodle" }
+    ],
+    "partHint":         "≈ ⅓ page each",
+    "deliverableIntro": "Three parts, in this order. Be concrete and honest — a well-argued \"no, a database is enough\" scores as well as a yes.",
+    "parts": [
+      { "title": "Problem statement",   "desc": "Who is affected, what goes wrong today, and why trust or coordination is at the heart of it." },
+      { "title": "Proposed solution",   "desc": "How a blockchain-based approach would work, in plain language. Who runs the network and who uses it?" },
+      { "title": "Pros & cons",         "desc": "What a blockchain genuinely adds here — and what it costs. Would a spreadsheet or a trusted middleman do the job?" }
+    ],
+    "footerStrong": "Wild ideas welcome.",
+    "footerBody":   "In class: a clear problem, said out loud. At home: one page on Moodle by the end of the week — one page means one page. Creativity gets you a strong problem; critical thinking gets you a strong page."
   }
 }
