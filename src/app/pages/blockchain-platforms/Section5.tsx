@@ -213,7 +213,6 @@ function PlatformRecommender() {
     <div className="h-full flex flex-col p-5 lg:p-8">
       <div className="shrink-0 mb-3 flex items-start justify-between gap-3">
         <div>
-          <span className="px-2.5 py-0.5 rounded-full bg-[#6366f1]/15 border border-[#6366f1]/40 text-[#6366f1] text-xs font-bold">{t('recommender.badge')}</span>
           <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('recommender.heading')}</h2>
           <p className="text-sm text-muted-foreground max-w-3xl">{t('recommender.intro')}</p>
         </div>
@@ -336,8 +335,7 @@ function PlatformSnapshot({ id, color, emoji, hood, recapTo }: { id: SnapshotId;
   return (
     <div id={`s5-${id}`} className="h-full flex flex-col p-6 lg:p-10">
       <div className="shrink-0 mb-4">
-        <span className="px-2.5 py-0.5 rounded-full text-xs font-bold border" style={{ color, borderColor: color + '66', backgroundColor: color + '14' }}>{t('snapshot.badge')}</span>
-        <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1"><span className="mr-2">{emoji}</span>{t(`snapshot.${id}.heading`)}</h2>
+        <h2 className="text-2xl lg:text-3xl font-bold text-foreground"><span className="mr-2">{emoji}</span>{t(`snapshot.${id}.heading`)}</h2>
         <p className="text-sm text-muted-foreground mt-1 max-w-4xl">{t(`snapshot.${id}.subtitle`)}</p>
         <div className="mt-2 flex flex-wrap gap-2">
           {recapTo && <RecapHandoff label={t('ui.recap')} text={t(`snapshot.${id}.recap`)} to={recapTo} color="#39B54A" />}
@@ -551,8 +549,7 @@ export function BP_Section5() {
         {/* ═══════ S5-ZKP — the one idea ═══════ */}
         <div id="s5-zkp" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-4">
-            <span className="text-xs font-black uppercase tracking-widest text-[#8b5cf6]">{t('zkp.eyebrow')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('zkp.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('zkp.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1">{t('zkp.subtitle')}</p>
           </div>
 
@@ -597,8 +594,7 @@ export function BP_Section5() {
         {/* ═══════ S5-ZKP-CAVE — Where's Waldo ═══════ */}
         <div id="s5-zkp-cave" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-4">
-            <span className="text-xs font-black uppercase tracking-widest text-[#22d3ee]">{t('zkpCave.eyebrow')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('zkpCave.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('zkpCave.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1">{t('zkpCave.subtitle')}</p>
           </div>
 
@@ -640,8 +636,7 @@ export function BP_Section5() {
         {/* ═══════ S5-ZK-APPS — real, live ZK products ═══════ */}
         <div id="s5-zk-apps" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-3">
-            <span className="text-xs font-black uppercase tracking-widest text-[#8b5cf6]">{t('zkApps.eyebrow')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('zkApps.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('zkApps.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1 max-w-4xl">{t('zkApps.subtitle')}</p>
           </div>
 
@@ -698,8 +693,7 @@ export function BP_Section5() {
         {/* ═══════ S5-ZK-IDENTITY — KYC walkthrough ═══════ */}
         <div id="s5-zk-identity" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-4">
-            <span className="text-xs font-black uppercase tracking-widest text-[#8b5cf6]">{t('zkIdentity.eyebrow')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('zkIdentity.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('zkIdentity.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1 max-w-4xl">{t('zkIdentity.subtitle')}</p>
           </div>
 
@@ -768,8 +762,7 @@ export function BP_Section5() {
         {/* ═══════ S5-L2-WHY — what an L2 is & why we need it ═══════ */}
         <div id="s5-l2-why" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-4">
-            <span className="text-xs font-black uppercase tracking-widest text-[#39B54A]">{t('l2Why.eyebrow')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('l2Why.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('l2Why.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1 max-w-4xl">{t('l2Why.subtitle')}</p>
             <div className="mt-2 flex flex-wrap gap-2">
               <RecapHandoff label={recapLabel} text={t('l2Why.recap1')} to="/blockchain-platforms/section-1" color="#39B54A" />
@@ -814,7 +807,7 @@ export function BP_Section5() {
             {/* Analogy + the three steps */}
             <div className="flex flex-col gap-3 min-h-0">
               <div className="shrink-0 rounded-xl border-2 p-4" style={{ borderColor: '#39B54A50', backgroundColor: '#39B54A0a' }}>
-                <p className="text-xs font-black uppercase tracking-widest text-[#39B54A] mb-1">⚖️ {t('l2Why.analogyLabel')}</p>
+                <p className="text-xs font-black uppercase tracking-widest text-[#39B54A] mb-1">{t('l2Why.analogyLabel')}</p>
                 <p className="text-sm text-foreground leading-snug">{t('l2Why.analogy')}</p>
               </div>
               <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-2">
@@ -856,8 +849,7 @@ export function BP_Section5() {
         {/* ═══════ LAYER 2: OPTIMISTIC VS ZK ═══════ */}
         <div id="s5-layer2" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-4">
-            <span className="text-xs font-black uppercase tracking-widest text-[#39B54A]">{t('layer2.eyebrow')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1 mb-1">{t('layer2.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{t('layer2.heading')}</h2>
             <p className="text-sm text-muted-foreground">{t('layer2.subtitleA')}<em>{t('layer2.subtitleItalic')}</em>{t('layer2.subtitleB')}</p>
             <div className="mt-2 flex flex-wrap gap-2">
               <RecapHandoff label={recapLabel} text={t('layer2.recap')} to="/blockchain-platforms/section-2" color="#39B54A" />
@@ -990,8 +982,7 @@ export function BP_Section5() {
         {/* ═══════ S5-PRIVACY — why it is hard ═══════ */}
         <div id="s5-privacy" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-4">
-            <span className="text-xs font-black uppercase tracking-widest text-[#8b5cf6]">{t('privacy.eyebrow')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('privacy.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('privacy.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1 max-w-4xl">{t('privacy.subtitle')}</p>
             <div className="mt-2">
               <RecapHandoff label={recapLabel} text={t('privacy.recapCypherpunk')} to="/blockchain-fundamentals/prologue" color="#ED1C24" />
@@ -1069,8 +1060,7 @@ export function BP_Section5() {
         {/* ═══════ S5-PRIVACY-APPROACHES — the four families ═══════ */}
         <div id="s5-privacy-approaches" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-4">
-            <span className="text-xs font-black uppercase tracking-widest text-[#8b5cf6]">{t('privacyApproaches.eyebrow')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('privacyApproaches.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('privacyApproaches.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1">{t('privacyApproaches.subtitle')}</p>
           </div>
 
@@ -1108,8 +1098,7 @@ export function BP_Section5() {
         {/* ═══════ S5-PRIVACY-REGULATION — the contested frontier ═══════ */}
         <div id="s5-privacy-regulation" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-4">
-            <span className="text-xs font-black uppercase tracking-widest text-[#f59e0b]">{t('privacyRegulation.eyebrow')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('privacyRegulation.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('privacyRegulation.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1">{t('privacyRegulation.subtitle')}</p>
             <div className="mt-2">
               <RecapHandoff label={recapLabel} text={t('privacyRegulation.recapFreedom')} to="/blockchain-fundamentals/prologue" color="#ED1C24" />
@@ -1140,15 +1129,15 @@ export function BP_Section5() {
           {/* Two truths + the cypherpunk tie-back */}
           <div className="shrink-0 mt-3 grid grid-cols-1 lg:grid-cols-3 gap-3">
             <div className="rounded-xl border-2 p-3 flex flex-col gap-1" style={{ borderColor: '#ef444450', backgroundColor: '#ef44440a' }}>
-              <p className="text-[10px] font-black uppercase tracking-widest text-[#ef4444]">⚖️ {t('privacyRegulation.truthsLabel')} · 1</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-[#ef4444]">{t('privacyRegulation.truthsLabel')} · 1</p>
               <p className="text-xs text-foreground leading-snug">{t('privacyRegulation.truthA')}</p>
             </div>
             <div className="rounded-xl border-2 p-3 flex flex-col gap-1" style={{ borderColor: '#39B54A50', backgroundColor: '#39B54A0a' }}>
-              <p className="text-[10px] font-black uppercase tracking-widest text-[#39B54A]">⚖️ {t('privacyRegulation.truthsLabel')} · 2</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-[#39B54A]">{t('privacyRegulation.truthsLabel')} · 2</p>
               <p className="text-xs text-foreground leading-snug">{t('privacyRegulation.truthB')}</p>
             </div>
             <div className="rounded-xl border-2 p-3 flex flex-col gap-1" style={{ borderColor: '#ED1C2460', backgroundColor: '#ED1C240a' }}>
-              <p className="text-[10px] font-black uppercase tracking-widest text-[#ED1C24]">🔁 {t('privacyRegulation.cypherpunkLabel')}</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-[#ED1C24]">{t('privacyRegulation.cypherpunkLabel')}</p>
               <p className="text-xs text-foreground leading-snug">{t('privacyRegulation.cypherpunk')}</p>
             </div>
           </div>
@@ -1165,8 +1154,7 @@ export function BP_Section5() {
         {/* ═══════ S5-PRIVACY-FUTURE — the upside of ZK privacy ═══════ */}
         <div id="s5-privacy-future" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-4">
-            <span className="text-xs font-black uppercase tracking-widest text-[#8b5cf6]">{t('privacyFuture.eyebrow')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('privacyFuture.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('privacyFuture.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1">{t('privacyFuture.subtitleA')}<span className="font-semibold">{t('privacyFuture.subtitleStrong')}</span>{t('privacyFuture.subtitleB')}</p>
           </div>
 
@@ -1203,8 +1191,7 @@ export function BP_Section5() {
         {/* ═══════ EVALUATE A PROJECT — part 1 ═══════ */}
         <div id="s5-evaluate" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-4">
-            <span className="text-xs font-black uppercase tracking-widest text-[#06b6d4]">{t('evaluate.eyebrow')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('evaluate.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('evaluate.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1">{t('evaluate.subtitle')}</p>
           </div>
 
@@ -1235,8 +1222,7 @@ export function BP_Section5() {
         {/* ═══════ EVALUATE A PROJECT — part 2 ═══════ */}
         <div id="s5-evaluate-2" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-4">
-            <span className="text-xs font-black uppercase tracking-widest text-[#06b6d4]">{t('evaluate2.eyebrow')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('evaluate2.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('evaluate2.heading')}</h2>
             <p className="text-sm text-muted-foreground mt-1">{t('evaluate2.subtitle')}</p>
           </div>
 
@@ -1367,7 +1353,7 @@ export function BP_Section5() {
           </div>
 
           <div className="shrink-0 mt-4 rounded-xl border border-border bg-card p-4">
-            <p className="text-[10px] font-black uppercase tracking-widest text-[#39B54A] mb-2">💡 {t('discussion.thinkLabel')}</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-[#39B54A] mb-2">{t('discussion.thinkLabel')}</p>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
               {discussionQuestions.map((q, i) => (
                 <div key={q} className="flex items-start gap-2.5">

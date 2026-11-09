@@ -1,8 +1,8 @@
 {
   "groups": {
-    "g-s5-zk": "🔐 Zero-Knowledge",
-    "g-s5-l2": "📈 Layer 2",
-    "g-s5-platforms": "🧭 Platform Snapshots",
+    "g-s5-zk": "Zero-Knowledge",
+    "g-s5-l2": "Layer 2",
+    "g-s5-platforms": "Platform Snapshots",
     "g-s5-priv": "🛡️ Privacidade",
     "g-s5-eval": "🧪 Avaliar Tendências",
     "g-s5-decide": "🧩 Decisão",
@@ -30,12 +30,11 @@
     "s5-quiz": "Quiz",
     "s5-quiz-2": "Quiz 2",
     "s5-takeaways": "Conclusões",
-    "s5-discussion": "💬 Discussion"
+    "s5-discussion": "Discussion"
   },
   "zkIdentity": {
-    "eyebrow": "Section 05 · Zero-Knowledge",
-    "heading": "A concrete walkthrough — KYC without handing over your identity",
-    "subtitle": "The identity pattern from the previous slide, step by step. Nothing here is specific to one chain — any ZK-capable platform can run it.",
+    "heading": "KYC without handing over your identity",
+    "subtitle": "Step by step. Any ZK-capable platform can run this pattern.",
     "flowLabel": "Who holds what",
     "flow": [
       { "node": "Bank", "holds": "verifies you once · signs a credential" },
@@ -50,10 +49,9 @@
     ]
   },
   "zkApps": {
-    "eyebrow": "Section 05 · Zero-Knowledge",
-    "heading": "ZK is already in production — what it lets you do today",
-    "subtitle": "Not a research idea. Each card is a live product or protocol. Read the bold line: that is what ZK buys you.",
-    "propsLabel": "Three promises, in plain words",
+    "heading": "ZK in production today",
+    "subtitle": "Each card is a live product or protocol.",
+    "propsLabel": "Three properties",
     "props": [
       { "t": "True claims always pass", "d": "If you really are over 18, the proof always works." },
       { "t": "False claims always fail", "d": "No clever trick lets a 16-year-old forge the proof." },
@@ -101,7 +99,7 @@
         "subtitle": "Apenas mover valor, ou correr lógica / apps on-chain?",
         "options": [
           { "value": "value", "label": "💸 Apenas mover valor", "hint": "Pagamentos, liquidação, reserva de valor." },
-          { "value": "contracts", "label": "🤖 Smart contracts", "hint": "DeFi, NFTs, DAOs, regras programáveis." },
+          { "value": "contracts", "label": "Smart contracts", "hint": "DeFi, NFTs, DAOs, regras programáveis." },
           { "value": "highperf", "label": "⚡ Apps de consumo de alto desempenho", "hint": "Livros de ordens, jogos, social — precisa de velocidade." }
         ]
       },
@@ -149,7 +147,6 @@
       "aztec": { "name": "Aztec Network", "tagline": "Estado encriptado · provas públicas", "reason": "Estado encriptado nativo na Ethereum — cada tx oculta montante + remetente por defeito. A primitiva de privacidade mais forte em infraestrutura próxima da EVM." },
       "xrpl": { "name": "XRP Ledger", "tagline": "DEX nativa · otimizada para pagamentos", "reason": "L1 otimizada para pagamentos com uma DEX nativa e Trust Lines. Ótima para liquidação transfronteiriça, tokenização de RWA e canais cambiais." }
     },
-    "badge": "🧩 Assistente",
     "heading": "Escolhe a Plataforma Certa — Guiado",
     "intro": "Cinco perguntas curtas. Cada resposta restringe as opções. No final obténs o melhor encaixe (e um segundo classificado) para o teu cenário, com o raciocínio apresentado.",
     "complete": "Concluído",
@@ -172,7 +169,7 @@
     ],
     "moreLabel": "Same trick, other doors",
     "demo": {
-      "badge": "🧩 Try it",
+      "badge": "Try it",
       "youLabel": "You, at the door",
       "pick": "Pick how you prove you're over 18:",
       "passportBtn": "🛂 Show my passport",
@@ -185,7 +182,6 @@
       "leakedCountPassport": "1 fact proven · 5 facts leaked",
       "leakedCountProof": "1 fact proven · 0 facts leaked"
     },
-    "eyebrow": "Secção 05 · Zero-Knowledge",
     "heading": "Zero-Knowledge Proofs — a ideia única",
     "subtitle": "Esquece a matemática. Uma frase e um exemplo do dia a dia bastam para a perceberes.",
     "oneLinerA": "Provar que uma afirmação é verdadeira — ",
@@ -206,7 +202,6 @@
     "withCaptionB": "."
   },
   "zkpCave": {
-    "eyebrow": "Secção 05 · Zero-Knowledge",
     "heading": "Onde está o Wally? — ZK de forma visual",
     "subtitle": "A intuição clássica. Provo que encontrei o Wally numa página enorme e cheia de gente — sem te dizer onde ele está.",
     "steps": [
@@ -221,31 +216,7 @@
     "classicLabel": "A versão clássica — ",
     "classicBody": "\"a gruta mágica\": a Alice sai repetidamente do lado que um verificador grita, provando que conhece a palavra-passe sem nunca a dizer. Repete o suficiente e a sorte fica excluída."
   },
-  "zkpProps": {
-    "heading": "ZKP: Três Propriedades Formais e Aplicações em Blockchain",
-    "subtitle": "Assim que tens a intuição, estas propriedades formalizam-na. Os casos de uso em blockchain decorrem diretamente da terceira propriedade — zero-knowledge.",
-    "properties": [
-      { "prop": "Completude", "desc": "Se a afirmação for verdadeira e a Alice for honesta, ela conseguirá sempre convencer o Bob. Uma prova válida passa sempre." },
-      { "prop": "Solidez", "desc": "Se a afirmação for falsa, a Alice não consegue batota nem convencer o Bob — por mais esperta que seja. Uma prova falsa falha sempre." },
-      { "prop": "Zero-Knowledge", "desc": "O Bob não fica a saber nada além de \"a afirmação é verdadeira\". Nenhuma informação extra escapa — nem por acidente, nem sequer em teoria." }
-    ],
-    "uses": [
-      { "title": "Identidade privada e KYC", "desc": "Prova que o teu passaporte é válido, que passaste a verificação de sanções e que a tua idade é ≥ 18 — sem mostrar qualquer documento. Uma credencial ZK, verificável por qualquer dApp em qualquer lado." },
-      { "title": "Votação privada", "desc": "Prova que o teu voto foi contado no apuramento final, e que só votaste uma vez — sem revelar em que candidato votaste. Eleição totalmente auditável, voto totalmente privado." },
-      { "title": "Prova de solvência", "desc": "Um banco ou exchange prova que detém ativos suficientes para cobrir todas as responsabilidades — sem divulgar saldos individuais, posições de trading ou identidades de contrapartes." },
-      { "title": "ZK rollups (Starknet ↗)", "desc": "Prova que 10.000 transações são todas válidas — com uma única prova STARK compacta que a Ethereum L1 verifica num bloco. Sem esperas, sem janela de contestação, sem confiar no sequencer." }
-    ],
-    "snarkLabel": "ZK-SNARK — Succinct Non-interactive ARgument of Knowledge",
-    "snarkBody": "Provas minúsculas, extremamente rápidas de verificar. Exige uma cerimónia de trusted setup única. Usado por Zcash, Polygon zkEVM, o primeiro zkSync.",
-    "starkLabel": "ZK-STARK — Scalable Transparent ARgument of Knowledge",
-    "starkBodyA": "Sem trusted setup, resistente a computação quântica. As provas são maiores mas totalmente transparentes e mais escaláveis. Usado pela ",
-    "starkBodyStrong": "Starknet",
-    "starkBodyB": " — secção seguinte."
-  },
   "starknetCompare": {
-    "heading": "Starknet: ZK na Prática",
-    "subtitle": "Um percurso concreto de KYC usando as credenciais ZK da Starknet e, depois, um confronto direto com os optimistic rollups — a comparação mais comum ao avaliar L2s.",
-    "kycLabel": "🔐 Exemplo concreto — KYC sem partilhar a tua identidade",
     "kycSteps": [
       { "label": "O banco emite uma credencial", "desc": "O teu banco verifica-te uma vez e assina uma credencial ZK contendo { name, DOB, residency, sanctions check }. Esta credencial vive na tua carteira — só tu a deténs." },
       { "label": "Geras uma prova", "desc": "Na tua carteira, constróis uma prova STARK: \"credencial assinada pelo Banco · idade ≥ 18 · residência = UE · sanções = false\". Nenhum dado em bruto é incluído na própria prova." },
@@ -253,41 +224,11 @@
     ],
     "kycFootA": "Mesmo padrão: ",
     "kycFootStrong": "votação privada · prova de solvência · registos médicos · triagem de sanções",
-    "kycFootB": " — em qualquer caso onde a pergunta é \"isto é verdade?\" sem \"quem és tu?\".",
-    "zk": {
-      "title": "ZK Rollup",
-      "sub": "Starknet · zkSync · Polygon zkEVM · Scroll",
-      "introA": "Cada lote vem com uma ",
-      "introStrong": "prova de validade",
-      "introB": " que a Ethereum L1 verifica matematicamente. Não é necessário confiar no operador.",
-      "rows": [
-        { "label": "Tipo de prova", "value": "Prova de validade — provada matematicamente" },
-        { "label": "Finalidade", "value": "⚡ Minutos — um bloco L1 para verificar a prova" },
-        { "label": "Custo computacional", "value": "Alto — gerar STARK/SNARK é dispendioso" },
-        { "label": "Compatibilidade EVM", "value": "⚠️ Parcial — o espetro zkEVM ainda em maturação" },
-        { "label": "Modelo de confiança", "value": "Sem necessidade de confiança — a matemática é o árbitro, não vigilantes" },
-        { "label": "Melhor para", "value": "Pagamentos, apps de privacidade, finanças de alta segurança" }
-      ]
-    },
-    "op": {
-      "title": "Optimistic Rollup",
-      "sub": "Arbitrum · Optimism · Base",
-      "introA": "Publica transações com um ",
-      "introStrong": "pressuposto otimista",
-      "introB": " de validade. Uma janela de contestação de 7 dias permite a qualquer pessoa submeter uma fraud proof.",
-      "rows": [
-        { "label": "Tipo de prova", "value": "Fraud proof — apenas se for detetada fraude" },
-        { "label": "Finalidade", "value": "Atraso de levantamento de 7 dias (janela de contestação)" },
-        { "label": "Custo computacional", "value": "Baixo — sem qualquer custo de geração de provas" },
-        { "label": "Compatibilidade EVM", "value": "✅ Equivalência EVM total — implanta Solidity existente" },
-        { "label": "Modelo de confiança", "value": "Pelo menos 1 vigilante honesto tem de monitorizar a chain" },
-        { "label": "Melhor para", "value": "DeFi, dApps gerais que precisam de compatibilidade EVM" }
-      ]
-    }
+    "kycFootB": " — em qualquer caso onde a pergunta é \"isto é verdade?\" sem \"quem és tu?\"."
   },
   "l2Why": {
-    "analogy": "A courthouse and a card terminal. You don't take every coffee purchase to court — too slow, too expensive. You use a fast terminal and only go to court for disputes. L1 is the court (slow, final, trusted); L2 is the terminal that reports back to it.",
-    "analogyLabel": "Business framing",
+    "analogy": "You don't take every coffee purchase to court; you use a card terminal and go to court only for disputes. L1 is the court (slow, final, trusted); L2 is the terminal that reports back to it.",
+    "analogyLabel": "Analogy",
     "triangle": {
       "corners": [
         { "name": "Open to everyone", "biz": "no single owner · anyone can verify" },
@@ -300,7 +241,6 @@
     },
     "recap2": "Section 02 · Rollups & L2s",
     "recap1": "Section 01 · The Blockchain Trilemma",
-    "eyebrow": "Secção 05 · Escalabilidade",
     "heading": "Layer 2 — o que é e porque precisamos dela",
     "subtitle": "A Ethereum L1 é segura mas pequena. Uma Layer 2 mantém essa segurança enquanto faz o trabalho pesado num sítio mais barato.",
     "problemLabel": "O problema",
@@ -328,7 +268,6 @@
   },
   "layer2": {
     "recap": "Section 02 · L1 ↔ L2 Flow animation",
-    "eyebrow": "Secção 05",
     "heading": "Escalabilidade Layer 2: Optimistic vs ZK Rollups",
     "subtitleA": "Ambos os tipos de rollup executam transações off-chain e publicam resultados na Ethereum L1 — mas diferem fundamentalmente na ",
     "subtitleItalic": "forma como provam a correção",
@@ -433,7 +372,7 @@
       "Competitors watch your treasury move in real time"
     ],
     "businessLabel": "Why a business cares",
-    "traceCaption": "Everyone — employer, ex-partner, competitor — can follow the same trail, backwards and forwards, forever.",
+    "traceCaption": "Anyone can follow the same trail, backwards and forwards, forever.",
     "trace": [
       { "who": "Exchange", "note": "knows your name (KYC)" },
       { "who": "Your wallet", "note": "0xA1b2… — now linked to you" },
@@ -442,7 +381,6 @@
     ],
     "traceLabel": "How one link exposes everything",
     "recapCypherpunk": "Course 01 · Prologue — the Cypherpunks: \"privacy is a precondition for freedom\"",
-    "eyebrow": "Secção 05 · Privacidade",
     "heading": "Privacidade num registo público — porque é difícil",
     "subtitle": "As chains públicas são transparentes por defeito: cada endereço, saldo e transferência é visível para qualquer pessoa, para sempre.",
     "normalLabel": "Uma transação pública normal",
@@ -466,7 +404,6 @@
     "trickCaption": "Cada projeto de privacidade é uma receita diferente de criptografia para conseguir isto — próximo slide."
   },
   "privacyApproaches": {
-    "eyebrow": "Secção 05 · Privacidade",
     "heading": "Quatro formas de obter privacidade on-chain",
     "subtitle": "Cada uma faz um compromisso diferente entre força, flexibilidade e a forma como os reguladores a tratam.",
     "howLabel": "Como: ",
@@ -495,7 +432,7 @@
     ]
   },
   "privacyRegulation": {
-    "cypherpunk": "Course 01 opened with the Cypherpunks' claim that privacy is a precondition for freedom; Tornado Cash is where that claim met the regulator's counter-claim that untraceable money is a precondition for crime — both are partly right, which is why ZK's selective reveal (next slide) matters.",
+    "cypherpunk": "The Cypherpunks (Course 01) said privacy is a precondition for freedom; regulators say untraceable money is a precondition for crime. Both are partly right, which is why selective disclosure (next slide) matters.",
     "recapFreedom": "Course 01 · Prologue — the Cypherpunks: privacy as a precondition for freedom",
     "cypherpunkLabel": "Back to where this course began",
     "truthB": "The same tools protected ordinary people from surveillance — and sanctioning code punished users who had done nothing wrong.",
@@ -504,18 +441,12 @@
     "story": [
       { "yr": "2019", "t": "Tornado Cash launches", "d": "A non-custodial mixer on Ethereum: deposit, wait, withdraw to a fresh address. Nobody operates it — the code simply runs." },
       { "yr": "Aug 2022", "t": "OFAC sanctions the code", "d": "The US Treasury sanctioned the smart-contract addresses themselves — a first. Its reason: ~$7B laundered, including $455M by North Korea's Lazarus Group. Ordinary users were swept in too." },
-      { "yr": "2024", "t": "Developers on trial", "d": "Alexey Pertsev convicted in the Netherlands (64 months, under appeal); Roman Storm charged in the US. Writing privacy software itself became the legal question." },
+      { "yr": "2024", "t": "Developers on trial", "d": "Alexey Pertsev convicted in the Netherlands (64 months, under appeal); Roman Storm awaiting trial in the US. Writing privacy software itself became the legal question." },
       { "yr": "Nov 2024 → Mar 2025", "t": "Courts push back", "d": "A US appeals court ruled immutable smart contracts are not \"property\" that can be sanctioned. OFAC delisted Tornado Cash on 21 March 2025." },
-      { "yr": "Aug 2025 → 2027", "t": "Still unsettled", "d": "Storm convicted on one count (unlicensed money transmission); jury hung on laundering and sanctions — retrial set for 2027. Samourai Wallet's founders received 4–5 years (Nov 2025)." }
+      { "yr": "Aug 2025 →", "t": "Still unsettled", "d": "Storm convicted on one count (unlicensed money transmission); the jury hung on laundering and sanctions charges. Samourai Wallet's founders received 4–5 years (Nov 2025)." }
     ],
-    "eyebrow": "Secção 05 · Privacidade",
     "heading": "A privacidade é a área mais contestada em cripto",
     "subtitle": "O código de privacidade não-custodial está a ser testado em tribunal neste momento. Constrói tendo esta realidade em mente.",
-    "events": [
-      { "yr": "Ago 2022", "t": "Tornado Cash sancionado", "d": "A OFAC sancionou um smart contract imutável — não uma empresa. Utilizadores legítimos foram apanhados a par dos branqueadores." },
-      { "yr": "2024", "t": "Detenções na Samourai Wallet", "d": "Os cofundadores de uma carteira de privacidade não-custodial foram detidos. Escrever software de privacidade tornou-se um ponto de tensão legal." },
-      { "yr": "Agora", "t": "A linha está a ser traçada", "d": "Os tribunais estão a decidir onde acaba a \"ferramenta de privacidade\" e começa a \"infraestrutura de branqueamento de capitais\". Ainda não há resposta assente." }
-    ],
     "guidanceLabel": "Orientação de design — ",
     "guidanceA": "onde a regulação importa, prefere ",
     "guidanceStrong1": "divulgação seletiva",
@@ -524,7 +455,6 @@
     "guidanceC": " (ex.: provar \"não estar numa lista de sanções\" sem revelar a identidade) em vez de anonimato de tudo-ou-nada."
   },
   "privacyFuture": {
-    "eyebrow": "Secção 05 · Privacidade",
     "heading": "O lado bom — porque a privacidade ZK é a próxima fronteira",
     "subtitleA": "O ZK transforma a privacidade de \"esconder coisas\" em ",
     "subtitleStrong": "divulgação seletiva e comprovável",
@@ -542,7 +472,6 @@
     "bannerC": " — o caminho para finanças reguladas, saúde e governo usarem de facto chains públicas."
   },
   "evaluate": {
-    "eyebrow": "Secção 05 · Due Diligence · 1 de 2",
     "heading": "Avaliar um projeto — a equipa e o dinheiro",
     "subtitle": "Três de seis eixos. Dá uma vista de olhos à coluna verde vs vermelha — a maioria das falhas é visível aqui primeiro.",
     "greenLabel": "✓ Sinais positivos",
@@ -566,7 +495,6 @@
     ]
   },
   "evaluate2": {
-    "eyebrow": "Secção 05 · Due Diligence · 2 de 2",
     "heading": "Avaliar um projeto — liquidez e verificação da realidade",
     "subtitle": "Os últimos três eixos. A maioria pode ser verificada em dez minutos com ferramentas gratuitas.",
     "greenLabel": "✓ Sinais positivos",
@@ -635,27 +563,26 @@
     ]
   },
   "keyPoints": {
-    "s5-zkp": "Prove it's true without showing why — verification without disclosure.",
-    "s5-zkp-cave": "A proof convinces by making cheating statistically impossible — not by showing you the secret.",
-    "s5-zk-apps": "ZK is a product, not a paper — scaling, identity, solvency and compliance proofs are live today.",
-    "s5-zk-identity": "Verify the claim, not the person — the issuer vouches once, and the customer reveals only what each service needs.",
-    "s5-l2-why": "You can't max out speed, cost and decentralisation at once — L2s buy speed by borrowing L1 security.",
-    "s5-layer2": "Optimistic = innocent until proven guilty (7-day exit); ZK = proven before accepted (hours) — neither is private by default.",
-    "s5-l2apps": "Pick an L2 by ecosystem and exit speed, not by brand — the apps and liquidity you need decide the chain.",
-    "s5-starknet": "Starknet uses ZK for cheap verification, not secrecy — proofs scale Ethereum; they don't hide your transactions.",
-    "s5-polkadot": "Polkadot rents out security — parachains skip recruiting validators but live by the Relay Chain's rules.",
-    "s5-avalanche": "Avalanche sells sovereign lanes with shared tooling — your own chain and gas token, but only as secure as your own validators.",
+    "s5-zkp": "Prove it is true without showing why.",
+    "s5-zkp-cave": "A proof convinces by making cheating impossible, not by showing the secret.",
+    "s5-zk-apps": "ZK is a product, not a paper: scaling, identity, solvency and compliance proofs are live today.",
+    "s5-zk-identity": "Verify the claim, not the person: the issuer vouches once and the customer reveals only what each service needs.",
+    "s5-l2-why": "You cannot max out speed, cost and decentralisation at once; L2s buy speed by borrowing L1 security.",
+    "s5-layer2": "Optimistic rollups are innocent until proven guilty (7-day exit), ZK rollups are proven before accepted (hours), and neither is private by default.",
+    "s5-l2apps": "Pick an L2 by ecosystem and exit speed, not by brand.",
+    "s5-starknet": "Starknet uses ZK for cheap verification, not secrecy.",
+    "s5-polkadot": "Polkadot rents out security; parachains skip recruiting validators but live by the Relay Chain's rules.",
+    "s5-avalanche": "Avalanche sells sovereign lanes with shared tooling; a custom L1 is only as secure as its own validators.",
     "s5-privacy": "A public ledger is a permanent record; privacy has to be added on purpose.",
-    "s5-privacy-approaches": "Mixers hide everything or nothing; ZK reveals exactly what a counterparty needs — selective disclosure is the business-grade option.",
-    "s5-privacy-regulation": "Regulators and cypherpunks are both half-right — untraceable money shields dissidents and launderers alike, so selective disclosure is the way out.",
-    "s5-privacy-future": "Privacy with proof beats privacy by hiding — keep the data confidential and still prove you follow the rules.",
-    "s5-evaluate": "Judge a project by who built it, what the code says and who holds the tokens — most failures are visible here first.",
-    "s5-evaluate-2": "Locked liquidity, honest docs and organic on-chain usage — ten minutes with free tools beats any influencer thread.",
-    "s5-decision": "Five questions beat a hundred logos — permission, programmability, throughput, privacy, sovereignty.",
-    "s5-decision-examples": "There is no best chain, only a best fit — every recommendation here is a trade-off someone chose to accept."
+    "s5-privacy-approaches": "Mixers hide everything or nothing; ZK reveals exactly what a counterparty needs.",
+    "s5-privacy-regulation": "Untraceable money shields dissidents and launderers alike; selective disclosure is the way out.",
+    "s5-privacy-future": "Keep the data confidential and still prove you follow the rules.",
+    "s5-evaluate": "Judge a project by who built it, what the code says and who holds the tokens.",
+    "s5-evaluate-2": "Locked liquidity, honest docs and organic on-chain usage; ten minutes with free tools beats any influencer thread.",
+    "s5-decision": "Five questions beat a hundred logos: permission, programmability, throughput, privacy, sovereignty.",
+    "s5-decision-examples": "There is no best chain, only a best fit."
   },
   "snapshot": {
-    "badge": "🧭 Platform snapshot",
     "starknet": {
       "heading": "Starknet — a ZK rollup on Ethereum",
       "subtitle": "Thousands of transactions run off-chain; one STARK proof tells Ethereum they were all executed correctly.",
@@ -669,12 +596,12 @@
         {
           "label": "What it's good at",
           "title": "Cheap verification + smart wallets",
-          "body": "Fees 10–100× below L1 and withdrawals in hours, not a week. Every account is a smart contract by default (account abstraction): social recovery, session keys, fees paid in any token — the user experience banks and games want."
+          "body": "Fees 10–100× below L1 and withdrawals in hours, not a week. Every account is a smart contract by default (account abstraction): social recovery, session keys, fees paid in any token."
         },
         {
           "label": "One real app",
           "title": "Ekubo — a DEX from a former Uniswap lead",
-          "body": "A concentrated-liquidity exchange built by a former Uniswap Labs lead engineer, holding the deepest liquidity on Starknet. Fully on-chain games (Realms: Eternum, Loot Survivor, built with the Dojo engine) are the other signature use."
+          "body": "A concentrated-liquidity exchange with the deepest liquidity on Starknet. Fully on-chain games (Realms: Eternum, Loot Survivor) are the other main use."
         },
         {
           "label": "The caveat",
@@ -733,15 +660,15 @@
         {
           "label": "The caveat",
           "title": "Small validator sets, fragmented liquidity",
-          "body": "A sovereign L1 is only as secure as its own validators — often a handful. Safety is probabilistic (a tiny, not zero, chance of reversal, unlike BFT's hard guarantee), and most real liquidity still sits on the C-Chain, not on the L1s."
+          "body": "A sovereign L1 is only as secure as its own validators, often a handful. Finality is probabilistic (a tiny chance of reversal, unlike BFT's hard guarantee), and most liquidity still sits on the C-Chain."
         }
       ]
     }
   },
   "discussion": {
-    "eyebrow": "💬 In-class discussion · ~10 min · nothing to hand in",
+    "eyebrow": "In-class discussion · ~10 min · nothing to hand in",
     "prompt": "Pick one: which platform would you choose — and what are you trading away?",
-    "subtitle": "Choose a scenario, pick a platform from this course, and name the trade-off out loud. There is no single right answer — the reasoning is the point.",
+    "subtitle": "Choose a scenario, pick a platform from this course, and name the trade-off. The reasoning is the point.",
     "scenarioLabel": "Scenario {{n}}",
     "scenarios": [
       {

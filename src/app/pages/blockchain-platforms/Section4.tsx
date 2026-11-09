@@ -175,7 +175,6 @@ function Layer0AnimatedStack() {
       {/* Header + replay */}
       <div className="flex items-start justify-between gap-2 shrink-0">
         <div>
-          <div className="text-[10px] font-black uppercase tracking-widest text-[#22d3ee]">{t('layer0Anim.liveLabel')}</div>
           <div className="text-sm font-bold text-foreground">{t('layer0Anim.headline')}</div>
         </div>
         <button
@@ -383,7 +382,6 @@ function XrplAxelarFlow() {
       {/* Header + replay */}
       <div className="flex items-start justify-between gap-2 shrink-0">
         <div>
-          <div className="text-[10px] font-black uppercase tracking-widest text-[#06b6d4]">{t('xrplAxelarAnim.liveLabel')}</div>
           <div className="text-sm font-bold text-foreground">{t('xrplAxelarAnim.headline')}</div>
         </div>
         <button
@@ -627,7 +625,7 @@ export function BP_Section4() {
     { emoji: '₿',  token: 'BABY', consensus: 'BTC-staked PoS',   color: '#f59e0b' },
   ];
   const hackColors = ['#ef4444', '#f97316', '#eab308', '#6366f1'];
-  const saferColors = ['#39B54A', '#6366f1', '#f97316', '#eab308', '#ef4444'];
+  const saferColors = ['#39B54A', '#6366f1', '#ef4444'];
   const zoneMeta = [
     { angle: -90,  color: '#f59e0b' },
     { angle: -30,  color: '#6366f1' },
@@ -874,8 +872,7 @@ export function BP_Section4() {
         {/* ═══════ BRIDGE SECURITY ═══════ */}
         <div id="s4-bridges" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-4">
-            <span className="text-xs font-black uppercase tracking-widest text-[#ef4444]">{t('bridges.sectionLabel')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1 mb-1">{t('bridges.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{t('bridges.heading')}</h2>
             <p className="text-sm text-muted-foreground max-w-4xl">{t('bridges.subA')}<span className="font-semibold text-foreground">{t('bridges.subAmount')}</span>{t('bridges.subB')}</p>
           </div>
           <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -907,7 +904,7 @@ export function BP_Section4() {
                 <p className="text-[11px] text-muted-foreground leading-snug shrink-0 mt-1">{t('bridges.vault.caption')}</p>
               </div>
               <div className="shrink-0 rounded-lg border p-2.5" style={{ borderColor: '#f59e0b60', backgroundColor: '#f59e0b10' }}>
-                <p className="text-[10px] font-black uppercase tracking-widest text-[#f59e0b]">⚖️ {t('bridges.honestLabel')}</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-[#f59e0b]">{t('bridges.honestLabel')}</p>
                 <p className="text-xs text-foreground leading-snug mt-0.5">{t('bridges.honest')}</p>
               </div>
             </div>
@@ -948,7 +945,7 @@ export function BP_Section4() {
               </div>
               <div className="text-xs font-black uppercase tracking-widest text-muted-foreground shrink-0 mt-1">{t('bridges.saferLabel')}</div>
               <div className="flex-1 min-h-0 grid auto-rows-fr gap-2">
-                {[0, 1, 4].map((idx) => {
+                {[0, 1, 2].map((idx) => {
                   const p = bridgeSafer[idx];
                   if (!p) return null;
                   const color = saferColors[idx];
@@ -977,17 +974,6 @@ export function BP_Section4() {
             <p className="text-sm text-muted-foreground mt-1">
               {t('cosmos.subtitle')}
             </p>
-            {/* Two-pill emphasis: cross-chain + app-specific */}
-            <div className="mt-2 flex flex-wrap gap-2">
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border" style={{ borderColor: '#22d3ee55', backgroundColor: '#22d3ee0d' }}>
-                <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#22d3ee' }}>{t('cosmos.pill1Label')}</span>
-                <span className="text-xs text-foreground"><strong>{t('cosmos.pill1Strong')}</strong>{t('cosmos.pill1Text')}</span>
-              </div>
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border" style={{ borderColor: '#6366f155', backgroundColor: '#6366f10d' }}>
-                <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#6366f1' }}>{t('cosmos.pill2Label')}</span>
-                <span className="text-xs text-foreground"><strong>{t('cosmos.pill2Strong')}</strong>{t('cosmos.pill2Text')}</span>
-              </div>
-            </div>
           </div>
 
           <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-5 min-h-0">
@@ -1201,8 +1187,7 @@ export function BP_Section4() {
         {/* ═══════ S4-LAYER0 (1/2) — Animated Concept ═══════ */}
         <div id="s4-layer0" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#22d3ee]/15 border border-[#22d3ee]/40 text-[#22d3ee] text-xs font-bold">{t('layer0.badge')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('layer0.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('layer0.heading')}</h2>
             <p className="text-sm text-muted-foreground max-w-3xl">
               {t('layer0.leadA')}<strong className="text-foreground">{t('layer0.leadStrong')}</strong>{t('layer0.leadB')}<em>{t('layer0.leadEm')}</em>{t('layer0.leadC')}
             </p>
@@ -1339,9 +1324,7 @@ export function BP_Section4() {
           {/* Honest context footer */}
           <div className="shrink-0 mt-3 flex flex-col lg:flex-row gap-2 lg:items-stretch">
             <div className="flex-1 p-2.5 bg-[#f59e0b]/08 rounded-lg border border-[#f59e0b]/40">
-              <p className="text-[11px] font-bold text-[#f59e0b] mb-1 flex items-center gap-1.5">
-                <span>⚖️</span> {t('xrp.honestTitle')}
-              </p>
+              <p className="text-[11px] font-bold text-[#f59e0b] mb-1">{t('xrp.honestTitle')}</p>
               <p className="text-[11px] text-muted-foreground leading-snug">{t('xrp.honestBody')}</p>
             </div>
             <UnderTheHood label={hoodLabel} terms={['UNL', 'federated BFT', 'Trust Lines', 'XLS-30 AMM', 'Hooks']} className="self-start lg:self-center" />
@@ -1352,8 +1335,7 @@ export function BP_Section4() {
         {/* ═══════ XRPL ↔ AXELAR — dedicated animation slide ═══════ */}
         <div id="s4-xrp-anim" className="h-full flex flex-col p-5 lg:p-8">
           <div className="shrink-0 mb-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#f59e0b]/15 border border-[#f59e0b]/40 text-[#f59e0b] text-xs font-bold">{t('xrpAnim.badge')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('xrpAnim.heading')}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('xrpAnim.heading')}</h2>
             <p className="text-sm text-muted-foreground max-w-3xl">
               {t('xrpAnim.subtitle')}
             </p>
