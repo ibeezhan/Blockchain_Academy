@@ -46,6 +46,7 @@ const chapterShape = [
   { id: 's3-dao-structures' },
   { id: 's3-dao-vote' },
   { id: 's3-dao-examples' },
+  { id: 's3-dao-broke' },
   { id: 's3-dao-prosCons' },
 
   { kind: 'group' as const, id: 'g-rwa' },
@@ -71,7 +72,6 @@ const chapterShape = [
   { id: 's3-exercise' },
   { id: 's3-quiz' },
   { id: 's3-takeaways' },
-  { id: 's3-summary' },
 ];
 
 // ─── Pros / Cons Slide Helper ────────────────────────────────────────────────
@@ -1058,21 +1058,6 @@ export function SC_Section3() {
   // Closing
   const quizOptionTexts = t('quiz.options', { returnObjects: true }) as string[];
   const takeawayItems = t('takeaways.items', { returnObjects: true }) as string[];
-  const summaryCards = t('summary.cards', { returnObjects: true }) as { title: string; summary: string }[];
-  const summaryMeta = [
-    { icon: '💸', color: '#6366f1' },
-    { icon: '🎮', color: '#8b5cf6' },
-    { icon: '🏛', color: '#a855f7' },
-    { icon: '🏢', color: '#39B54A' },
-    { icon: '🚚', color: '#f59e0b' },
-    { icon: '📜', color: '#22d3ee' },
-    { icon: '🏠', color: '#6366f1' },
-    { icon: '🏡', color: '#8b5cf6' },
-    { icon: '🚗', color: '#22d3ee' },
-    { icon: '🥬', color: '#39B54A' },
-    { icon: '💼', color: '#6366f1' },
-    { icon: '🚢', color: '#ED1C24' },
-  ];
 
   return (
     <div className="h-full w-full flex overflow-hidden">
@@ -1262,7 +1247,8 @@ export function SC_Section3() {
         <div id="s3-dao-intro" className="h-full"><DaoIntroSlide /></div>
         <div id="s3-dao-structures" className="h-full"><GovernanceBlocksExplorer /></div>
         <div id="s3-dao-vote" className="h-full"><VotingPowerSim /></div>
-        <div id="s3-dao-examples" className="h-full"><DaoExamplesSlide /></div>
+        <div id="s3-dao-examples" className="h-full"><DaoExamplesSlide variant="works" /></div>
+        <div id="s3-dao-broke" className="h-full"><DaoExamplesSlide variant="broke" /></div>
         <div id="s3-dao-prosCons" className="h-full">
           <ProsConsSlide title={t('daoProsCons.title')} accent="#a855f7" pros={daoPros} cons={daoCons} keyPoint={kp('s3-dao-prosCons')} />
         </div>
@@ -1379,31 +1365,6 @@ export function SC_Section3() {
           <TakeawaySlide title={t('takeaways.title')} takeaways={takeawayItems} />
         </div>
 
-        <div id="s3-summary" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('summary.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('summary.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-4 gap-3 content-start">
-            {summaryCards.map((card, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.05, duration: 0.3 }}
-                className="flex flex-col gap-2 p-3 rounded-xl border bg-card"
-                style={{ borderColor: summaryMeta[i].color + '30' }}
-              >
-                <div className="text-2xl">{summaryMeta[i].icon}</div>
-                <div className="font-bold text-xs text-foreground">{card.title}</div>
-                <div className="text-[11px] text-muted-foreground leading-snug">{card.summary}</div>
-              </motion.div>
-            ))}
-          </div>
-          <div className="shrink-0 mt-3 p-3 rounded-xl border border-border bg-card/50 text-center">
-            <span className="text-xs text-muted-foreground">{t('summary.footer')}</span>
-          </div>
-        </div>
 
         </div>
         <SiteFooter className="snap-start" />

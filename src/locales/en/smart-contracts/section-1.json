@@ -8,7 +8,6 @@
     "s1-exercise": "🧩 Contract or not?",
     "s1-quiz": "Quiz",
     "s1-takeaways": "Takeaways",
-    "s1-summary": "Summary",
     "s1-hype": "Hype vs Value"
   },
   "title": {
@@ -222,19 +221,6 @@
       "Not a legal contract, not smart, not free, not unstoppable; the value is removing middlemen, locking rules and settling fast",
       "DeFi, NFTs and DAOs are all smart contracts; $6B+ lost to exploits shows the same code enforces bugs"
     ]
-  },
-  "summary": {
-    "heading": "Section Summary",
-    "subtitle": "At a glance",
-    "cards": [
-      { "title": "Nick Szabo (1994)", "summary": "\"Contractual clauses embedded in hardware and software\" — the original idea, 20 years before Ethereum" },
-      { "title": "Bitcoin Scripts", "summary": "Limited but valid smart contracts: multi-sig, time locks, HTLCs — intentionally not Turing-complete" },
-      { "title": "Ethereum (2015)", "summary": "Turing-complete EVM enabled arbitrary smart contracts, opening DeFi, NFTs, and DAOs" },
-      { "title": "Key Properties", "summary": "Immutable, autonomous, transparent, trust-minimized, deterministic — all enforced by the protocol" },
-      { "title": "Code is Law Limits", "summary": "Bugs (The DAO: $60M), oracle failure, no legal standing" },
-      { "title": "When to Use", "summary": "Multiple untrusting parties + conditional logic + no trusted intermediary = smart contract territory" }
-    ],
-    "footer": "Next: Section 2 — how smart contracts work"
   },
   "hype": {
     "heading": "Hype vs value: four things a smart contract is not",

@@ -26,7 +26,6 @@ const chapterShape = [
   { id: 's4-decision-no' },
 
   { kind: 'group' as const, id: 'g-cases' },
-  { id: 's4-cases-intro' },
   { id: 's4-case-success' },
   { id: 's4-case-sc-fail' },
   { id: 's4-case-org-fail' },
@@ -42,8 +41,7 @@ const chapterShape = [
   { id: 's4-adoption-finance' },
 
   { kind: 'group' as const, id: 'g-strat' },
-  { id: 's4-opportunities' },
-  { id: 's4-challenges-academic' },
+  { id: 's4-opps-challenges' },
   { id: 's4-strategies' },
 
   { kind: 'group' as const, id: 'g-close' },
@@ -166,7 +164,6 @@ function DecisionFlow() {
 
 interface TitleDesc { title: string; desc: string }
 interface ChartStep { q: string; verdict: string }
-interface CaseCard { verdict: string; name: string; tag: string; desc: string; lesson: string }
 interface ResultStat { value: string; label: string }
 interface PillarItem { label: string; desc: string }
 interface CostItem { label: string; range: string; desc: string }
@@ -174,7 +171,6 @@ interface OppItem { label: string; desc: string }
 interface StrategyItem { name: string; moat: string; desc: string }
 const YES_EMOJI = ['👥', '⚡', '🔍', '💰', '🔓', '🔒', '🌍'];
 const NO_EMOJI = ['🏢', '⚡', '🔄', '📦', '🤐', '⚖️', '🧑', '💸'];
-const CASE_COLORS = ['#39B54A', '#f59e0b', '#ED1C24'];
 const PILLAR_META = [
   { num: '01', emoji: '🎯', color: '#6366f1' },
   { num: '02', emoji: '🏗', color: '#8b5cf6' },
@@ -195,10 +191,6 @@ const RISK_META = [
   { emoji: '🔍', color: '#ED1C24' }, { emoji: '🧮', color: '#f59e0b' }, { emoji: '💰', color: '#8b5cf6' },
   { emoji: '⚙️', color: '#6366f1' }, { emoji: '🚨', color: '#22d3ee' }, { emoji: '📡', color: '#39B54A' },
 ];
-const CHALLENGE_META = [
-  { emoji: '⚙️', color: '#6366f1' }, { emoji: '⚖️', color: '#8b5cf6' }, { emoji: '🐛', color: '#ED1C24' },
-  { emoji: '⚡', color: '#f59e0b' }, { emoji: '🤝', color: '#22d3ee' }, { emoji: '🧑', color: '#39B54A' },
-];
 const STRATEGY_EMOJI = ['🏦', '🌐', '🦄', '🏡', '✈️', '🛠'];
 
 // Rebuild a rich-text bullet (text + bold/italic spans) from a structured item.
@@ -217,7 +209,6 @@ export function SC_Section4() {
   const chartSteps   = t('decisionChart.steps', { returnObjects: true }) as ChartStep[];
   const yesItems     = t('decisionYes.items', { returnObjects: true }) as TitleDesc[];
   const noItems      = t('decisionNo.items', { returnObjects: true }) as TitleDesc[];
-  const caseCards    = t('casesIntro.items', { returnObjects: true }) as CaseCard[];
 
   const successBg    = t('caseSuccess.background', { returnObjects: true }) as string[];
   const successUse   = t('caseSuccess.useCases', { returnObjects: true }) as string[];
@@ -243,9 +234,8 @@ export function SC_Section4() {
   const upfrontCosts   = t('adoptionFinance.upfront', { returnObjects: true }) as CostItem[];
   const ongoingCosts   = t('adoptionFinance.ongoing', { returnObjects: true }) as CostItem[];
 
-  const opsOpps        = t('opportunities.operational', { returnObjects: true }) as OppItem[];
-  const stratOpps      = t('opportunities.strategic', { returnObjects: true }) as OppItem[];
-  const challengeItems = t('challenges.items', { returnObjects: true }) as TitleDesc[];
+  const oppItems       = t('oppsChallenges.opportunities', { returnObjects: true }) as OppItem[];
+  const challengeItems = t('oppsChallenges.challenges', { returnObjects: true }) as TitleDesc[];
   const competitive    = t('strategies.items', { returnObjects: true }) as StrategyItem[];
 
 
@@ -403,40 +393,6 @@ export function SC_Section4() {
         {/* THREE LESSONS FROM THE FIELD                                */}
         {/* ═══════════════════════════════════════════════════════════ */}
 
-        {/* Lessons intro — overview of the 3 outcomes */}
-        <div id="s4-cases-intro" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('casesIntro.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('casesIntro.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-5 content-center">
-            {caseCards.map((c, i) => {
-              const color = CASE_COLORS[i];
-              const emoji = ['✅', '⚠️', '❌'][i];
-              return (
-                <div key={c.name} className="p-5 bg-card border-2 rounded-xl flex flex-col gap-3" style={{ borderColor: color + '50' }}>
-                  <div className="flex items-center gap-3">
-                    <div className="text-4xl">{emoji}</div>
-                    <div>
-                      <div className="text-[10px] font-bold uppercase tracking-widest" style={{ color }}>{c.tag}</div>
-                      <div className="font-black text-foreground">{c.name}</div>
-                    </div>
-                  </div>
-                  <div className="text-[10px] font-semibold text-muted-foreground italic">{c.verdict}</div>
-                  <p className="text-xs text-muted-foreground leading-relaxed flex-1">{c.desc}</p>
-                  <div className="p-2 rounded-lg text-xs" style={{ backgroundColor: color + '15' }}>
-                    <span className="font-bold" style={{ color }}>{t('casesIntro.lessonLabel')}</span>
-                    <span className="text-muted-foreground">{c.lesson}</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <div className="shrink-0 mt-4 p-3 rounded-xl border border-border bg-muted/30 text-xs text-muted-foreground">
-            <span className="font-semibold text-foreground">{t('casesIntro.patternLabel')}</span>{t('casesIntro.patternBody')}
-          </div>
-          <KeyPointBar text={t('keyPoints.s4-cases-intro')} className="mt-3" />
-        </div>
 
         {/* ═══════ CASE: ESTONIA — SUCCESS ═══════ */}
         <div id="s4-case-success" className="h-full flex flex-col p-6 lg:p-10">
@@ -755,16 +711,16 @@ export function SC_Section4() {
           <KeyPointBar text={t('keyPoints.s4-adoption-finance')} className="mt-3" />
         </div>
 
-        {/* ═══════ OPPORTUNITIES ═══════ */}
-        <div id="s4-opportunities" className="h-full flex flex-col p-6 lg:p-10">
+        {/* ═══════ OPPORTUNITIES & CHALLENGES ═══════ */}
+        <div id="s4-opps-challenges" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('opportunities.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('opportunities.subtitle')}</p>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('oppsChallenges.heading')}</h2>
+            <p className="text-muted-foreground text-sm mt-1">{t('oppsChallenges.subtitle')}</p>
           </div>
           <div className="flex-1 min-h-0 grid grid-cols-2 gap-5 content-center">
             <div className="flex flex-col gap-3">
-              <div className="text-xs font-bold text-[#39B54A] uppercase tracking-widest">{t('opportunities.operationalLabel')}</div>
-              {opsOpps.map((o) => (
+              <div className="text-xs font-bold text-[#39B54A] uppercase tracking-widest">{t('oppsChallenges.opportunitiesLabel')}</div>
+              {oppItems.map((o) => (
                 <div key={o.label} className="p-3 bg-card border border-[#39B54A]/25 rounded-xl">
                   <div className="font-bold text-sm text-foreground">{o.label}</div>
                   <div className="text-xs text-muted-foreground mt-1">{o.desc}</div>
@@ -772,43 +728,19 @@ export function SC_Section4() {
               ))}
             </div>
             <div className="flex flex-col gap-3">
-              <div className="text-xs font-bold text-[#6366f1] uppercase tracking-widest">{t('opportunities.strategicLabel')}</div>
-              {stratOpps.map((o) => (
-                <div key={o.label} className="p-3 bg-card border border-[#6366f1]/25 rounded-xl">
-                  <div className="font-bold text-sm text-foreground">{o.label}</div>
-                  <div className="text-xs text-muted-foreground mt-1">{o.desc}</div>
+              <div className="text-xs font-bold text-[#ED1C24] uppercase tracking-widest">{t('oppsChallenges.challengesLabel')}</div>
+              {challengeItems.map((c) => (
+                <div key={c.title} className="p-3 bg-card border border-[#ED1C24]/25 rounded-xl">
+                  <div className="font-bold text-sm text-foreground">{c.title}</div>
+                  <div className="text-xs text-muted-foreground mt-1">{c.desc}</div>
                 </div>
               ))}
             </div>
           </div>
           <div className="shrink-0 mt-3 text-[10px] text-muted-foreground italic">
-            {t('opportunities.sources')}
+            {t('oppsChallenges.sources')}
           </div>
-          <KeyPointBar text={t('keyPoints.s4-opportunities')} className="mt-3" />
-        </div>
-
-        {/* ═══════ CHALLENGES (ACADEMIC) ═══════ */}
-        <div id="s4-challenges-academic" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('challenges.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('challenges.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4 content-center">
-            {challengeItems.map((c, i) => {
-              const meta = CHALLENGE_META[i];
-              return (
-                <div key={c.title} className="p-4 bg-card border rounded-xl flex flex-col gap-2" style={{ borderColor: meta.color + '30' }}>
-                  <div className="text-3xl">{meta.emoji}</div>
-                  <div className="font-bold text-sm" style={{ color: meta.color }}>{c.title}</div>
-                  <div className="text-xs text-muted-foreground leading-snug">{c.desc}</div>
-                </div>
-              );
-            })}
-          </div>
-          <div className="shrink-0 mt-3 text-[10px] text-muted-foreground italic">
-            {t('challenges.sources')}
-          </div>
-          <KeyPointBar text={t('keyPoints.s4-challenges-academic')} className="mt-3" />
+          <KeyPointBar text={t('keyPoints.s4-opps-challenges')} className="mt-3" />
         </div>
 
         {/* ═══════ STRATEGIES — APPLIED ═══════ */}

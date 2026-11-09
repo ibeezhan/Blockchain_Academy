@@ -5,11 +5,11 @@
     "s5-technical":        "Technical Challenges",
     "s5-ex-oracle":        "🧩 Oracle Attack",
     "s5-risks-security":   "Security Risks",
+    "s5-admin-key":        "Admin Keys & Proxies",
     "s5-risks-cost":       "Cost Risks",
     "s5-risks-regulatory": "Regulatory Risks",
     "s5-quiz":             "Quiz",
     "s5-takeaways":        "Takeaways",
-    "s5-summary":          "Summary",
     "s5-failures": "When It Went Wrong"
   },
   "title": {
@@ -309,17 +309,27 @@
       "Regulatory uncertainty: laws move in years, contracts move in months — privacy, enforceability, and jurisdiction all matter"
     ]
   },
-  "summary": {
-    "heading": "Section Summary",
-    "subtitle": "At a glance",
-    "cards": [
-      { "title": "Reentrancy", "summary": "Attacker re-enters function before state updates — The DAO hack ($60M, 2016). Fix: Checks-Effects-Interactions pattern" },
-      { "title": "Oracle Attacks", "summary": "Flash loan → manipulate AMM price → drain protocol — Harvest Finance ($34M, 2020). Fix: multi-oracle, TWAP" },
-      { "title": "Gas & Scale", "summary": "Computation is metered and expensive on L1 — L2 rollups (Arbitrum, Optimism) reduce cost 10–100×" },
-      { "title": "Legal & Regulatory", "summary": "Enforceability uncertain · GDPR conflicts · jurisdictional differences · \"code is law\" rejected by courts" },
-      { "title": "Cost Realities", "summary": "Audit costs · gas optimisation discipline · maintenance is expensive · migrations are projects" },
-      { "title": "Mitigations", "summary": "Audits + formal verification · multi-oracle design · timelocks · upgrade proxy patterns · bug bounties" }
-    ]
+  "adminKey": {
+    "heading": "Admin Keys and Upgradeable Proxies",
+    "subtitle": "How \"immutable\" contracts get changed, and who is allowed to do it.",
+    "diagram": {
+      "user": "User",
+      "userNote": "always calls the same address",
+      "proxy": "Proxy contract",
+      "proxyNote": "fixed address · holds the funds and data · forwards every call to the current logic",
+      "logicOld": "Logic v1",
+      "logicNew": "Logic v2",
+      "logicNote": "the rules; can be swapped",
+      "admin": "Admin key",
+      "adminNote": "whoever holds it can point the proxy at new rules"
+    },
+    "points": [
+      { "title": "What it is", "desc": "A proxy is a fixed front door that forwards calls to a separate logic contract. The admin key is the permission to change which logic the door points to." },
+      { "title": "Why it exists", "desc": "Deployed code cannot be patched. Teams add a proxy so they can fix bugs and ship features without asking every user to move." },
+      { "title": "Why it matters to you", "desc": "The key holder can change the rules, pause the contract or move the funds. The trust you removed from a bank now sits with whoever holds that key." }
+    ],
+    "askLabel": "Before relying on a contract, ask: ",
+    "askBody": "who holds the admin key, is it a multisig, is there a timelock, and can the key be renounced?"
   },
   "failures": {
     "heading": "When it went wrong — six real incidents",
@@ -383,6 +393,7 @@
     "s5-technical": "The fixes exist, but each one reintroduces a party you must trust.",
     "s5-ex-oracle": "A perfect contract pays out on a corrupted data feed without hesitation.",
     "s5-risks-security": "Bugs are public, permanent and exploited within hours; an audit is the entry ticket.",
+    "s5-admin-key": "An upgradeable contract is only as trustworthy as the holder of its admin key; ask who holds it and what limits them.",
     "s5-failures": "In most incidents the contract did what it was told; the failure was in the design, the data or the people.",
     "s5-risks-cost": "The cheap part is the deployment; audits, monitoring, upgrades and gas during peaks are the real budget.",
     "s5-risks-regulatory": "When code and law disagree, the law wins; plan for jurisdiction, data protection and liability."

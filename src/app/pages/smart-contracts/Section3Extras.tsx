@@ -499,37 +499,44 @@ const DAO_EXAMPLE_META = [
 
 interface DaoExample { name: string; tag: string; stat: string; what: string; structure: string; lesson: string }
 
-export function DaoExamplesSlide() {
+// Split over two slides: items 0–2 are long-running DAOs, 3–4 are the failures.
+const DAO_WORKS_COUNT = 3;
+
+export function DaoExamplesSlide({ variant }: { variant: 'works' | 'broke' }) {
   const { t } = useTranslation(NS);
-  const items = t('daoExamples.items', { returnObjects: true }) as DaoExample[];
+  const all = t('daoExamples.items', { returnObjects: true }) as DaoExample[];
+  const offset = variant === 'works' ? 0 : DAO_WORKS_COUNT;
+  const items = variant === 'works' ? all.slice(0, DAO_WORKS_COUNT) : all.slice(DAO_WORKS_COUNT);
+  const heading = variant === 'works' ? t('daoExamples.heading') : t('daoExamples.brokeHeading');
+  const subtitle = variant === 'works' ? t('daoExamples.subtitle') : t('daoExamples.brokeSubtitle');
   return (
     <div className="h-full flex flex-col p-6 lg:p-10">
       <div className="shrink-0 mb-4">
-        <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('daoExamples.heading')}</h2>
-        <p className="text-muted-foreground text-sm mt-1">{t('daoExamples.subtitle')}</p>
+        <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{heading}</h2>
+        <p className="text-muted-foreground text-sm mt-1">{subtitle}</p>
       </div>
-      <div className="flex-1 min-h-0 grid grid-cols-5 gap-3">
+      <div className={`flex-1 min-h-0 grid gap-4 ${variant === 'works' ? 'grid-cols-3' : 'grid-cols-2'}`}>
         {items.map((d, i) => {
-          const m = DAO_EXAMPLE_META[i];
+          const m = DAO_EXAMPLE_META[offset + i];
           return (
             <div key={d.name} className="flex flex-col rounded-xl border-2 bg-card overflow-hidden min-h-0" style={{ borderColor: m.color + '50' }}>
               <div className="h-1.5 shrink-0" style={{ backgroundColor: m.color }} />
-              <div className="flex-1 min-h-0 p-3 flex flex-col gap-2 overflow-y-auto">
+              <div className="flex-1 min-h-0 p-4 flex flex-col gap-2.5 overflow-y-auto">
                 <div className="flex items-center gap-2">
                   <span className="text-xl">{m.emoji}</span>
-                  <div className="font-black text-sm text-foreground leading-tight">{d.name}</div>
+                  <div className="font-black text-base text-foreground leading-tight">{d.name}</div>
                 </div>
-                <div className="text-[10px] font-bold" style={{ color: m.color }}>{d.tag}</div>
-                <div className="text-[10px] font-mono text-muted-foreground px-1.5 py-0.5 rounded self-start" style={{ backgroundColor: m.color + '15' }}>{d.stat}</div>
+                <div className="text-xs font-bold" style={{ color: m.color }}>{d.tag}</div>
+                <div className="text-xs font-mono text-muted-foreground px-1.5 py-0.5 rounded self-start" style={{ backgroundColor: m.color + '15' }}>{d.stat}</div>
                 <div>
-                  <div className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">{t('daoExamples.whatLabel')}</div>
-                  <p className="text-[11px] text-foreground/90 leading-snug">{d.what}</p>
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t('daoExamples.whatLabel')}</div>
+                  <p className="text-sm text-foreground/90 leading-snug">{d.what}</p>
                 </div>
                 <div>
-                  <div className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">{t('daoExamples.structureLabel')}</div>
-                  <p className="text-[11px] text-foreground/90 leading-snug">{d.structure}</p>
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t('daoExamples.structureLabel')}</div>
+                  <p className="text-sm text-foreground/90 leading-snug">{d.structure}</p>
                 </div>
-                <div className="mt-auto p-2 rounded-lg text-[11px] leading-snug" style={{ backgroundColor: m.color + '12' }}>
+                <div className="mt-auto p-2.5 rounded-lg text-sm leading-snug" style={{ backgroundColor: m.color + '12' }}>
                   <span className="font-bold" style={{ color: m.color }}>{t('daoExamples.lessonLabel')}: </span>
                   <span className="text-muted-foreground">{d.lesson}</span>
                 </div>
@@ -538,10 +545,12 @@ export function DaoExamplesSlide() {
           );
         })}
       </div>
-      <div className="shrink-0 mt-3 p-2.5 rounded-xl border border-[#f59e0b]/30 text-xs text-muted-foreground" style={{ backgroundColor: '#f59e0b0f' }}>
-        <span className="font-bold text-[#f59e0b]">{t('daoExamples.legalLabel')}</span>{t('daoExamples.legalBody')}
-      </div>
-      <KeyPointBar text={t('keyPoints.s3-dao-examples')} className="mt-3" />
+      {variant === 'broke' && (
+        <div className="shrink-0 mt-3 p-2.5 rounded-xl border border-[#f59e0b]/30 text-xs text-muted-foreground" style={{ backgroundColor: '#f59e0b0f' }}>
+          <span className="font-bold text-[#f59e0b]">{t('daoExamples.legalLabel')}</span>{t('daoExamples.legalBody')}
+        </div>
+      )}
+      <KeyPointBar text={t(variant === 'works' ? 'keyPoints.s3-dao-examples' : 'keyPoints.s3-dao-broke')} className="mt-3" />
     </div>
   );
 }

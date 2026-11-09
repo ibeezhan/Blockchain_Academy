@@ -4,20 +4,17 @@
     "s2-dapp":         "dApp & Smart Contracts",
     "s2-ex-stack":     "🧩 Exercise: Stack",
     "s2-vs":           "Web2 vs Web3 Apps",
-    "s2-vs-2":         "Trad vs Smart Contracts",
     "s2-standards":    "Token Standards",
     "s2-components":   "Core Components",
     "s2-workflow":     "Workflow",
     "s2-solidity":     "Reading Solidity · optional",
     "s2-execution":    "Execution Environment",
     "s2-capabilities": "New Capabilities",
-    "s2-why":          "Why Build with SC?",
     "s2-gas":          "Gas & Tx Economics",
     "s2-ex-gas":       "🧩 Exercise: Gas",
     "s2-reshape":      "Reshape Business",
     "s2-quiz":         "Quizzes",
-    "s2-takeaways":    "Takeaways",
-    "s2-summary":      "Summary"
+    "s2-takeaways":    "Takeaways"
   },
   "title": {
     "sectionNumber": "SECTION 02",
@@ -174,24 +171,6 @@
     "takeawayLabel": "Takeaway: ",
     "takeaway": "a dApp trades a company you must trust for a protocol anyone can verify — at the cost of paying gas per action."
   },
-  "vsContract": {
-    "kicker": "Web3 vs Traditional · 2 of 2",
-    "heading": "The Agreement: Traditional vs Smart Contract",
-    "subtitle": "Same intent — enforced by people and courts, or by code.",
-    "propertyLabel": "Property",
-    "colA": "Traditional contract",
-    "colB": "Smart contract",
-    "rows": [
-      { "prop": "Execution",     "a": "Manual — requires human action", "b": "Automatic when conditions met" },
-      { "prop": "Speed",         "a": "Days to weeks",                  "b": "Seconds to minutes" },
-      { "prop": "Cost",          "a": "Legal fees, intermediaries",     "b": "Gas fee only" },
-      { "prop": "Trust",         "a": "Trust both parties + courts",    "b": "Trust the code only" },
-      { "prop": "Transparency",  "a": "Private, often ambiguous",       "b": "Public, deterministic code" },
-      { "prop": "Geography",     "a": "Jurisdiction-dependent",         "b": "Borderless" }
-    ],
-    "takeawayLabel": "Takeaway: ",
-    "takeaway": "a smart contract removes lawyers, delay and ambiguity — but only for logic that can be expressed in code."
-  },
   "standards": {
     "kicker": "Section 02",
     "heading": "Token Standards",
@@ -340,6 +319,8 @@
     "heading": "New Capabilities",
     "subtitle": "Five things that were not possible before.",
     "realExample": "Real example",
+    "whyLabel": "Why build with them: ",
+    "whyBody": "no intermediary to pay or trust, global reach by default, public rules anyone can verify, and execution with no office hours.",
     "items": [
       {
         "title": "Permissionless Composability",
@@ -366,24 +347,6 @@
         "tagline": "No government, company, or dev can block a valid transaction.",
         "example": "OFAC blacklisted Tornado Cash — the front-end died, the contract ran on."
       }
-    ]
-  },
-  "why": {
-    "heading": "Why Build Using Smart Contracts?",
-    "subtitle": "The case for choosing smart contracts over traditional software.",
-    "coreLabel": "Core reasons to build",
-    "core": [
-      { "title": "Eliminate Intermediaries", "desc": "No bank, notary, or escrow agent needed. The contract enforces the rules and releases funds automatically — reducing cost and counterparty risk." },
-      { "title": "Global by Default",        "desc": "Deploy once; anyone with an internet connection can use it, without a bank account." },
-      { "title": "Transparency",             "desc": "Every rule is public and auditable; users can verify the code instead of trusting a promise." },
-      { "title": "Always-On Automation",     "desc": "Code executes the moment conditions are met, with no office hours or approval queues." }
-    ],
-    "impactLabel": "Business impact",
-    "impact": [
-      { "title": "Programmable Money",     "desc": "Revenue splits, royalties, and conditional payments execute automatically on every transaction. Superfluid streams salary per second. Mirror splits publication revenue by ownership." },
-      { "title": "Composable Ecosystem",  "desc": "Your contract can call Uniswap, Aave or Chainlink directly, with no partnership or API key." },
-      { "title": "Immutable Commitments", "desc": "Once deployed, the rules cannot be changed by any party, including you." },
-      { "title": "DAO Governance",        "desc": "Token-weighted voting, on-chain treasuries and automatic execution of proposals." }
     ]
   },
   "gas": {
@@ -422,12 +385,12 @@
     "cards": [
       { "title": "Disintermediation",       "desc": "Peer-to-peer execution. No banks, brokers, or escrow services needed for the agreement to clear." },
       { "title": "Process Automation",      "desc": "Autonomous \"if X, then Y\" rules execute the moment conditions are met — no manual approval step." },
-      { "title": "Trustless & Transparent", "desc": "Trust shifts from people to code + consensus. All actions are verifiable, auditable, and global." },
+      { "title": "Trustless & Transparent", "desc": "Trust shifts from people to code + consensus. All actions are verifiable, auditable, and global. Once deployed, no party can change the rules, including the issuer." },
       { "title": "Cost Reduction",          "desc": "Eliminates middlemen, manual paperwork, and ongoing legal oversight. Cuts escrow, reconciliation, and compliance costs." },
       { "title": "New Value Chains",        "desc": "New models: DAOs, tokenised assets, machine-to-machine payments." }
     ],
     "patternLabel": "The pattern:",
-    "patternBody": " traditional businesses centralise trust in an intermediary; smart-contract businesses move it into code and consensus. The next section shows where this works in practice."
+    "patternBody": " traditional businesses centralise trust in an intermediary; smart-contract businesses move it into code and consensus. Build one when many parties must share one record without a referee; otherwise a database is cheaper. The next section shows where this works in practice."
   },
   "quiz": {
     "question": "In the smart contract execution workflow, what triggers a contract to run?",
@@ -449,32 +412,17 @@
       "Smart contracts enable programmable money, automated settlement, and trustless governance"
     ]
   },
-  "summary": {
-    "heading": "Section Summary",
-    "subtitle": "At a glance",
-    "cards": [
-      { "title": "Smart Contract Workflow", "summary": "Write → Compile → Deploy → Interact — four irreversible steps on an immutable ledger" },
-      { "title": "Gas & Tx Economics",      "summary": "Gas = execution units · Gas price (Gwei) = market rate · EIP-1559: base fee burned + priority tip" },
-      { "title": "dApp Stack",              "summary": "Smart contract (logic) + IPFS (storage) + Infura RPC (access) + Wallet (Rabby / Zerion / MetaMask) + React (UI)" },
-      { "title": "Web3 vs Traditional",     "summary": "Trust the protocol vs trust the company · public ledger vs private database · gas per action vs subscription" },
-      { "title": "New Capabilities",        "summary": "Composability, atomic settlement, shared state, programmable money, censorship resistance" },
-      { "title": "Why Build with SC?",      "summary": "Use when: multiple parties + conditional logic + no trusted intermediary + need for auditability" }
-    ],
-    "footer": "Next: Section 3 — industries and case studies"
-  },
   "keyPoints": {
     "s2-web3": "Web3 moves trust from the company running the service to the rules running the network.",
     "s2-dapp": "The blockchain is one layer of a dApp; the website, data feeds and storage are ordinary servers that someone controls.",
     "s2-ex-stack": "Only the contract is decentralised by default; every other box is a vendor you depend on.",
     "s2-vs": "Web2 apps can change the rules overnight; Web3 apps make the rules public and hard to change.",
-    "s2-vs-2": "A traditional contract is enforced after a breach; a smart contract prevents the breach, and preserves the bug.",
     "s2-standards": "Standards are why one wallet works with thousands of tokens.",
     "s2-components": "Code, state, functions, events, platform: five words that let you follow any contract summary.",
     "s2-workflow": "A transaction, not a person, triggers the contract, and the result is final on every node.",
     "s2-solidity": "A contract is readable code, not a black box; you can ask a vendor to show it.",
     "s2-execution": "Thousands of machines compute the same result, which makes it trustworthy, slow, expensive and public.",
     "s2-capabilities": "The new capability is automation that no single party, including the operator, can override.",
-    "s2-why": "Choose a smart contract when many parties must share one record without a referee; otherwise choose a database.",
     "s2-gas": "Every step costs real money, so good design keeps computation and data off-chain and puts only the proof on-chain.",
     "s2-ex-gas": "Writing data costs far more than reading it or sending value.",
     "s2-reshape": "Smart-contract businesses stop earning as the trusted middleman; the revenue model moves."

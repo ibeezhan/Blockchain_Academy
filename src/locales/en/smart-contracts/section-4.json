@@ -13,7 +13,6 @@
     "s4-discussion": "💬 Discussion",
     "s4-decision-yes": "When SC Make Sense",
     "s4-decision-no": "When to Rethink",
-    "s4-cases-intro": "Examples Overview",
     "s4-case-success": "Estonia e-Residency",
     "s4-case-sc-fail": "The DAO",
     "s4-case-org-fail": "ASX CHESS",
@@ -25,8 +24,7 @@
     "s4-adoption-legal": "Legal & Regulatory",
     "s4-adoption-risk": "Risk Management",
     "s4-adoption-finance": "Financial Planning",
-    "s4-opportunities": "Opportunities",
-    "s4-challenges-academic": "Challenges",
+    "s4-opps-challenges": "Opportunities & Challenges",
     "s4-strategies": "Competitive Strategy",
     "s4-quiz": "Quiz",
     "s4-takeaways": "Takeaways"
@@ -135,36 +133,6 @@
       { "title": "Users aren't tech-savvy enough", "desc": "Wallet UX, gas fees, seed phrases — these still cripple adoption for mainstream consumers." },
       { "title": "No one will pay for development", "desc": "Development and audit cost 5–10× a typical web app; without clear ROI, do not start." }
     ]
-  },
-  "casesIntro": {
-    "heading": "Three Lessons from the Field",
-    "subtitle": "Three real projects, one per outcome.",
-    "items": [
-      {
-        "verdict": "Right tool · right org",
-        "name": "Estonia · e-Residency",
-        "tag": "Success",
-        "desc": "Government as the trust anchor, blockchain for record integrity: many users and a need for tamper-proof history.",
-        "lesson": "When the framework says yes and the organisation is ready, blockchain delivers at national scale."
-      },
-      {
-        "verdict": "Right tool · wrong contract",
-        "name": "The DAO",
-        "tag": "Smart-Contract Failure",
-        "desc": "A legitimate DAO use case (decentralised VC) but the smart contract had a known reentrancy bug. Once exploited, immutability meant nothing could pause it. Ethereum forked to recover funds.",
-        "lesson": "Without audits, pause switches or upgrade paths, immutability becomes a liability."
-      },
-      {
-        "verdict": "Wrong tool entirely",
-        "name": "ASX · CHESS",
-        "tag": "Organisational Failure",
-        "desc": "Securities clearing is run by a single trusted intermediary (ASX itself). Blockchain solves multi-party trust gaps — but ASX was the trusted party. A database would have been faster, cheaper, simpler.",
-        "lesson": "Ask \"who do we not trust?\" before \"how do we use blockchain?\"."
-      }
-    ],
-    "lessonLabel": "Lesson: ",
-    "patternLabel": "Watch for the pattern:",
-    "patternBody": " two questions separate the cases: was it the right tool, and was the organisation ready. Both must be yes."
   },
   "caseSuccess": {
     "kicker": "Lesson 01 · Success — right tool, right organisation",
@@ -367,37 +335,24 @@
     ],
     "footnote": "Ranges are illustrative and vary widely by region, complexity, and specific requirements. Use them as a starting point for conversations with vendors and finance."
   },
-  "opportunities": {
-    "heading": "Opportunities",
-    "subtitle": "Where smart contracts outperform legacy approaches, per the research cited.",
-    "operationalLabel": "Operational opportunities",
-    "operational": [
-      { "label": "Cost reduction", "desc": "Eliminate intermediaries, automate manual reconciliation, reduce escrow and dispute costs" },
-      { "label": "Speed of execution", "desc": "Settle in seconds rather than days. Cross-border value moves at internet speed." },
-      { "label": "Transparency & auditability", "desc": "Every state change is recorded permanently — regulatory examinations become simpler." },
-      { "label": "Programmable cash flows", "desc": "Encode business rules directly into payments — escrow, royalties, and milestones automate themselves." }
-    ],
-    "strategicLabel": "Strategic opportunities",
-    "strategic": [
+  "oppsChallenges": {
+    "heading": "Opportunities and Challenges",
+    "subtitle": "What the research adds beyond the decision framework.",
+    "opportunitiesLabel": "Opportunities",
+    "opportunities": [
+      { "label": "Speed of settlement", "desc": "Seconds instead of days; cross-border value moves at internet speed." },
+      { "label": "Programmable cash flows", "desc": "Escrow, royalties and milestone payments run themselves." },
       { "label": "New business models", "desc": "DAOs, tokenised assets, fractional ownership, machine-to-machine payments." },
-      { "label": "Network effects", "desc": "Composability: each new contract amplifies the value of every other contract on the same chain." },
-      { "label": "Global reach", "desc": "Permissionless markets reach users in any jurisdiction with internet — no banking partnerships required." },
-      { "label": "Trust without intermediaries", "desc": "Multi-party agreements between strangers without a referee." }
+      { "label": "Network effects", "desc": "Each new contract can plug into every other one on the same chain." }
     ],
-    "sources": "Sources: Nzuva (2019); Perlman (2019); Dal Mas, Dicuonzo, Massaro & Dell'Atti (2019)."
-  },
-  "challenges": {
-    "heading": "Challenges",
-    "subtitle": "Systemic obstacles to adoption, per the research cited.",
-    "items": [
-      { "title": "Technical complexity", "desc": "Few engineers know Solidity, gas mechanics and the EVM deeply." },
-      { "title": "Regulatory uncertainty", "desc": "Securities, tax, KYC, and consumer-protection laws are still evolving. Compliance is a moving target across jurisdictions." },
-      { "title": "Security vulnerabilities", "desc": "Reentrancy, oracle manipulation, and access-control bugs have led to billions in losses. Audits are mandatory, not optional." },
-      { "title": "Scalability limits", "desc": "Public L1s cap throughput. L2s help but introduce their own complexity (sequencers, fraud proofs, withdrawal delays)." },
-      { "title": "Interoperability", "desc": "Cross-chain bridges remain fragile and have been a major source of exploits. Single-chain ecosystems are siloed." },
-      { "title": "User experience", "desc": "Wallet setup, key management, gas fees, and confirmation times all create friction that mainstream users won't tolerate." }
+    "challengesLabel": "Challenges",
+    "challenges": [
+      { "title": "Scarce talent", "desc": "Few engineers know Solidity, gas mechanics and the EVM well." },
+      { "title": "Scalability limits", "desc": "Public chains cap throughput; L2s help but add their own complexity." },
+      { "title": "Interoperability", "desc": "Cross-chain bridges are fragile and a major source of exploits." },
+      { "title": "User experience", "desc": "Wallets, keys, gas fees and confirmation times are friction mainstream users will not tolerate." }
     ],
-    "sources": "Sources: Khan et al. (2021); Virani (2024); Perlman (2019)."
+    "sources": "Sources: Nzuva (2019); Perlman (2019); Dal Mas, Dicuonzo, Massaro & Dell'Atti (2019); Khan et al. (2021); Virani (2024)."
   },
   "strategies": {
     "heading": "Strategies for Competitive Advantage",
@@ -443,7 +398,6 @@
     "s4-decision-flow": "Answered honestly, most ideas land on hybrid or database, and that is a good outcome.",
     "s4-decision-yes": "Many parties, no trusted referee, value in automation: when all three hold, the engineering cost pays off.",
     "s4-decision-no": "Private data, changing rules or a single trusted operator usually mean a database.",
-    "s4-cases-intro": "Technology fit and organisational readiness are separate questions; both must be yes.",
     "s4-case-success": "Estonia treats blockchain as infrastructure for record integrity, not as a product.",
     "s4-case-sc-fail": "The DAO's use case fit; one bug drained $60M because code is enforced even when it is wrong.",
     "s4-case-org-fail": "ASX spent $255M on a blockchain for a problem one trusted party already solved.",
@@ -453,8 +407,7 @@
     "s4-adoption-legal": "Pair the code with a normal legal agreement; courts enforce contracts, not code.",
     "s4-adoption-risk": "Audits, timelocks and upgrade paths are the price of code you cannot patch.",
     "s4-adoption-finance": "High upfront cost, low marginal cost; the savings arrive only if the network is used.",
-    "s4-opportunities": "The measurable wins are settlement time, reconciliation cost and audit trails.",
-    "s4-challenges-academic": "Scalability, interoperability, regulation and usability are problems no single company can fix alone.",
+    "s4-opps-challenges": "Settlement speed and programmable cash flows are measurable wins; scale, interoperability and usability are problems no single company can fix alone.",
     "s4-strategies": "Advantage comes from the network, not the technology; the code is open to every competitor."
   }
 }

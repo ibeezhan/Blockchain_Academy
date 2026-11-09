@@ -5,11 +5,11 @@
     "s5-technical":        "Desafios Técnicos",
     "s5-ex-oracle":        "🧩 Ataque ao Oracle",
     "s5-risks-security":   "Riscos de Segurança",
+    "s5-admin-key":        "Admin Keys & Proxies",
     "s5-risks-cost":       "Riscos de Custo",
     "s5-risks-regulatory": "Riscos Regulatórios",
     "s5-quiz":             "Quiz",
     "s5-takeaways":        "Conclusões",
-    "s5-summary":          "Resumo",
     "s5-failures": "When It Went Wrong"
   },
   "title": {
@@ -309,17 +309,27 @@
       "Regulatory uncertainty: laws move in years, contracts move in months — privacy, enforceability, and jurisdiction all matter"
     ]
   },
-  "summary": {
-    "heading": "Resumo da Secção",
-    "subtitle": "Limitações e riscos — num relance",
-    "cards": [
-      { "title": "Reentrância", "summary": "O atacante reentra na função antes das atualizações de estado — o ataque à The DAO ($60M, 2016). Solução: padrão Checks-Effects-Interactions" },
-      { "title": "Ataques a Oracles", "summary": "Flash loan → manipular o preço do AMM → drenar o protocolo — Harvest Finance ($34M, 2020). Solução: multi-oracle, TWAP" },
-      { "title": "Gas e Escala", "summary": "A computação é medida e cara na L1 — os rollups L2 (Arbitrum, Optimism) reduzem o custo 10–100×" },
-      { "title": "Legal e Regulatório", "summary": "Exequibilidade incerta · conflitos com o RGPD · diferenças jurisdicionais · \"o código é lei\" rejeitado pelos tribunais" },
-      { "title": "Realidades de Custo", "summary": "Custos de auditoria · disciplina de otimização de gas · a manutenção é cara · as migrações são projetos" },
-      { "title": "Mitigações", "summary": "Auditorias + verificação formal · design multi-oracle · timelocks · padrões de proxy de atualização · bug bounties" }
-    ]
+  "adminKey": {
+    "heading": "Admin Keys and Upgradeable Proxies",
+    "subtitle": "How \"immutable\" contracts get changed, and who is allowed to do it.",
+    "diagram": {
+      "user": "User",
+      "userNote": "always calls the same address",
+      "proxy": "Proxy contract",
+      "proxyNote": "fixed address · holds the funds and data · forwards every call to the current logic",
+      "logicOld": "Logic v1",
+      "logicNew": "Logic v2",
+      "logicNote": "the rules; can be swapped",
+      "admin": "Admin key",
+      "adminNote": "whoever holds it can point the proxy at new rules"
+    },
+    "points": [
+      { "title": "What it is", "desc": "A proxy is a fixed front door that forwards calls to a separate logic contract. The admin key is the permission to change which logic the door points to." },
+      { "title": "Why it exists", "desc": "Deployed code cannot be patched. Teams add a proxy so they can fix bugs and ship features without asking every user to move." },
+      { "title": "Why it matters to you", "desc": "The key holder can change the rules, pause the contract or move the funds. The trust you removed from a bank now sits with whoever holds that key." }
+    ],
+    "askLabel": "Before relying on a contract, ask: ",
+    "askBody": "who holds the admin key, is it a multisig, is there a timelock, and can the key be renounced?"
   },
   "failures": {
     "heading": "When it went wrong — six real incidents",
@@ -383,6 +393,7 @@
     "s5-technical": "The fixes exist — layer 2s, bridges, upgradeable proxies, privacy tech — but each one reintroduces a party you must trust.",
     "s5-ex-oracle": "Attack the input, not the code: a perfect contract pays out on a corrupted price feed without hesitation.",
     "s5-risks-security": "Bugs are public, permanent and exploited within hours — an audit is not optional, it is the entry ticket.",
+    "s5-admin-key": "An upgradeable contract is only as trustworthy as the holder of its admin key; ask who holds it and what limits them.",
     "s5-failures": "In most of these incidents the contract did exactly what it was told — the failure was in the design, the data or the people.",
     "s5-risks-cost": "The cheap part is the deployment; audits, monitoring, upgrades and gas during peaks are the real budget.",
     "s5-risks-regulatory": "When code and law disagree, the law wins — plan for jurisdiction, data protection and who is liable when it breaks."

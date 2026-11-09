@@ -15,7 +15,8 @@
     "s3-dao-intro": "What is a DAO?",
     "s3-dao-structures": "🧩 Governance Blocks",
     "s3-dao-vote": "🧩 Who Holds Power?",
-    "s3-dao-examples": "Real DAOs",
+    "s3-dao-examples": "Real DAOs: What Works",
+    "s3-dao-broke": "Real DAOs: What Broke",
     "s3-dao-prosCons": "DAO Pros & Cons",
     "s3-rwa-spectrum": "🧩 Spectrum",
     "s3-rwa-real": "In Production",
@@ -30,8 +31,7 @@
     "s3-tradelens": "TradeLens",
     "s3-exercise": "🧩 Design Your Own",
     "s3-quiz": "Quiz",
-    "s3-takeaways": "Takeaways",
-    "s3-summary": "Summary"
+    "s3-takeaways": "Takeaways"
   },
   "groups": {
     "g-defi": "DeFi",
@@ -751,49 +751,6 @@
       "Section 4 adds three lessons from the field: Estonia, The DAO and ASX"
     ]
   },
-  "summary": {
-    "heading": "Section Summary",
-    "subtitle": "At a glance",
-    "cards": [
-      { "title": "DeFi", "summary": "AMMs (Uniswap, CoW Swap) · stablecoins (USDC, DAI) · borderless transfers (USDC on L2)" },
-      { "title": "Gaming & NFTs", "summary": "True ownership · P2E (Ubisoft Champions Tactics) · NFT collateral lending" },
-      {
-        "title": "NFT Utility & DAOs",
-        "summary": "Token-gating · tickets · POAPs · DAO building blocks (multisig, quadratic, timelock) · MakerDAO, Uniswap, Gitcoin, ConstitutionDAO"
-      },
-      {
-        "title": "RWA Tokenization",
-        "summary": "BlackRock BUIDL · Sweden land registry · Zurich Bahnhofstrasse · MiCA framework"
-      },
-      {
-        "title": "Supply Chain",
-        "summary": "LVMH Aura · Carrefour BIO · GSBN eBL Network (2M+ containers)"
-      },
-      {
-        "title": "Digital Cert",
-        "summary": "Estonia KSI · MIT Blockcerts · LVMH AURA luxury authentication"
-      },
-      {
-        "title": "Home Depot",
-        "summary": "Supplier disputes weeks → hours with Hyperledger Fabric"
-      },
-      {
-        "title": "Propy",
-        "summary": "NFT real-estate deeds — first US property sale on-chain"
-      },
-      {
-        "title": "CA DMV",
-        "summary": "42M vehicle titles on Avalanche — first US state at scale"
-      },
-      {
-        "title": "Walmart",
-        "summary": "Food trace from 7 days → 2.2 seconds via IBM Food Trust"
-      },
-      { "title": "Santander", "summary": "$20M end-to-end Ethereum bond — first major bank, T+2 → same-day" },
-      { "title": "TradeLens", "summary": "Maersk × IBM shipping ledger shut down 2023 — rivals would not join a competitor-owned platform" }
-    ],
-    "footer": "Next: Section 4 — when to use a smart contract, and when not to"
-  },
   "nftUtility": {
     "heading": "NFTs Beyond Art: the Token as a Key",
     "subtitle": "An NFT is a transferable, verifiable record that this wallet holds this right. Rights are what businesses sell.",
@@ -1022,8 +979,10 @@
     "lessonLabel": "Lesson"
   },
   "daoExamples": {
-    "heading": "Real DAOs: what works, what broke",
-    "subtitle": "Five organisations, five structures, five lessons. Note how much governance happens on forums and in multisigs — not just in the vote.",
+    "heading": "Real DAOs: what works",
+    "subtitle": "Three organisations that have run for years. Note how much governance happens on forums and in multisigs, not just in the vote.",
+    "brokeHeading": "Real DAOs: what broke",
+    "brokeSubtitle": "Two organisations that pooled money fast and failed at what came next.",
     "whatLabel": "What it does",
     "structureLabel": "How it's structured",
     "lessonLabel": "Lesson",
@@ -1141,6 +1100,7 @@
     "s3-dao-structures": "Each building block trades speed for legitimacy: a multisig is fast, a token vote is fair, a timelock protects both.",
     "s3-dao-vote": "Ask who holds power after launch — not who promised what before it.",
     "s3-dao-examples": "Even successful DAOs are run by a small active group; low turnout and whale votes are the norm.",
+    "s3-dao-broke": "Pooling money is the easy part; deciding, holding and unwinding it safely is where DAOs fail.",
     "s3-dao-prosCons": "A DAO buys transparency and global participation at the cost of speed, legal clarity and attack surface.",
     "s3-rwa-spectrum": "The simpler the legal claim, the easier the token; treasuries went first, real estate comes last.",
     "s3-rwa-real": "BlackRock and a national land registry are on-chain because settlement time and reconciliation cost are measurable.",

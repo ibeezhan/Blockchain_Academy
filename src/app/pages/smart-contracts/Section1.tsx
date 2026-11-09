@@ -23,7 +23,6 @@ const chapterIds = [
   's1-history',
   's1-quiz',
   's1-takeaways',
-  's1-summary',
 ] as const;
 
 
@@ -258,7 +257,6 @@ interface CompareRow { trad: string; smart: string; }
 interface WhyPoint { a: string; strong: string; b: string; }
 interface SzaboStep { label: string; detail: string; }
 interface HistoryEvent { year: string; tag: string; title: string; desc: string; }
-interface SummaryCard { title: string; summary: string; }
 interface HypeCard { title: string; body: string; }
 
 const HYPE_META = [
@@ -303,10 +301,6 @@ export function SC_Section1() {
   const quizOptions = quizOptionTexts.map((text, i) => ({ text, correct: i === 1 }));
 
   const takeawayItems = t('takeaways.items', { returnObjects: true }) as string[];
-
-  const summaryIcons = ['📜', '⛓️', '🌐', '✅', '⚠️', '🎯'];
-  const summaryText = t('summary.cards', { returnObjects: true }) as SummaryCard[];
-  const summaryCards = summaryText.map((c, i) => ({ ...c, icon: summaryIcons[i] }));
 
   const hypeCards = t('hype.cards', { returnObjects: true }) as HypeCard[];
   const hypeValue = t('hype.value', { returnObjects: true }) as string[];
@@ -591,32 +585,6 @@ export function SC_Section1() {
           />
         </div>
 
-        {/* ═══════ SUMMARY ═══════ */}
-        <div id="s1-summary" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('summary.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('summary.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4 content-start">
-            {summaryCards.map((card, i) => (
-              <motion.div
-                key={card.title}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.08, duration: 0.3 }}
-                className="flex flex-col gap-2 p-4 rounded-2xl border bg-card"
-                style={{ borderColor: '#6366f130' }}
-              >
-                <div className="text-3xl">{card.icon}</div>
-                <div className="font-bold text-sm text-foreground">{card.title}</div>
-                <div className="text-xs text-muted-foreground leading-relaxed">{card.summary}</div>
-              </motion.div>
-            ))}
-          </div>
-          <div className="shrink-0 mt-4 p-3 rounded-xl border border-border bg-card/50 text-center">
-            <span className="text-xs text-muted-foreground">{t('summary.footer')}</span>
-          </div>
-        </div>
 
         </div>
         <SiteFooter className="snap-start" />

@@ -20,20 +20,17 @@ const chapterIds = [
   's2-dapp',
   's2-ex-stack',
   's2-vs',
-  's2-vs-2',
   's2-standards',
   's2-components',
   's2-workflow',
   's2-solidity',
   's2-execution',
   's2-capabilities',
-  's2-why',
   's2-gas',
   's2-ex-gas',
   's2-reshape',
   's2-quiz',
   's2-takeaways',
-  's2-summary',
 ] as const;
 
 // ─── Exercise: Gas Ranking ───────────────────────────────────────────────────
@@ -395,7 +392,6 @@ export function SC_Section2() {
   ];
 
   const vsAppRows = t('vsApp.rows', { returnObjects: true }) as { prop: string; a: string; b: string }[];
-  const vsContractRows = t('vsContract.rows', { returnObjects: true }) as { prop: string; a: string; b: string }[];
 
   const componentCards = t('components.cards', { returnObjects: true }) as { title: string; desc: string }[];
   const componentCardMeta = [
@@ -444,21 +440,6 @@ export function SC_Section2() {
     { color: '#ED1C24', emoji: '🛡️' },
   ];
 
-  const whyCore = t('why.core', { returnObjects: true }) as { title: string; desc: string }[];
-  const whyCoreMeta = [
-    { color: '#6366f1', emoji: '🤝' },
-    { color: '#39B54A', emoji: '🌍' },
-    { color: '#f59e0b', emoji: '🔍' },
-    { color: '#8b5cf6', emoji: '⚡' },
-  ];
-  const whyImpact = t('why.impact', { returnObjects: true }) as { title: string; desc: string }[];
-  const whyImpactMeta = [
-    { color: '#ED1C24', emoji: '💰' },
-    { color: '#6366f1', emoji: '🧩' },
-    { color: '#39B54A', emoji: '📜' },
-    { color: '#f59e0b', emoji: '🏛️' },
-  ];
-
   const gasFundamentals = t('gas.fundamentals', { returnObjects: true }) as { term: string; def: string }[];
   const gasFundamentalMeta = [
     { color: '#6366f1', emoji: '⛽' },
@@ -494,9 +475,6 @@ export function SC_Section2() {
   const quizOptions = quizOptionsText.map((text, i) => ({ text, correct: quizCorrect[i] }));
 
   const takeawayItems = t('takeaways.items', { returnObjects: true }) as string[];
-
-  const summaryCards = t('summary.cards', { returnObjects: true }) as { title: string; summary: string }[];
-  const summaryCardMeta = ['🔄', '⛽', '🏗️', '🌐', '💡', '⚖️'];
 
   return (
     <div className="h-full w-full flex overflow-hidden">
@@ -672,40 +650,6 @@ export function SC_Section2() {
           <KeyPointBar text={t('keyPoints.s2-vs')} className="mt-3" />
         </div>
 
-        {/* ═══════ TRADITIONAL vs SMART CONTRACTS ═══════ */}
-        <div id="s2-vs-2" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <span className="text-xs font-black uppercase tracking-widest text-[#6366f1]">{t('vsContract.kicker')}</span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mt-1">{t('vsContract.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('vsContract.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 flex items-center justify-center">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}
-              className="w-full max-w-4xl rounded-2xl border border-border bg-card overflow-hidden shadow-sm"
-            >
-              <div className="grid grid-cols-[1.15fr_1fr_1fr]">
-                <div className="p-3.5 text-[11px] font-black uppercase tracking-widest text-muted-foreground bg-muted">{t('vsContract.propertyLabel')}</div>
-                <div className="p-3.5 text-center text-sm font-black text-[#ED1C24] bg-[#ED1C24]/10 border-l border-border">{t('vsContract.colA')}</div>
-                <div className="p-3.5 text-center text-sm font-black text-[#6366f1] bg-[#6366f1]/10 border-l border-border">{t('vsContract.colB')}</div>
-              </div>
-              {vsContractRows.map((r, i) => (
-                <div key={r.prop} className={`grid grid-cols-[1.15fr_1fr_1fr] border-t border-border ${i % 2 ? 'bg-muted/30' : ''}`}>
-                  <div className="px-3.5 py-3 font-semibold text-sm text-foreground">{r.prop}</div>
-                  <div className="px-3.5 py-3 text-sm text-muted-foreground text-center border-l border-border">{r.a}</div>
-                  <div className="px-3.5 py-3 text-sm text-foreground font-medium text-center border-l border-border" style={{ backgroundColor: 'rgba(99,102,241,0.05)' }}>{r.b}</div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-
-          <div className="shrink-0 mt-4 rounded-xl border border-[#6366f1]/30 px-4 py-2.5 text-center text-sm" style={{ backgroundColor: 'rgba(99,102,241,0.07)' }}>
-            <span className="font-bold text-[#6366f1]">{t('vsContract.takeawayLabel')}</span>
-            <span className="text-muted-foreground">{t('vsContract.takeaway')}</span>
-          </div>
-          <KeyPointBar text={t('keyPoints.s2-vs-2')} className="mt-3" />
-        </div>
 
         {/* ═══════ TOKEN STANDARDS ═══════ */}
         <div id="s2-standards" className="h-full flex flex-col p-6 lg:p-10">
@@ -1116,7 +1060,7 @@ export function SC_Section2() {
             <p className="text-muted-foreground text-sm mt-1">{t('capabilities.subtitle')}</p>
           </div>
 
-          <div className="flex-1 min-h-0 flex flex-col gap-3">
+          <div className="flex-1 min-h-0 flex flex-col gap-2">
             {capabilityItems.map((c, i) => (
               <motion.div
                 key={c.title}
@@ -1124,7 +1068,7 @@ export function SC_Section2() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.25 }}
-                className="flex-1 flex items-center gap-4 p-4 rounded-xl border-2 bg-card"
+                className="flex-1 flex items-center gap-4 p-3 rounded-xl border-2 bg-card"
                 style={{ borderColor: capabilityMeta[i].color + '40' }}
               >
                 <div className="size-12 rounded-xl flex items-center justify-center text-2xl shrink-0" style={{ backgroundColor: capabilityMeta[i].color + '18' }}>{capabilityMeta[i].emoji}</div>
@@ -1134,54 +1078,17 @@ export function SC_Section2() {
                 </div>
                 <div className="hidden lg:block w-[34%] shrink-0">
                   <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">{t('capabilities.realExample')}</div>
-                  <div className="text-sm text-muted-foreground italic leading-snug p-2.5 rounded-lg" style={{ backgroundColor: capabilityMeta[i].color + '0d' }}>{c.example}</div>
+                  <div className="text-sm text-muted-foreground italic leading-snug p-2 rounded-lg" style={{ backgroundColor: capabilityMeta[i].color + '0d' }}>{c.example}</div>
                 </div>
               </motion.div>
             ))}
           </div>
+          <div className="shrink-0 mt-3 p-2.5 rounded-xl border border-border bg-muted/30 text-xs text-muted-foreground">
+            <span className="font-semibold text-foreground">{t('capabilities.whyLabel')}</span>{t('capabilities.whyBody')}
+          </div>
           <KeyPointBar text={t('keyPoints.s2-capabilities')} className="mt-3" />
         </div>
 
-        {/* ═══════ WHY BUILD WITH SMART CONTRACTS? ═══════ */}
-        <div id="s2-why" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('why.heading')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('why.subtitle')}</p>
-          </div>
-
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-5 content-center">
-
-            {/* Column 1: Core reasons */}
-            <div className="flex flex-col gap-3">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('why.coreLabel')}</p>
-              {whyCore.map((r, i) => (
-                <div key={r.title} className="flex-1 flex gap-2.5 p-3 bg-card border border-border rounded-xl" style={{ borderColor: whyCoreMeta[i].color + '30' }}>
-                  <div className="size-8 rounded-lg flex items-center justify-center text-base shrink-0" style={{ backgroundColor: whyCoreMeta[i].color + '18' }}>{whyCoreMeta[i].emoji}</div>
-                  <div>
-                    <div className="font-bold text-xs mb-0.5" style={{ color: whyCoreMeta[i].color }}>{r.title}</div>
-                    <div className="text-xs text-muted-foreground leading-snug">{r.desc}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Column 2: Business impact */}
-            <div className="flex flex-col gap-3">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t('why.impactLabel')}</p>
-              {whyImpact.map((r, i) => (
-                <div key={r.title} className="flex-1 flex gap-2.5 p-3 bg-card border border-border rounded-xl" style={{ borderColor: whyImpactMeta[i].color + '30' }}>
-                  <div className="size-8 rounded-lg flex items-center justify-center text-base shrink-0" style={{ backgroundColor: whyImpactMeta[i].color + '18' }}>{whyImpactMeta[i].emoji}</div>
-                  <div>
-                    <div className="font-bold text-xs mb-0.5" style={{ color: whyImpactMeta[i].color }}>{r.title}</div>
-                    <div className="text-xs text-muted-foreground leading-snug">{r.desc}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-          </div>
-          <KeyPointBar text={t('keyPoints.s2-why')} className="mt-3" />
-        </div>
 
         {/* ═══════ GAS FUNDAMENTALS ═══════ */}
         <div id="s2-gas" className="h-full flex flex-col p-6 lg:p-10">
@@ -1304,32 +1211,6 @@ export function SC_Section2() {
           />
         </div>
 
-        {/* ═══════ SUMMARY ═══════ */}
-        <div id="s2-summary" className="h-full flex flex-col p-6 lg:p-10">
-          <div className="shrink-0 mb-5">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('summary.heading')}</h2>
-            <p className="text-sm text-muted-foreground mt-1">{t('summary.subtitle')}</p>
-          </div>
-          <div className="flex-1 min-h-0 grid grid-cols-3 gap-4 content-start">
-            {summaryCards.map((card, i) => (
-              <motion.div
-                key={card.title}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.08, duration: 0.3 }}
-                className="flex flex-col gap-2 p-4 rounded-2xl border bg-card"
-                style={{ borderColor: '#6366f130' }}
-              >
-                <div className="text-3xl">{summaryCardMeta[i]}</div>
-                <div className="font-bold text-sm text-foreground">{card.title}</div>
-                <div className="text-xs text-muted-foreground leading-relaxed">{card.summary}</div>
-              </motion.div>
-            ))}
-          </div>
-          <div className="shrink-0 mt-4 p-3 rounded-xl border border-border bg-card/50 text-center">
-            <span className="text-xs text-muted-foreground">{t('summary.footer')}</span>
-          </div>
-        </div>
 
         </div>
         <SiteFooter className="snap-start" />
