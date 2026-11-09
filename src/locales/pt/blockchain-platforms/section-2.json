@@ -132,13 +132,11 @@
       { "label": "Estado global partilhado (contas)", "desc": "Um livro-razão universal para todos os endereços e contratos" },
       { "label": "Ethereum Virtual Machine (EVM)", "desc": "Um runtime em sandbox replicado em cada node do mundo" }
     ],
-    "callout": "Ethereum = modelo de segurança do Bitcoin + máquina de estados programável",
     "teaserTextA": "…e em 2022, a Ethereum fez algo que o Bitcoin não consegue: ",
     "teaserHighlight": "desligou a mineração por completo.",
-    "teaserNote": "vamos abordar The Merge em detalhe mais à frente ↓",
-    "powLabel": "⛏️ PoW (pré-2022)",
+    "powLabel": "PoW (pré-2022)",
     "powValue": "~73 TWh/ano",
-    "posLabel": "🌿 PoS (desde set. 2022)",
+    "posLabel": "PoS (desde set. 2022)",
     "posValueA": "~0,01 TWh/ano ",
     "posValueHighlight": "(−99,95%)"
   },
@@ -170,7 +168,7 @@
     "subtitle": "A diferença arquitetural fundamental — quem inicia, quem responde",
     "eoa": {
       "title": "EOA",
-      "tag": "= a tua Carteira 👛",
+      "tag": "= a tua Carteira",
       "subtitle": "Externally Owned Account — a carteira MetaMask / hardware que usas no dia a dia",
       "points": [
         "Controlada por uma chave privada (um humano ou software)",
@@ -295,7 +293,7 @@
     "formula": "custo = gasUsed × (baseFee + tip)",
     "formulaGasUsed": "gasUsed",
     "formulaGasUsedSub": "trabalho realizado",
-    "formulaBaseFee": "baseFee 🔥",
+    "formulaBaseFee": "baseFee",
     "formulaBaseFeeSub": "definida pela rede, queimada",
     "formulaTip": "tip",
     "formulaTipSub": "paga ao validador",
@@ -310,11 +308,11 @@
     "subtitle": "Hard fork London · agosto de 2021 · a atualização que corrigiu o mercado de taxas da Ethereum",
     "beforeTitle": "Antes — Leilão de Primeiro Preço",
     "beforeBody": "Os utilizadores adivinhavam às cegas quanto licitar. As taxas mais altas ganhavam espaço no bloco. Todos pagavam a mais por medo de ficar presos.",
-    "beforeOverpayTitle": "😰 Pagar a mais",
+    "beforeOverpayTitle": "Pagar a mais",
     "beforeOverpaySub": "\"mais vale prevenir…\"",
-    "beforeStuckTitle": "⏳ Preso",
+    "beforeStuckTitle": "Preso",
     "beforeStuckSub": "licitou demasiado baixo",
-    "beforeMinerTitle": "💸 Só o minerador",
+    "beforeMinerTitle": "Só o minerador",
     "beforeMinerSub": "100% para o minerador",
     "afterTitle": "Depois — Base Fee + Gorjeta",
     "baseFeeLabel": "Base fee",
@@ -379,9 +377,7 @@
       { "label": "Propose", "detail": "Every 12 seconds one validator is picked at random to build the next block.", "metric": "a new block every 12 s" },
       { "label": "Attest", "detail": "The other validators check the block and vote on it. Most of the work is voting, not building.", "metric": "needs 2/3 of votes" },
       { "label": "Finalize", "detail": "After enough votes the block is final. Undoing it would mean burning a third of all staked ETH — tens of billions of dollars.", "metric": "final in ~13 min" }
-    ],
-    "nextLabel": "Next two slides:",
-    "nextBody": " what staking means for the people who put up the 32 ETH — and what the switch did to ETH's supply."
+    ]
   },
   "staking": {
     "heading": "Staking — ETH's Interest Rate",
@@ -478,8 +474,7 @@
     ],
     "ecosystemHeading": "O ecossistema EVM",
     "l2Label": "Rollups Layer 2",
-    "l1Label": "L1s compatíveis com EVM",
-    "callout": "\"A EVM está a tornar-se o conjunto de instruções padrão das blockchains — como o x86 para os computadores\""
+    "l1Label": "L1s compatíveis com EVM"
   },
   "rollups": {
     "heading": "Rollups — Escalar Sem Confiar",
@@ -569,8 +564,7 @@
       "ilRest": " · a divergência de preços pode deixar os LPs em pior situação do que se apenas tivessem mantido os tokens.",
       "liveLabel": "Ao vivo: ",
       "live": "Lido · Yearn · Convex"
-    },
-    "hook": "Quase todos os produtos DeFi de que vais ouvir falar são uma composição destes três. O Curso 03 cobre a mecânica ao nível do contrato, os ataques e os casos de estudo."
+    }
   },
   "stablecoins": {
     "heading": "Stablecoins — a categoria de app mais usada",
@@ -615,7 +609,7 @@
         "mechanism": "Mantêm o peg através de algoritmos de cunhagem/queima de oferta ou de posições de derivados delta-neutras. As versões puramente algorítmicas têm um modo de falha documentado; as híbridas (Frax, Ethena) combinam colateral com estratégias sintéticas.",
         "examples": "TerraUSD (UST) · colapsou em maio de 2022, eliminou ~60 mil M$ — caso de estudo de espiral de morte · Frax · ~650 M$, híbrida parcialmente colateralizada · Ethena USDe · delta-neutra sintética, ~5 mil M$+ em 2024.",
         "logos": [
-          { "sym": "UST", "tag": "💀 colapsou" },
+          { "sym": "UST", "tag": "colapsou" },
           { "sym": "FRAX", "tag": "híbrida" },
           { "sym": "USDe", "tag": "Ethena" }
         ],
@@ -654,11 +648,11 @@
         "what": "Um token único on-chain cujo tokenURI aponta para metadados off-chain (imagem, JSON). O token prova a proveniência; os bytes vivem tipicamente no IPFS ou num servidor centralizado.",
         "examples": "CryptoPunks (2017) · Bored Ape (2021) · Bilhetes: Liverpool FC, Coachella · Música: Sound.xyz · IP de marca: Nike RTFKT, pilotos da Disney.",
         "projects": [
-          { "sym": "🟧 OpenSea", "tag": "maior marketplace" },
-          { "sym": "🐵 BAYC", "tag": "PFPs · cultura" },
-          { "sym": "🟪 Sound.xyz", "tag": "NFTs de música" },
-          { "sym": "👟 Nike RTFKT", "tag": "IP de marca" },
-          { "sym": "🎟️ POAP", "tag": "provas de presença" }
+          { "sym": "OpenSea", "tag": "maior marketplace" },
+          { "sym": "BAYC", "tag": "PFPs · cultura" },
+          { "sym": "Sound.xyz", "tag": "NFTs de música" },
+          { "sym": "Nike RTFKT", "tag": "IP de marca" },
+          { "sym": "POAP", "tag": "provas de presença" }
         ],
         "limit": "A maioria dos metadados está off-chain — se o URL ou o pin do IPFS desaparecer, o \"NFT\" fica um apontador partido. O ciclo especulativo de 2021-22 colapsou; os sobreviventes viraram-se para a utilidade (bilhetes, direitos, identidade) em vez de revender JPEGs."
       },
@@ -668,11 +662,11 @@
         "what": "Uma Decentralized Autonomous Organization é um smart contract que controla uma tesouraria e executa propostas aprovadas por votos dos detentores de tokens. O contrato — e não um CEO — move os fundos.",
         "examples": "MakerDAO (emissão de DAI) · Uniswap DAO (controla mais de 7 mil M$ em UNI) · ENS DAO (registo .eth) · Optimism Citizen House · subsídios da Gitcoin.",
         "projects": [
-          { "sym": "🦄 Uniswap DAO", "tag": "tesouraria de 7 mil M$" },
-          { "sym": "⚖️ MakerDAO", "tag": "emissão de DAI" },
-          { "sym": "🌐 ENS DAO", "tag": "registo .eth" },
-          { "sym": "🔴 Optimism", "tag": "Citizen House" },
-          { "sym": "💚 Gitcoin", "tag": "subsídios de bens públicos" }
+          { "sym": "Uniswap DAO", "tag": "tesouraria de 7 mil M$" },
+          { "sym": "MakerDAO", "tag": "emissão de DAI" },
+          { "sym": "ENS DAO", "tag": "registo .eth" },
+          { "sym": "Optimism", "tag": "Citizen House" },
+          { "sym": "Gitcoin", "tag": "subsídios de bens públicos" }
         ],
         "limit": "A afluência às votações é muitas vezes de 1–5%. Os votos ponderados por tokens significam que as baleias decidem. A maioria das \"DAOs\" delega as decisões em pequenas equipas centrais. O estatuto legal das DAOs continua por resolver na maioria das jurisdições."
       }
@@ -690,11 +684,11 @@
         "what": "Substituir os logins por email por identidade baseada na carteira. O ENS dá-te um nome humano (alice.eth) para o teu endereço. O Sign-In With Ethereum (SIWE) autentica sem palavras-passe. A Lens e o Farcaster constroem grafos sociais on-chain.",
         "examples": "ENS: mais de 3M de nomes registados · SIWE: mais de 200 apps integradas · Farcaster: ~300 mil DAU (2024) · Worldcoin: mais de 7M de humanos verificados · Lens: construída em torno de grafos de feed componíveis.",
         "projects": [
-          { "sym": "🌐 ENS", "tag": "3M+ nomes .eth" },
-          { "sym": "🔑 SIWE", "tag": "login por carteira" },
-          { "sym": "🌿 Lens", "tag": "grafo social" },
-          { "sym": "🟪 Farcaster", "tag": "~300 mil DAU" },
-          { "sym": "🌍 Worldcoin", "tag": "7M+ verificados" }
+          { "sym": "ENS", "tag": "3M+ nomes .eth" },
+          { "sym": "SIWE", "tag": "login por carteira" },
+          { "sym": "Lens", "tag": "grafo social" },
+          { "sym": "Farcaster", "tag": "~300 mil DAU" },
+          { "sym": "Worldcoin", "tag": "7M+ verificados" }
         ],
         "limit": "Ainda de nicho face ao social da Web2. O onboarding com carteira e gas bloqueia a maioria dos utilizadores. Os nomes ENS custam gas a cunhar. O social descentralizado ainda não resolveu o spam ou a moderação tão bem como as plataformas centralizadas — para já."
       },
@@ -704,11 +698,11 @@
         "what": "Ativos de jogo (skins, personagens, itens) como tokens que os jogadores possuem de facto e podem negociar. Vai desde \"jogo off-chain com cosméticos NFT\" até \"jogos totalmente on-chain\" onde todo o estado do jogo vive em contratos (motor Dojo).",
         "examples": "Immutable (zkEVM para jogos) · Ronin (o Axie Infinity atingiu 3 mil M$ de GMV em 2021) · Decentraland · Realms / Loot Survivor na Starknet · DFK Chain (L1 da Avalanche).",
         "projects": [
-          { "sym": "🟦 Immutable", "tag": "zkEVM para jogos" },
-          { "sym": "🐉 Axie · Ronin", "tag": "pico de 3 mil M$ GMV" },
-          { "sym": "🏝️ Decentraland", "tag": "metaverso / terrenos" },
-          { "sym": "⚔️ Loot Survivor", "tag": "totalmente on-chain" },
-          { "sym": "🌌 The Sandbox", "tag": "UGC em voxel" }
+          { "sym": "Immutable", "tag": "zkEVM para jogos" },
+          { "sym": "Axie · Ronin", "tag": "pico de 3 mil M$ GMV" },
+          { "sym": "Decentraland", "tag": "metaverso / terrenos" },
+          { "sym": "Loot Survivor", "tag": "totalmente on-chain" },
+          { "sym": "The Sandbox", "tag": "UGC em voxel" }
         ],
         "limit": "A maioria dos \"jogos Web3\" falhou (jogabilidade fraca, tokenomics predatória, incentivos em forma de Ponzi). A UX da carteira continua a bloquear o gaming mainstream. Os estúdios sérios assentam cada vez mais em \"jogo primeiro, blockchain opcional\"."
       }
@@ -746,9 +740,7 @@
       { "name": "NFTs e economia de criadores", "why": "ERC-721 / ERC-1155 são os padrões de facto. Aplicação de royalties + proveniência comprovável incluídas.", "example": "OpenSea, Blur, leilões on-chain da Sotheby's · domínios ENS · POAPs · provas de presença." },
       { "name": "DAOs e governação on-chain", "why": "Votação ponderada por tokens, tesourarias programáveis, propostas transparentes — kits de governação testados em batalha.", "example": "Uniswap DAO (tesouraria de 6 mil M$), MakerDAO, Arbitrum DAO, Optimism, subsídios da Gitcoin." },
       { "name": "Stablecoins e RWAs tokenizados", "why": "Liquidez mais profunda para tokens garantidos por USD; emissão de RWA via canais institucionais (BlackRock BUIDL, Franklin Templeton).", "example": "USDC, USDT, DAI, RLUSD, PYUSD na Ethereum · BlackRock BUIDL (mais de 2 mil M$ de AUM) · Ondo Finance." }
-    ],
-    "notFitLabel": "Não é adequada para:",
-    "notFitBody": " reserva de valor pura com a neutralidade do Bitcoin (usa BTC), pagamentos de retalho de alto débito sem L2 (picos de gas), consórcios empresariais privados onde os dados têm de ficar fora da vista pública (usa Fabric), casos de uso que não precisam de programabilidade ou composabilidade — custo extra sem qualquer benefício."
+    ]
   },
   "worstFits": {
     "headingA": "Onde a Ethereum é a Ferramenta ",

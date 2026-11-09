@@ -734,16 +734,6 @@ export function BP_Section2() {
                 ))}
               </div>
 
-              {/* Bottom callout */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7, duration: 0.4 }}
-                className="rounded-xl p-3 text-center text-sm font-bold shrink-0"
-                style={{ backgroundColor: '#627EEA20', color: '#627EEA', border: '1px solid #627EEA40' }}
-              >
-                {t('why.callout')}
-              </motion.div>
             </div>
 
           </div>
@@ -755,11 +745,8 @@ export function BP_Section2() {
             transition={{ delay: 0.85, duration: 0.4 }}
             className="shrink-0 mt-4 rounded-xl border border-border bg-card px-4 py-3"
           >
-            <div className="flex items-center justify-between gap-3 mb-2">
-              <div className="text-xs font-semibold text-foreground">
-                {t('why.teaserTextA')}<span className="text-[#10b981]">{t('why.teaserHighlight')}</span>
-              </div>
-              <span className="text-[10px] text-muted-foreground italic shrink-0">{t('why.teaserNote')}</span>
+            <div className="text-xs font-semibold text-foreground mb-2">
+              {t('why.teaserTextA')}<span className="text-[#10b981]">{t('why.teaserHighlight')}</span>
             </div>
 
             {/* Energy bars */}
@@ -1499,16 +1486,6 @@ export function BP_Section2() {
                 })}
               </div>
 
-              {/* Handoff to the staking + issuance slides */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.75 }}
-                className="shrink-0 rounded-xl px-3 py-2 text-xs leading-relaxed"
-                style={{ backgroundColor: '#627EEA12', border: '1px solid #627EEA40', color: 'var(--muted-foreground)' }}
-              >
-                <span className="font-bold" style={{ color: '#627EEA' }}>{t('consensus.nextLabel')}</span>{t('consensus.nextBody')}
-              </motion.div>
               <KeyPoint topic="consensus" hood="consensus" />
             </div>
 
@@ -1630,16 +1607,6 @@ export function BP_Section2() {
                 </div>
               </div>
 
-              {/* Bottom callout */}
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="shrink-0 rounded-xl p-3 text-xs font-medium text-center leading-relaxed"
-                style={{ backgroundColor: '#627EEA15', border: '1px solid #627EEA40', color: '#627EEA' }}
-              >
-                {t('evmEcosystem.callout')}
-              </motion.div>
             </div>
 
           </div>
@@ -1941,16 +1908,6 @@ export function BP_Section2() {
 
           </div>
 
-          {/* Bottom hook */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="shrink-0 mt-4 rounded-xl border border-[#627EEA]/30 bg-[#627EEA]/08 px-4 py-2.5 text-xs text-center text-muted-foreground"
-            style={{ backgroundColor: '#627EEA0F' }}
-          >
-            {t('defi.hook')}
-          </motion.div>
           <KeyPoint topic="defi" hood="defi" className="mt-2" />
         </div>
 
@@ -2125,9 +2082,6 @@ export function BP_Section2() {
                 </div>
               </div>
             ))}
-          </div>
-          <div className="shrink-0 mt-3 p-2.5 bg-[#ef4444]/08 border border-[#ef4444]/30 rounded-lg text-[11px] text-muted-foreground">
-            <strong className="text-[#ef4444]">{t('bestFits.notFitLabel')}</strong>{t('bestFits.notFitBody')}
           </div>
           <KeyPoint topic="bestFits" className="mt-2" />
         </div>
