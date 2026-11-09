@@ -13,8 +13,8 @@
   "chapters": {
     "s2-why": "Why Ethereum?",
     "s2-turing": "Turing-complete",
+    "s2-wallet": "Wallets",
     "s2-accounts-visual": "Accounts Visual",
-    "s2-accounts": "Accounts",
     "s2-evm": "EVM",
     "s2-transaction": "Transaction",
     "s2-gas": "🧩 Gas",
@@ -25,7 +25,7 @@
     "s2-issuance": "🧩 ETH Issuance",
     "s2-evmecosystem": "EVM Everywhere",
     "s2-rollups": "Rollups & L2s",
-    "s2-rollups-anim": "🧩 L1 ↔ L2 Flow",
+    "s2-rollups-2": "Optimistic vs ZK",
     "s2-defi": "DeFi Mechanics",
     "s2-stablecoins": "Stablecoins",
     "s2-apps": "Apps Beyond DeFi (1)",
@@ -36,39 +36,6 @@
     "s2-quiz": "Quiz",
     "s2-takeaways": "Takeaways"
   },
-  "rollupsAnim": {
-    "steps": [
-      "1. Users send L2 transactions — fast, cheap, confirmed in ~1 s",
-      "2. The Sequencer orders + executes them in a batch",
-      "3. The batch is COMPRESSED (calldata → blob) ~10–100× smaller",
-      "4. Compressed blob + new state root posted to L1 (EIP-4844 blob lane)",
-      "5. L1 verifies the proof and finalises — L2 inherits Ethereum security"
-    ],
-    "heading": "L2 user txs → Sequencer → Compression → L1 finalisation",
-    "replay": "↻ Replay",
-    "svg": {
-      "l2Title": "LAYER 2 — ROLLUP",
-      "l2Sub": "Where transactions run · fast · cheap",
-      "sequencer": "SEQUENCER",
-      "sequencerSub": "orders + executes",
-      "batch": "BATCH",
-      "blob": "blob",
-      "compressLabel": "↓ compress + post ↓",
-      "l1Title": "LAYER 1 — ETHEREUM",
-      "l1Sub": "Settlement + data availability · slow · expensive · secure",
-      "verifiedBlob": "✓ blob"
-    },
-    "legend": {
-      "l2txTerm": "L2 tx",
-      "l2txDesc": "— user op on the rollup",
-      "sequencerTerm": "Sequencer",
-      "sequencerDesc": "— orders + batches",
-      "compressTerm": "Compress",
-      "compressDesc": "— blob, ~10-100× smaller",
-      "finaliseTerm": "L1 finalise",
-      "finaliseDesc": "— inherits Ethereum security"
-    }
-  },
   "title": {
     "sectionNumber": "SECTION 02",
     "title": "Ethereum: From Money to Programmable Blockchain",
@@ -78,6 +45,7 @@
     "label": "under the hood →",
     "why": "state machine · Turing-completeness · world state · EVM bytecode",
     "turing": "Turing completeness · halting problem · gas limit",
+    "wallet": "BIP-39 seed · secp256k1 key pair · address = last 20 bytes of keccak256(public key) · ECDSA signature",
     "accounts": "ECDSA key pairs · nonce · code hash · storage root · msg.sender",
     "gas": "opcode gas table · gasLimit vs gasUsed · revert · block gas limit (~30M)",
     "smartContracts": "Solidity → bytecode · ABI · CREATE / CREATE2 · immutability vs proxies",
@@ -92,8 +60,8 @@
     "label": "🔑 Key point",
     "why": "Bitcoin moves one asset by one rule; Ethereum runs any rule you can write.",
     "turing": "Turing-complete = can compute anything computable, given enough gas.",
+    "wallet": "A wallet manages keys, not coins: the coins live on-chain and whoever holds the key controls them.",
     "accountsVisual": "Only wallets can start a transaction; contracts only react.",
-    "accounts": "People hold keys, contracts hold code, and only a key-holder can start a transaction.",
     "evm": "Thousands of machines run the same program and must agree on one result.",
     "transaction": "Every change on Ethereum starts as a signed message from a wallet, and that wallet pays for it.",
     "gas": "Gas prices every step of computation and guarantees every program stops.",
@@ -104,6 +72,7 @@
     "issuance": "Bitcoin sells scarcity by rule; Ethereum sells scarcity by usage.",
     "evmEcosystem": "The EVM is the shared standard: build once, deploy on many chains.",
     "rollups": "Rollups move execution off Ethereum while security stays on it.",
+    "rollups2": "Optimistic rollups wait a week to be sure; ZK rollups prove it up front. Either way users pay cents.",
     "defi": "Swap, lend and earn recombine into almost every DeFi product.",
     "stablecoins": "A stablecoin is only as stable as what backs it.",
     "apps1": "Tokens prove who owns what and who gets to decide.",
@@ -163,6 +132,24 @@
     "catchLabel": "The catch: ",
     "catchBody": "a recipe can also say “repeat forever”. That is why every step costs gas — when the gas runs out, the program stops."
   },
+  "wallet": {
+    "heading": "What a Wallet Actually Is",
+    "subtitle": "The app, the key and the address are three different things",
+    "layers": [
+      { "label": "Seed phrase", "sub": "12 or 24 words", "detail": "The master backup. It regenerates every key in the wallet. Anyone who has it controls the funds." },
+      { "label": "Private key", "sub": "a secret number", "detail": "Signs transactions on your device. The signature proves the account owner approved the action." },
+      { "label": "Address", "sub": "0x… (20 bytes)", "detail": "Derived from the key and safe to share. Others send to it; it cannot be worked back into the key." }
+    ],
+    "derives": "derives",
+    "appHeading": "What MetaMask holds",
+    "appPoints": [
+      "Your keys, encrypted behind a password",
+      "Not your ETH: balances live on the blockchain, the app only reads them",
+      "Lose the app and keep the seed phrase: nothing is lost. Lose the seed phrase: nothing is recoverable."
+    ],
+    "gasLabel": "Who pays gas",
+    "gasBody": "The account that signs the transaction pays the fee in ETH, even when it only calls a contract."
+  },
   "accountsVisual": {
     "heading": "EOA vs Contract Account",
     "subtitle": "Who initiates, who responds",
@@ -197,21 +184,6 @@
       { "label": "📜 Contract", "sub": "executes code" },
       { "label": "📜 Contract B", "sub": "calls another contract" },
       { "label": "🔑 EOA", "sub": "receives ETH/token" }
-    ]
-  },
-  "accounts": {
-    "title": "Two Types of Accounts",
-    "featureLabel": "Property",
-    "option1Label": "EOA (Externally Owned)",
-    "option2Label": "Contract Account",
-    "items": [
-      { "feature": "Controlled by", "option1": "Private key", "option2": "Code / logic" },
-      { "feature": "Has ETH balance", "option1": "Yes", "option2": "Yes" },
-      { "feature": "Has code", "option1": "No", "option2": "Yes" },
-      { "feature": "Has storage", "option1": "No", "option2": "Yes" },
-      { "feature": "Created by", "option1": "Generating a key pair", "option2": "Deploying a transaction" },
-      { "feature": "Can initiate tx", "option1": "Yes", "option2": "No — only respond" },
-      { "feature": "Gas payer", "option1": "The EOA", "option2": "The calling EOA" }
     ]
   },
   "evm": {
@@ -520,9 +492,9 @@
     "eip4844Code": "blob",
     "eip4844B": " data: a cheap, short-lived lane on L1 for rollups. L2 fees dropped ~10×."
   },
-  "rollupsAnimSlide": {
-    "heading": "L1 ↔ L2 Flow",
-    "subtitle": "User tx → sequencer → batch → compressed blob → L1 finalisation."
+  "rollups2": {
+    "heading": "Rollups: Two Flavours and What Users Notice",
+    "subtitle": "Optimistic and ZK rollups differ in how L1 checks the batch. Both move fees from dollars to cents."
   },
   "defi": {
     "heading": "DeFi: Three Primitives",
@@ -745,16 +717,6 @@
       "30 Gwei (max fee) + 2 Gwei (priority fee) = 32 Gwei per gas, paid entirely to the validator."
     ],
     "explanation": "The base fee (25 Gwei) is burned. The tip (2 Gwei) goes to the validator. Effective price is min(maxFeePerGas, baseFee + tip) = min(30, 27) = 27 Gwei per gas; the unused 3 Gwei is never charged. maxFeePerGas is a cap, not a target."
-  },
-  "quiz3": {
-    "question": "Bob deploys a smart contract by sending a transaction with to = null and the compiled bytecode in the data field. How is the new contract's address determined?",
-    "options": [
-      "Bob picks any unused 20-byte address and includes it in the transaction's value field.",
-      "The Ethereum protocol generates a random 20-byte address at deployment time, so the address is unpredictable until the transaction is mined.",
-      "For a regular CREATE deployment, the address is derived deterministically from keccak256(senderAddress, senderNonce) — Bob can compute the future contract address before sending the transaction.",
-      "The address equals keccak256(bytecode), so two deployments of identical contracts always share the same address."
-    ],
-    "explanation": "CREATE derives the address from the sender address and nonce (last 20 bytes of the keccak256 hash), so it can be computed before deployment. CREATE2 instead uses the deployer, a salt and the init code, so the address does not depend on nonce. Identical bytecode does not share an address."
   },
   "takeaways": {
     "title": "Section 02 — Key Takeaways",

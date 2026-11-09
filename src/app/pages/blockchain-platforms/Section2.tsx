@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import anime from 'animejs';
 import { motion } from 'motion/react';
 import { TitleSlide } from '../../components/templates/TitleSlide';
 import { TakeawaySlide } from '../../components/templates/TakeawaySlide';
@@ -8,7 +7,7 @@ import { ComparisonSlide } from '../../components/templates/ComparisonSlide';
 import { SectionNav } from '../../components/navigation/SectionNav';
 import { SiteFooter } from '../../components/shared/SiteFooter';
 import { QuizSlide } from '../../components/templates/QuizSlide';
-import { Layers } from 'lucide-react';
+import { Fuel, Hash, KeyRound, Layers, ScrollText, Wallet } from 'lucide-react';
 import { GasCalculator } from '../../components/ethereum/GasCalculator';
 import { Eip1559Demo } from '../../components/ethereum/Eip1559Demo';
 
@@ -19,8 +18,8 @@ const chapterShape = [
   { id: 's2-turing' },
 
   { kind: 'group' as const, id: 'g-s2-accounts' },
+  { id: 's2-wallet' },
   { id: 's2-accounts-visual' },
-  { id: 's2-accounts' },
 
   { kind: 'group' as const, id: 'g-s2-machine' },
   { id: 's2-evm' },
@@ -37,7 +36,7 @@ const chapterShape = [
   { kind: 'group' as const, id: 'g-s2-scaling' },
   { id: 's2-evmecosystem' },
   { id: 's2-rollups' },
-  { id: 's2-rollups-anim' },
+  { id: 's2-rollups-2' },
 
   { kind: 'group' as const, id: 'g-s2-apps' },
   { id: 's2-defi' },
@@ -56,9 +55,6 @@ const chapterShape = [
   { id: 's2-quiz' },
   { id: 's2-takeaways' },
 ] as const;
-
-// Language-neutral colors for the Rollups L1↔L2 animation steps (parallel to t('rollupsAnim.steps')).
-const ROLLUP_STEP_COLORS = ['#8b5cf6', '#f59e0b', '#06b6d4', '#3b82f6', '#10b981'] as const;
 
 /* Keyword trail for students who want the tech underneath — never required reading. */
 function HoodHint({ topic, className = '' }: { topic: string; className?: string }) {
@@ -296,210 +292,11 @@ function StakingSimulator() {
    Auto-plays on scroll-in + manual replay.
    ──────────────────────────────────────────────────────────────────────────── */
 
-function RollupsL1L2Animation() {
-  const { t } = useTranslation('blockchain-platforms/section-2');
-  const rootRef     = useRef<HTMLDivElement | null>(null);
-  const stepRef     = useRef<HTMLDivElement | null>(null);
-  const userTxRefs  = useRef<(SVGGElement | null)[]>([]);
-  const batchBoxRef = useRef<SVGGElement | null>(null);
-  const blobRef     = useRef<SVGGElement | null>(null);
-  const l1BlockRef  = useRef<SVGGElement | null>(null);
-  const [phase, setPhase] = useState<'idle' | 'playing'>('idle');
-  const playedRef   = useRef(false);
-
-  const stepLabels = t('rollupsAnim.steps', { returnObjects: true }) as string[];
-  const STEPS = ROLLUP_STEP_COLORS.map((color, i) => ({ label: stepLabels[i], color }));
-
-  const setStep = (i: number) => {
-    if (!stepRef.current) return;
-    stepRef.current.textContent = STEPS[i].label;
-    stepRef.current.style.color = STEPS[i].color;
-    stepRef.current.style.borderColor = STEPS[i].color + 'AA';
-    stepRef.current.style.backgroundColor = STEPS[i].color + '14';
-  };
-
-  const play = () => {
-    if (phase === 'playing') return;
-    setPhase('playing');
-
-    userTxRefs.current.forEach(t => {
-      if (!t) return;
-      t.style.opacity = '0';
-      t.style.transform = 'translate(0, 0)';
-    });
-    if (batchBoxRef.current) batchBoxRef.current.style.opacity = '0';
-    if (blobRef.current)     { blobRef.current.style.opacity = '0'; blobRef.current.style.transform = 'translate(0, 0) scale(1)'; }
-    if (l1BlockRef.current)  l1BlockRef.current.style.opacity = '0';
-
-    const tl = anime.timeline({ easing: 'easeInOutCubic', complete: () => setPhase('idle') });
-
-    tl.add({
-      targets: userTxRefs.current.filter(Boolean),
-      opacity: [0, 1],
-      translateY: [-12, 0],
-      duration: 350,
-      delay: anime.stagger(80),
-      changeBegin: () => setStep(0),
-    })
-    .add({
-      targets: userTxRefs.current.filter(Boolean),
-      translateY: 30,
-      scale: 0.85,
-      duration: 600,
-      delay: anime.stagger(60),
-      changeBegin: () => setStep(1),
-    })
-    .add({
-      targets: batchBoxRef.current,
-      opacity: [0, 1],
-      scale: [0.6, 1],
-      duration: 500,
-      easing: 'easeOutQuad',
-      changeBegin: () => setStep(2),
-    })
-    .add({
-      targets: userTxRefs.current.filter(Boolean),
-      opacity: 0,
-      duration: 250,
-    }, '-=250')
-    .add({
-      targets: batchBoxRef.current,
-      scale: [1, 0.45],
-      duration: 600,
-      easing: 'easeInQuad',
-    })
-    .add({
-      targets: batchBoxRef.current,
-      opacity: 0,
-      duration: 200,
-    }, '-=100')
-    .add({
-      targets: blobRef.current,
-      opacity: [0, 1],
-      scale: [0.4, 1],
-      duration: 350,
-      easing: 'easeOutQuad',
-    }, '-=100')
-    .add({
-      targets: blobRef.current,
-      translateY: 110,
-      duration: 900,
-      changeBegin: () => setStep(3),
-    })
-    .add({
-      targets: l1BlockRef.current,
-      opacity: [0, 1],
-      scale: [0.6, 1.15, 1],
-      duration: 700,
-      easing: 'easeOutQuad',
-      changeBegin: () => setStep(4),
-    })
-    .add({
-      targets: blobRef.current,
-      opacity: [1, 0],
-      duration: 300,
-    }, '-=300');
-  };
-
-  useEffect(() => {
-    if (!rootRef.current) return;
-    const obs = new IntersectionObserver(es => {
-      for (const e of es) {
-        if (e.isIntersecting && !playedRef.current) {
-          playedRef.current = true;
-          setTimeout(play, 350);
-          break;
-        }
-      }
-    }, { threshold: 0.35 });
-    obs.observe(rootRef.current);
-    return () => obs.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return (
-    <div ref={rootRef} className="flex flex-col gap-3 min-h-0 h-full">
-      <div className="shrink-0 flex items-start justify-between gap-3">
-        <div className="text-sm font-bold text-foreground">{t('rollupsAnim.heading')}</div>
-        <button
-          onClick={play}
-          disabled={phase === 'playing'}
-          className="text-[11px] px-2.5 py-1 rounded-md bg-muted/60 hover:bg-muted text-foreground font-semibold disabled:opacity-50 transition-colors shrink-0"
-        >{t('rollupsAnim.replay')}</button>
-      </div>
-
-      <div ref={stepRef} className="shrink-0 px-3 py-2 rounded-lg border-2 text-xs font-bold transition-all" style={{ borderColor: STEPS[0].color + 'AA', backgroundColor: STEPS[0].color + '14', color: STEPS[0].color }}>
-        {STEPS[0].label}
-      </div>
-
-      <div className="flex-1 min-h-[280px] rounded-xl border border-border bg-card/40 p-3">
-        <svg viewBox="0 0 520 280" className="w-full h-full" style={{ overflow: 'visible' }}>
-          <rect x="20" y="20" width="480" height="80" rx="8" fill="#8b5cf615" stroke="#8b5cf6" strokeWidth="1.2" />
-          <text x="40" y="42" fontSize="11" fontWeight="900" fill="#8b5cf6">{t('rollupsAnim.svg.l2Title')}</text>
-          <text x="40" y="56" fontSize="9" fill="hsl(var(--muted-foreground))">{t('rollupsAnim.svg.l2Sub')}</text>
-
-          {[0, 1, 2, 3].map(i => (
-            <g key={i} ref={el => { userTxRefs.current[i] = el; }} style={{ opacity: 0, transformBox: 'fill-box' as React.CSSProperties['transformBox'], transformOrigin: `${100 + i * 50}px 78px` }}>
-              <rect x={85 + i * 50} y="68" width="30" height="22" rx="3" fill="#8b5cf6" stroke="#4c1d95" strokeWidth="0.7" />
-              <text x={100 + i * 50} y="83" textAnchor="middle" fontSize="9" fontWeight="800" fill="#fff">tx{i + 1}</text>
-            </g>
-          ))}
-
-          <rect x="320" y="60" width="80" height="34" rx="4" fill="#f59e0b22" stroke="#f59e0b" strokeWidth="1.3" />
-          <text x="360" y="78" textAnchor="middle" fontSize="9" fontWeight="900" fill="#f59e0b">{t('rollupsAnim.svg.sequencer')}</text>
-          <text x="360" y="89" textAnchor="middle" fontSize="7" fill="hsl(var(--muted-foreground))">{t('rollupsAnim.svg.sequencerSub')}</text>
-
-          <g ref={batchBoxRef} style={{ opacity: 0, transformBox: 'fill-box' as React.CSSProperties['transformBox'], transformOrigin: '420px 78px' }}>
-            <rect x="406" y="64" width="58" height="28" rx="3" fill="#06b6d422" stroke="#06b6d4" strokeWidth="1.3" />
-            <text x="435" y="82" textAnchor="middle" fontSize="9" fontWeight="900" fill="#06b6d4">{t('rollupsAnim.svg.batch')}</text>
-          </g>
-
-          <g ref={blobRef} style={{ opacity: 0, transformBox: 'fill-box' as React.CSSProperties['transformBox'], transformOrigin: '420px 78px' }}>
-            <rect x="408" y="68" width="24" height="20" rx="3" fill="#3b82f6" stroke="#1e3a8a" strokeWidth="1.2" />
-            <text x="420" y="82" textAnchor="middle" fontSize="7" fontWeight="900" fill="#fff">{t('rollupsAnim.svg.blob')}</text>
-          </g>
-
-          <text x="260" y="135" textAnchor="middle" fontSize="9" fontWeight="700" fill="hsl(var(--muted-foreground))" opacity="0.6">{t('rollupsAnim.svg.compressLabel')}</text>
-
-          <rect x="20" y="170" width="480" height="80" rx="8" fill="#627EEA15" stroke="#627EEA" strokeWidth="1.2" />
-          <text x="40" y="192" fontSize="11" fontWeight="900" fill="#627EEA">{t('rollupsAnim.svg.l1Title')}</text>
-          <text x="40" y="206" fontSize="9" fill="hsl(var(--muted-foreground))">{t('rollupsAnim.svg.l1Sub')}</text>
-
-          {[1, 2, 3, 4].map(i => (
-            <g key={i}>
-              <rect x={140 + i * 50} y="216" width="34" height="26" rx="2" fill="#627EEA25" stroke="#627EEA" strokeWidth="0.8" />
-              <text x={157 + i * 50} y="232" textAnchor="middle" fontSize="7" fontWeight="800" fill="#627EEA">#L1</text>
-            </g>
-          ))}
-          <g ref={l1BlockRef} style={{ opacity: 0, transformBox: 'fill-box' as React.CSSProperties['transformBox'], transformOrigin: '375px 229px' }}>
-            <rect x="358" y="216" width="34" height="26" rx="2" fill="#10b98140" stroke="#10b981" strokeWidth="1.4" />
-            <text x="375" y="232" textAnchor="middle" fontSize="7" fontWeight="800" fill="#10b981">{t('rollupsAnim.svg.verifiedBlob')}</text>
-          </g>
-        </svg>
-      </div>
-
-      <div className="shrink-0 grid grid-cols-2 lg:grid-cols-4 gap-2 text-[10px]">
-        <div className="rounded-md p-1.5 border" style={{ borderColor: '#8b5cf655', backgroundColor: '#8b5cf610' }}>
-          <span className="font-black text-[#8b5cf6]">{t('rollupsAnim.legend.l2txTerm')}</span> <span className="text-muted-foreground">{t('rollupsAnim.legend.l2txDesc')}</span>
-        </div>
-        <div className="rounded-md p-1.5 border" style={{ borderColor: '#f59e0b55', backgroundColor: '#f59e0b10' }}>
-          <span className="font-black text-[#f59e0b]">{t('rollupsAnim.legend.sequencerTerm')}</span> <span className="text-muted-foreground">{t('rollupsAnim.legend.sequencerDesc')}</span>
-        </div>
-        <div className="rounded-md p-1.5 border" style={{ borderColor: '#06b6d455', backgroundColor: '#06b6d410' }}>
-          <span className="font-black text-[#06b6d4]">{t('rollupsAnim.legend.compressTerm')}</span> <span className="text-muted-foreground">{t('rollupsAnim.legend.compressDesc')}</span>
-        </div>
-        <div className="rounded-md p-1.5 border" style={{ borderColor: '#10b98155', backgroundColor: '#10b98110' }}>
-          <span className="font-black text-[#10b981]">{t('rollupsAnim.legend.finaliseTerm')}</span> <span className="text-muted-foreground">{t('rollupsAnim.legend.finaliseDesc')}</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 interface WhyItem { title: string; detail: string; }
 interface LabelDesc { label: string; desc: string; }
 interface LabelDetail { label: string; detail: string; }
 interface FlowItem { label: string; sub: string; }
+interface WalletLayer { label: string; sub: string; detail: string; }
 interface ComparisonRow { feature: string; option1: string; option2: string; }
 interface StackLayer { label: string; sub: string; }
 interface TxField { field: string; value: string; comment: string; }
@@ -540,13 +337,16 @@ export function BP_Section2() {
   const turingTools = t('turing.kitchen.tools', { returnObjects: true }) as LabelDesc[];
   const turingToolIcons = ['🔁', '🗄️', '🔀'];
 
+  const walletLayers = t('wallet.layers', { returnObjects: true }) as WalletLayer[];
+  const walletLayerIcons = [ScrollText, KeyRound, Hash];
+  const walletLayerColors = ['#f59e0b', '#627EEA', '#10b981'];
+  const walletAppPoints = t('wallet.appPoints', { returnObjects: true }) as string[];
+
   const accountsVisualEoaPoints = t('accountsVisual.eoa.points', { returnObjects: true }) as string[];
   const accountsVisualEoaIcons = ['👤', '🚀', '💰', '⛽'];
   const accountsVisualContractPoints = t('accountsVisual.contract.points', { returnObjects: true }) as string[];
   const accountsVisualContractIcons = ['⚙️', '📩', '🗄️', '🔄'];
   const accountsVisualFlow = t('accountsVisual.flow', { returnObjects: true }) as FlowItem[];
-
-  const accountsItems = t('accounts.items', { returnObjects: true }) as ComparisonRow[];
 
   const evmProperties = t('evm.properties', { returnObjects: true }) as LabelDetail[];
   const evmPropertyIcons = ['🏖️', '⚙️', '🔄', '📏'];
@@ -639,7 +439,6 @@ export function BP_Section2() {
 
   const quizOptions = (t('quiz.options', { returnObjects: true }) as string[]).map((text, i) => ({ text, correct: i === 2 }));
   const quiz2Options = (t('quiz2.options', { returnObjects: true }) as string[]).map((text, i) => ({ text, correct: i === 1 }));
-  const quiz3Options = (t('quiz3.options', { returnObjects: true }) as string[]).map((text, i) => ({ text, correct: i === 2 }));
 
   const takeawayItems = t('takeaways.items', { returnObjects: true }) as string[];
 
@@ -837,6 +636,88 @@ export function BP_Section2() {
           <KeyPoint topic="turing" hood="turing" className="mt-3" />
         </div>
 
+        {/* ═══════ S2-WALLET — what a wallet actually is ═══════ */}
+        <div id="s2-wallet" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-5">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('wallet.heading')}</h2>
+            <p className="text-sm text-muted-foreground mt-1">{t('wallet.subtitle')}</p>
+          </div>
+
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-5 gap-6">
+
+            {/* Left — seed phrase → private key → address */}
+            <div className="lg:col-span-3 flex flex-col justify-center gap-2 min-h-0">
+              {walletLayers.map((layer, i) => {
+                const Icon = walletLayerIcons[i];
+                const color = walletLayerColors[i];
+                return (
+                  <div key={i} className="contents">
+                    {i > 0 && (
+                      <div className="flex items-center gap-2 pl-8 text-[11px] text-muted-foreground">
+                        <span className="h-4 w-px bg-border" />
+                        {t('wallet.derives')}
+                      </div>
+                    )}
+                    <motion.div
+                      initial={{ opacity: 0, x: -16 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.12, duration: 0.35 }}
+                      className="flex items-start gap-4 p-4 rounded-2xl border-2"
+                      style={{ borderColor: color + '60', backgroundColor: color + '08' }}
+                    >
+                      <div className="size-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: color + '18', color }}>
+                        <Icon className="size-6" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-baseline gap-2 flex-wrap">
+                          <span className="font-black text-lg text-foreground">{layer.label}</span>
+                          <span className="text-xs font-mono text-muted-foreground">{layer.sub}</span>
+                        </div>
+                        <div className="text-sm text-muted-foreground mt-1 leading-relaxed">{layer.detail}</div>
+                      </div>
+                    </motion.div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Right — what the app holds, who pays gas */}
+            <div className="lg:col-span-2 flex flex-col justify-center gap-4 min-h-0">
+              <motion.div
+                initial={{ opacity: 0, x: 16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3, duration: 0.35 }}
+                className="shrink-0 rounded-2xl border border-border bg-card p-5 flex flex-col gap-3"
+              >
+                <div className="flex items-center gap-2 shrink-0">
+                  <Wallet className="size-5 text-[#627EEA]" />
+                  <h3 className="font-bold text-base text-foreground">{t('wallet.appHeading')}</h3>
+                </div>
+                {walletAppPoints.map((text, i) => (
+                  <div key={i} className="flex items-start gap-3 text-sm text-foreground leading-relaxed">
+                    <span className="mt-2 size-1.5 rounded-full shrink-0" style={{ backgroundColor: '#627EEA' }} />
+                    {text}
+                  </div>
+                ))}
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45 }}
+                className="shrink-0 rounded-2xl border-2 p-4"
+                style={{ borderColor: '#f59e0b60', backgroundColor: '#f59e0b10' }}
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <Fuel className="size-4 text-[#f59e0b]" />
+                  <span className="text-[10px] font-black uppercase tracking-widest text-[#f59e0b]">{t('wallet.gasLabel')}</span>
+                </div>
+                <p className="text-sm text-foreground leading-relaxed">{t('wallet.gasBody')}</p>
+              </motion.div>
+            </div>
+          </div>
+          <KeyPoint topic="wallet" hood="wallet" className="mt-3" />
+        </div>
+
         {/* ═══════ S2-ACCOUNTS-VISUAL ═══════ */}
         <div id="s2-accounts-visual" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-5">
@@ -943,18 +824,6 @@ export function BP_Section2() {
             </div>
           </motion.div>
           <KeyPoint topic="accountsVisual" hood="accounts" className="mt-3" />
-        </div>
-
-        {/* ═══════ S2-ACCOUNTS ═══════ */}
-        <div id="s2-accounts" className="h-full">
-          <ComparisonSlide
-            title={t('accounts.title')}
-            featureLabel={t('accounts.featureLabel')}
-            option1Label={t('accounts.option1Label')}
-            option2Label={t('accounts.option2Label')}
-            items={accountsItems}
-            footer={<KeyPoint topic="accounts" />}
-          />
         </div>
 
         {/* ═══════ S2-EVM ═══════ */}
@@ -1613,7 +1482,7 @@ export function BP_Section2() {
           <KeyPoint topic="evmEcosystem" className="mt-3" />
         </div>
 
-        {/* ═══════ S2-ROLLUPS ═══════ */}
+        {/* ═══════ S2-ROLLUPS — how a rollup works ═══════ */}
         <div id="s2-rollups" className="h-full flex flex-col p-6 lg:p-10">
           <div className="shrink-0 mb-4">
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('rollups.heading')}</h2>
@@ -1622,156 +1491,138 @@ export function BP_Section2() {
             </p>
           </div>
 
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div className="flex-1 min-h-0 flex flex-col gap-4">
+            <h3 className="text-base font-bold text-foreground shrink-0">{t('rollups.howHeading')}</h3>
 
-            {/* Left — How a rollup works */}
-            <div className="flex flex-col gap-3 min-h-0">
-              <h3 className="text-base font-bold text-foreground shrink-0">{t('rollups.howHeading')}</h3>
-
-              <div className="flex-1 min-h-0 flex flex-col gap-2">
-                {rollupSteps.map((s, i) => {
-                  const color = rollupStepColors[i];
-                  return (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.08, duration: 0.3 }}
-                    className="flex-1 flex items-start gap-3 p-3 rounded-xl border bg-card"
-                    style={{ borderColor: color + '40' }}
-                  >
-                    <div
-                      className="size-8 rounded-lg flex items-center justify-center text-white font-black text-sm shrink-0"
-                      style={{ backgroundColor: color }}
-                    >{i + 1}</div>
-                    <div className="min-w-0">
-                      <div className="font-bold text-sm text-foreground">{s.label}</div>
-                      <div className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{s.detail}</div>
-                    </div>
-                  </motion.div>
-                  );
-                })}
-              </div>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="shrink-0 rounded-xl border border-[#627EEA]/30 px-3 py-2 text-[11px] text-center"
-                style={{ backgroundColor: '#627EEA12', color: '#627EEA' }}
-              >
-                <span className="font-bold">{t('rollups.securityNoteStrong')}</span>{t('rollups.securityNoteRest')}
-              </motion.div>
-            </div>
-
-            {/* Right — Optimistic vs ZK + Tradeoffs */}
-            <div className="flex flex-col gap-3 min-h-0">
-              <h3 className="text-base font-bold text-foreground shrink-0">{t('rollups.flavorsHeading')}</h3>
-
-              <div className="grid grid-cols-2 gap-3 shrink-0">
+            <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4 content-center">
+              {rollupSteps.map((s, i) => {
+                const color = rollupStepColors[i];
+                return (
                 <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 }}
-                  className="rounded-xl border-2 border-[#FF0420]/40 bg-[#FF0420]/05 p-3"
-                  style={{ backgroundColor: '#FF042010' }}
+                  key={i}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.08, duration: 0.3 }}
+                  className="flex items-start gap-4 p-5 rounded-xl border bg-card"
+                  style={{ borderColor: color + '40' }}
                 >
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-lg">🤝</span>
-                    <div className="font-black text-sm text-[#FF0420]">{t('rollups.optimisticTitle')}</div>
-                  </div>
-                  <ul className="text-[11px] text-muted-foreground space-y-1 leading-relaxed">
-                    {rollupOptimistic.map((b, i) => (
-                      <li key={i}>
-                        {b.text ?? <>
-                          {b.pre}
-                          {b.strong && <span className="text-foreground font-semibold">{b.strong}</span>}
-                          {b.code && <span className="font-mono font-bold text-foreground">{b.code}</span>}
-                          {b.rest}{b.post}
-                        </>}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-2 pt-2 border-t border-border text-[10px] text-muted-foreground">
-                    <span className="font-bold text-foreground">{t('rollups.optimisticLiveLabel')}</span>{t('rollups.optimisticLive')}
+                  <div
+                    className="size-10 rounded-lg flex items-center justify-center text-white font-black text-base shrink-0"
+                    style={{ backgroundColor: color }}
+                  >{i + 1}</div>
+                  <div className="min-w-0">
+                    <div className="font-bold text-base text-foreground">{s.label}</div>
+                    <div className="text-sm text-muted-foreground mt-1 leading-relaxed">{s.detail}</div>
                   </div>
                 </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.25 }}
-                  className="rounded-xl border-2 border-[#8C8DFC]/40 bg-[#8C8DFC]/05 p-3"
-                  style={{ backgroundColor: '#8C8DFC10' }}
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-lg">🔐</span>
-                    <div className="font-black text-sm text-[#8C8DFC]">{t('rollups.zkTitle')}</div>
-                  </div>
-                  <ul className="text-[11px] text-muted-foreground space-y-1 leading-relaxed">
-                    {rollupZk.map((b, i) => (
-                      <li key={i}>
-                        {b.text ?? <>
-                          {b.pre}
-                          {b.strong && <span className="text-foreground font-semibold">{b.strong}</span>}
-                          {b.code && <span className="font-mono font-bold text-foreground">{b.code}</span>}
-                          {b.rest}{b.post}
-                        </>}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-2 pt-2 border-t border-border text-[10px] text-muted-foreground">
-                    <span className="font-bold text-foreground">{t('rollups.zkLiveLabel')}</span>{t('rollups.zkLive')}
-                  </div>
-                </motion.div>
-              </div>
-
-              {/* L1 vs L2 metrics */}
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35 }}
-                className="rounded-xl border border-border bg-card p-3 flex-1 min-h-0 flex flex-col"
-              >
-                <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">{t('rollups.metricsLabel')}</div>
-                <div className="grid grid-cols-3 gap-2 text-center text-[11px] flex-1">
-                  {rollupMetrics.map((m, i) => (
-                    <div key={i} className="rounded-lg bg-muted/40 border border-border p-2 flex flex-col justify-center">
-                      <div className="text-muted-foreground text-[10px]">{m.label}</div>
-                      <div className="font-bold text-foreground">{m.l1}</div>
-                      <div className="text-[#10b981] font-mono">{m.l2}</div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="shrink-0 rounded-xl border border-[#f59e0b]/30 px-3 py-2 text-[11px] leading-relaxed"
-                style={{ backgroundColor: '#f59e0b12', color: 'var(--muted-foreground)' }}
-              >
-                <span className="font-bold text-[#f59e0b]">{t('rollups.eip4844Label')}</span>
-                {t('rollups.eip4844A')}<span className="font-mono text-foreground">{t('rollups.eip4844Code')}</span>{t('rollups.eip4844B')}
-              </motion.div>
+                );
+              })}
             </div>
 
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="shrink-0 rounded-xl border border-[#627EEA]/30 px-4 py-2.5 text-xs text-center"
+              style={{ backgroundColor: '#627EEA12', color: '#627EEA' }}
+            >
+              <span className="font-bold">{t('rollups.securityNoteStrong')}</span>{t('rollups.securityNoteRest')}
+            </motion.div>
           </div>
           <KeyPoint topic="rollups" className="mt-3" />
         </div>
 
-        {/* ═══════ S2-ROLLUPS ANIMATION — animated L1 ↔ L2 flow ═══════ */}
-        <div id="s2-rollups-anim" className="h-full flex flex-col p-5 lg:p-8">
-          <div className="shrink-0 mb-3">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('rollupsAnimSlide.heading')}</h2>
-            <p className="text-sm text-muted-foreground max-w-3xl">
-              {t('rollupsAnimSlide.subtitle')}
-            </p>
+        {/* ═══════ S2-ROLLUPS-2 — optimistic vs ZK, L1 vs L2 for users ═══════ */}
+        <div id="s2-rollups-2" className="h-full flex flex-col p-6 lg:p-10">
+          <div className="shrink-0 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t('rollups2.heading')}</h2>
+            <p className="text-sm text-muted-foreground mt-1">{t('rollups2.subtitle')}</p>
           </div>
-          <div className="flex-1 min-h-0">
-            <RollupsL1L2Animation />
+
+          <div className="flex-1 min-h-0 flex flex-col justify-center gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 shrink-0">
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+                className="rounded-xl border-2 border-[#FF0420]/40 p-4"
+                style={{ backgroundColor: '#FF042010' }}
+              >
+                <div className="font-black text-base text-[#FF0420] mb-2">{t('rollups.optimisticTitle')}</div>
+                <ul className="text-sm text-muted-foreground space-y-1.5 leading-relaxed">
+                  {rollupOptimistic.map((b, i) => (
+                    <li key={i}>
+                      {b.text ?? <>
+                        {b.pre}
+                        {b.strong && <span className="text-foreground font-semibold">{b.strong}</span>}
+                        {b.code && <span className="font-mono font-bold text-foreground">{b.code}</span>}
+                        {b.rest}{b.post}
+                      </>}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-3 pt-2 border-t border-border text-xs text-muted-foreground">
+                  <span className="font-bold text-foreground">{t('rollups.optimisticLiveLabel')}</span>{t('rollups.optimisticLive')}
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                className="rounded-xl border-2 border-[#8C8DFC]/40 p-4"
+                style={{ backgroundColor: '#8C8DFC10' }}
+              >
+                <div className="font-black text-base text-[#8C8DFC] mb-2">{t('rollups.zkTitle')}</div>
+                <ul className="text-sm text-muted-foreground space-y-1.5 leading-relaxed">
+                  {rollupZk.map((b, i) => (
+                    <li key={i}>
+                      {b.text ?? <>
+                        {b.pre}
+                        {b.strong && <span className="text-foreground font-semibold">{b.strong}</span>}
+                        {b.code && <span className="font-mono font-bold text-foreground">{b.code}</span>}
+                        {b.rest}{b.post}
+                      </>}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-3 pt-2 border-t border-border text-xs text-muted-foreground">
+                  <span className="font-bold text-foreground">{t('rollups.zkLiveLabel')}</span>{t('rollups.zkLive')}
+                </div>
+              </motion.div>
+            </div>
+
+            {/* L1 vs L2 metrics */}
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 }}
+              className="rounded-xl border border-border bg-card p-4 shrink-0"
+            >
+              <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">{t('rollups.metricsLabel')}</div>
+              <div className="grid grid-cols-3 gap-3 text-center">
+                {rollupMetrics.map((m, i) => (
+                  <div key={i} className="rounded-lg bg-muted/40 border border-border px-3 py-4 flex flex-col justify-center gap-1">
+                    <div className="text-muted-foreground text-xs">{m.label}</div>
+                    <div className="font-bold text-foreground text-base">{m.l1}</div>
+                    <div className="text-[#10b981] font-mono text-sm">{m.l2}</div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="shrink-0 rounded-xl border border-[#f59e0b]/30 px-4 py-2.5 text-xs leading-relaxed"
+              style={{ backgroundColor: '#f59e0b12', color: 'var(--muted-foreground)' }}
+            >
+              <span className="font-bold text-[#f59e0b]">{t('rollups.eip4844Label')}</span>
+              {t('rollups.eip4844A')}<span className="font-mono text-foreground">{t('rollups.eip4844Code')}</span>{t('rollups.eip4844B')}
+            </motion.div>
           </div>
+          <KeyPoint topic="rollups2" className="mt-3" />
         </div>
 
         {/* ═══════ DEFI MECHANICS ═══════ */}
@@ -2130,15 +1981,6 @@ export function BP_Section2() {
             question={t('quiz2.question')}
             options={quiz2Options}
             explanation={t('quiz2.explanation')}
-          />
-        </div>
-
-        {/* ═══════ QUIZ 3 — Contract deployment address ═══════ */}
-        <div id="s2-quiz-3" className="h-full">
-          <QuizSlide
-            question={t('quiz3.question')}
-            options={quiz3Options}
-            explanation={t('quiz3.explanation')}
           />
         </div>
 
